@@ -44,8 +44,10 @@ def parse_dependencies(yaml_path):
     dep_types = ['dependencies']  # TODO: dev_dependencies
     with open(yaml_path) as yaml_file:
         parsed = yaml.safe_load(yaml_file)
+        if not parsed:
+            raise Exception('Could not parse yaml file: %s' % yaml_file)
         for dep_type in dep_types:
-            if dep_type in parsed:
+            if dep_type in parsed and parsed[dep_type]:
                 for dep in parsed[dep_type]:
                     deps.append(dep)
     return deps
@@ -97,7 +99,7 @@ dependencies:
         os.mkdir(pub_cache_dir)
         env = os.environ
         env['PUB_CACHE'] = pub_cache_dir
-        subprocess.check_call(['pub', 'get', '--no-package-symlinks'], cwd=importer_dir, env=env)
+        subprocess.check_call(['pub', 'get'], cwd=importer_dir, env=env)
         if os.path.exists(DEST_PATH):
             shutil.rmtree(DEST_PATH)
         packages = parse_packages_file(os.path.join(importer_dir, '.packages'))
