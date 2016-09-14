@@ -130,8 +130,14 @@ dependencies:
                 deps = parse_dependencies(pubspec_path)
             dest_dir = os.path.join(DEST_PATH, package_name)
             shutil.copytree(source_base_dir, dest_dir)
+            # We don't need the 'test' directory of packages we import as that
+            # directory exists to test that package and some of our packages
+            # have very heavy test directories, so nuke those.
+            test_path = os.path.join(dest_dir, 'test')
+            if os.path.exists(test_path):
+                shutil.rmtree(test_path)
             write_build_file(os.path.join(dest_dir, 'BUILD.gn'), package_name,
-                    name_with_version, deps)
+                             name_with_version, deps)
 
     finally:
         shutil.rmtree(tempdir)
