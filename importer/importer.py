@@ -120,9 +120,10 @@ dependencies:
             # and other potentially useful directories like 'bin'.
             source_base_dir = os.path.dirname(os.path.abspath(source_dir))
             name_with_version = os.path.basename(source_base_dir)
-            license_path = os.path.join(source_base_dir, 'LICENSE')
-            if not os.path.exists(license_path):
-                print 'Could not find license file for %s, skipping' % name
+            has_license = any(os.path.exists(os.path.join(source_base_dir, file_name))
+                              for file_name in ['LICENSE', 'LICENSE.txt'])
+            if not has_license:
+                print 'Could not find license file for %s, skipping' % package_name
                 continue
             pubspec_path = os.path.join(source_base_dir, 'pubspec.yaml')
             deps = []
