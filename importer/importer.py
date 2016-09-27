@@ -18,6 +18,12 @@ import yaml
 DEST_PATH = os.path.join(os.path.dirname(SCRIPT_PATH), 'pub')
 
 
+LICENSE_FILES = ['LICENSE', 'LICENSE.txt']
+
+
+IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'zip']
+
+
 def parse_packages_file(dot_packages_path):
     """ parse the list of packages and paths in .packages file """
     packages = []
@@ -99,7 +105,7 @@ dependencies:
         os.mkdir(pub_cache_dir)
         env = os.environ
         env['PUB_CACHE'] = pub_cache_dir
-        subprocess.check_call(['pub', 'get'], cwd=importer_dir, env=env)
+        subprocess.check_call(['flutter', 'pub', 'get'], cwd=importer_dir, env=env)
         if os.path.exists(DEST_PATH):
             shutil.rmtree(DEST_PATH)
         packages = parse_packages_file(os.path.join(importer_dir, '.packages'))
@@ -121,7 +127,7 @@ dependencies:
             source_base_dir = os.path.dirname(os.path.abspath(source_dir))
             name_with_version = os.path.basename(source_base_dir)
             has_license = any(os.path.exists(os.path.join(source_base_dir, file_name))
-                              for file_name in ['LICENSE', 'LICENSE.txt'])
+                              for file_name in LICENSE_FILES)
             if not has_license:
                 print 'Could not find license file for %s, skipping' % package_name
                 continue
@@ -130,7 +136,9 @@ dependencies:
             if os.path.exists(pubspec_path):
                 deps = parse_dependencies(pubspec_path)
             dest_dir = os.path.join(DEST_PATH, package_name)
-            shutil.copytree(source_base_dir, dest_dir)
+            shutil.copytree(source_base_dir, dest_dir,
+                            ignore=shutil.ignore_patterns(
+                                *('*.' + extension for extension in IGNORED_EXTENSIONS)))
             # We don't need the 'test' directory of packages we import as that
             # directory exists to test that package and some of our packages
             # have very heavy test directories, so nuke those.
