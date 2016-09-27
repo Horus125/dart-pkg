@@ -14,9 +14,6 @@
 
 part of quiver.iterables;
 
-typedef T _Initial<T>();
-typedef T _Next<T>(T value);
-
 Iterable generate(initial(), next(o)) => new GeneratingIterable(initial, next);
 
 /**
@@ -51,21 +48,21 @@ Iterable generate(initial(), next(o)) => new GeneratingIterable(initial, next);
  *
  */
 class GeneratingIterable<T> extends IterableBase<T> {
-  final _Initial<T> initial;
-  final _Next<T> next;
+  final initial;
+  final next;
 
-  GeneratingIterable(this.initial, this.next);
+  GeneratingIterable(T this.initial(), T this.next(T o));
 
   @override
   Iterator<T> get iterator => new _GeneratingIterator(initial(), next);
 }
 
 class _GeneratingIterator<T> implements Iterator<T> {
-  final _Next<T> next;
+  final next;
   T object;
   bool started = false;
 
-  _GeneratingIterator(T this.object, this.next);
+  _GeneratingIterator(T this.object, T this.next(T o));
 
   @override
   T get current => started ? object : null;

@@ -30,6 +30,7 @@ class MemoryResourceProvider implements ResourceProvider {
   int nextStamp = 0;
 
   final Context _pathContext;
+
   @override
   final AbsolutePathContext absolutePathContext;
 
@@ -200,6 +201,15 @@ class MemoryResourceProvider implements ResourceProvider {
     return file;
   }
 
+  /**
+   * Write a representation of the file system on the given [sink].
+   */
+  void writeOn(StringSink sink) {
+    List<String> paths = _pathToResource.keys.toList();
+    paths.sort();
+    paths.forEach(sink.writeln);
+  }
+
   void _checkFileAtPath(String path) {
     _MemoryResource resource = _pathToResource[path];
     if (resource is! _MemoryFile) {
@@ -309,6 +319,11 @@ class _MemoryDummyLink extends _MemoryResource implements File {
   }
 
   @override
+  File resolveSymbolicLinksSync() {
+    return throw new FileSystemException(path, "File does not exist");
+  }
+
+  @override
   Uri toUri() => new Uri.file(path, windows: _provider.pathContext == windows);
 
   @override
@@ -379,6 +394,9 @@ class _MemoryFile extends _MemoryResource implements File {
   File renameSync(String newPath) {
     return _provider.renameFileSync(this, newPath);
   }
+
+  @override
+  File resolveSymbolicLinksSync() => this;
 
   @override
   Uri toUri() => new Uri.file(path, windows: _provider.pathContext == windows);
@@ -473,6 +491,9 @@ class _MemoryFolder extends _MemoryResource implements Folder {
     }
     return contains(path);
   }
+
+  @override
+  Folder resolveSymbolicLinksSync() => this;
 
   @override
   Uri toUri() =>

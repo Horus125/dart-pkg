@@ -1,0 +1,12 @@
+.idea
+.pub
+packages
+build
+.project
+.settings
+pubspec.lock
+.packages
+linter.iml
+.atom
+/.vscode
+/.history

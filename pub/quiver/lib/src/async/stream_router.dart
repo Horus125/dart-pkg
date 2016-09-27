@@ -36,7 +36,7 @@ class StreamRouter<T> {
   final Stream<T> _incoming;
   StreamSubscription _subscription;
 
-  final List<_Route<T>> _routes = <_Route<T>>[];
+  final List<_Route> _routes = <_Route>[];
   final StreamController<T> _defaultController =
       new StreamController<T>.broadcast();
 
@@ -75,9 +75,9 @@ class StreamRouter<T> {
 
 typedef bool _Predicate(event);
 
-class _Route<T> {
+class _Route {
   final _Predicate predicate;
-  final StreamController<T> controller;
+  final StreamController controller;
 
   _Route(this.predicate, this.controller);
 }

@@ -55,7 +55,7 @@ class Metronome extends Stream<DateTime> {
   final DateTime anchor;
 
   Timer _timer;
-  StreamController<DateTime> _controller;
+  StreamController _controller;
   final int _intervalMs;
   final int _anchorMs;
 

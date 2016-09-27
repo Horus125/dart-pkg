@@ -177,6 +177,12 @@ abstract class Resource {
   bool isOrContains(String path);
 
   /**
+   * Return a resource that refers to the same resource as this resource, but
+   * whose path does not contain any symbolic links.
+   */
+  Resource resolveSymbolicLinksSync();
+
+  /**
    * Return a Uri representing this resource.
    */
   Uri toUri();

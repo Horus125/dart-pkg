@@ -50,7 +50,7 @@ class _MultiPattern extends Pattern {
       {Iterable<Pattern> this.exclude});
 
   Iterable<Match> allMatches(String str, [int start = 0]) {
-    final _allMatches = <Match>[];
+    var _allMatches = [];
     for (var pattern in include) {
       var matches = pattern.allMatches(str, start);
       if (_hasMatch(matches)) {
@@ -61,10 +61,10 @@ class _MultiPattern extends Pattern {
             }
           }
         }
-        _allMatches.addAll(matches);
+        _allMatches.add(matches);
       }
     }
-    return _allMatches;
+    return _allMatches.expand((x) => x);
   }
 
   Match matchAsPrefix(String str, [int start = 0]) {

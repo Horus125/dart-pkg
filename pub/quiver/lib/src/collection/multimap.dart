@@ -28,14 +28,6 @@ abstract class Multimap<K, V> {
   factory Multimap() => new ListMultimap<K, V>();
 
   /**
-   * Constructs a new list-backed multimap. For each element e of [iterable],
-   * adds an association from [key](e) to [value](e). [key] and [value] each
-   * default to the identity function.
-   */
-  factory Multimap.fromIterable(Iterable iterable,
-      {K key(element), V value(element)}) = ListMultimap<K, V>.fromIterable;
-
-  /**
    * Returns whether this multimap contains the given [value].
    */
   bool containsValue(Object value);
@@ -147,27 +139,9 @@ abstract class Multimap<K, V> {
  */
 abstract class _BaseMultimap<K, V, C extends Iterable<V>>
     implements Multimap<K, V> {
-  static /*=T*/ _id/*<T>*/(/*=T*/ x) => x;
+  final Map<K, Iterable<V>> _map = new HashMap();
 
-  _BaseMultimap();
-
-  /**
-   * Constructs a new multimap. For each element e of [iterable], adds an
-   * association from [key](e) to [value](e). [key] and [value] each default to
-   * the identity function.
-   */
-  _BaseMultimap.fromIterable(Iterable iterable,
-      {K key(element), V value(element)}) {
-    key ??= _id;
-    value ??= _id;
-    for (var element in iterable) {
-      add(key(element), value(element));
-    }
-  }
-
-  final Map<K, C> _map = new HashMap();
-
-  C _create();
+  Iterable<V> _create();
   void _add(C iterable, V value);
   void _addAll(C iterable, Iterable<V> value);
   void _clear(C iterable);
@@ -222,7 +196,7 @@ abstract class _BaseMultimap<K, V, C extends Iterable<V>>
       retValues.addAll(values);
       values.clear();
     }
-    return retValues as Iterable<V>;
+    return retValues;
   }
 
   void clear() {
@@ -230,7 +204,7 @@ abstract class _BaseMultimap<K, V, C extends Iterable<V>>
     _map.clear();
   }
 
-  void forEachKey(void f(K key, C value)) => _map.forEach(f);
+  void forEachKey(void f(K key, Iterable<V> value)) => _map.forEach(f);
 
   void forEach(void f(K key, V value)) {
     _map.forEach((K key, Iterable<V> values) {
@@ -251,24 +225,13 @@ abstract class _BaseMultimap<K, V, C extends Iterable<V>>
  * with each key.
  */
 class ListMultimap<K, V> extends _BaseMultimap<K, V, List<V>> {
-  ListMultimap();
-
-  /**
-   * Constructs a new list-backed multimap. For each element e of [iterable],
-   * adds an association from [key](e) to [value](e). [key] and [value] each
-   * default to the identity function.
-   */
-  ListMultimap.fromIterable(Iterable iterable,
-      {K key(element), V value(element)})
-      : super.fromIterable(iterable, key: key, value: value);
-
+  ListMultimap() : super();
   @override
   List<V> _create() => new List<V>();
   @override
   void _add(List<V> iterable, V value) {
     iterable.add(value);
   }
-
   @override
   void _addAll(List<V> iterable, Iterable<V> value) => iterable.addAll(value);
   @override
@@ -290,24 +253,13 @@ class ListMultimap<K, V> extends _BaseMultimap<K, V, List<V>> {
  * with each key.
  */
 class SetMultimap<K, V> extends _BaseMultimap<K, V, Set<V>> {
-  SetMultimap();
-
-  /**
-   * Constructs a new set-backed multimap. For each element e of [iterable],
-   * adds an association from [key](e) to [value](e). [key] and [value] each
-   * default to the identity function.
-   */
-  SetMultimap.fromIterable(Iterable iterable,
-      {K key(element), V value(element)})
-      : super.fromIterable(iterable, key: key, value: value);
-
+  SetMultimap() : super();
   @override
   Set<V> _create() => new Set<V>();
   @override
   void _add(Set<V> iterable, V value) {
     iterable.add(value);
   }
-
   @override
   void _addAll(Set<V> iterable, Iterable<V> value) => iterable.addAll(value);
   @override
@@ -407,7 +359,7 @@ class _WrappedIterable<K, V, C extends Iterable<V>> implements Iterable<V> {
     return _delegate.every(test);
   }
 
-  Iterable/*<T>*/ expand/*<T>*/(Iterable/*<T>*/ f(V element)) {
+  Iterable expand(Iterable f(V element)) {
     _syncDelegate();
     return _delegate.expand(f);
   }
@@ -422,8 +374,7 @@ class _WrappedIterable<K, V, C extends Iterable<V>> implements Iterable<V> {
     return _delegate.firstWhere(test, orElse: orElse);
   }
 
-  dynamic/*=T*/ fold/*<T>*/(var/*=T*/ initialValue,
-      dynamic/*=T*/ combine(var/*=T*/ previousValue, V element)) {
+  fold(initialValue, combine(previousValue, V element)) {
     _syncDelegate();
     return _delegate.fold(initialValue, combine);
   }
@@ -468,7 +419,7 @@ class _WrappedIterable<K, V, C extends Iterable<V>> implements Iterable<V> {
     return _delegate.length;
   }
 
-  Iterable/*<T>*/ map/*<T>*/(/*=T*/ f(V element)) {
+  Iterable map(f(V element)) {
     _syncDelegate();
     return _delegate.map(f);
   }
@@ -531,7 +482,7 @@ class _WrappedIterable<K, V, C extends Iterable<V>> implements Iterable<V> {
 
 class _WrappedList<K, V> extends _WrappedIterable<K, V, List<V>>
     implements List<V> {
-  _WrappedList(Map<K, Iterable<V>> map, K key, List<V> delegate)
+  _WrappedList(Map<K, List<V>> map, K key, List<V> delegate)
       : super(map, key, delegate);
 
   V operator [](int index) => elementAt(index);

@@ -28,7 +28,9 @@ abstract class TreeSet<V> extends IterableBase<V> implements Set<V> {
    * default `(a, b) => a.compareTo(b)`.
    */
   factory TreeSet({Comparator<V> comparator}) {
-    comparator ??= (a, b) => (a as dynamic).compareTo(b);
+    if (comparator == null) {
+      comparator = (a, b) => a.compareTo(b);
+    }
     return new AvlTreeSet(comparator: comparator);
   }
 
@@ -68,22 +70,25 @@ abstract class TreeSet<V> extends IterableBase<V> implements Set<V> {
 /**
  * Controls the results for [TreeSet.searchNearest]()
  */
-enum TreeSearch {
+class TreeSearch {
 
   /**
-   * If result not found, always chose the smaller element
+   * If result not found, always chose the smaler element
    */
-  LESS_THAN,
+  static const LESS_THAN = const TreeSearch._(1);
 
   /**
    * If result not found, chose the nearest based on comparison
    */
-  NEAREST,
+  static const NEAREST = const TreeSearch._(2);
 
   /**
    * If result not found, always chose the greater element
    */
-  GREATER_THAN
+  static const GREATER_THAN = const TreeSearch._(3);
+
+  final int _val;
+  const TreeSearch._(this._val);
 }
 
 /**
@@ -146,7 +151,7 @@ abstract class _TreeNode<V> {
     if (node.left != null) {
       return node.left.maximumNode;
     }
-    while (node.parent != null && node.parent.left == node) {
+    while (node.parent != null && node.parent._left == node) {
       node = node.parent;
     }
     return node.parent;
@@ -436,9 +441,7 @@ class AvlTreeSet<V> extends TreeSet<V> {
   }
 
   bool remove(Object item) {
-    if (item is! V) return false;
-
-    AvlNode<V> x = _getNode(item as V);
+    AvlNode<V> x = _getNode(item);
     if (x != null) {
       _removeNode(x);
       return true;
@@ -627,9 +630,9 @@ class AvlTreeSet<V> extends TreeSet<V> {
    * See [Set.retainAll]
    */
   void retainAll(Iterable<Object> elements) {
-    List<V> chosen = <V>[];
+    List<V> chosen = [];
     for (var target in elements) {
-      if (target is V && contains(target)) {
+      if (contains(target)) {
         chosen.add(target);
       }
     }
@@ -686,11 +689,11 @@ class AvlTreeSet<V> extends TreeSet<V> {
    * See [Set.lookup]
    */
   V lookup(Object element) {
-    if (element is! V || _root == null) return null;
+    if (element == null || _root == null) return null;
     AvlNode<V> x = _root;
     int compare = 0;
     while (x != null) {
-      compare = comparator(element as V, x.object);
+      compare = comparator(element, x.object);
       if (compare == 0) {
         return x.object;
       } else if (compare < 0) {
@@ -792,8 +795,8 @@ class AvlTreeSet<V> extends TreeSet<V> {
   Set<V> intersection(Set<Object> other) {
     TreeSet<V> set = new TreeSet(comparator: comparator);
 
-    // Optimized for sorted sets
-    if (other is TreeSet<V>) {
+    // Opitimized for sorted sets
+    if (other is TreeSet) {
       var i1 = iterator;
       var i2 = other.iterator;
       var hasMore1 = i1.moveNext();
@@ -925,7 +928,7 @@ class _AvlTreeIterator<V> implements BidirectionalIterator<V> {
   final bool reversed;
   final AvlTreeSet<V> tree;
   final int _modCountGuard;
-  final V anchorObject;
+  final Object anchorObject;
   final bool inclusive;
 
   _IteratorMove _moveNext;

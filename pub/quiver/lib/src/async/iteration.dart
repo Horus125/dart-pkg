@@ -92,10 +92,10 @@ Future forEachAsync(Iterable iterable, AsyncAction action, {int maxTasks: 1}) {
           if (!scheduleTask() && pending == 0) {
             completer.complete();
           }
-        }).catchError((e, stack) {
+        }).catchError((e) {
           if (failed) return;
           failed = true;
-          completer.completeError(e, stack);
+          completer.completeError(e);
         });
       });
       return true;

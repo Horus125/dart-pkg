@@ -26,11 +26,6 @@ bool isBlank(String s) => s == null || s.trim().isEmpty;
 bool isEmpty(String s) => s == null || s.isEmpty;
 
 /**
- * Returns [true] if [s] is a not empty string.
- */
-bool isNotEmpty(String s) => s != null && s.isNotEmpty;
-
-/**
  * Returns a string with characters from the given [s] in reverse order.
  */
 String flip(String s) {
@@ -197,14 +192,6 @@ String trimRight(String input) {
   if (lastNonWhitespace == -1) return '';
   return input.substring(0, lastNonWhitespace);
 }
-
-/**
- * Returns `true` if [rune] represents a digit.
- *
- * The definition of digit matches the Unicode `0x3?` range of Western European
- * digits.
- */
-bool isDigit(int rune) => rune ^ 0x30 <= 9;
 
 /**
  * Returns `true` if [rune] represents a whitespace character.
