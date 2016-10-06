@@ -17,7 +17,7 @@ dart_package("test") {
     "//third_party/dart-pkg/pub/shelf_packages_handler",
     "//third_party/dart-pkg/pub/http_multi_server",
     "//third_party/dart-pkg/pub/collection",
-    "//third_party/dart-pkg/pub/analyzer",
+    "//dart/pkg/analyzer",
     "//third_party/dart-pkg/pub/package_resolver",
     "//third_party/dart-pkg/pub/source_span",
     "//third_party/dart-pkg/pub/path",

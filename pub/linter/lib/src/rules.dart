@@ -27,21 +27,16 @@ import 'package:linter/src/rules/empty_constructor_bodies.dart';
 import 'package:linter/src/rules/empty_statements.dart';
 import 'package:linter/src/rules/hash_and_equals.dart';
 import 'package:linter/src/rules/implementation_imports.dart';
-import 'package:linter/src/rules/invariant_booleans.dart';
 import 'package:linter/src/rules/iterable_contains_unrelated_type.dart';
 import 'package:linter/src/rules/library_names.dart';
 import 'package:linter/src/rules/library_prefixes.dart';
 import 'package:linter/src/rules/list_remove_unrelated_type.dart';
-import 'package:linter/src/rules/literal_only_boolean_expressions.dart';
 import 'package:linter/src/rules/non_constant_identifier_names.dart';
 import 'package:linter/src/rules/one_member_abstracts.dart';
 import 'package:linter/src/rules/only_throw_errors.dart';
 import 'package:linter/src/rules/overridden_fields.dart';
 import 'package:linter/src/rules/package_api_docs.dart';
 import 'package:linter/src/rules/package_prefixed_library_names.dart';
-import 'package:linter/src/rules/parameter_assignments.dart';
-import 'package:linter/src/rules/prefer_final_fields.dart';
-import 'package:linter/src/rules/prefer_final_locals.dart';
 import 'package:linter/src/rules/prefer_is_not_empty.dart';
 import 'package:linter/src/rules/pub/package_names.dart';
 import 'package:linter/src/rules/public_member_api_docs.dart';
@@ -79,21 +74,16 @@ final Registry ruleRegistry = new Registry()
   ..register(new EmptyStatements())
   ..register(new HashAndEquals())
   ..register(new ImplementationImports())
-  ..register(new InvariantBooleans())
   ..register(new IterableContainsUnrelatedType())
   ..register(new LibraryNames())
   ..register(new LibraryPrefixes())
   ..register(new ListRemoveUnrelatedType())
-  ..register(new LiteralOnlyBooleanExpressions())
   ..register(new NonConstantIdentifierNames())
   ..register(new OneMemberAbstracts())
   ..register(new OnlyThrowErrors())
   ..register(new OverriddenFields())
   ..register(new PackageApiDocs())
   ..register(new PackagePrefixedLibraryNames())
-  ..register(new ParameterAssignments())
-  ..register(new PreferFinalFields())
-  ..register(new PreferFinalLocals())
   ..register(new PreferIsNotEmpty())
   ..register(new PublicMemberApiDocs())
   ..register(new PubPackageNames())

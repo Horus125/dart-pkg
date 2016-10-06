@@ -37,7 +37,7 @@ _VisitVariableDeclaration _buildVariableReporter(
         return;
       }
 
-      Iterable<AstNode> containerNodes =
+      List<AstNode> containerNodes =
           DartTypeUtilities.traverseNodesInDFS(container);
 
       List<Iterable<AstNode>> validators = <Iterable<AstNode>>[];
