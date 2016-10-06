@@ -23,6 +23,11 @@ LICENSE_FILES = ['LICENSE', 'LICENSE.txt']
 
 IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'zip']
 
+LOCAL_PACKAGES = {
+  'analyzer': '//dart/pkg/analyzer',
+}
+
+FORBIDDEN_PACKAGES = ['mojo', 'mojo_services']
 
 def parse_packages_file(dot_packages_path):
     """ parse the list of packages and paths in .packages file """
@@ -74,7 +79,10 @@ dart_package("%s") {
   deps = [
 ''' % (name_with_version, package_name, package_name))
         for dep in deps:
-            build_gn.write('    "//third_party/dart-pkg/pub/%s",\n' % dep)
+            if dep in LOCAL_PACKAGES:
+                build_gn.write('    "%s",\n' % LOCAL_PACKAGES[dep])
+            else:
+                build_gn.write('    "//third_party/dart-pkg/pub/%s",\n' % dep)
         build_gn.write('''  ]
 }
 ''')
@@ -119,7 +127,10 @@ dependencies:
                 continue
             package_name = package[0]
             # Don't import packages that live canonically in the tree.
-            if package_name in ['mojo', 'mojo_services']:
+            if package_name in LOCAL_PACKAGES:
+                continue
+            if package_name in FORBIDDEN_PACKAGES:
+                print 'Warning: dependency on forbidden package %s' % package_name
                 continue
             # We expect the .packages file to point to a directory called 'lib'
             # inside the overall package, which will contain the LICENSE file
