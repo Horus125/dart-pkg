@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'arg_parser.dart';
-import 'arg_parser_exception.dart';
 import 'arg_results.dart';
 import 'option.dart';
 
@@ -64,15 +63,7 @@ class Parser {
         validate(rest.isEmpty, 'Cannot specify arguments before a command.');
         var commandName = args.removeAt(0);
         var commandParser = new Parser(commandName, command, args, this, rest);
-
-        try {
-          commandResults = commandParser.parse();
-        } on ArgParserException catch (error) {
-          if (commandName == null) rethrow;
-          throw new ArgParserException(
-              error.message,
-              [commandName]..addAll(error.commands));
-        }
+        commandResults = commandParser.parse();
 
         // All remaining arguments were passed to command so clear them here.
         rest.clear();
@@ -251,9 +242,9 @@ class Parser {
 
   /// Called during parsing to validate the arguments.
   ///
-  /// Throws an [ArgParserException] if [condition] is `false`.
+  /// Throws a [FormatException] if [condition] is `false`.
   void validate(bool condition, String message) {
-    if (!condition) throw new ArgParserException(message);
+    if (!condition) throw new FormatException(message);
   }
 
   /// Validates and stores [value] as the value for [option], which must not be
