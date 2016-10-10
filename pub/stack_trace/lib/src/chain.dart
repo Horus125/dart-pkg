@@ -77,8 +77,7 @@ class Chain implements StackTrace {
         };
       }
 
-      // TODO(rnystrom): Remove this cast if runZoned() gets a generic type.
-      return runZoned(callback, onError: newOnError) as dynamic/*=T*/;
+      return runZoned(callback, onError: newOnError);
     }
 
     var spec = new StackZoneSpecification(onError);
@@ -151,6 +150,13 @@ class Chain implements StackTrace {
   ///
   /// This calls [Trace.terse] on every trace in [traces], and discards any
   /// trace that contain only internal frames.
+  ///
+  /// This won't do anything with a raw JavaScript trace, since there's no way
+  /// to determine which frames come from which Dart libraries. However, the
+  /// [`source_map_stack_trace`][source_map_stack_trace] package can be used to
+  /// convert JavaScript traces into Dart-style traces.
+  ///
+  /// [source_map_stack_trace]: https://pub.dartlang.org/packages/source_map_stack_trace
   Chain get terse => foldFrames((_) => false, terse: true);
 
   /// Returns a new [Chain] based on [this] where multiple stack frames matching
@@ -207,7 +213,7 @@ class Chain implements StackTrace {
     // padding is consistent across all traces.
     return traces.map((trace) {
       return trace.frames.map((frame) {
-        return '${padRight(frame.location, longest)}  ${frame.member}\n';
+        return '${frame.location.padRight(longest)}  ${frame.member}\n';
       }).join();
     }).join(chainGap);
   }

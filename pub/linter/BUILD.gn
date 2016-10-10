@@ -14,6 +14,6 @@ dart_package("linter") {
     "//third_party/dart-pkg/pub/cli_util",
     "//third_party/dart-pkg/pub/glob",
     "//third_party/dart-pkg/pub/args",
-    "//third_party/dart-pkg/pub/analyzer",
+    "//dart/pkg/analyzer",
   ]
 }

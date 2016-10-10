@@ -225,6 +225,13 @@ class Trace implements StackTrace {
   /// removed. If the outermost frame of the stack trace is a core library
   /// frame, it's removed entirely.
   ///
+  /// This won't do anything with a raw JavaScript trace, since there's no way
+  /// to determine which frames come from which Dart libraries. However, the
+  /// [`source_map_stack_trace`][source_map_stack_trace] package can be used to
+  /// convert JavaScript traces into Dart-style traces.
+  ///
+  /// [source_map_stack_trace]: https://pub.dartlang.org/packages/source_map_stack_trace
+  ///
   /// For custom folding, see [foldFrames].
   Trace get terse => foldFrames((_) => false, terse: true);
 
@@ -291,7 +298,7 @@ class Trace implements StackTrace {
     // Print out the stack trace nicely formatted.
     return frames.map((frame) {
       if (frame is UnparsedFrame) return "$frame\n";
-      return '${padRight(frame.location, longest)}  ${frame.member}\n';
+      return '${frame.location.padRight(longest)}  ${frame.member}\n';
     }).join();
   }
 }

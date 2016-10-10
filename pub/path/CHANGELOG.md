@@ -1,3 +1,12 @@
+## 1.4.0
+
+* Add `equals()`, `hash()` and `canonicalize()` top-level functions and
+  `Context` methods. These make it easier to treat paths as map keys.
+
+* Properly compare Windows paths case-insensitively.
+
+* Further improve the performance of `isWithin()`.
+
 ## 1.3.9
 
 * Further improve the performance of `isWithin()` when paths contain `/.`
