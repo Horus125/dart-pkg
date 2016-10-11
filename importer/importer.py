@@ -25,6 +25,7 @@ IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'z
 
 LOCAL_PACKAGES = {
   'analyzer': '//dart/pkg/analyzer',
+  'typed_mock': '//dart/pkg/typed_mock',
 }
 
 FORBIDDEN_PACKAGES = ['mojo', 'mojo_services']
@@ -49,18 +50,22 @@ def parse_packages_file(dot_packages_path):
     return packages
 
 
-def parse_dependencies(yaml_path):
-    """ parse the dependency list out of a pubspec.yaml """
-    deps = []
-    dep_types = ['dependencies']  # TODO: dev_dependencies
+def parse_full_dependencies(yaml_path):
+    """ parse the content of a pubspec.yaml """
     with open(yaml_path) as yaml_file:
         parsed = yaml.safe_load(yaml_file)
         if not parsed:
             raise Exception('Could not parse yaml file: %s' % yaml_file)
-        for dep_type in dep_types:
-            if dep_type in parsed and parsed[dep_type]:
-                for dep in parsed[dep_type]:
-                    deps.append(dep)
+        package_name = parsed['name']
+        get_deps = lambda dep_type: parsed[dep_type] if dep_type in parsed and parsed[dep_type] else {}
+        deps = get_deps('dependencies')
+        dev_deps = get_deps('dev_dependencies')
+        return (package_name, deps, dev_deps)
+
+
+def parse_dependencies(yaml_path):
+    """ parse the dependency map out of a pubspec.yaml """
+    _, deps, _ = parse_full_dependencies(yaml_path)
     return deps
 
 
@@ -97,17 +102,32 @@ def main():
     try:
         importer_dir = os.path.join(tempdir, 'importer')
         os.mkdir(importer_dir)
+        packages = {}
+        additional_deps = {}
+        for path in args.paths:
+            yaml_file = os.path.join(path, 'pubspec.yaml')
+            package_name, _, dev_deps = parse_full_dependencies(yaml_file)
+            packages[package_name] = path
+            additional_deps.update(dev_deps)
         with open(os.path.join(importer_dir, 'pubspec.yaml'), 'w') as pubspec:
             pubspec.write('''name: importer
 dependencies:
 ''')
-            for path in args.paths:
-                package_name = ''
-                with open(os.path.join(path, 'pubspec.yaml')) as package_pubspec:
-                    parsed = yaml.safe_load(package_pubspec)
-                    package_name = parsed['name']
+            for package_name in packages.keys():
+                pubspec.write(r'''  %s: any
+''' % package_name)
+            for dep, version in additional_deps.iteritems():
+                if dep in packages:
+                    continue
+                # Note: this won't work for path dependencies.
+                pubspec.write(r'''  %s: "%s"
+''' % (dep, version))
+            # Add dependency overrides for roots.
+            pubspec.write(r'''dependency_overrides:
+''')
+            for package_name, path in packages.iteritems():
                 pubspec.write(r'''  %s:
-        path: %s
+    path: %s
 ''' % (package_name, path))
         pub_cache_dir = os.path.join(tempdir, 'pub_cache')
         os.mkdir(pub_cache_dir)
