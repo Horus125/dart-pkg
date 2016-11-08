@@ -25,6 +25,7 @@ IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'z
 
 LOCAL_PACKAGES = {
   'analyzer': '//dart/pkg/analyzer',
+  'flutter': '//lib/flutter/packages/flutter',
   'typed_mock': '//dart/pkg/typed_mock',
 }
 
@@ -95,8 +96,10 @@ dart_package("%s") {
 
 def main():
     parser = argparse.ArgumentParser('Import dart packages from pub')
-    parser.add_argument('paths', nargs='+',
+    parser.add_argument('--pubspecs', nargs='+',
                         help='Paths to packages containing pubspec.yaml files')
+    parser.add_argument('--projects', nargs='+',
+                        help='Paths to projects containing dependency files')
     args = parser.parse_args()
     tempdir = tempfile.mkdtemp()
     try:
@@ -104,7 +107,7 @@ def main():
         os.mkdir(importer_dir)
         packages = {}
         additional_deps = {}
-        for path in args.paths:
+        for path in args.pubspecs:
             yaml_file = os.path.join(path, 'pubspec.yaml')
             package_name, _, dev_deps = parse_full_dependencies(yaml_file)
             packages[package_name] = path
@@ -121,6 +124,12 @@ dependencies:
                     continue
                 # Note: this won't work for path dependencies.
                 pubspec.write(r'''  %s: "%s"
+''' % (dep, version))
+            for project in args.projects:
+                yaml_file = os.path.join(project, 'dart_dependencies.yaml')
+                project_deps = parse_dependencies(yaml_file)
+                for dep, version in project_deps.iteritems():
+                    pubspec.write('''  %s: "%s"
 ''' % (dep, version))
             # Add dependency overrides for roots.
             pubspec.write(r'''dependency_overrides:
