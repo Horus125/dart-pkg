@@ -38,9 +38,14 @@ abstract class Message {
   /// This can be read via [read] or [readAsString].
   final Body _body;
 
+  /// If `true`, the stream returned by [read] won't emit any bytes.
+  ///
+  /// This may have false negatives, but it won't have false positives.
+  bool get isEmpty => _body.isEmpty;
+
   /// Creates a new [Message].
   ///
-  /// [body] is the response body. It may be either a [String], a
+  /// [body] is the response body. It may be either a [String], a [List<int>], a
   /// [Stream<List<int>>], or `null` to indicate no body. If it's a [String],
   /// [encoding] is used to encode it to a [Stream<List<int>>]. It defaults to
   /// UTF-8.
@@ -52,10 +57,13 @@ abstract class Message {
   /// Content-Type header, it will be set to "application/octet-stream".
   Message(body, {Encoding encoding, Map<String, String> headers,
       Map<String, Object> context})
-      : this._body = new Body(body, encoding),
-        this.headers = new ShelfUnmodifiableMap<String>(
-            _adjustHeaders(headers, encoding), ignoreKeyCase: true),
-        this.context = new ShelfUnmodifiableMap<Object>(context,
+      : this._(new Body(body, encoding), headers, context);
+
+  Message._(Body body, Map<String, String> headers, Map<String, Object> context)
+      : _body = body,
+        headers = new ShelfUnmodifiableMap<String>(
+            _adjustHeaders(headers, body), ignoreKeyCase: true),
+        context = new ShelfUnmodifiableMap<Object>(context,
             ignoreKeyCase: false);
 
   /// The contents of the content-length field in [headers].
@@ -134,17 +142,32 @@ abstract class Message {
 ///
 /// Returns a new map without modifying [headers].
 Map<String, String> _adjustHeaders(
-    Map<String, String> headers, Encoding encoding) {
-  if (headers == null) headers = const {};
-  if (encoding == null) return headers;
+    Map<String, String> headers, Body body) {
+  var sameEncoding = _sameEncoding(headers, body);
+  if (sameEncoding) return headers ?? const ShelfUnmodifiableMap.empty();
 
-  headers = new CaseInsensitiveMap.from(headers);
-  if (headers['content-type'] == null) {
-    return addHeader(headers, 'content-type',
-        'application/octet-stream; charset=${encoding.name}');
+  var newHeaders = headers == null
+      ? new CaseInsensitiveMap<String>()
+      : new CaseInsensitiveMap<String>.from(headers);
+
+  if (newHeaders['content-type'] == null) {
+    newHeaders['content-type'] =
+        'application/octet-stream; charset=${body.encoding.name}';
+  } else {
+    var contentType = new MediaType.parse(newHeaders['content-type'])
+        .change(parameters: {'charset': body.encoding.name});
+    newHeaders['content-type'] = contentType.toString();
   }
+  return newHeaders;
+}
 
-  var contentType = new MediaType.parse(headers['content-type']).change(
-      parameters: {'charset': encoding.name});
-  return addHeader(headers, 'content-type', contentType.toString());
+/// Returns whether [headers] declares the same encoding as [body].
+bool _sameEncoding(Map<String, String> headers, Body body) {
+  if (body.encoding == null) return true;
+
+  var contentType = getHeader(headers, 'content-type');
+  if (contentType == null) return false;
+
+  var charset = new MediaType.parse(contentType).parameters['charset'];
+  return Encoding.getByName(charset) == body.encoding;
 }

@@ -1,3 +1,31 @@
+## 0.6.7+1
+
+* Never auto-generate a `Content-Length` header.
+
+## 0.6.7
+
+* Add `Request.isEmpty` and `Response.isEmpty` getters which indicate whether a
+  message has an empty body.
+
+* Don't automatically generate `Content-Length` headers on messages where they
+  may not be allowed.
+
+* User-specified `Content-Length` headers now always take precedence over
+  automatically-generated headers.
+
+## 0.6.6
+
+* Allow `List<int>`s to be passed as request or response bodies.
+
+* Requests and responses now automatically set `Content-Length` headers when the
+  body length is known ahead of time.
+
+* Work around [sdk#27660][] by manually setting
+  `HttpResponse.chunkedTransferEncoding` to `false` for requests known to have
+  no content.
+
+[sdk#27660]: https://github.com/dart-lang/sdk/issues/27660
+
 ## 0.6.5+3
 
 * Improve the documentation of `logRequests()`.

@@ -116,8 +116,8 @@ Request _fromHttpRequest(HttpRequest request) {
     headers[k] = v.join(',');
   });
 
-  onHijack(callback) {
-    return request.response
+  void onHijack(callback) {
+    request.response
         .detachSocket(writeHeaders: false)
         .then((socket) => callback(socket, socket));
   }
@@ -148,6 +148,9 @@ Future _writeResponse(Response response, HttpResponse httpResponse) {
   if (!response.headers.containsKey(HttpHeaders.DATE)) {
     httpResponse.headers.date = new DateTime.now().toUtc();
   }
+
+  // Work around sdk#27660.
+  if (response.isEmpty) httpResponse.headers.chunkedTransferEncoding = false;
 
   return httpResponse
       .addStream(response.read())
