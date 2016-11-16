@@ -7,17 +7,17 @@ import '../command_runner.dart';
 /// The built-in help command that's added to every [CommandRunner].
 ///
 /// This command displays help information for the various subcommands.
-class HelpCommand<T> extends Command<T> {
+class HelpCommand extends Command {
   final name = "help";
   String get description =>
       "Display help information for ${runner.executableName}.";
   String get invocation => "${runner.executableName} help [command]";
 
-  T run() {
+  void run() {
     // Show the default help if no command was specified.
     if (argResults.rest.isEmpty) {
       runner.printUsage();
-      return null;
+      return;
     }
 
     // Walk the command tree to show help for the selected command or
@@ -47,6 +47,5 @@ class HelpCommand<T> extends Command<T> {
     }
 
     command.printUsage();
-    return null;
   }
 }

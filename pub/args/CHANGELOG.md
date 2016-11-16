@@ -1,16 +1,3 @@
-## 0.13.7
-
-* Add explicit support for forwarding the value returned by `Command.run()` to
-  `CommandRunner.run()`. This worked unintentionally prior to 0.13.6+1.
-
-* Add type arguments to `CommandRunner` and `Command` to indicate the return
-  values of the `run()` functions.
-
-## 0.13.6+1
-
-* When a `CommandRunner` is passed `--help` before any commands, it now prints
-  the usage of the chosen command.
-
 ## 0.13.6
 
 * `ArgParser.parse()` now throws an `ArgParserException`, which implements
