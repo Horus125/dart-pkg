@@ -27,6 +27,7 @@ LOCAL_PACKAGES = {
   'analyzer': '//dart/pkg/analyzer',
   'flutter': '//lib/flutter/packages/flutter',
   'typed_mock': '//dart/pkg/typed_mock',
+  'http': '//apps/modules/packages/flutter-http',
 }
 
 FORBIDDEN_PACKAGES = ['mojo', 'mojo_services']
@@ -61,12 +62,13 @@ def parse_full_dependencies(yaml_path):
         get_deps = lambda dep_type: parsed[dep_type] if dep_type in parsed and parsed[dep_type] else {}
         deps = get_deps('dependencies')
         dev_deps = get_deps('dev_dependencies')
-        return (package_name, deps, dev_deps)
+        dep_overrides = get_deps('dependency_overrides')
+        return (package_name, deps, dev_deps, dep_overrides)
 
 
 def parse_dependencies(yaml_path):
     """ parse the dependency map out of a pubspec.yaml """
-    _, deps, _ = parse_full_dependencies(yaml_path)
+    _, deps, _, _ = parse_full_dependencies(yaml_path)
     return deps
 
 
@@ -109,7 +111,7 @@ def main():
         additional_deps = {}
         for path in args.pubspecs:
             yaml_file = os.path.join(path, 'pubspec.yaml')
-            package_name, _, dev_deps = parse_full_dependencies(yaml_file)
+            package_name, _, dev_deps, _ = parse_full_dependencies(yaml_file)
             packages[package_name] = path
             additional_deps.update(dev_deps)
         with open(os.path.join(importer_dir, 'pubspec.yaml'), 'w') as pubspec:

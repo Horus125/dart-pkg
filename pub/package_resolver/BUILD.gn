@@ -10,7 +10,7 @@ dart_package("package_resolver") {
   deps = [
     "//third_party/dart-pkg/pub/path",
     "//third_party/dart-pkg/pub/package_config",
-    "//third_party/dart-pkg/pub/http",
+    "//apps/modules/packages/flutter-http",
     "//third_party/dart-pkg/pub/collection",
   ]
 }

@@ -1,3 +1,9 @@
+## 1.12.0
+
+* Add `CaseInsensitiveEquality`.
+
+* Fix bug in `equalsIgnoreAsciiCase`.
+
 ## 1.11.0
 
 * Add `EqualityMap` and `EqualitySet` classes which use `Equality` objects for
