@@ -26,8 +26,8 @@ IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'z
 LOCAL_PACKAGES = {
   'analyzer': '//dart/pkg/analyzer',
   'flutter': '//lib/flutter/packages/flutter',
-  'typed_mock': '//dart/pkg/typed_mock',
   'http': '//apps/modules/packages/flutter-http',
+  'typed_mock': '//dart/pkg/typed_mock',
 }
 
 FORBIDDEN_PACKAGES = ['mojo', 'mojo_services']
