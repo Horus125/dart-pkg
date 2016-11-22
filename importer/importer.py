@@ -84,6 +84,8 @@ dart_package("%s") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
 ''' % (name_with_version, package_name, package_name))
         for dep in deps:
