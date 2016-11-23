@@ -7,6 +7,8 @@ dart_package("web_socket_channel") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/async",
     "//third_party/dart-pkg/pub/stream_channel",

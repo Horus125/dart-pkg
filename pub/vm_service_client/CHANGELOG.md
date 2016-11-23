@@ -1,7 +1,3 @@
-## 0.2.2+3
-
-* Fix strong-mode errors and warnings.
-
 ## 0.2.2+2
 
 * Narrow the dependency on `source_span`.

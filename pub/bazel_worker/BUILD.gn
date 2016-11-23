@@ -7,6 +7,8 @@ dart_package("bazel_worker") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/async",
     "//third_party/dart-pkg/pub/protobuf",

@@ -28,8 +28,7 @@ final _asyncBody = new RegExp(r'<(<anonymous closure>|[^>]+)_async_body>');
 
 /// Transforms [stream] with a [StreamTransformer] that transforms data events
 /// using [handleData].
-Stream/*<T>*/ transform/*<S, T>*/(Stream/*<S>*/ stream,
-        void handleData(/*=S*/ data, EventSink/*<T>*/ sink)) =>
+Stream transform(Stream stream, handleData(data, EventSink sink)) =>
     stream.transform(
         new StreamTransformer.fromHandlers(handleData: handleData));
 
@@ -50,14 +49,14 @@ Future<Frame> frameToFrame(VMFrame frame, [Map<String, VMScript> scripts])
   var member = scopes.reversed.join(".");
 
   var uri = frame.location.script.uri;
-  var script = scripts == null ? null : scripts[uri.toString()];
+  var script = scripts == null ? null : scripts[uri];
   if (script == null) {
     script = await frame.location.script.load();
 
     // The special "evaluate" scheme is used for evaluating code with the VM
     // service. Different scripts can have the same "evalute" scheme, so we
     // don't record them.
-    if (scripts != null && uri.scheme != 'evaluate') scripts[uri.toString()] = script;
+    if (scripts != null && uri.scheme != 'evaluate') scripts[uri] = script;
   }
   var location = await script.sourceLocation(frame.location.token);
 

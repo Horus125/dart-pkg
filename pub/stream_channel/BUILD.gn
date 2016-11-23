@@ -7,6 +7,8 @@ dart_package("stream_channel") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/async",
     "//third_party/dart-pkg/pub/stack_trace",

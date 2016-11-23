@@ -7,6 +7,8 @@ dart_package("usage") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }

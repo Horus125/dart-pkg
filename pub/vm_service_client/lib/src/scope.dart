@@ -46,10 +46,9 @@ class Scope {
   /// Calls an isolate-scoped RPC named [method] with [params].
   ///
   /// This always adds the `isolateId` parameter to the RPC.
-  Future<Map<String, dynamic>> sendRequest(String method,
-      [Map<String, Object> params]) async {
+  Future<Object> sendRequest(String method, [Map<String, Object> params]) async {
     var allParams = {"isolateId": isolateId}..addAll(params ?? {});
-    return await peer.sendRequest(method, allParams) as Map<String, dynamic>;
+    return await peer.sendRequest(method, allParams);
   }
 
   /// Evaluates [expression] in the context of the object identified by [id].
@@ -92,8 +91,8 @@ class Scope {
   /// This returns the value returned by [immediate] if it's not `null` or
   /// `false`, or else the first non-`null`, non-`false` value returned by
   /// [onEvent].
-  Future/*<T>*/ getInState/*<T>*/(Stream<Map> stream, Future/*<T>*/ immediate(),
-      onEvent(Map json)) async {
+  Future getInState(Stream<Map> stream, Future immediate(), onEvent(Map json))
+      async {
     var completer = new Completer.sync();
 
     // Don't top-level errors from the completer. These may come in from the

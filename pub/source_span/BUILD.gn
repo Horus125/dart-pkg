@@ -7,6 +7,8 @@ dart_package("source_span") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/path",
   ]

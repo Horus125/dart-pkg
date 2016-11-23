@@ -7,6 +7,8 @@ dart_package("flutter_flux") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/meta",
     "//lib/flutter/packages/flutter",

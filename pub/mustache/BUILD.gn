@@ -7,6 +7,8 @@ dart_package("mustache") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }

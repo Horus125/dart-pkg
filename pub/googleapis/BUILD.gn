@@ -7,6 +7,8 @@ dart_package("googleapis") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//apps/modules/packages/flutter-http",
     "//third_party/dart-pkg/pub/_discoveryapis_commons",

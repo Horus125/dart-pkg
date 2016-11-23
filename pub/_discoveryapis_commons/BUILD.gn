@@ -7,6 +7,8 @@ dart_package("_discoveryapis_commons") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//apps/modules/packages/flutter-http",
   ]

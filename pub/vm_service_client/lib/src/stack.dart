@@ -9,7 +9,6 @@ import 'package:stack_trace/stack_trace.dart';
 import 'frame.dart';
 import 'message.dart';
 import 'scope.dart';
-import 'script.dart';
 import 'utils.dart';
 
 VMStack newVMStack(Scope scope, Map json) {
@@ -41,7 +40,7 @@ class VMStack {
 
   /// Returns the trace of this stack.
   Future<Trace> getTrace() async {
-    var scripts = <String, VMScript>{};
+    var scripts = {};
     return new Trace(await Future.wait(
         frames.map((frame) => frameToFrame(frame, scripts))));
   }

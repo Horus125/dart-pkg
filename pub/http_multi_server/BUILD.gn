@@ -7,6 +7,8 @@ dart_package("http_multi_server") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/async",
   ]

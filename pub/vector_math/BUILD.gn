@@ -7,6 +7,8 @@ dart_package("vector_math") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }

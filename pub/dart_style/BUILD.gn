@@ -7,6 +7,8 @@ dart_package("dart_style") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/path",
     "//third_party/dart-pkg/pub/args",

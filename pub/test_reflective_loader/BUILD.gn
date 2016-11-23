@@ -7,6 +7,8 @@ dart_package("test_reflective_loader") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }

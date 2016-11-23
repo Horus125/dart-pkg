@@ -7,6 +7,8 @@ dart_package("when") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }

@@ -7,6 +7,8 @@ dart_package("convert") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/typed_data",
     "//third_party/dart-pkg/pub/charcode",

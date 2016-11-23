@@ -7,6 +7,8 @@ dart_package("source_map_stack_trace") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
     "//third_party/dart-pkg/pub/source_maps",
     "//third_party/dart-pkg/pub/package_resolver",

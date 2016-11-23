@@ -7,6 +7,8 @@ dart_package("fixnum") {
 
   source_dir = "lib"
 
+  disable_analysis = true
+
   deps = [
   ]
 }
