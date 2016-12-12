@@ -4,12 +4,12 @@
 set -e
 
 # Verify that the libraries are error free.
-dartanalyzer --fatal-warnings --strong \
+dartanalyzer --fatal-warnings \
   lib/*.dart \
   test/*.dart
 
 # Verify that all the tests pass.
-pub run test
+dart --checked test/all_tests.dart
 
 # Verify the coverage of the tests.
 if [ "$COVERALLS_TOKEN" ] && [ "$TRAVIS_DART_VERSION" = "stable" ]; then

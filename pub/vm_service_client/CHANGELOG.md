@@ -1,3 +1,12 @@
+## 0.2.2+4
+
+* Fix a bug where `Isolate.invokeExtension()` would fail if the extension method
+  returned a non-`Map` value.
+
+## 0.2.2+3
+
+* Fix strong-mode errors and warnings.
+
 ## 0.2.2+2
 
 * Narrow the dependency on `source_span`.

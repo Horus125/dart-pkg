@@ -33,7 +33,7 @@ abstract class XmlGrammarDefinition<TNode, TName> extends GrammarDefinition {
   static const CLOSE_PROCESSING = '?>';
 
   // parser callbacks
-  TNode createAttribute(TName name, String text);
+  TNode createAttribute(TName name, String text, XmlAttributeType type);
   TNode createComment(String text);
   TNode createCDATA(String text);
   TNode createDoctype(String text);
@@ -52,16 +52,17 @@ abstract class XmlGrammarDefinition<TNode, TName> extends GrammarDefinition {
       .seq(char(EQUALS))
       .seq(ref(space_optional))
       .seq(ref(attributeValue))
-      .map((each) => createAttribute(each[0] as TName, each[4]));
+      .map((each) => createAttribute(each[0] as TName, each[4][0], each[4][1]));
   attributeValue() => ref(attributeValueDouble)
-      .or(ref(attributeValueSingle))
-      .pick(1);
+      .or(ref(attributeValueSingle));
   attributeValueDouble() => char(DOUBLE_QUOTE)
       .seq(new _XmlCharacterDataParser(DOUBLE_QUOTE, 0))
-      .seq(char(DOUBLE_QUOTE));
+      .seq(char(DOUBLE_QUOTE))
+      .map((each) => [each[1], XmlAttributeType.DOUBLE_QUOTE]);
   attributeValueSingle() => char(SINGLE_QUOTE)
       .seq(new _XmlCharacterDataParser(SINGLE_QUOTE, 0))
-      .seq(char(SINGLE_QUOTE));
+      .seq(char(SINGLE_QUOTE))
+      .map((each) => [each[1], XmlAttributeType.SINGLE_QUOTE]);
   attributes() => ref(space)
       .seq(ref(attribute))
       .pick(1)
@@ -94,14 +95,22 @@ abstract class XmlGrammarDefinition<TNode, TName> extends GrammarDefinition {
       .seq(ref(space_optional))
       .seq(char(CLOSE_DOCTYPE))
       .map((each) => createDoctype(each[2]));
-  document() => ref(processing).optional()
-      .seq(ref(misc))
+  document() => ref(misc)
       .seq(ref(doctype).optional())
       .seq(ref(misc))
       .seq(ref(element))
       .seq(ref(misc))
-      .map((each) => createDocument([each[0], each[2], each[4]]
-          .where((each) => each != null) as Iterable<TNode>));
+      .map((each) {
+        var nodes = new List<TNode>();
+        nodes.addAll(each[0] as Iterable<TNode>);
+        if (each[1] != null) {
+          nodes.add(each[1] as TNode);
+        }
+        nodes.addAll(each[2] as Iterable<TNode>);
+        nodes.add(each[3] as TNode);
+        nodes.addAll(each[4] as Iterable<TNode>);
+        return createDocument(nodes);
+      });
   element() => char(OPEN_ELEMENT)
       .seq(ref(qualified))
       .seq(ref(attributes))
@@ -134,8 +143,9 @@ abstract class XmlGrammarDefinition<TNode, TName> extends GrammarDefinition {
   qualified() => ref(nameToken).map(createQualified);
 
   characterData() => new _XmlCharacterDataParser(OPEN_ELEMENT, 1).map(createText);
-  misc() => ref(space).or(ref(comment)).or(ref(processing)).star();
+  misc() => ref(space_text).or(ref(comment)).or(ref(processing)).star();
   space() => whitespace().plus();
+  space_text() => ref(space).flatten().map(createText);
   space_optional() => whitespace().star();
 
   nameToken() => ref(nameStartChar).seq(ref(nameChar).star()).flatten();

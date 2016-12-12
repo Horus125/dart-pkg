@@ -1,6 +1,17 @@
+# 0.2.13
+
+* Support generic method *parameters* as well as arguments.  
+
+# 0.2.12
+
+* Add support for assert() in constructor initializers.
+* Correctly indent the right-hand side of `is` and `as` expressions.
+* Avoid splitting in index operators when possible.
+* Support generic methods (#556).
+
 # 0.2.11+1
 
-Fix test to not depend on analyzer error message.
+* Fix test to not depend on analyzer error message.
 
 # 0.2.11
 
