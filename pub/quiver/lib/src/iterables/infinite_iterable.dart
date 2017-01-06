@@ -14,10 +14,9 @@
 
 part of quiver.iterables;
 
-/**
- * A base class for [Iterable]s of infinite length that throws
- * [UnsupportedError] for methods that would require the Iterable to terminate.
- */
+/// A base class for [Iterable]s of infinite length that throws
+/// [UnsupportedError] for methods that would require the Iterable to
+/// terminate.
 abstract class InfiniteIterable<T> extends IterableBase<T> {
   bool get isEmpty => false;
 
@@ -31,7 +30,8 @@ abstract class InfiniteIterable<T> extends IterableBase<T> {
 
   bool every(bool f(T element)) => throw new UnsupportedError('every');
 
-  bool fold(initialValue, combine(previousValue, T element)) =>
+  bool/*=T1*/ fold/*<T1>*/(var/*=T1*/ initialValue,
+      dynamic/*=T1*/ combine(var/*=T1*/ previousValue, T element)) =>
       throw new UnsupportedError('fold');
 
   void forEach(void f(T element)) => throw new UnsupportedError('forEach');

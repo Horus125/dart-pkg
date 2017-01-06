@@ -1,3 +1,23 @@
+#### 0.24.0 - 2016-10-31
+   * BREAKING CHANGE: eliminated deprecated `nullToEmpty`, `emptyToNull`.
+   * Fix: Strong mode: As of Dart SDK 1.21.0, `Set.difference` takes a
+     `Set<Object>` parameter.
+
+#### 0.23.0 - 2016-09-21
+   * Strings: `nullToEmpty`, `emptyToNull` deprecated. Removal in 0.24.0.
+   * BREAKING CHANGE: eliminated deprecated multimap `toMap`.
+   * BREAKING CHANGE: eliminated deprecated `pad*`, `trim*` string functions.
+
+#### 0.22.0 - 2015-04-21
+   * BREAKING CHANGE: `streams` and `async` libraries have been [merged](https://github.com/google/quiver-dart/commit/671f1bc75742b4393e203c9520a3bf1e031967dc) into one `async` library
+   * BREAKING CHANGE: Pre-1.8.0 SDKs are no longer supported.
+   * Quiver is now [strong mode](https://github.com/dart-lang/dev_compiler/blob/master/STRONG_MODE.md) compliant
+   * New: `Optional` now implements `Iterable` and its methods are generic (using temporary syntax)
+   * New: `isNotEmpty` and `isDigit` in `strings.dart`
+   * New: `Multimap.fromIterable`
+   * Fix: Change `TreeSearch` from `class` to `enum`.
+   * Fix: `fake_async.dart` timers are now active while executing the callback
+
 #### 0.21.4 - 2015-05-15
    * Add stats reporting for fake async tests. You can query the number of 
      pending microtasks and timers via `microtaskCount`, `periodicTimerCount`, 

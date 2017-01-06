@@ -1,31 +1,22 @@
 part of file.src.backends.local;
 
-abstract class _LocalFileSystemEntity implements FileSystemEntity {
+abstract class _LocalFileSystemEntity<T extends FileSystemEntity,
+    D extends io.FileSystemEntity> extends ForwardingFileSystemEntity<T, D> {
   @override
   final FileSystem fileSystem;
 
-  io.FileSystemEntity _ioEntity;
+  @override
+  final D delegate;
 
-  _LocalFileSystemEntity(this._ioEntity, this.fileSystem);
+  _LocalFileSystemEntity(this.fileSystem, this.delegate);
 
   @override
-  Future<FileSystemEntity> delete({bool recursive: false}) async {
-    await _ioEntity.delete(recursive: recursive);
-    return this;
-  }
+  Directory wrapDirectory(io.Directory delegate) =>
+      new _LocalDirectory(fileSystem, delegate);
 
   @override
-  Future<bool> exists() => _ioEntity.exists();
+  File wrapFile(io.File delegate) => new _LocalFile(fileSystem, delegate);
 
   @override
-  Directory get parent => new _LocalDirectory(_ioEntity.parent, fileSystem);
-
-  @override
-  String get path => _ioEntity.path;
-
-  @override
-  Future<FileSystemEntity> rename(String newPath) async {
-    _ioEntity = await _ioEntity.rename(newPath);
-    return this;
-  }
+  Link wrapLink(io.Link delegate) => new _LocalLink(fileSystem, delegate);
 }
