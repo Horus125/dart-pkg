@@ -1,3 +1,10 @@
+#### 1.0.1
+
+* Added `FileSystem.systemTempDirectory`
+* Added the ability to pass `Uri` and `FileSystemEntity` types to
+  `FileSystem.directory()`, `FileSystem.file()`, and `FileSystem.link()`
+* Added `FileSystem.pathSeparator`
+
 #### 1.0.0
 
 * Unified interface to match dart:io API

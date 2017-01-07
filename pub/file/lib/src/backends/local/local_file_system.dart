@@ -8,14 +8,24 @@ class LocalFileSystem extends FileSystem {
   const LocalFileSystem();
 
   @override
-  Directory directory(String path) =>
+  Directory directory(path) =>
       new _LocalDirectory(this, shim.newDirectory(path));
 
   @override
-  File file(String path) => new _LocalFile(this, shim.newFile(path));
+  File file(path) => new _LocalFile(this, shim.newFile(path));
 
   @override
-  Link link(String path) => new _LocalLink(this, shim.newLink(path));
+  Link link(path) => new _LocalLink(this, shim.newLink(path));
+
+  @override
+  String get pathSeparator => shim.pathSeparator;
+
+  /// Gets the directory provided by the operating system for creating temporary
+  /// files and directories in. The location of the system temp directory is
+  /// platform-dependent, and may be set by an environment variable.
+  @override
+  Directory get systemTempDirectory =>
+      new _LocalDirectory(this, shim.systemTemp());
 
   @override
   Directory get currentDirectory => directory(shim.currentDirectory.path);

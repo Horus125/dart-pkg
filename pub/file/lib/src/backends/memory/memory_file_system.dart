@@ -44,6 +44,7 @@ typedef _Node _SegmentVisitor(
 /// as [#28078](https://github.com/dart-lang/sdk/issues/28078) is resolved.
 class MemoryFileSystem extends FileSystem {
   _RootNode _root;
+  String _systemTemp;
   String _cwd = _separator;
 
   MemoryFileSystem() {
@@ -51,13 +52,25 @@ class MemoryFileSystem extends FileSystem {
   }
 
   @override
-  Directory directory(String path) => new _MemoryDirectory(this, path);
+  Directory directory(path) => new _MemoryDirectory(this, common.getPath(path));
 
   @override
-  File file(String path) => new _MemoryFile(this, path);
+  File file(path) => new _MemoryFile(this, common.getPath(path));
 
   @override
-  Link link(String path) => new _MemoryLink(this, path);
+  Link link(path) => new _MemoryLink(this, common.getPath(path));
+
+  @override
+  String get pathSeparator => _separator;
+
+  /// Gets the system temp directory. This directory will be created on-demand
+  /// in the root of the file system. Once created, its location is fixed for
+  /// the life of the process.
+  @override
+  Directory get systemTempDirectory {
+    _systemTemp ??= directory(_separator).createTempSync('.tmp_').path;
+    return directory(_systemTemp)..createSync();
+  }
 
   @override
   Directory get currentDirectory => directory(_cwd);

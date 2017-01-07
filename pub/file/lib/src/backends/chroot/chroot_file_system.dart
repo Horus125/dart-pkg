@@ -34,6 +34,7 @@ class ChrootFileSystem extends FileSystem {
   final FileSystem delegate;
   final String root;
 
+  String _systemTemp;
   String _cwd;
 
   /// Creates a new `ChrootFileSystem` backed by the specified [delegate] file
@@ -54,13 +55,25 @@ class ChrootFileSystem extends FileSystem {
   String get _localRoot => p.rootPrefix(root);
 
   @override
-  Directory directory(String path) => new _ChrootDirectory(this, path);
+  Directory directory(path) => new _ChrootDirectory(this, common.getPath(path));
 
   @override
-  File file(String path) => new _ChrootFile(this, path);
+  File file(path) => new _ChrootFile(this, common.getPath(path));
 
   @override
-  Link link(String path) => new _ChrootLink(this, path);
+  Link link(path) => new _ChrootLink(this, common.getPath(path));
+
+  @override
+  String get pathSeparator => delegate.pathSeparator;
+
+  /// Gets the system temp directory. This directory will be created on-demand
+  /// in the local root of the file system. Once created, its location is fixed
+  /// for the life of the process.
+  @override
+  Directory get systemTempDirectory {
+    _systemTemp ??= directory(_localRoot).createTempSync('.tmp_').path;
+    return directory(_systemTemp)..createSync();
+  }
 
   /// Gets the current working directory for this file system. Note that this
   /// does *not* proxy to the underlying file system's current directory in
