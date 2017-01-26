@@ -10,9 +10,8 @@ import 'package:path/path.dart' as path;
 import 'package:source_span/source_span.dart';
 
 import 'parser.dart';
-import 'visitor.dart';
 import 'src/messages.dart';
-import 'src/options.dart';
+import 'visitor.dart';
 
 void main(List<String> arguments) {
   // TODO(jmesserly): fix this to return a proper exit code
@@ -76,8 +75,6 @@ void _printMessage(String message, int duration) {
   buf.write(' -- ');
   if (duration < 10) buf.write(' ');
   if (duration < 100) buf.write(' ');
-  buf
-    ..write(duration)
-    ..write(' ms');
+  buf..write(duration)..write(' ms');
   print(buf.toString());
 }

@@ -8,10 +8,11 @@ import 'dart:math' as math;
 
 import 'package:source_span/source_span.dart';
 
-import "visitor.dart";
+import 'visitor.dart';
 import 'src/messages.dart';
 import 'src/options.dart';
 
+export 'src/messages.dart' show Message;
 export 'src/options.dart';
 
 part 'src/analyzer.dart';
@@ -47,8 +48,12 @@ bool get isChecked => messages.options.checked;
 
 // TODO(terry): Remove nested name parameter.
 /** Parse and analyze the CSS file. */
-StyleSheet compile(input, {List<Message> errors, PreprocessorOptions options,
-    bool nested: true, bool polyfill: false, List<StyleSheet> includes: null}) {
+StyleSheet compile(input,
+    {List<Message> errors,
+    PreprocessorOptions options,
+    bool nested: true,
+    bool polyfill: false,
+    List<StyleSheet> includes: null}) {
   if (includes == null) {
     includes = [];
   }
@@ -115,9 +120,10 @@ SelectorGroup parseSelectorGroup(input, {List<Message> errors}) {
 
   var file = new SourceFile(source);
   return (new _Parser(file, source)
-    // TODO(jmesserly): this fix should be applied to the parser. It's tricky
-    // because by the time the flag is set one token has already been fetched.
-    ..tokenizer.inSelector = true).processSelectorGroup();
+        // TODO(jmesserly): this fix should be applied to the parser. It's tricky
+        // because by the time the flag is set one token has already been fetched.
+        ..tokenizer.inSelector = true)
+      .processSelectorGroup();
 }
 
 String _inputAsString(input) {
@@ -1213,6 +1219,20 @@ class _Parser {
     return new Selector(simpleSequences, _makeSpan(start));
   }
 
+  /// Same as [processSelector] but reports an error for each combinator.
+  ///
+  /// This is a quick fix for parsing <compound-selectors> until the parser
+  /// supports Selector Level 4 grammar:
+  /// https://drafts.csswg.org/selectors-4/#typedef-compound-selector
+  Selector processCompoundSelector() {
+    return processSelector()
+      ..simpleSelectorSequences.forEach((sequence) {
+        if (!sequence.isCombinatorNone) {
+          _error('compound selector can not contain combinator', sequence.span);
+        }
+      });
+  }
+
   simpleSelectorSequence(bool forceCombinatorNone) {
     var start = _peekToken.span;
     var combinatorType = TokenKind.COMBINATOR_NONE;
@@ -1224,12 +1244,29 @@ class _Parser {
         combinatorType = TokenKind.COMBINATOR_PLUS;
         break;
       case TokenKind.GREATER:
+        // Parse > or >>>
         _eat(TokenKind.GREATER);
-        combinatorType = TokenKind.COMBINATOR_GREATER;
+        if (_maybeEat(TokenKind.GREATER)) {
+          _eat(TokenKind.GREATER);
+          combinatorType = TokenKind.COMBINATOR_SHADOW_PIERCING_DESCENDANT;
+        } else {
+          combinatorType = TokenKind.COMBINATOR_GREATER;
+        }
         break;
       case TokenKind.TILDE:
         _eat(TokenKind.TILDE);
         combinatorType = TokenKind.COMBINATOR_TILDE;
+        break;
+      case TokenKind.SLASH:
+        // Parse /deep/
+        _eat(TokenKind.SLASH);
+        var ate = _maybeEat(TokenKind.IDENTIFIER);
+        var tok = ate ? _previousToken : _peekToken;
+        if (!(ate && tok.text == 'deep')) {
+          _error('expected deep, but found ${tok.text}', tok.span);
+        }
+        _eat(TokenKind.SLASH);
+        combinatorType = TokenKind.COMBINATOR_DEEP;
         break;
       case TokenKind.AMPERSAND:
         _eat(TokenKind.AMPERSAND);
@@ -1423,7 +1460,8 @@ class _Parser {
     // Functional pseudo?
 
     if (_peekToken.kind == TokenKind.LPAREN) {
-      if (!pseudoElement && pseudoName.name.toLowerCase() == 'not') {
+      var name = pseudoName.name.toLowerCase();
+      if (!pseudoElement && name == 'not') {
         _eat(TokenKind.LPAREN);
 
         // Negation :   ':NOT(' S* negation_arg S* ')'
@@ -1431,6 +1469,12 @@ class _Parser {
 
         _eat(TokenKind.RPAREN);
         return new NegationSelector(negArg, _makeSpan(start));
+      } else if (!pseudoElement && (name == 'host' || name == 'host-context')) {
+        _eat(TokenKind.LPAREN);
+        var selector = processCompoundSelector();
+        _eat(TokenKind.RPAREN);
+        var span = _makeSpan(start);
+        return new PseudoClassFunctionSelector(pseudoName, selector, span);
       } else {
         // Special parsing for expressions in pseudo functions.  Minus is used
         // as operator not identifier.
@@ -2266,8 +2310,8 @@ class _Parser {
           }
 
           var param = expr.expressions[0];
-          var varUsage = new VarUsage(
-              (param as LiteralTerm).text, [], _makeSpan(start));
+          var varUsage =
+              new VarUsage((param as LiteralTerm).text, [], _makeSpan(start));
           expr.expressions[0] = varUsage;
           return expr.expressions;
         }
@@ -2420,8 +2464,15 @@ class _Parser {
    * then parse to the right paren ignoring everything in between.
    */
   processIEFilter(FileSpan startAfterProgidColon) {
-    var parens = 0;
+    // Support non-functional filters (i.e. filter: FlipH)
+    var kind = _peek();
+    if (kind == TokenKind.SEMICOLON || kind == TokenKind.RBRACE) {
+      var tok = tokenizer.makeIEFilter(
+          startAfterProgidColon.start.offset, _peekToken.start);
+      return new LiteralTerm(tok.text, tok.text, tok.span);
+    }
 
+    var parens = 0;
     while (_peek() != TokenKind.END_OF_FILE) {
       switch (_peek()) {
         case TokenKind.LPAREN:
@@ -2465,8 +2516,7 @@ class _Parser {
       var token = _peek();
       if (token == TokenKind.LPAREN)
         left++;
-      else if (token == TokenKind.RPAREN)
-        left--;
+      else if (token == TokenKind.RPAREN) left--;
 
       matchingParens = left == 0;
       if (!matchingParens) stringValue.write(_next().text);
@@ -2544,7 +2594,8 @@ class _Parser {
 
         // [0] - var name, [1] - OperatorComma, [2] - default value.
         var defaultValues = expr.expressions.length >= 3
-            ? expr.expressions.sublist(2) : <Expression>[];
+            ? expr.expressions.sublist(2)
+            : <Expression>[];
         return new VarUsage(paramName, defaultValues, _makeSpan(start));
       default:
         var expr = processExpr();

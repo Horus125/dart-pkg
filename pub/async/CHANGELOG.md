@@ -1,3 +1,20 @@
+## 1.12.0
+
+* Add an `AsyncCache` class that caches asynchronous operations for a period of
+  time.
+
+* Add `StreamQueue.startTransaction()` and `StreamQueue.withTransaction()`.
+  These allow users to conditionally consume events based on their values.
+
+* Add `StreamQueue.cancelable()`, which allows users to easily make a
+  `CancelableOperation` that can be canceled without affecting the queue.
+
+* Add `StreamQueue.eventsDispatched` which counts the number of events that have
+  been dispatched by a given queue.
+
+* Add a `subscriptionTransformer()` function to create `StreamTransformer`s that
+  modify the behavior of subscriptions to a stream.
+
 ## 1.11.3
 
 * Fix strong-mode warning against the signature of Future.then

@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+export "src/async_cache.dart";
 export "src/async_memoizer.dart";
 export "src/cancelable_operation.dart";
 export "src/delegate/event_sink.dart";
@@ -28,6 +29,7 @@ export "src/stream_queue.dart";
 export "src/stream_sink_completer.dart";
 export "src/stream_sink_transformer.dart";
 export "src/stream_splitter.dart";
+export "src/stream_subscription_transformer.dart";
 export "src/stream_zip.dart";
 export "src/subscription_stream.dart";
 export "src/typed_stream_transformer.dart";

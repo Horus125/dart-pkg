@@ -120,12 +120,28 @@ class SimpleSelectorSequence extends TreeNode {
   bool get isCombinatorTilde => combinator == TokenKind.COMBINATOR_TILDE;
   bool get isCombinatorDescendant =>
       combinator == TokenKind.COMBINATOR_DESCENDANT;
+  bool get isCombinatorDeep => combinator == TokenKind.COMBINATOR_DEEP;
+  bool get isCombinatorShadowPiercingDescendant =>
+      combinator == TokenKind.COMBINATOR_SHADOW_PIERCING_DESCENDANT;
 
-  String get _combinatorToString => isCombinatorDescendant
-      ? ' '
-      : isCombinatorPlus
-          ? ' + '
-          : isCombinatorGreater ? ' > ' : isCombinatorTilde ? ' ~ ' : '';
+  String get _combinatorToString {
+    switch (combinator) {
+      case TokenKind.COMBINATOR_SHADOW_PIERCING_DESCENDANT:
+        return ' >>> ';
+      case TokenKind.COMBINATOR_DEEP:
+        return ' /deep/ ';
+      case TokenKind.COMBINATOR_DESCENDANT:
+        return ' ';
+      case TokenKind.COMBINATOR_GREATER:
+        return ' > ';
+      case TokenKind.COMBINATOR_PLUS:
+        return ' + ';
+      case TokenKind.COMBINATOR_TILDE:
+        return ' ~ ';
+      default:
+        return '';
+    }
+  }
 
   SimpleSelectorSequence clone() =>
       new SimpleSelectorSequence(simpleSelector, span, combinator);
@@ -291,15 +307,19 @@ class PseudoElementSelector extends SimpleSelector {
   String toString() => "::$name";
 }
 
-// :pseudoClassFunction(expression)
+// :pseudoClassFunction(argument)
 class PseudoClassFunctionSelector extends PseudoClassSelector {
-  final SelectorExpression expression;
+  final TreeNode _argument; // Selector, SelectorExpression
 
-  PseudoClassFunctionSelector(Identifier name, this.expression, SourceSpan span)
+  PseudoClassFunctionSelector(Identifier name, this._argument, SourceSpan span)
       : super(name, span);
 
   PseudoClassFunctionSelector clone() =>
-      new PseudoClassFunctionSelector(_name, expression, span);
+      new PseudoClassFunctionSelector(_name, _argument, span);
+
+  TreeNode get argument => _argument;
+  Selector get selector => _argument as Selector;
+  SelectorExpression get expression => _argument as SelectorExpression;
 
   visit(VisitorBase visitor) => visitor.visitPseudoClassFunctionSelector(this);
 }
@@ -489,6 +509,7 @@ class MediaQuery extends TreeNode {
     }
     return new MediaQuery(_mediaUnary, _mediaType, cloneExpressions, span);
   }
+
   visit(VisitorBase visitor) => visitor.visitMediaQuery(this);
 }
 
@@ -599,6 +620,7 @@ class KeyFrameDirective extends Directive {
     }
     return new KeyFrameDirective(_keyframeName, cloneBlocks, span);
   }
+
   visit(VisitorBase visitor) => visitor.visitKeyFrameDirective(this);
 }
 
@@ -696,8 +718,8 @@ class MixinDefinition extends Directive {
 class MixinRulesetDirective extends MixinDefinition {
   final List<TreeNode> rulesets;
 
-  MixinRulesetDirective(String name, List<TreeNode> args,
-      bool varArgs, this.rulesets, SourceSpan span)
+  MixinRulesetDirective(String name, List<TreeNode> args, bool varArgs,
+      this.rulesets, SourceSpan span)
       : super(name, args, varArgs, span);
 
   MixinRulesetDirective clone() {
@@ -719,8 +741,8 @@ class MixinRulesetDirective extends MixinDefinition {
 class MixinDeclarationDirective extends MixinDefinition {
   final DeclarationGroup declarations;
 
-  MixinDeclarationDirective(String name, List<TreeNode> args,
-      bool varArgs, this.declarations, SourceSpan span)
+  MixinDeclarationDirective(String name, List<TreeNode> args, bool varArgs,
+      this.declarations, SourceSpan span)
       : super(name, args, varArgs, span);
 
   MixinDeclarationDirective clone() {
@@ -788,9 +810,9 @@ class Declaration extends TreeNode {
 
   bool get hasDartStyle => dartStyle != null;
 
-  Declaration clone() => new Declaration(
-      _property.clone(), _expression.clone(), dartStyle, span,
-      important: important);
+  Declaration clone() =>
+      new Declaration(_property.clone(), _expression.clone(), dartStyle, span,
+          important: important);
 
   visit(VisitorBase visitor) => visitor.visitDeclaration(this);
 }
@@ -1163,6 +1185,7 @@ class Expressions extends Expression {
     }
     return clonedExprs;
   }
+
   visit(VisitorBase visitor) => visitor.visitExpressions(this);
 }
 
@@ -1229,15 +1252,20 @@ class FontExpression extends DartStyleExpression {
   //   font-style font-variant font-weight font-size/line-height font-family
   // TODO(terry): Only px/pt for now need to handle all possible units to
   //              support calc expressions on units.
-  FontExpression(SourceSpan span, {dynamic size, List<String> family,
-      int weight, String style, String variant, LineHeight lineHeight})
+  FontExpression(SourceSpan span,
+      {dynamic size,
+      List<String> family,
+      int weight,
+      String style,
+      String variant,
+      LineHeight lineHeight})
       : font = new Font(
-          size: size is LengthTerm ? size.value : size,
-          family: family,
-          weight: weight,
-          style: style,
-          variant: variant,
-          lineHeight: lineHeight),
+            size: size is LengthTerm ? size.value : size,
+            family: family,
+            weight: weight,
+            style: style,
+            variant: variant,
+            lineHeight: lineHeight),
         super(DartStyleExpression.fontStyle, span);
 
   FontExpression merged(DartStyleExpression newFontExpr) {
@@ -1295,7 +1323,7 @@ class MarginExpression extends BoxExpression {
   /** Margin expression ripped apart. */
   MarginExpression(SourceSpan span, {num top, num right, num bottom, num left})
       : super(DartStyleExpression.marginStyle, span,
-          new BoxEdge(left, top, right, bottom));
+            new BoxEdge(left, top, right, bottom));
 
   MarginExpression.boxEdge(SourceSpan span, BoxEdge box)
       : super(DartStyleExpression.marginStyle, span, box);
@@ -1331,7 +1359,7 @@ class BorderExpression extends BoxExpression {
   /** Border expression ripped apart. */
   BorderExpression(SourceSpan span, {num top, num right, num bottom, num left})
       : super(DartStyleExpression.borderStyle, span,
-          new BoxEdge(left, top, right, bottom));
+            new BoxEdge(left, top, right, bottom));
 
   BorderExpression.boxEdge(SourceSpan span, BoxEdge box)
       : super(DartStyleExpression.borderStyle, span, box);
@@ -1356,7 +1384,7 @@ class BorderExpression extends BoxExpression {
   BorderExpression._merge(
       BorderExpression x, BorderExpression y, SourceSpan span)
       : super(DartStyleExpression.borderStyle, span,
-          new BoxEdge.merge(x.box, y.box));
+            new BoxEdge.merge(x.box, y.box));
 
   BorderExpression clone() => new BorderExpression(span,
       top: box.top, right: box.right, bottom: box.bottom, left: box.left);
@@ -1408,7 +1436,7 @@ class PaddingExpression extends BoxExpression {
   /** Padding expression ripped apart. */
   PaddingExpression(SourceSpan span, {num top, num right, num bottom, num left})
       : super(DartStyleExpression.paddingStyle, span,
-          new BoxEdge(left, top, right, bottom));
+            new BoxEdge(left, top, right, bottom));
 
   PaddingExpression.boxEdge(SourceSpan span, BoxEdge box)
       : super(DartStyleExpression.paddingStyle, span, box);
@@ -1433,7 +1461,7 @@ class PaddingExpression extends BoxExpression {
   PaddingExpression._merge(
       PaddingExpression x, PaddingExpression y, SourceSpan span)
       : super(DartStyleExpression.paddingStyle, span,
-          new BoxEdge.merge(x.box, y.box));
+            new BoxEdge.merge(x.box, y.box));
 
   PaddingExpression clone() => new PaddingExpression(span,
       top: box.top, right: box.right, bottom: box.bottom, left: box.left);

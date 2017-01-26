@@ -271,6 +271,10 @@ class _TreePrinter extends Visitor {
       output.writeValue('combinator', ">");
     } else if (node.isCombinatorTilde) {
       output.writeValue('combinator', "~");
+    } else if (node.isCombinatorShadowPiercingDescendant) {
+      output.writeValue('combinator', '>>>');
+    } else if (node.isCombinatorDeep) {
+      output.writeValue('combinator', '/deep/');
     } else {
       output.writeValue('combinator', "ERROR UNKNOWN");
     }
@@ -338,7 +342,7 @@ class _TreePrinter extends Visitor {
   void visitPseudoClassFunctionSelector(PseudoClassFunctionSelector node) {
     heading('Pseudo Class Function Selector', node);
     output.depth++;
-    visitSelectorExpression(node.expression);
+    node.argument.visit(this);
     super.visitPseudoClassFunctionSelector(node);
     output.depth--;
   }
