@@ -54,6 +54,13 @@ class Vector2 implements Vector {
   Vector2.fromBuffer(ByteBuffer buffer, int offset)
       : _v2storage = new Float64List.view(buffer, offset, 2);
 
+  /// Generate random vector in the range (0, 0) to (1, 1). You can
+  /// optionally pass your own random number generator.
+  factory Vector2.random([Math.Random rng]) {
+    rng = rng == null ? new Math.Random() : rng;
+    return new Vector2(rng.nextDouble(), rng.nextDouble());
+  }
+
   /// Set the values of the vector.
   void setValues(double x_, double y_) {
     _v2storage[0] = x_;
@@ -154,7 +161,7 @@ class Vector2 implements Vector {
   }
 
   /// Normalize [this]. Returns length of vector before normalization.
-  /// /// DEPRCATED: Use [normalize].
+  /// DEPRECATED: Use [normalize].
   @deprecated
   double normalizeLength() => normalize();
 
@@ -178,6 +185,33 @@ class Vector2 implements Vector {
     final dy = y - arg.y;
 
     return dx * dx + dy * dy;
+  }
+
+  /// Returns the angle between [this] vector and [other] in radians.
+  double angleTo(Vector2 other) {
+    final otherStorage = other._v2storage;
+    if (_v2storage[0] == otherStorage[0] &&
+        _v2storage[1] == otherStorage[1]) {
+      return 0.0;
+    }
+
+    final d = dot(other);
+
+    return Math.acos(d.clamp(-1.0, 1.0));
+  }
+
+  /// Returns the signed angle between [this] and [other] in radians.
+  double angleToSigned(Vector2 other) {
+    final otherStorage = other._v2storage;
+    if (_v2storage[0] == otherStorage[0] &&
+        _v2storage[1] == otherStorage[1]) {
+      return 0.0;
+    }
+
+    final s = cross(other);
+    final c = dot(other);
+
+    return Math.atan2(s, c);
   }
 
   /// Inner product.

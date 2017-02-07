@@ -6,11 +6,10 @@
  * Defines the tokens that are produced by the scanner, used by the parser, and
  * referenced from the [AST structure](ast.dart).
  */
-
 import 'dart:collection';
 
+import 'package:front_end/src/base/syntactic_entity.dart';
 import 'package:front_end/src/scanner/string_utilities.dart';
-import 'package:front_end/src/scanner/syntactic_entity.dart';
 
 /**
  * The opening half of a grouping pair of tokens. This is used for curly
@@ -167,6 +166,9 @@ class Keyword {
 
   static const Keyword CONTINUE = const Keyword._('CONTINUE', "continue");
 
+  static const Keyword COVARIANT =
+      const Keyword._('COVARIANT', "covariant", true);
+
   static const Keyword DEFAULT = const Keyword._('DEFAULT', "default");
 
   static const Keyword DEFERRED = const Keyword._('DEFERRED', "deferred", true);
@@ -258,6 +260,7 @@ class Keyword {
     CLASS,
     CONST,
     CONTINUE,
+    COVARIANT,
     DEFAULT,
     DEFERRED,
     DO,

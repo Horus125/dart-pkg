@@ -6,34 +6,21 @@ import 'dart:async';
 import 'dart:convert' show JSON;
 import 'dart:html';
 
-import '../usage.dart';
 import 'usage_impl.dart';
 
-Future<Analytics> createAnalytics(
-  String trackingId,
-  String applicationName,
-  String applicationVersion, {
-  String analyticsUrl
-}) {
-  return new Future.value(new AnalyticsHtml(
-    trackingId,
-    applicationName,
-    applicationVersion,
-    analyticsUrl: analyticsUrl
-  ));
-}
-
+/// An interface to a Google Analytics session, suitable for use in web apps.
+///
+/// [analyticsUrl] is an optional replacement for the default Google Analytics
+/// URL (`https://www.google-analytics.com/collect`).
 class AnalyticsHtml extends AnalyticsImpl {
-  AnalyticsHtml(String trackingId, String applicationName, String applicationVersion, {
-    String analyticsUrl
-  }) : super(
-      trackingId,
-      new HtmlPersistentProperties(applicationName),
-      new HtmlPostHandler(),
-      applicationName: applicationName,
-      applicationVersion: applicationVersion,
-      analyticsUrl: analyticsUrl
-  ) {
+  AnalyticsHtml(
+      String trackingId, String applicationName, String applicationVersion,
+      {String analyticsUrl})
+      : super(trackingId, new HtmlPersistentProperties(applicationName),
+            new HtmlPostHandler(),
+            applicationName: applicationName,
+            applicationVersion: applicationVersion,
+            analyticsUrl: analyticsUrl) {
     int screenWidth = window.screen.width;
     int screenHeight = window.screen.height;
 
@@ -58,7 +45,7 @@ class HtmlPostHandler extends PostHandler {
     var request = mockRequestor == null ? HttpRequest.request : mockRequestor;
     return request(url, method: 'POST', sendData: data).catchError((e) {
       // Catch errors that can happen during a request, but that we can't do
-      // anything about, e.g. a missing internet conenction.
+      // anything about, e.g. a missing internet connection.
     });
   }
 }
@@ -72,9 +59,9 @@ class HtmlPersistentProperties extends PersistentProperties {
     _map = JSON.decode(str);
   }
 
-  dynamic operator[](String key) => _map[key];
+  dynamic operator [](String key) => _map[key];
 
-  void operator[]=(String key, dynamic value) {
+  void operator []=(String key, dynamic value) {
     if (value == null) {
       _map.remove(key);
     } else {

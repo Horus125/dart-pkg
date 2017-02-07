@@ -5,11 +5,9 @@
 /// A simple command-line app to hand-test the usage library.
 library usage_ga;
 
-import 'dart:async';
+import 'package:usage/usage_io.dart';
 
-import 'package:usage/usage.dart';
-
-Future main(List args) async {
+main(List args) async {
   final String DEFAULT_UA = 'UA-55029513-1';
 
   if (args.isEmpty) {
@@ -21,17 +19,13 @@ Future main(List args) async {
 
   String ua = args.isEmpty ? DEFAULT_UA : args.first;
 
-  Analytics ga = await Analytics.create(ua, 'ga_test', '1.0');
+  Analytics ga = new AnalyticsIO(ua, 'ga_test', '3.0');
 
-  ga.sendScreenView('home').then((_) {
-    return ga.sendScreenView('files');
-  }).then((_) {
-    return ga.sendException('foo exception, line 123:56');
-  }).then((_) {
-    return ga.sendTiming('writeDuration', 123);
-  }).then((_) {
-    return ga.sendEvent('create', 'consoleapp', label: 'Console App');
-  }).then((_) {
-    print('pinged ${ua}');
-  });
+  await ga.sendScreenView('home');
+  await ga.sendScreenView('files');
+  await ga
+      .sendException('foo error:\n${sanitizeStacktrace(StackTrace.current)}');
+  await ga.sendTiming('writeDuration', 123);
+  await ga.sendEvent('create', 'consoleapp', label: 'Console App');
+  print('pinged ${ua}');
 }

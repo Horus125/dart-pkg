@@ -1,7 +1,21 @@
+## 1.13.0
+
+* Add `collectBytes` and `collectBytesCancelable` functions which collects
+  list-of-byte events into a single byte list.
+
+* Fix a bug where rejecting a `StreamQueueTransaction` would throw a
+  `StateError` if `StreamQueue.rest` had been called on one of its child queues.
+
+* `StreamQueue.withTransaction()` now properly returns whether or not the
+  transaction was committed.
+
 ## 1.12.0
 
 * Add an `AsyncCache` class that caches asynchronous operations for a period of
   time.
+
+* Add `StreamQueue.peek` and `StreamQueue.lookAheead`.
+  These allow users to look at events without consuming them.
 
 * Add `StreamQueue.startTransaction()` and `StreamQueue.withTransaction()`.
   These allow users to conditionally consume events based on their values.

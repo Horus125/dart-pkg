@@ -6,9 +6,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import '../usage.dart';
-import 'uuid.dart';
-
-final int _MAX_EXCEPTION_LENGTH = 100;
+import '../uuid/uuid.dart';
 
 String postEncode(Map<String, dynamic> map) {
   // &foo=bar
@@ -19,11 +17,11 @@ String postEncode(Map<String, dynamic> map) {
 }
 
 /**
- * A throttling algorithim. This models the throttling after a bucket with
+ * A throttling algorithm. This models the throttling after a bucket with
  * water dripping into it at the rate of 1 drop per second. If the bucket has
  * water when an operation is requested, 1 drop of water is removed and the
- * operation is performed. If not the operation is skipped. This algorithim
- * lets operations be peformed in bursts without throttling, but holds the
+ * operation is performed. If not the operation is skipped. This algorithm
+ * lets operations be performed in bursts without throttling, but holds the
  * overall average rate of operations to 1 per second.
  */
 class ThrottlingBucket {
@@ -59,7 +57,8 @@ class ThrottlingBucket {
 }
 
 class AnalyticsImpl implements Analytics {
-  static const String _defaultAnalyticsUrl = 'https://www.google-analytics.com/collect';
+  static const String _defaultAnalyticsUrl =
+      'https://www.google-analytics.com/collect';
 
   /**
    * Tracking ID / Property ID.
@@ -78,16 +77,13 @@ class AnalyticsImpl implements Analytics {
 
   String _url;
 
-  StreamController<Map<String, dynamic>> _sendController = new StreamController.broadcast(sync: true);
+  StreamController<Map<String, dynamic>> _sendController =
+      new StreamController.broadcast(sync: true);
 
-  AnalyticsImpl(
-    this.trackingId,
-    this.properties,
-    this.postHandler, {
-    String applicationName,
-    String applicationVersion,
-    String analyticsUrl
-  }) {
+  AnalyticsImpl(this.trackingId, this.properties, this.postHandler,
+      {String applicationName,
+      String applicationVersion,
+      String analyticsUrl}) {
     assert(trackingId != null);
 
     if (applicationName != null) setSessionValue('an', applicationName);
@@ -115,7 +111,9 @@ class AnalyticsImpl implements Analytics {
    */
   bool get enabled {
     bool optIn = analyticsOpt == AnalyticsOpt.optIn;
-    return optIn ? properties['enabled'] == true : properties['enabled'] != false;
+    return optIn
+        ? properties['enabled'] == true
+        : properties['enabled'] != false;
   }
 
   /**
@@ -142,19 +140,25 @@ class AnalyticsImpl implements Analytics {
     return _sendPayload('social', args);
   }
 
-  Future sendTiming(String variableName, int time, {String category, String label}) {
+  Future sendTiming(String variableName, int time,
+      {String category, String label}) {
     Map<String, dynamic> args = {'utv': variableName, 'utt': time};
     if (label != null) args['utl'] = label;
     if (category != null) args['utc'] = category;
     return _sendPayload('timing', args);
   }
 
-  AnalyticsTimer startTimer(String variableName, {String category, String label}) {
-    return new AnalyticsTimer(this,
-        variableName, category: category, label: label);
+  AnalyticsTimer startTimer(String variableName,
+      {String category, String label}) {
+    return new AnalyticsTimer(this, variableName,
+        category: category, label: label);
   }
 
   Future sendException(String description, {bool fatal}) {
+    // We trim exceptions to a max length; google analytics will apply it's own
+    // truncation, likely around 150 chars or so.
+    const int maxExceptionLength = 1000;
+
     // In order to ensure that the client of this API is not sending any PII
     // data, we strip out any stack trace that may reference a path on the
     // user's drive (file:/...).
@@ -162,8 +166,10 @@ class AnalyticsImpl implements Analytics {
       description = description.substring(0, description.indexOf('file:/'));
     }
 
-    if (description != null && description.length > _MAX_EXCEPTION_LENGTH) {
-      description = description.substring(0, _MAX_EXCEPTION_LENGTH);
+    description = description.replaceAll('\n', '; ');
+
+    if (description.length > maxExceptionLength) {
+      description = description.substring(0, maxExceptionLength);
     }
 
     Map<String, dynamic> args = {'exd': description};
@@ -253,7 +259,7 @@ class AnalyticsImpl implements Analytics {
  * of these injected into it. There are default implementations for `dart:io`
  * and `dart:html` clients.
  *
- * The [name] paramater is used to uniquely store these properties on disk /
+ * The [name] parameter is used to uniquely store these properties on disk /
  * persistent storage.
  */
 abstract class PersistentProperties {
@@ -261,8 +267,8 @@ abstract class PersistentProperties {
 
   PersistentProperties(this.name);
 
-  dynamic operator[](String key);
-  void operator[]=(String key, dynamic value);
+  dynamic operator [](String key);
+  void operator []=(String key, dynamic value);
 }
 
 /**

@@ -3,15 +3,17 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /**
- * `usage` is a wrapper around Google Analytics for both command-line, web, and
- * Flutter apps.
+ * `usage` is a wrapper around Google Analytics for both command-line apps
+ * and web apps.
  *
- * In order to use this library, call the [Analytics.create] static method.
- * You'll get either the command-line, web, or Flutter implementation based on
- * the current platform.
+ * In order to use this library as a web app, import the `analytics_html.dart`
+ * library and instantiate the [AnalyticsHtml] class.
  *
- * When creating a new Analytics instance, you need to provide a Google
- * Analytics tracking ID, the application name, and the application version.
+ * In order to use this library as a command-line app, import the
+ * `analytics_io.dart` library and instantiate the [AnalyticsIO] class.
+ *
+ * For both classes, you need to provide a Google Analytics tracking ID, the
+ * application name, and the application version.
  *
  * Your application should provide an opt-in option for the user. If they
  * opt-in, set the [optIn] field to `true`. This setting will persist across
@@ -24,40 +26,22 @@ library usage;
 
 import 'dart:async';
 
-import 'src/usage_impl_default.dart'
-   if (dart.library.js) 'src/usage_impl_html.dart'
-   if (dart.library.ui) 'src/usage_impl_flutter.dart'
-   if (dart.library.io) 'src/usage_impl_io.dart'
-   as impl;
-
 // Matches file:/, non-ws, /, non-ws, .dart
 final RegExp _pathRegex = new RegExp(r'file:/\S+/(\S+\.dart)');
 
+// Match multiple tabs or spaces.
+final RegExp _tabOrSpaceRegex = new RegExp(r'[\t ]+');
+
 /**
- * An interface to a Google Analytics session. You'll get the correct one for
- * your platform by calling the [Analytics.create] static method.
- * [AnalyticsMock] can be used for testing or for some variants of an opt-in
- * workflow.
+ * An interface to a Google Analytics session. [AnalyticsHtml] and [AnalyticsIO]
+ * are concrete implementations of this interface. [AnalyticsMock] can be used
+ * for testing or for some variants of an opt-in workflow.
  *
- * The analytics information is sent on a best-effort basis. Failures to send
- * the GA information will not result in errors from the asynchronous `send`
- * methods.
+ * The analytics information is sent on a best-effort basis. So, failures to
+ * send the GA information will not result in errors from the asynchronous
+ * `send` methods.
  */
 abstract class Analytics {
-  static Future<Analytics> create(
-    String trackingId,
-    String applicationName,
-    String applicationVersion, {
-    String analyticsUrl
-  }) {
-    return impl.createAnalytics(
-      trackingId,
-      applicationName,
-      applicationVersion,
-      analyticsUrl: analyticsUrl
-    );
-  }
-
   /**
    * Tracking ID / Property ID.
    */
@@ -109,8 +93,8 @@ abstract class Analytics {
    * milliseconds). [category] specifies the category of the timing. [label]
    * specifies the label of the timing.
    */
-  Future sendTiming(String variableName, int time, {String category,
-      String label});
+  Future sendTiming(String variableName, int time,
+      {String category, String label});
 
   /**
    * Start a timer. The time won't be calculated, and the analytics information
@@ -141,7 +125,7 @@ abstract class Analytics {
 
   /**
    * Fires events when the usage library sends any data over the network. This
-   * will not fire if analytics has been disabled or if the throttling algorithim
+   * will not fire if analytics has been disabled or if the throttling algorithm
    * has been engaged.
    *
    * This method is public to allow library clients to more easily test their
@@ -210,8 +194,8 @@ class AnalyticsTimer {
     if (_endMillis != null) return new Future.value();
 
     _endMillis = new DateTime.now().millisecondsSinceEpoch;
-    return analytics.sendTiming(
-        variableName, currentElapsedMillis, category: category, label: label);
+    return analytics.sendTiming(variableName, currentElapsedMillis,
+        category: category, label: label);
   }
 }
 
@@ -223,11 +207,11 @@ class AnalyticsMock implements Analytics {
   String get trackingId => 'UA-0';
   final bool logCalls;
 
-
   /**
    * Events are never added to this controller for the mock implementation.
    */
-  StreamController<Map<String, dynamic>> _sendController = new StreamController.broadcast();
+  StreamController<Map<String, dynamic>> _sendController =
+      new StreamController.broadcast();
 
   /**
    * Create a new [AnalyticsMock]. If [logCalls] is true, all calls will be
@@ -245,20 +229,31 @@ class AnalyticsMock implements Analytics {
       _log('screenView', {'viewName': viewName});
 
   Future sendEvent(String category, String action, {String label, int value}) {
-    return _log('event', {'category': category, 'action': action,
-      'label': label, 'value': value});
+    return _log('event', {
+      'category': category,
+      'action': action,
+      'label': label,
+      'value': value
+    });
   }
 
   Future sendSocial(String network, String action, String target) =>
       _log('social', {'network': network, 'action': action, 'target': target});
 
-  Future sendTiming(String variableName, int time, {String category, String label}) {
-    return _log('timing', {'variableName': variableName, 'time': time,
-      'category': category, 'label': label});
+  Future sendTiming(String variableName, int time,
+      {String category, String label}) {
+    return _log('timing', {
+      'variableName': variableName,
+      'time': time,
+      'category': category,
+      'label': label
+    });
   }
 
-  AnalyticsTimer startTimer(String variableName, {String category, String label}) {
-    return new AnalyticsTimer(this, variableName, category: category, label: label);
+  AnalyticsTimer startTimer(String variableName,
+      {String category, String label}) {
+    return new AnalyticsTimer(this, variableName,
+        category: category, label: label);
   }
 
   Future sendException(String description, {bool fatal}) =>
@@ -266,7 +261,7 @@ class AnalyticsMock implements Analytics {
 
   dynamic getSessionValue(String param) => null;
 
-  void setSessionValue(String param, dynamic value) { }
+  void setSessionValue(String param, dynamic value) {}
 
   Stream<Map<String, dynamic>> get onSend => _sendController.stream;
 
@@ -299,16 +294,13 @@ String sanitizeStacktrace(dynamic st, {bool shorten: true}) {
 
   for (Match match in iter) {
     String replacement = match.group(1);
-    str = str.substring(0, match.start)
-        + replacement + str.substring(match.end);
+    str =
+        str.substring(0, match.start) + replacement + str.substring(match.end);
   }
 
   if (shorten) {
     // Shorten the stacktrace up a bit.
-    str = str
-        .replaceAll('(package:', '(')
-        .replaceAll('(dart:', '(')
-        .replaceAll(new RegExp(r'\s+'), ' ');
+    str = str.replaceAll(_tabOrSpaceRegex, ' ');
   }
 
   return str;
