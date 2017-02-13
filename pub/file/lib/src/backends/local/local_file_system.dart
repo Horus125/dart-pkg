@@ -1,3 +1,7 @@
+// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of file.src.backends.local;
 
 /// A wrapper implementation around `dart:io`'s implementation.
@@ -5,20 +9,21 @@ part of file.src.backends.local;
 /// Since this implementation of the [FileSystem] interface delegates to
 /// `dart:io`, is is not suitable for use in the browser.
 class LocalFileSystem extends FileSystem {
+  /// Creates a new `LocalFileSystem`.
   const LocalFileSystem();
 
   @override
-  Directory directory(path) =>
+  Directory directory(dynamic path) =>
       new _LocalDirectory(this, shim.newDirectory(path));
 
   @override
-  File file(path) => new _LocalFile(this, shim.newFile(path));
+  File file(dynamic path) => new _LocalFile(this, shim.newFile(path));
 
   @override
-  Link link(path) => new _LocalLink(this, shim.newLink(path));
+  Link link(dynamic path) => new _LocalLink(this, shim.newLink(path));
 
   @override
-  String get pathSeparator => shim.pathSeparator;
+  p.Context get path => new p.Context();
 
   /// Gets the directory provided by the operating system for creating temporary
   /// files and directories in. The location of the system temp directory is

@@ -1,3 +1,7 @@
+// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of file.src.backends.memory;
 
 class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
@@ -45,20 +49,20 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
   @override
   Directory createTempSync([String prefix]) {
     prefix = (prefix ?? '') + 'rand';
-    String fullPath = fileSystem._context.join(path, prefix);
-    String dirname = fileSystem._context.dirname(fullPath);
-    String basename = fileSystem._context.basename(fullPath);
+    String fullPath = fileSystem.path.join(path, prefix);
+    String dirname = fileSystem.path.dirname(fullPath);
+    String basename = fileSystem.path.basename(fullPath);
     _DirectoryNode node = fileSystem._findNode(dirname);
     _checkExists(node, () => dirname);
     _checkIsDir(node, () => dirname);
-    var name = () => '$basename$_tempCounter';
+    String name() => '$basename$_tempCounter';
     while (node.children.containsKey(name())) {
       _tempCounter++;
     }
     _DirectoryNode tempDir = new _DirectoryNode(node);
     node.children[name()] = tempDir;
     return new _MemoryDirectory(
-        fileSystem, fileSystem._context.join(dirname, name()));
+        fileSystem, fileSystem.path.join(dirname, name()));
   }
 
   @override
@@ -86,7 +90,7 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
     bool recursive: false,
     bool followLinks: true,
   }) =>
-      new Stream.fromIterable(listSync(
+      new Stream<FileSystemEntity>.fromIterable(listSync(
         recursive: recursive,
         followLinks: followLinks,
       ));
@@ -109,7 +113,7 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
       _PendingListTask task = tasks.removeLast();
       task.dir.children.forEach((String name, _Node child) {
         Set<_LinkNode> breadcrumbs = new Set<_LinkNode>.from(task.breadcrumbs);
-        String childPath = fileSystem._context.join(task.path, name);
+        String childPath = fileSystem.path.join(task.path, name);
         while (followLinks && _isLink(child) && breadcrumbs.add(child)) {
           _Node referent = (child as _LinkNode).referentOrNull;
           if (referent != null) {
@@ -133,6 +137,9 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
 
   @override
   Directory _clone(String path) => new _MemoryDirectory(fileSystem, path);
+
+  @override
+  String toString() => "MemoryDirectory: '$path'";
 }
 
 class _PendingListTask {

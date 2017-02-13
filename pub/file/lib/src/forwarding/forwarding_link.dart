@@ -1,5 +1,10 @@
+// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of file.src.forwarding;
 
+/// A link that forwards all methods and properties to a delegate.
 abstract class ForwardingLink extends ForwardingFileSystemEntity<Link, io.Link>
     implements Link {
   @override

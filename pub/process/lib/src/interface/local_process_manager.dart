@@ -14,12 +14,8 @@ import 'dart:io'
 
 import 'package:meta/meta.dart';
 
+import 'common.dart';
 import 'process_manager.dart';
-
-String _getExecutable(List<dynamic> command) => command.first.toString();
-
-List<String> _getArguments(List<dynamic> command) =>
-    command.skip(1).map((dynamic element) => element.toString()).toList();
 
 /// Local implementation of the `ProcessManager` interface.
 ///
@@ -31,6 +27,9 @@ List<String> _getArguments(List<dynamic> command) =>
 /// the underlying `dart:io` methods. Thus, the degenerate case of
 /// `List<String>` will trivially work as expected.
 class LocalProcessManager implements ProcessManager {
+  /// Creates a new `LocalProcessManager`.
+  const LocalProcessManager();
+
   @override
   Future<Process> start(
     @checked List<Object> command, {
@@ -41,7 +40,7 @@ class LocalProcessManager implements ProcessManager {
     ProcessStartMode mode: ProcessStartMode.NORMAL,
   }) {
     return Process.start(
-      _getExecutable(command),
+      _getExecutable(command, workingDirectory, runInShell),
       _getArguments(command),
       workingDirectory: workingDirectory,
       environment: environment,
@@ -62,7 +61,7 @@ class LocalProcessManager implements ProcessManager {
     Encoding stderrEncoding: SYSTEM_ENCODING,
   }) {
     return Process.run(
-      _getExecutable(command),
+      _getExecutable(command, workingDirectory, runInShell),
       _getArguments(command),
       workingDirectory: workingDirectory,
       environment: environment,
@@ -84,7 +83,7 @@ class LocalProcessManager implements ProcessManager {
     Encoding stderrEncoding: SYSTEM_ENCODING,
   }) {
     return Process.runSync(
-      _getExecutable(command),
+      _getExecutable(command, workingDirectory, runInShell),
       _getArguments(command),
       workingDirectory: workingDirectory,
       environment: environment,
@@ -96,7 +95,27 @@ class LocalProcessManager implements ProcessManager {
   }
 
   @override
+  bool canRun(@checked Object executable, {String workingDirectory}) =>
+      getExecutablePath(executable, workingDirectory) != null;
+
+  @override
   bool killPid(int pid, [ProcessSignal signal = ProcessSignal.SIGTERM]) {
     return Process.killPid(pid, signal);
   }
 }
+
+String _getExecutable(
+    List<dynamic> command, String workingDirectory, bool runInShell) {
+  String commandName = command.first.toString();
+  if (runInShell) {
+    return commandName;
+  }
+  String exe = getExecutablePath(commandName, workingDirectory);
+  if (exe == null) {
+    throw new ArgumentError('Cannot find executable for $commandName.');
+  }
+  return exe;
+}
+
+List<String> _getArguments(List<dynamic> command) =>
+    command.skip(1).map((dynamic element) => element.toString()).toList();

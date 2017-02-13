@@ -1,7 +1,15 @@
+// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of file.src.backends.chroot;
+
+typedef dynamic _SetupCallback();
 
 class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     with ForwardingFile {
+  _ChrootFile(ChrootFileSystem fs, String path) : super(fs, path);
+
   factory _ChrootFile.wrapped(
     ChrootFileSystem fs,
     io.File delegate, {
@@ -11,8 +19,6 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     return new _ChrootFile(fs, localPath);
   }
 
-  _ChrootFile(ChrootFileSystem fs, String path) : super(fs, path);
-
   @override
   FileSystemEntityType get expectedType => FileSystemEntityType.FILE;
 
@@ -21,7 +27,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
 
   @override
   Future<File> rename(String newPath) async {
-    var setUp = () {};
+    _SetupCallback setUp = () async {};
 
     if (await fileSystem.type(newPath, followLinks: false) ==
         FileSystemEntityType.LINK) {
@@ -34,7 +40,9 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
         case FileSystemEntityType.NOT_FOUND:
           // Validation passed; delete the link to keep the delegate file
           // system's validation from getting in the way.
-          setUp = () async => await fileSystem.link(newPath).delete();
+          setUp = () async {
+            await fileSystem.link(newPath).delete();
+          };
           break;
         case FileSystemEntityType.DIRECTORY:
           throw new FileSystemException('Is a directory', newPath);
@@ -68,7 +76,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
 
   @override
   File renameSync(String newPath) {
-    var setUp = () {};
+    _SetupCallback setUp = () {};
 
     if (fileSystem.typeSync(newPath, followLinks: false) ==
         FileSystemEntityType.LINK) {
@@ -81,7 +89,9 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
         case FileSystemEntityType.NOT_FOUND:
           // Validation passed; delete the link to keep the delegate file
           // system's validation from getting in the way.
-          setUp = () => fileSystem.link(newPath).deleteSync();
+          setUp = () {
+            fileSystem.link(newPath).deleteSync();
+          };
           break;
         case FileSystemEntityType.DIRECTORY:
           throw new FileSystemException('Is a directory', newPath);
@@ -121,7 +131,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     String path = fileSystem._resolve(
       this.path,
       followLinks: false,
-      notFound: recursive ? _NotFoundBehavior.MKDIR : _NotFoundBehavior.ALLOW,
+      notFound: recursive ? _NotFoundBehavior.mkdir : _NotFoundBehavior.allow,
     );
 
     String real() => fileSystem._real(path, resolve: false);
@@ -130,7 +140,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
 
     if (await type() == FileSystemEntityType.LINK) {
       path = fileSystem._resolve(p.basename(path),
-          from: p.dirname(path), notFound: _NotFoundBehavior.ALLOW_AT_TAIL);
+          from: p.dirname(path), notFound: _NotFoundBehavior.allowAtTail);
       switch (await type()) {
         case FileSystemEntityType.NOT_FOUND:
           await _rawDelegate(real()).create();
@@ -153,7 +163,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     String path = fileSystem._resolve(
       this.path,
       followLinks: false,
-      notFound: recursive ? _NotFoundBehavior.MKDIR : _NotFoundBehavior.ALLOW,
+      notFound: recursive ? _NotFoundBehavior.mkdir : _NotFoundBehavior.allow,
     );
 
     String real() => fileSystem._real(path, resolve: false);
@@ -162,7 +172,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
 
     if (type() == FileSystemEntityType.LINK) {
       path = fileSystem._resolve(p.basename(path),
-          from: p.dirname(path), notFound: _NotFoundBehavior.ALLOW_AT_TAIL);
+          from: p.dirname(path), notFound: _NotFoundBehavior.allowAtTail);
       switch (type()) {
         case FileSystemEntityType.NOT_FOUND:
           _rawDelegate(real()).createSync();
