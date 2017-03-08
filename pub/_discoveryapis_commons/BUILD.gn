@@ -10,6 +10,6 @@ dart_package("_discoveryapis_commons") {
   disable_analysis = true
 
   deps = [
-    "//apps/modules/packages/flutter-http",
+    "//third_party/dart-pkg/pub/http",
   ]
 }

@@ -26,7 +26,6 @@ IGNORED_EXTENSIONS = ['css', 'html', 'jpg', 'js', 'log', 'old', 'out', 'png', 'z
 LOCAL_PACKAGES = {
   'analyzer': '//dart/pkg/analyzer',
   'flutter': '//lib/flutter/packages/flutter',
-  'http': '//apps/modules/packages/flutter-http',
   'linter': '//dart/third_party/pkg/linter',
   'typed_mock': '//dart/pkg/typed_mock',
 }

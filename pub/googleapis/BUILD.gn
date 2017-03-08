@@ -10,7 +10,7 @@ dart_package("googleapis") {
   disable_analysis = true
 
   deps = [
-    "//apps/modules/packages/flutter-http",
+    "//third_party/dart-pkg/pub/http",
     "//third_party/dart-pkg/pub/_discoveryapis_commons",
   ]
 }
