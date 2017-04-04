@@ -8,9 +8,12 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:async/async.dart' hide StreamQueue;
+import 'package:matcher/matcher.dart';
 import 'package:path/path.dart' as p;
 import 'package:stack_trace/stack_trace.dart';
+import 'package:term_glyph/term_glyph.dart' as glyph;
 
+import 'backend/invoker.dart';
 import 'backend/operating_system.dart';
 import 'util/stream_queue.dart';
 
@@ -98,9 +101,14 @@ class Pair<E, F> {
 String getErrorMessage(error) =>
   error.toString().replaceFirst(_exceptionPrefix, '');
 
-/// Indent each line in [str] by two spaces.
-String indent(String str) =>
-    str.replaceAll(new RegExp("^", multiLine: true), "  ");
+/// Indent each line in [string] by [size] spaces.
+///
+/// If [first] is passed, it's used in place of the first line's indentation and
+/// [size] defaults to `first.length`. Otherwise, [size] defaults to 2.
+String indent(String string, {int size, String first}) {
+  size ??= first == null ? 2 : first.length;
+  return prefixLines(string, " " * size, first: first);
+}
 
 /// Returns a sentence fragment listing the elements of [iter].
 ///
@@ -177,6 +185,13 @@ Chain terseChain(StackTrace stackTrace, {bool verbose: false}) {
       terse: true);
 }
 
+/// Converts [stackTrace] to a [Chain] following the test's configuration.
+Chain testChain(StackTrace stackTrace) {
+  // TODO(nweiz): Follow more configuration when #527 is fixed.
+  return terseChain(stackTrace,
+      verbose: Invoker.current.liveTest.test.metadata.verboseTrace);
+}
+
 /// Flattens nested [Iterable]s inside an [Iterable] into a single [List]
 /// containing only non-[Iterable] elements.
 List flatten(Iterable nested) {
@@ -248,7 +263,7 @@ String truncate(String text, int maxLength) {
 /// Returns a human-friendly representation of [duration].
 String niceDuration(Duration duration) {
   var minutes = duration.inMinutes;
-  var seconds = duration.inSeconds % 59;
+  var seconds = duration.inSeconds % 60;
   var decaseconds = (duration.inMilliseconds % 1000) ~/ 100;
 
   var buffer = new StringBuffer();
@@ -347,6 +362,24 @@ void invoke(fn()) {
   fn();
 }
 
+/// Runs [body] with special error-handling behavior.
+///
+/// Errors emitted [body] will still cause the current test to fail, but they
+/// won't cause it to *stop*. In particular, they won't remove any outstanding
+/// callbacks registered outside of [body].
+///
+/// This may only be called within a test.
+Future errorsDontStopTest(body()) {
+  var completer = new Completer();
+
+  Invoker.current.addOutstandingCallback();
+  Invoker.current.waitForOutstandingCallbacks(() {
+    new Future.sync(body).whenComplete(completer.complete);
+  }).then((_) => Invoker.current.removeOutstandingCallback());
+
+  return completer.future;
+}
+
 /// Returns a random base64 string containing [bytes] bytes of data.
 ///
 /// [seed] is passed to [math.Random].
@@ -358,3 +391,70 @@ String randomBase64(int bytes, {int seed}) {
   }
   return BASE64.encode(data);
 }
+
+/// Throws an [ArgumentError] if [message] isn't recursively JSON-safe.
+void ensureJsonEncodable(Object message) {
+  if (message == null || message is String || message is num ||
+      message is bool) {
+    // JSON-encodable, hooray!
+  } else if (message is List) {
+    for (var element in message) {
+      ensureJsonEncodable(element);
+    }
+  } else if (message is Map) {
+    message.forEach((key, value) {
+      if (key is! String) {
+        throw new ArgumentError("$message can't be JSON-encoded.");
+      }
+
+      ensureJsonEncodable(value);
+    });
+  } else {
+    throw new ArgumentError.value("$message can't be JSON-encoded.");
+  }
+}
+
+/// Prepends a vertical bar to [text].
+String addBar(String text) => prefixLines(text, "${glyph.verticalLine} ",
+    first: "${glyph.downEnd} ",
+    last: "${glyph.upEnd} ",
+    single: "| ");
+
+/// Indents [text], and adds a bullet at the beginning.
+String addBullet(String text) =>
+    prefixLines(text, "  ", first: "${glyph.bullet} ");
+
+/// Converts [strings] to a bulleted list.
+String bullet(Iterable<String> strings) => strings.map(addBullet).join("\n");
+
+/// Prepends each line in [text] with [prefix].
+///
+/// If [first] or [last] is passed, the first and last lines, respectively, are
+/// prefixed with those instead. If [single] is passed, it's used if there's
+/// only a single line; otherwise, [first], [last], or [prefix] is used, in that
+/// order of precedence.
+String prefixLines(String text, String prefix, {String first, String last,
+    String single}) {
+  first ??= prefix;
+  last ??= prefix;
+  single ??= first ?? last ?? prefix;
+
+  var lines = text.split('\n');
+  if (lines.length == 1) return "$single$text";
+
+  var buffer = new StringBuffer("$first${lines.first}\n");
+
+  // Write out all but the first and last lines with [prefix].
+  for (var line in lines.skip(1).take(lines.length - 2)) {
+    buffer.writeln("$prefix$line");
+  }
+  buffer.write("$last${lines.last}");
+  return buffer.toString();
+}
+
+/// Returns a pretty-printed representation of [value].
+///
+/// The matcher package doesn't expose its pretty-print function directly, but
+/// we can use it through StringDescription.
+String prettyPrint(value) =>
+    new StringDescription().addDescriptionOf(value).toString();

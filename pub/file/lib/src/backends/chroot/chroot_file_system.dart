@@ -50,24 +50,24 @@ class ChrootFileSystem extends FileSystem {
   ///
   /// **NOTE**: [root] must be a _canonicalized_ path; see [p.canonicalize].
   ChrootFileSystem(this.delegate, this.root) {
-    if (root != p.canonicalize(root)) {
+    if (root != delegate.path.canonicalize(root)) {
       throw new ArgumentError.value(root, 'root', 'Must be canonical path');
     }
     _cwd = _localRoot;
   }
 
   /// Gets the root path, as seen by entities in this file system.
-  String get _localRoot => p.rootPrefix(root);
+  String get _localRoot => delegate.path.rootPrefix(root);
 
   @override
   Directory directory(dynamic path) =>
-      new _ChrootDirectory(this, common.getPath(path));
+      new _ChrootDirectory(this, getPath(path));
 
   @override
-  File file(dynamic path) => new _ChrootFile(this, common.getPath(path));
+  File file(dynamic path) => new _ChrootFile(this, getPath(path));
 
   @override
-  Link link(dynamic path) => new _ChrootLink(this, common.getPath(path));
+  Link link(dynamic path) => new _ChrootLink(this, getPath(path));
 
   @override
   p.Context get path =>
@@ -81,8 +81,6 @@ class ChrootFileSystem extends FileSystem {
     _systemTemp ??= directory(_localRoot).createTempSync('.tmp_').path;
     return directory(_systemTemp)..createSync();
   }
-
-  p.Context get _context => new p.Context(current: _cwd);
 
   /// Creates a directory object pointing to the current working directory.
   ///
@@ -116,11 +114,14 @@ class ChrootFileSystem extends FileSystem {
       case FileSystemEntityType.DIRECTORY:
         break;
       case FileSystemEntityType.NOT_FOUND:
-        throw new FileSystemException('No such file or directory');
+        throw common.noSuchFileOrDirectory(path);
       default:
-        throw new FileSystemException('Not a directory');
+        throw common.notADirectory(path);
     }
-    assert(() => p.isAbsolute(value) && value == p.canonicalize(value));
+    assert(() {
+      p.Context ctx = delegate.path;
+      return ctx.isAbsolute(value) && value == ctx.canonicalize(value);
+    });
     _cwd = value;
   }
 
@@ -195,7 +196,7 @@ class ChrootFileSystem extends FileSystem {
     bool relative: false,
     bool keepInJail: false,
   }) {
-    assert(_context.isAbsolute(realPath));
+    assert(path.isAbsolute(realPath));
     if (!realPath.startsWith(root)) {
       if (keepInJail) {
         return _localRoot;
@@ -209,7 +210,7 @@ class ChrootFileSystem extends FileSystem {
     }
     if (relative) {
       assert(result.startsWith(_cwd));
-      result = _context.relative(result, from: _cwd);
+      result = path.relative(result, from: _cwd);
     }
     return result;
   }
@@ -231,7 +232,7 @@ class ChrootFileSystem extends FileSystem {
     if (resolve) {
       localPath = _resolve(localPath, followLinks: followLinks);
     } else {
-      assert(() => _context.isAbsolute(localPath));
+      assert(() => path.isAbsolute(localPath));
     }
     return '$root$localPath';
   }
@@ -261,7 +262,7 @@ class ChrootFileSystem extends FileSystem {
     bool followLinks: true,
     _NotFoundBehavior notFound: _NotFoundBehavior.allow,
   }) {
-    p.Context ctx = _context;
+    p.Context ctx = this.path;
     String root = _localRoot;
     List<String> parts, ledger;
     if (ctx.isAbsolute(path)) {
@@ -298,17 +299,13 @@ class ChrootFileSystem extends FileSystem {
         case FileSystemEntityType.FILE:
           breadcrumbs.clear();
           if (parts.isNotEmpty) {
-            throw new FileSystemException('Not a directory', currentPath);
+            throw common.notADirectory(currentPath);
           }
           break;
         case FileSystemEntityType.NOT_FOUND:
           String returnEarly() {
             ledger.addAll(parts);
             return getCurrentPath();
-          }
-
-          FileSystemException notFoundException() {
-            return new FileSystemException('No such file or directory', path);
           }
 
           switch (notFound) {
@@ -323,9 +320,9 @@ class ChrootFileSystem extends FileSystem {
               if (parts.isEmpty) {
                 return returnEarly();
               }
-              throw notFoundException();
+              throw common.noSuchFileOrDirectory(path);
             case _NotFoundBehavior.throwError:
-              throw notFoundException();
+              throw common.noSuchFileOrDirectory(path);
           }
           break;
         case FileSystemEntityType.LINK:
@@ -333,8 +330,7 @@ class ChrootFileSystem extends FileSystem {
             break;
           }
           if (!breadcrumbs.add(currentPath)) {
-            throw new FileSystemException(
-                'Too many levels of symbolic links', path);
+            throw common.tooManyLevelsOfSymbolicLinks(path);
           }
           String target = delegate.link(realPath).targetSync();
           if (ctx.isAbsolute(target)) {

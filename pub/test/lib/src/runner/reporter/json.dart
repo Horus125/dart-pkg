@@ -14,21 +14,18 @@ import '../../backend/suite.dart';
 import '../../backend/test_platform.dart';
 import '../../frontend/expect.dart';
 import '../../utils.dart';
+import '../configuration.dart';
+import '../configuration/suite.dart';
 import '../engine.dart';
 import '../load_suite.dart';
 import '../reporter.dart';
+import '../runner_suite.dart';
 import '../version.dart';
 
 /// A reporter that prints machine-readable JSON-formatted test results.
 class JsonReporter implements Reporter {
-  /// Whether to use verbose stack traces.
-  final bool _verboseTrace;
-
-  /// Whether to emit location information for JS tests.
-  final bool _jsLocations;
-
-  /// Whether skipped tests are run anyway.
-  final bool _runSkipped;
+  /// The global configuration that applies to this reporter.
+  final Configuration _config;
 
   /// The engine used to run the tests.
   final Engine _engine;
@@ -61,23 +58,9 @@ class JsonReporter implements Reporter {
   var _nextID = 0;
 
   /// Watches the tests run by [engine] and prints their results as JSON.
-  ///
-  /// If [verboseTrace] is `true`, this will print core library frames. If
-  /// [jsLocations] is `false`, this will not emit location information for JS
-  /// tests.
-  static JsonReporter watch(Engine engine, {bool verboseTrace: false,
-      bool jsLocations: true, bool runSkipped: false}) {
-    return new JsonReporter._(engine,
-        verboseTrace: verboseTrace,
-        jsLocations: jsLocations,
-        runSkipped: runSkipped);
-  }
+  static JsonReporter watch(Engine engine) => new JsonReporter._(engine);
 
-  JsonReporter._(this._engine, {bool verboseTrace: false,
-      bool jsLocations: true, bool runSkipped: false})
-      : _verboseTrace = verboseTrace,
-        _jsLocations = jsLocations,
-        _runSkipped = runSkipped {
+  JsonReporter._(this._engine) : _config = Configuration.current {
     _subscriptions.add(_engine.onTestStarted.listen(_onTestStarted));
 
     /// Convert the future to a stream so that the subscription can be paused or
@@ -140,15 +123,16 @@ class JsonReporter implements Reporter {
         ? []
         : _idsForGroups(liveTest.groups, liveTest.suite);
 
+    var suiteConfig = _configFor(liveTest.suite);
     var id = _nextID++;
     _liveTestIDs[liveTest] = id;
     _emit("testStart", {
-      "test": _addFrameInfo({
+      "test": _addFrameInfo(suiteConfig, {
         "id": id,
         "name": liveTest.test.name, 
         "suiteID": suiteID,
         "groupIDs": groupIDs,
-        "metadata": _serializeMetadata(liveTest.test.metadata)
+        "metadata": _serializeMetadata(suiteConfig, liveTest.test.metadata)
       }, liveTest.test, liveTest.suite.platform)
     });
 
@@ -183,7 +167,17 @@ class JsonReporter implements Reporter {
     // different metadata.
     if (suite is LoadSuite) {
       suite.suite.then((runnerSuite) {
-        if (runnerSuite != null) _suiteIDs[runnerSuite] = id;
+        _suiteIDs[runnerSuite] = id;
+        if (!_config.pauseAfterLoad) return;
+
+        // TODO(nweiz): test this when we have a library for communicating with
+        // the Chrome remote debugger, or when we have VM debug support.
+        _emit("debug", {
+          "suiteID": id,
+          "observatory": runnerSuite.environment.observatoryUrl?.toString(),
+          "remoteDebugger":
+              runnerSuite.environment.remoteDebuggerUrl?.toString(),
+        });
       });
     }
 
@@ -213,13 +207,14 @@ class JsonReporter implements Reporter {
       var id = _nextID++;
       _groupIDs[group] = id;
 
+      var suiteConfig = _configFor(suite);
       _emit("group", {
-        "group": _addFrameInfo({
+        "group": _addFrameInfo(suiteConfig, {
           "id": id,
           "suiteID": _idForSuite(suite),
           "parentID": parentID,
           "name": group.name,
-          "metadata": _serializeMetadata(group.metadata),
+          "metadata": _serializeMetadata(suiteConfig, group.metadata),
           "testCount": group.testCount
         }, group, suite.platform)
       });
@@ -229,9 +224,10 @@ class JsonReporter implements Reporter {
   }
 
   /// Serializes [metadata] into a JSON-protocol-compatible map.
-  Map _serializeMetadata(Metadata metadata) => _runSkipped
-      ? {"skip": false, "skipReason": null}
-      : {"skip": metadata.skip, "skipReason": metadata.skipReason};
+  Map _serializeMetadata(SuiteConfiguration suiteConfig, Metadata metadata) =>
+      suiteConfig.runSkipped
+          ? {"skip": false, "skipReason": null}
+          : {"skip": metadata.skip, "skipReason": metadata.skipReason};
 
   /// A callback called when [liveTest] finishes running.
   void _onComplete(LiveTest liveTest) {
@@ -251,7 +247,9 @@ class JsonReporter implements Reporter {
     _emit("error", {
       "testID": _liveTestIDs[liveTest],
       "error": error.toString(),
-      "stackTrace": terseChain(stackTrace, verbose: _verboseTrace).toString(),
+      "stackTrace":
+          terseChain(stackTrace, verbose: liveTest.test.metadata.verboseTrace)
+          .toString(),
       "isFailure": error is TestFailure
     });
   }
@@ -267,6 +265,13 @@ class JsonReporter implements Reporter {
     _emit("done", {"success": success});
   }
 
+  /// Returns the configuration for [suite].
+  ///
+  /// If [suite] is a [RunnerSuite], this returns [RunnerSuite.config].
+  /// Otherwise, it returns [SuiteConfiguration.empty].
+  SuiteConfiguration _configFor(Suite suite) =>
+      suite is RunnerSuite ? suite.config : SuiteConfiguration.empty;
+
   /// Emits an event with the given type and attributes.
   void _emit(String type, Map attributes) {
     attributes["type"] = type;
@@ -278,10 +283,10 @@ class JsonReporter implements Reporter {
   /// frame of [entry.trace].
   ///
   /// Returns [map].
-  Map<String, dynamic> _addFrameInfo(Map<String, dynamic> map,
-      GroupEntry entry, TestPlatform platform) {
+  Map<String, dynamic> _addFrameInfo(SuiteConfiguration suiteConfig,
+      Map<String, dynamic> map, GroupEntry entry, TestPlatform platform) {
     var frame = entry.trace?.frames?.first;
-    if (!_jsLocations && platform.isJS) frame = null;
+    if (suiteConfig.jsTrace && platform.isJS) frame = null;
 
     map["line"] = frame?.line;
     map["column"] = frame?.column;

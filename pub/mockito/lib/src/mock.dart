@@ -1,41 +1,101 @@
-// Warning: Do not import dart:mirrors in this library, as it's exported via
-// lib/mockito_no_mirrors.dart, which is used for Dart AOT projects such as
-// Flutter.
+// Copyright 2016 Dart Mockito authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
+// Warning: Do not import dart:mirrors in this library, as it's exported via
+// lib/mockito.dart, which is used for Dart AOT projects such as Flutter.
+
+import 'package:meta/meta.dart';
+import 'package:mockito/src/call_pair.dart';
+import 'package:mockito/src/invocation_matcher.dart';
 import 'package:test/test.dart';
 
 bool _whenInProgress = false;
 bool _verificationInProgress = false;
-_WhenCall _whenCall = null;
+_WhenCall _whenCall;
 final List<_VerifyCall> _verifyCalls = <_VerifyCall>[];
 final _TimeStampProvider _timer = new _TimeStampProvider();
 final List _capturedArgs = [];
-final List<_ArgMatcher> _typedArgs = <_ArgMatcher>[];
-final Map<String, _ArgMatcher> _typedNamedArgs = <String, _ArgMatcher>{};
+final List<ArgMatcher> _typedArgs = <ArgMatcher>[];
+final Map<String, ArgMatcher> _typedNamedArgs = <String, ArgMatcher>{};
 
 // Hidden from the public API, used by spy.dart.
-void setDefaultResponse(Mock mock, dynamic defaultResponse) {
+void setDefaultResponse(Mock mock, CallPair defaultResponse()) {
   mock._defaultResponse = defaultResponse;
 }
 
+/// Opt-into [Mock] throwing [NoSuchMethodError] for unimplemented methods.
+///
+/// The default behavior when not using this is to always return `null`.
+void throwOnMissingStub(Mock mock) {
+  mock._defaultResponse = () => new CallPair.allInvocations(mock._noSuchMethod);
+}
+
+/// Extend or mixin this class to mark the implementation as a [Mock].
+///
+/// A mocked class implements all fields and methods with a default
+/// implementation that does not throw a [NoSuchMethodError], and may be further
+/// customized at runtime to define how it may behave using [when].
+///
+/// __Example use__:
+///   // Real class.
+///   class Cat {
+///     String getSound() => 'Meow';
+///   }
+///
+///   // Mock class.
+///   class MockCat extends Mock implements Cat {}
+///
+///   void main() {
+///     // Create a new mocked Cat at runtime.
+///     var cat = new MockCat();
+///
+///     // When 'getSound' is called, return 'Woof'
+///     when(cat.getSound()).thenReturn('Woof');
+///
+///     // Try making a Cat sound...
+///     print(cat.getSound()); // Prints 'Woof'
+///   }
+///
+/// **WARNING**: [Mock] uses [noSuchMethod](goo.gl/r3IQUH), which is a _form_ of
+/// runtime reflection, and causes sub-standard code to be generated. As such,
+/// [Mock] should strictly _not_ be used in any production code, especially if
+/// used within the context of Dart for Web (dart2js/ddc) and Dart for Mobile
+/// (flutter).
 class Mock {
-  static var _nullResponse = () => new CannedResponse(null, (_) => null);
+  static _answerNull(_) => null;
 
-  final List<RealCall> _realCalls = <RealCall>[];
-  final List<CannedResponse> _responses = <CannedResponse>[];
-  String _givenName = null;
-  int _givenHashCode = null;
+  static const _nullResponse = const CallPair.allInvocations(_answerNull);
 
-  var _defaultResponse = _nullResponse;
+  final _realCalls = <RealCall>[];
+  final _responses = <CallPair>[];
 
-  void _setExpected(CannedResponse cannedResponse) {
+  String _givenName;
+  int _givenHashCode;
+
+  _ReturnsCannedResponse _defaultResponse = () => _nullResponse;
+
+  void _setExpected(CallPair cannedResponse) {
     _responses.add(cannedResponse);
   }
 
-  dynamic noSuchMethod(Invocation invocation) {
-    if (_typedArgs.isNotEmpty || _typedNamedArgs.isNotEmpty) {
-      invocation = new _InvocationForTypedArguments(invocation);
-    }
+  @override
+  @visibleForTesting
+  noSuchMethod(Invocation invocation) {
+    // noSuchMethod is that 'magic' that allows us to ignore implementing fields
+    // and methods and instead define them later at compile-time per instance.
+    // See "Emulating Functions and Interactions" on dartlang.org: goo.gl/r3IQUH
+    invocation = _useTypedInvocationIfSet(invocation);
     if (_whenInProgress) {
       _whenCall = new _WhenCall(this, invocation);
       return null;
@@ -45,29 +105,54 @@ class Mock {
     } else {
       _realCalls.add(new RealCall(this, invocation));
       var cannedResponse = _responses.lastWhere(
-          (cr) => cr.matcher.matches(invocation), orElse: _defaultResponse);
+          (cr) => cr.call.matches(invocation, {}),
+          orElse: _defaultResponse);
       var response = cannedResponse.response(invocation);
       return response;
     }
   }
 
+  _noSuchMethod(Invocation invocation) =>
+      const Object().noSuchMethod(invocation);
+
+  @override
   int get hashCode => _givenHashCode == null ? 0 : _givenHashCode;
 
+  @override
   bool operator ==(other) => (_givenHashCode != null && other is Mock)
       ? _givenHashCode == other._givenHashCode
       : identical(this, other);
 
+  @override
   String toString() => _givenName != null ? _givenName : runtimeType.toString();
+}
+
+typedef CallPair _ReturnsCannedResponse();
+
+// When using the typed() matcher, we transform our invocation to have knowledge
+// of which arguments are wrapped with typed() and which ones are not. Otherwise
+// we just use the existing invocation object.
+Invocation _useTypedInvocationIfSet(Invocation invocation) {
+  if (_typedArgs.isNotEmpty || _typedNamedArgs.isNotEmpty) {
+    invocation = new _InvocationForTypedArguments(invocation);
+  }
+  return invocation;
 }
 
 /// An Invocation implementation that takes arguments from [_typedArgs] and
 /// [_typedNamedArgs].
 class _InvocationForTypedArguments extends Invocation {
+  @override
   final Symbol memberName;
+  @override
   final Map<Symbol, dynamic> namedArguments;
+  @override
   final List<dynamic> positionalArguments;
+  @override
   final bool isGetter;
+  @override
   final bool isMethod;
+  @override
   final bool isSetter;
 
   factory _InvocationForTypedArguments(Invocation invocation) {
@@ -100,9 +185,10 @@ class _InvocationForTypedArguments extends Invocation {
   // The namedArguments in [invocation] which are null should be represented
   // by a stored value in [_typedNamedArgs]. The null presumably came from
   // [typed].
-  static Map<Symbol,dynamic> _reconstituteNamedArgs(Invocation invocation) {
+  static Map<Symbol, dynamic> _reconstituteNamedArgs(Invocation invocation) {
     var namedArguments = <Symbol, dynamic>{};
-    var _typedNamedArgSymbols = _typedNamedArgs.keys.map((name) => new Symbol(name));
+    var _typedNamedArgSymbols =
+        _typedNamedArgs.keys.map((name) => new Symbol(name));
 
     // Iterate through [invocation]'s named args, validate them, and add them
     // to the return map.
@@ -169,7 +255,8 @@ class _InvocationForTypedArguments extends Invocation {
         positionalIndex++;
       } else {
         // [typed] was not used; add the [_ArgMatcher] from [invocation].
-        positionalArguments.add(invocation.positionalArguments[positionalIndex]);
+        positionalArguments
+            .add(invocation.positionalArguments[positionalIndex]);
         positionalIndex++;
       }
     }
@@ -182,24 +269,21 @@ class _InvocationForTypedArguments extends Invocation {
     return positionalArguments;
   }
 
-  _InvocationForTypedArguments._(
-      this.memberName,
-      this.positionalArguments,
-      this.namedArguments,
-      this.isGetter,
-      this.isMethod,
-      this.isSetter);
+  _InvocationForTypedArguments._(this.memberName, this.positionalArguments,
+      this.namedArguments, this.isGetter, this.isMethod, this.isSetter);
 }
 
 named(var mock, {String name, int hashCode}) => mock
   .._givenName = name
   .._givenHashCode = hashCode;
 
+/// Clear stubs of, and collected interactions with [mock].
 void reset(var mock) {
   mock._realCalls.clear();
   mock._responses.clear();
 }
 
+/// Clear the collected interactions with [mock].
 void clearInteractions(var mock) {
   mock._realCalls.clear();
 }
@@ -258,7 +342,7 @@ class InvocationMatcher {
     int index = 0;
     for (var roleArg in roleInvocation.positionalArguments) {
       var actArg = invocation.positionalArguments[index];
-      if (roleArg is _ArgMatcher && roleArg._capture) {
+      if (roleArg is ArgMatcher && roleArg._capture) {
         _capturedArgs.add(actArg);
       }
       index++;
@@ -266,8 +350,8 @@ class InvocationMatcher {
     for (var roleKey in roleInvocation.namedArguments.keys) {
       var roleArg = roleInvocation.namedArguments[roleKey];
       var actArg = invocation.namedArguments[roleKey];
-      if (roleArg is _ArgMatcher) {
-        if (roleArg is _ArgMatcher && roleArg._capture) {
+      if (roleArg is ArgMatcher) {
+        if (roleArg is ArgMatcher && roleArg._capture) {
           _capturedArgs.add(actArg);
         }
       }
@@ -308,21 +392,12 @@ class InvocationMatcher {
   }
 
   bool isMatchingArg(roleArg, actArg) {
-    if (roleArg is _ArgMatcher) {
-      return roleArg._matcher.matches(actArg, {});
-//    } else if(roleArg is Mock){
-//      return identical(roleArg, actArg);
+    if (roleArg is ArgMatcher) {
+      return roleArg.matcher.matches(actArg, {});
     } else {
       return equals(roleArg).matches(actArg, {});
     }
   }
-}
-
-class CannedResponse {
-  InvocationMatcher matcher;
-  Answering response;
-
-  CannedResponse(this.matcher, this.response);
 }
 
 class _TimeStampProvider {
@@ -338,47 +413,50 @@ class _TimeStampProvider {
 }
 
 class RealCall {
+  final Mock mock;
+  final Invocation invocation;
+  final DateTime timeStamp;
+
+  bool verified = false;
+
+  RealCall(this.mock, this.invocation) : timeStamp = _timer.now();
+
+  @override
+  String toString() {
+    var args = invocation.positionalArguments
+        .map((v) => v == null ? "null" : v.toString())
+        .join(", ");
+    if (invocation.namedArguments.isNotEmpty) {
+      var namedArgs = invocation.namedArguments.keys
+          .map((key) =>
+              "${_symbolToString(key)}: ${invocation.namedArguments[key]}")
+          .join(", ");
+      args += ", {$namedArgs}";
+    }
+
+    var method = _symbolToString(invocation.memberName);
+    if (invocation.isMethod) {
+      method = "$method($args)";
+    } else if (invocation.isGetter) {
+      method = "$method";
+    } else if (invocation.isSetter) {
+      method = "$method=$args";
+    } else {
+      throw new StateError(
+          'Invocation should be getter, setter or a method call.');
+    }
+
+    var verifiedText = verified ? "[VERIFIED] " : "";
+    return "$verifiedText$mock.$method";
+  }
+
   // This used to use MirrorSystem, which cleans up the Symbol() wrapper.
   // Since this toString method is just used in Mockito's own tests, it's not
   // a big deal to massage the toString a bit.
   //
   // Input: Symbol("someMethodName")
-  static String _symbolToString(Symbol symbol) {
-    return symbol.toString().split('"')[1];
-  }
-
-  DateTime _timeStamp;
-  final Mock mock;
-  final Invocation invocation;
-  bool verified = false;
-  RealCall(this.mock, this.invocation) {
-    _timeStamp = _timer.now();
-  }
-
-  DateTime get timeStamp => _timeStamp;
-
-  String toString() {
-    var verifiedText = verified ? "[VERIFIED] " : "";
-    List<String> posArgs = invocation.positionalArguments
-        .map((v) => v == null ? "null" : v.toString())
-        .toList();
-    List<String> mapArgList = invocation.namedArguments.keys.map((key) {
-      return "${_symbolToString(key)}: ${invocation.namedArguments[key]}";
-    }).toList(growable: false);
-    if (mapArgList.isNotEmpty) {
-      posArgs.add("{${mapArgList.join(", ")}}");
-    }
-    String args = posArgs.join(", ");
-    String method = _symbolToString(invocation.memberName);
-    if (invocation.isMethod) {
-      method = ".$method($args)";
-    } else if (invocation.isGetter) {
-      method = ".$method";
-    } else {
-      method = ".$method=$args";
-    }
-    return "$verifiedText$mock$method";
-  }
+  static String _symbolToString(Symbol symbol) =>
+      symbol.toString().split('"')[1];
 }
 
 class _WhenCall {
@@ -387,8 +465,7 @@ class _WhenCall {
   _WhenCall(this.mock, this.whenInvocation);
 
   void _setExpected(Answering answer) {
-    mock._setExpected(
-        new CannedResponse(new InvocationMatcher(whenInvocation), answer));
+    mock._setExpected(new CallPair(isInvocation(whenInvocation), answer));
   }
 }
 
@@ -430,30 +507,33 @@ class _VerifyCall {
   }
 }
 
-class _ArgMatcher {
-  final Matcher _matcher;
+class ArgMatcher {
+  final Matcher matcher;
   final bool _capture;
 
-  _ArgMatcher(this._matcher, this._capture);
+  ArgMatcher(this.matcher, this._capture);
+
+  @override
+  String toString() => '$ArgMatcher {$matcher: $_capture}';
 }
 
 /// An argument matcher that matches any argument passed in "this" position.
-get any => new _ArgMatcher(anything, false);
+get any => new ArgMatcher(anything, false);
 
 /// An argument matcher that matches any argument passed in "this" position, and
 /// captures the argument for later access with `captured`.
-get captureAny => new _ArgMatcher(anything, true);
+get captureAny => new ArgMatcher(anything, true);
 
 /// An argument matcher that matches an argument that matches [matcher].
-argThat(Matcher matcher) => new _ArgMatcher(matcher, false);
+argThat(Matcher matcher) => new ArgMatcher(matcher, false);
 
 /// An argument matcher that matches an argument that matches [matcher], and
 /// captures the argument for later access with `captured`.
-captureThat(Matcher matcher) => new _ArgMatcher(matcher, true);
+captureThat(Matcher matcher) => new ArgMatcher(matcher, true);
 
 /// A Strong-mode safe argument matcher that wraps other argument matchers.
 /// See the README for a full explanation.
-/*=T*/ typed/*<T>*/(_ArgMatcher matcher, {String named}) {
+/*=T*/ typed/*<T>*/(ArgMatcher matcher, {String named}) {
   if (named == null) {
     _typedArgs.add(matcher);
   } else {
@@ -481,7 +561,7 @@ typedef dynamic Answering(Invocation realInvocation);
 
 typedef VerificationResult Verification(matchingInvocations);
 
-typedef void InOrderVerification(recordedInvocations);
+typedef void _InOrderVerification(List<dynamic> recordedInvocations);
 
 Verification get verifyNever => _makeVerify(true);
 
@@ -497,7 +577,7 @@ Verification _makeVerify(bool never) {
     if (_verifyCalls.length == 1) {
       _VerifyCall verifyCall = _verifyCalls.removeLast();
       var result =
-      new VerificationResult(verifyCall.matchingInvocations.length);
+          new VerificationResult(verifyCall.matchingInvocations.length);
       verifyCall._checkWith(never);
       return result;
     } else {
@@ -506,12 +586,12 @@ Verification _makeVerify(bool never) {
   };
 }
 
-InOrderVerification get verifyInOrder {
+_InOrderVerification get verifyInOrder {
   if (_verifyCalls.isNotEmpty) {
     throw new StateError(_verifyCalls.join());
   }
   _verificationInProgress = true;
-  return (verifyCalls) {
+  return (List<dynamic> _) {
     _verificationInProgress = false;
     DateTime dt = new DateTime.fromMillisecondsSinceEpoch(0);
     var tmpVerifyCalls = new List.from(_verifyCalls);
@@ -524,9 +604,9 @@ InOrderVerification get verifyInOrder {
         dt = matched.timeStamp;
       } else {
         Set<Mock> mocks =
-        tmpVerifyCalls.map((_VerifyCall vc) => vc.mock).toSet();
+            tmpVerifyCalls.map((_VerifyCall vc) => vc.mock).toSet();
         List<RealCall> allInvocations =
-        mocks.expand((m) => m._realCalls).toList(growable: false);
+            mocks.expand((m) => m._realCalls).toList(growable: false);
         allInvocations
             .sort((inv1, inv2) => inv1.timeStamp.compareTo(inv2.timeStamp));
         String otherCalls = "";
@@ -537,9 +617,9 @@ InOrderVerification get verifyInOrder {
             "Matching call #${tmpVerifyCalls.indexOf(verifyCall)} not found.$otherCalls");
       }
     }
-    matchedCalls.forEach((rc) {
-      rc.verified = true;
-    });
+    for (var call in matchedCalls) {
+      call.verified = true;
+    }
   };
 }
 
@@ -567,16 +647,17 @@ Expectation get when {
   };
 }
 
+/// Print all collected invocations of any mock methods of [mocks].
 void logInvocations(List<Mock> mocks) {
   List<RealCall> allInvocations =
-  mocks.expand((m) => m._realCalls).toList(growable: false);
+      mocks.expand((m) => m._realCalls).toList(growable: false);
   allInvocations.sort((inv1, inv2) => inv1.timeStamp.compareTo(inv2.timeStamp));
   allInvocations.forEach((inv) {
     print(inv.toString());
   });
 }
 
-/// Should only be used during Mockito testing.
+/// Only for mockito testing.
 void resetMockitoState() {
   _whenInProgress = false;
   _verificationInProgress = false;

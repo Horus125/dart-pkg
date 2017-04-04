@@ -1,3 +1,10 @@
+## 0.10.4
+* Implement `highlight` in `SourceMapFileSpan`.
+* Require version `^1.3.0` of `source_span`.
+
+## 0.10.3
+ * Add `addMapping` and `containsMapping` members to `MappingBundle`.
+
 ## 0.10.2
  * Support for extended source map format.
  * Polish `MappingBundle.spanFor` handling of URIs that have a suffix that

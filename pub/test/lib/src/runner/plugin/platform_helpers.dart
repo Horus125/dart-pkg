@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:stream_channel/stream_channel.dart';
@@ -13,6 +14,8 @@ import '../../backend/test.dart';
 import '../../backend/test_platform.dart';
 import '../../util/io.dart';
 import '../../util/remote_exception.dart';
+import '../configuration.dart';
+import '../configuration/suite.dart';
 import '../environment.dart';
 import '../load_exception.dart';
 import '../runner_suite.dart';
@@ -30,9 +33,14 @@ typedef StackTrace _MapTrace(StackTrace trace);
 ///
 /// If [mapTrace] is passed, it will be used to adjust stack traces for any
 /// errors emitted by tests.
+///
+/// If [asciiSymbols] is passed, it controls whether the `symbol` package is
+/// configured to use plain ASCII or Unicode symbols. It defaults to `true` on
+/// Windows and `false` elsewhere.
 Future<RunnerSuiteController> deserializeSuite(String path,
-    TestPlatform platform, Metadata metadata, Environment environment,
-    StreamChannel channel, {StackTrace mapTrace(StackTrace trace)}) async {
+    TestPlatform platform, SuiteConfiguration suiteConfig,
+    Environment environment, StreamChannel channel,
+    {StackTrace mapTrace(StackTrace trace)}) async {
   if (mapTrace == null) mapTrace = (trace) => trace;
 
   var disconnector = new Disconnector();
@@ -40,12 +48,16 @@ Future<RunnerSuiteController> deserializeSuite(String path,
 
   suiteChannel.sink.add({
     'platform': platform.identifier,
-    'metadata': metadata.serialize(),
-    'os': platform == TestPlatform.vm ? currentOS.identifier : null
+    'metadata': suiteConfig.metadata.serialize(),
+    'os': platform == TestPlatform.vm ? currentOS.identifier : null,
+    'asciiGlyphs': Platform.isWindows,
+    'path': path,
+    'collectTraces': Configuration.current.reporter == 'json'
   });
 
   var completer = new Completer();
 
+  var loadSuiteZone = Zone.current;
   handleError(error, stackTrace) {
     disconnector.disconnect();
 
@@ -53,7 +65,7 @@ Future<RunnerSuiteController> deserializeSuite(String path,
       // If we've already provided a controller, send the error to the
       // LoadSuite. This will cause the virtual load test to fail, which will
       // notify the user of the error.
-      Zone.current.handleUncaughtError(error, mapTrace(stackTrace));
+      loadSuiteZone.handleUncaughtError(error, mapTrace(stackTrace));
     } else {
       completer.completeError(error, mapTrace(stackTrace));
     }
@@ -93,11 +105,12 @@ Future<RunnerSuiteController> deserializeSuite(String path,
 
   return new RunnerSuiteController(
       environment,
+      suiteConfig,
       await completer.future,
       path: path,
       platform: platform,
       os: currentOS,
-      onClose: disconnector.disconnect);
+      onClose: () => disconnector.disconnect().catchError(handleError));
 }
 
 /// A utility class for storing state while deserializing tests.

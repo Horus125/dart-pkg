@@ -1,3 +1,117 @@
+## 0.12.20
+
+* **Breaking change:** The `expect()` method no longer returns a `Future`, since
+  this broke backwards-compatibility in cases where a void function was
+  returning an `expect()` (such as `void foo() => expect(...)`). Instead, a new
+  `expectLater()` function has been added that return a `Future` that completes
+  when the matcher has finished running.
+
+* The `verbose` parameter to `expect()` and the `formatFailure()` function are
+  deprecated.
+
+## 0.12.19+1
+
+* Make sure asynchronous matchers that can fail synchronously, such as
+  `throws*()` and `prints()`, can be used with synchronous matcher operators
+  like `isNot()`.
+
+## 0.12.19
+
+* Added the `StreamMatcher` class, as well as several built-in stream matchers:
+  `emits()`, `emitsError()`, `emitsDone, mayEmit()`, `mayEmitMultiple()`,
+  `emitsAnyOf()`, `emitsInOrder()`, `emitsInAnyOrder()`, and `neverEmits()`.
+
+* `expect()` now returns a Future for the asynchronous matchers `completes`,
+  `completion()`, `throws*()`, and `prints()`.
+
+* Add a `printOnFailure()` method for providing debugging information that's
+  only printed when a test fails.
+
+* Automatically configure the [`term_glyph`][term_glyph] package to use ASCII
+  glyphs when the test runner is running on Windows.
+
+[term_glyph]: https://pub.dartlang.org/packages/term_glyph
+
+* Deprecate the `throws` matcher in favor of `throwsA()`.
+
+* Deprecate the `Throws` class. These matchers should only be constructed via
+  `throwsA()`.
+
+## 0.12.18+1
+
+* Fix the deprecated `expectAsync()` function. The deprecation caused it to
+  fail to support functions that take arguments.
+
+## 0.12.18
+
+* Add an `addTearDown()` function, which allows tests to register additional
+  tear-down callbacks as they're running.
+
+* Add the `spawnHybridUri()` and `spawnHybridCode()` functions, which allow
+  browser tests to run code on the VM.
+
+* Fix the new `expectAsync` functions so that they don't produce analysis errors
+  when passed callbacks with optional arguments.
+
+## 0.12.17+3
+
+* Internal changes only.
+
+## 0.12.17+2
+
+* Fix Dartium debugging on Windows.
+
+## 0.12.17+1
+
+* Fix a bug where tags couldn't be marked as skipped.
+
+## 0.12.17
+
+* Deprecate `expectAsync` and `expectAsyncUntil`, since they currently can't be
+  made to work cleanly in strong mode. They are replaced with separate methods
+  for each number of callback arguments:
+    * `expectAsync0`, `expectAsync1`, ... `expectAsync6`, and
+    * `expectAsyncUntil0`, `expectAsyncUntil1`, ... `expectAsyncUntil6`.
+
+## 0.12.16
+
+* Allow tools to interact with browser debuggers using the JSON reporter.
+
+## 0.12.15+12
+
+* Fix a race condition that could cause the runner to stall for up to three
+  seconds after completing.
+
+## 0.12.15+11
+
+* Make test iframes visible when debugging.
+
+## 0.12.15+10
+
+* Throw a better error if a group body is asynchronous.
+
+## 0.12.15+9
+
+* Widen version constraint on `analyzer`.
+
+## 0.12.15+8
+
+* Make test suites with thousands of tests load much faster on the VM (and
+  possibly other platforms).
+
+## 0.12.15+7
+
+* Fix a bug where tags would be dropped when `on_platform` was defined in a
+  config file.
+
+## 0.12.15+6
+
+* Fix a broken link in the `--help` documentation.
+
+## 0.12.15+5
+
+* Internal-only change.
+
 ## 0.12.15+4
 
 * Widen version constraint on `analyzer`.

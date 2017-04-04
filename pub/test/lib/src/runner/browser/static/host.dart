@@ -5,15 +5,49 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
-import 'dart:js' as js;
 
 import 'package:stack_trace/stack_trace.dart';
 import 'package:stream_channel/stream_channel.dart';
+import 'package:js/js.dart';
+
+/// A class defined in content shell, used to control its behavior.
+@JS()
+class _TestRunner {
+  external void waitUntilDone();
+}
+
+/// Returns the current content shell runner, or `null` if none exists.
+@JS()
+external _TestRunner get testRunner;
+
+/// A class that exposes the test API to JS.
+///
+/// These are exposed so that tools like IDEs can interact with them via remote
+/// debugging.
+@JS()
+@anonymous
+class _JSApi {
+  /// Causes the test runner to resume running, as though the user had clicked
+  /// the "play" button.
+  external Function get resume;
+
+  /// Causes the test runner to restart the current test once it finishes
+  /// running.
+  external Function get restartCurrent;
+
+  external factory _JSApi({void resume(), void restartCurrent()});
+}
+
+/// Sets the top-level `dartTest` object so that it's visible to JS.
+@JS("dartTest")
+external set _jsApi(_JSApi api);
 
 /// The iframes created for each loaded test suite, indexed by the suite id.
 final _iframes = new Map<int, IFrameElement>();
 
-// TODO(nweiz): test this once we can run browser tests.
+/// The URL for the current page.
+final _currentUrl = Uri.parse(window.location.href);
+
 /// Code that runs in the browser and loads test suites at the server's behest.
 ///
 /// One instance of this runs for each browser. When the server tells it to load
@@ -68,8 +102,11 @@ final _iframes = new Map<int, IFrameElement>();
 void main() {
   // This tells content_shell not to close immediately after the page has
   // rendered.
-  var testRunner = js.context['testRunner'];
-  if (testRunner != null) testRunner.callMethod('waitUntilDone', []);
+  testRunner?.waitUntilDone();
+
+  if (_currentUrl.queryParameters['debug'] == 'true') {
+    document.body.classes.add('debug');
+  }
 
   runZoned(() {
     var serverChannel = _connectToServer();
@@ -95,9 +132,16 @@ void main() {
 
     var play = document.querySelector("#play");
     play.onClick.listen((_) {
-      document.body.classes.remove('paused');
+      if (!document.body.classes.remove('paused')) return;
       serverChannel.sink.add({"command": "resume"});
     });
+
+    _jsApi = new _JSApi(resume: allowInterop(() {
+      if (!document.body.classes.remove('paused')) return;
+      serverChannel.sink.add({"command": "resume"});
+    }), restartCurrent: allowInterop(() {
+      serverChannel.sink.add({"command": "restart"});
+    }));
   }, onError: (error, stackTrace) {
     print("$error\n${new Trace.from(stackTrace).terse}");
   });
@@ -108,8 +152,7 @@ void main() {
 MultiChannel _connectToServer() {
   // The `managerUrl` query parameter contains the WebSocket URL of the remote
   // [BrowserManager] with which this communicates.
-  var currentUrl = Uri.parse(window.location.href);
-  var webSocket = new WebSocket(currentUrl.queryParameters['managerUrl']);
+  var webSocket = new WebSocket(_currentUrl.queryParameters['managerUrl']);
 
   var controller = new StreamChannelController(sync: true);
   webSocket.onMessage.listen((message) {
@@ -164,11 +207,7 @@ StreamChannel _connectToIframe(String url, int id) {
   controller.local.stream.listen((message) async {
     await readyCompleter.future;
 
-    // JSON-encode the message to work around sdk#25636, which caused the
-    // structured clone algorithm to be broken with Window.postMessage in
-    // 1.14.{0,1,2}. Once we no longer care about these Dartiums, stop encoding.
-    iframe.contentWindow.postMessage(
-        JSON.encode(message), window.location.origin);
+    iframe.contentWindow.postMessage(message, window.location.origin);
   });
 
   return controller.foreign;

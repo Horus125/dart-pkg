@@ -97,7 +97,7 @@ class Tokenizer extends TokenizerBase {
       case TokenChar.HASH:
         return _finishToken(TokenKind.HASH);
       case TokenChar.PLUS:
-        if (maybeEatDigit()) return finishNumber();
+        if (_nextCharsAreNumber(ch)) return finishNumber();
         return _finishToken(TokenKind.PLUS);
       case TokenChar.MINUS:
         if (inSelectorExpression || unicodeRange) {
@@ -105,7 +105,7 @@ class Tokenizer extends TokenizerBase {
           // not part of identifier e.g., interval value range (e.g. U+400-4ff)
           // or minus operator in selector expression.
           return _finishToken(TokenKind.MINUS);
-        } else if (maybeEatDigit()) {
+        } else if (_nextCharsAreNumber(ch)) {
           return finishNumber();
         } else if (TokenizerHelpers.isIdentifierStart(ch)) {
           return finishIdentifier();
@@ -202,8 +202,13 @@ class Tokenizer extends TokenizerBase {
           } else {
             return _errorToken();
           }
-        } else if ((ch == UNICODE_U || ch == UNICODE_LOWER_U) &&
+        } else if (_inString &&
+            (ch == UNICODE_U || ch == UNICODE_LOWER_U) &&
             (_peekChar() == UNICODE_PLUS)) {
+          // `_inString` is misleading. We actually DON'T want to enter this
+          // block while tokenizing a string, but the parser sets this value to
+          // false while it IS consuming tokens within a string.
+          //
           // Unicode range: U+uNumber[-U+uNumber]
           //   uNumber = 0..10FFFF
           _nextChar(); // Skip +

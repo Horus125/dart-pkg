@@ -6,6 +6,7 @@
   * [Platform Selectors](#platform-selectors)
   * [Running Tests on Dartium](#running-tests-on-dartium)
 * [Asynchronous Tests](#asynchronous-tests)
+  * [Stream Matchers](#stream-matchers)
 * [Running Tests With Custom HTML](#running-tests-with-custom-html)
 * [Configuring Tests](#configuring-tests)
   * [Skipping Tests](#skipping-tests)
@@ -14,7 +15,10 @@
   * [Whole-Package Configuration](#whole-package-configuration)
 * [Tagging Tests](#tagging-tests)
 * [Debugging](#debugging)
-* [Testing with `barback`](#testing-with-barback)
+* [Browser/VM Hybrid Tests](#browservm-hybrid-tests)
+* [Support for Other Packages](#support-for-other-packages)
+  * [`term_glyph`](#term_glyph)
+  * [`barback`](#barback)
 * [Further Reading](#further-reading)
 
 ## Writing Tests
@@ -126,7 +130,7 @@ void main() {
 
 A single test file can be run just using `pub run test path/to/test.dart`.
 
-![Single file being run via pub run"](https://raw.githubusercontent.com/dart-lang/test/master/image/test1.gif)
+![Single file being run via "pub run"](https://raw.githubusercontent.com/dart-lang/test/master/image/test1.gif)
 
 Many tests can be run at a time using `pub run test path/to/dir`.
 
@@ -252,10 +256,9 @@ write `@TestOn("browser && !chrome")`.
 ### Running Tests on Dartium
 
 Tests can be run on [Dartium][] by passing the `-p dartium` flag. If you're
-using the Dart Editor, the test runner will be able to find Dartium
-automatically. On Mac OS, you can also [install it using Homebrew][homebrew].
-Otherwise, make sure there's an executable called `dartium` (on Mac OS or Linux)
-or `dartium.exe` (on Windows) on your system path.
+using Mac OS, you can [install Dartium using Homebrew][homebrew]. Otherwise,
+make sure there's an executable called `dartium` (on Mac OS or Linux) or
+`dartium.exe` (on Windows) on your system path.
 
 [Dartium]: https://www.dartlang.org/tools/dartium/
 [homebrew]: https://github.com/dart-lang/homebrew-dart
@@ -344,7 +347,7 @@ void main() {
   test("Stream.fromIterable() emits the values in the iterable", () {
     var stream = new Stream.fromIterable([1, 2, 3]);
 
-    stream.listen(expectAsync((number) {
+    stream.listen(expectAsync1((number) {
       expect(number, inInclusiveRange(1, 3));
     }, count: 3));
   });
@@ -352,6 +355,119 @@ void main() {
 ```
 
 [expectAsync]: http://www.dartdocs.org/documentation/test/latest/index.html#test/test@id_expectAsync
+
+### Stream Matchers
+
+The `test` package provides a suite of powerful matchers for dealing with
+[asynchronous streams][Stream]. They're expressive and composable, and make it
+easy to write complex expectations about the values emitted by a stream. For
+example:
+
+[Stream]: https://api.dartlang.org/stable/dart-async/Stream-class.html
+
+```dart
+import "dart:async";
+
+import "package:test/test.dart";
+
+void main() {
+  test("process emits status messages", () {
+    // Dummy data to mimic something that might be emitted by a process.
+    var stdoutLines = new Stream.fromIterable([
+      "Ready.",
+      "Loading took 150ms.",
+      "Succeeded!"
+    ]);
+
+    expect(stdoutLines, emitsInOrder([
+      // Values match individual events.
+      "Ready.",
+
+      // Matchers also run against individual events.
+      startsWith("Loading took"),
+
+      // Stream matchers can be nested. This asserts that one of two events are
+      // emitted after the "Loading took" line.
+      emitsAnyOf(["Succeeded!", "Failed!"]),
+
+      // By default, more events are allowed after the matcher finishes
+      // matching. This asserts instead that the stream emits a done event and
+      // nothing else.
+      emitsDone
+    ]));
+  });
+}
+```
+
+A stream matcher can also match the [`async`][async] package's
+[`StreamQueue`][StreamQueue] class, which allows events to be requested from a
+stream rather than pushed to the consumer. The matcher will consume the matched
+events, but leave the rest of the queue alone so that it can still be used by
+the test, unlike a normal `Stream` which can only have one subscriber. For
+example:
+
+[async]: https://pub.dartlang.org/packages/async
+[StreamQueue]: https://www.dartdocs.org/documentation/async/latest/async/StreamQueue-class.html
+
+```dart
+import "dart:async";
+
+import "package:async/async.dart";
+import "package:test/test.dart";
+
+void main() {
+  test("process emits a WebSocket URL", () async {
+    // Wrap the Stream in a StreamQueue so that we can request events.
+    var stdout = new StreamQueue(new Stream.fromIterable([
+      "WebSocket URL:",
+      "ws://localhost:1234/",
+      "Waiting for connection..."
+    ]));
+
+    // Ignore lines from the process until it's about to emit the URL.
+    await expect(stdout, emitsThrough("WebSocket URL:"));
+
+    // Parse the next line as a URL.
+    var url = Uri.parse(await stdout.next);
+    expect(url.host, equals('localhost'));
+
+    // You can match against the same StreamQueue multiple times.
+    await expect(stdout, emits("Waiting for connection..."));
+  });
+}
+```
+
+The following built-in stream matchers are available:
+
+* [`emits()`][emits] matches a single data event.
+* [`emitsError()`][emitsError] matches a single error event.
+* [`emitsDone`][emitsDone] matches a single done event.
+* [`mayEmit()`][mayEmit] consumes events if they match an inner matcher, without
+  requiring them to match.
+* [`mayEmitMultiple()`][mayEmitMultiple] works like `mayEmit()`, but it matches
+  events against the matcher as many times as possible.
+* [`emitsAnyOf()`][emitsAnyOf] consumes events matching one (or more) of several
+  possible matchers.
+* [`emitsInOrder()`][emitsInOrder] consumes events matching multiple matchers in
+  a row.
+* [`emitsInAnyOrder()`][emitsInAnyOrder] works like `emitsInOrder()`, but it
+  allows the matchers to match in any order.
+* [`neverEmits()`][neverEmits] matches a stream that finishes *without* matching
+  an inner matcher.
+
+You can also define your own custom stream matchers by calling
+[`new StreamMatcher()`][new StreamMatcher].
+
+[emits]: https://www.dartdocs.org/documentation/test/latest/test/emits.html
+[emitsError]: https://www.dartdocs.org/documentation/test/latest/test/emitsError.html
+[emitsDone]: https://www.dartdocs.org/documentation/test/latest/test/emitsDone.html
+[mayEmit]: https://www.dartdocs.org/documentation/test/latest/test/mayEmit.html
+[mayEmitMultiple]: https://www.dartdocs.org/documentation/test/latest/test/mayEmitMultiple.html
+[emitsAnyOf]: https://www.dartdocs.org/documentation/test/latest/test/emitsAnyOf.html
+[emitsInOrder]: https://www.dartdocs.org/documentation/test/latest/test/emitsInOrder.html
+[emitsInAnyOrder]: https://www.dartdocs.org/documentation/test/latest/test/emitsInAnyOrder.html
+[neverEmits]: https://www.dartdocs.org/documentation/test/latest/test/neverEmits.html
+[new StreamMatcher]: https://www.dartdocs.org/documentation/test/latest/test/StreamMatcher/StreamMatcher.html
 
 ## Running Tests With Custom HTML
 
@@ -521,7 +637,7 @@ Tags are defined using the `@Tags` annotation for suites and the `tags` named
 parameter to `test()` and `group()`. For example:
 
 ```dart
-@Tags(["browser"])
+@Tags(const ["browser"])
 
 import "package:test/test.dart";
 
@@ -600,7 +716,99 @@ breakpoint, the runner will open its own debugging console in the terminal that
 controls how tests are run. You can type "restart" there to re-run your test as
 many times as you need to figure out what's going on.
 
-## Testing With `barback`
+Normally, browser tests are run in hidden iframes. However, when debugging, the
+iframe for the current test suite is expanded to fill the browser window so you
+can see and interact with any HTML it renders. Note that the Dart animation may
+still be visible behind the iframe; to hide it, just add a `background-color` to
+the page's HTML.
+
+## Browser/VM Hybrid Tests
+
+Code that's written for the browser often needs to talk to some kind of server.
+Maybe you're testing the HTML served by your app, or maybe you're writing a
+library that communicates over WebSockets. We call tests that run code on both
+the browser and the VM **hybrid tests**.
+
+Hybrid tests use one of two functions: [`spawnHybridCode()`][spawnHybridCode] and
+[`spawnHybridUri()`][spawnHybridUri]. Both of these spawn Dart VM
+[isolates][dart:isolate] that can import `dart:io` and other VM-only libraries.
+The only difference is where the code from the isolate comes from:
+`spawnHybridCode()` takes a chunk of actual Dart code, whereas
+`spawnHybridUri()` takes a URL. They both return a
+[`StreamChannel`][StreamChannel] that communicates with the hybrid isolate. For
+example:
+
+[spawnHybridCode]: http://www.dartdocs.org/documentation/test/latest/index.html#test/test@id_spawnHybridCode
+[spawnHybridUri]: http://www.dartdocs.org/documentation/test/latest/index.html#test/test@id_spawnHybridUri
+[dart:isolate]: https://api.dartlang.org/stable/dart-isolate/dart-isolate-library.html
+[StreamChannel]: https://pub.dartlang.org/packages/stream_channel
+
+```dart
+// ## test/web_socket_server.dart
+
+// The library loaded by spawnHybridUri() can import any packages that your
+// package depends on, including those that only work on the VM.
+import "package:shelf/shelf_io.dart" as io;
+import "package:shelf_web_socket/shelf_web_socket.dart";
+import "package:stream_channel/stream_channel.dart";
+
+// Once the hybrid isolate starts, it will call the special function
+// hybridMain() with a StreamChannel that's connected to the channel
+// returned spawnHybridCode().
+hybridMain(StreamChannel channel) async {
+  // Start a WebSocket server that just sends "hello!" to its clients.
+  var server = await io.serve(webSocketHandler((webSocket) {
+    webSocket.sink.add("hello!");
+  }), 'localhost', 0);
+
+  // Send the port number of the WebSocket server to the browser test, so
+  // it knows what to connect to.
+  channel.sink.add(server.port);
+}
+
+
+// ## test/web_socket_test.dart
+
+@TestOn("browser")
+
+import "dart:html";
+
+import "package:test/test.dart";
+
+void main() {
+  test("connects to a server-side WebSocket", () async {
+    // Each spawnHybrid function returns a StreamChannel that communicates with
+    // the hybrid isolate. You can close this channel to kill the isolate.
+    var channel = spawnHybridUri("web_socket_server.dart");
+
+    // Get the port for the WebSocket server from the hybrid isolate.
+    var port = await channel.stream.first;
+
+    var socket = new WebSocket('ws://localhost:$port');
+    var message = await socket.onMessage.first;
+    expect(message.data, equals("hello!"));
+  });
+}
+```
+
+![A diagram showing a test in a browser communicating with a Dart VM isolate outside the browser.](https://raw.githubusercontent.com/dart-lang/test/master/image/hybrid.png)
+
+**Note**: If you write hybrid tests, be sure to add a dependency on the
+`stream_channel` package, since you're using its API!
+
+## Support for Other Packages
+
+### `term_glyph`
+
+The [`term_glyph`][term_glyph] package provides getters for Unicode glyphs with
+ASCII alternatives. `test` ensures that it's configured to produce ASCII when
+the user is running on Windows, where Unicode isn't supported. This ensures that
+testing libraries can use Unicode on POSIX operating systems without breaking
+Windows users.
+
+[term_glyph]: https://pub.dartlang.org/packages/term_glyph
+
+### `barback`
 
 Packages using the `barback` transformer system may need to test code that's
 created or modified using transformers. The test runner handles this using the

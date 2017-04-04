@@ -4,7 +4,9 @@
 
 part of file.src.backends.memory;
 
-class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
+class _MemoryDirectory extends _MemoryFileSystemEntity
+    with common.DirectoryAddOnsMixin
+    implements Directory {
   static int _tempCounter = 0;
 
   _MemoryDirectory(MemoryFileSystem fileSystem, String path)
@@ -39,7 +41,7 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
     );
     if (node.type != expectedType) {
       // There was an existing non-directory node at this object's path
-      throw new io.FileSystemException('File exists', path);
+      throw common.notADirectory(path);
     }
   }
 
@@ -73,7 +75,7 @@ class _MemoryDirectory extends _MemoryFileSystemEntity implements Directory {
         newPath,
         validateOverwriteExistingEntity: (_DirectoryNode existingNode) {
           if (existingNode.children.isNotEmpty) {
-            throw new io.FileSystemException('Directory not empty', newPath);
+            throw common.directoryNotEmpty(newPath);
           }
         },
       );

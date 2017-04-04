@@ -51,7 +51,7 @@ class _MemoryFile extends _MemoryFileSystemEntity implements File {
     if (node.type != expectedType) {
       // There was an existing non-file entity at this object's path
       assert(node.type == FileSystemEntityType.DIRECTORY);
-      throw new io.FileSystemException('Is a directory', path);
+      throw common.isADirectory(path);
     }
     return node;
   }
@@ -66,10 +66,9 @@ class _MemoryFile extends _MemoryFileSystemEntity implements File {
         checkType: (_Node node) {
           FileSystemEntityType actualType = node.stat.type;
           if (actualType != expectedType) {
-            String msg = actualType == FileSystemEntityType.NOT_FOUND
-                ? 'No such file or directory'
-                : 'Is a directory';
-            throw new FileSystemException(msg, path);
+            throw actualType == FileSystemEntityType.NOT_FOUND
+                ? common.noSuchFileOrDirectory(path)
+                : common.isADirectory(path);
           }
         },
       );
@@ -122,10 +121,36 @@ class _MemoryFile extends _MemoryFileSystemEntity implements File {
   File get absolute => super.absolute;
 
   @override
+  Future<DateTime> lastAccessed() async => lastAccessedSync();
+
+  @override
+  DateTime lastAccessedSync() => (_resolvedBacking as _FileNode).stat.accessed;
+
+  @override
+  Future<dynamic> setLastAccessed(DateTime time) async =>
+      setLastAccessedSync(time);
+
+  @override
+  void setLastAccessedSync(DateTime time) {
+    _FileNode node = _resolvedBacking;
+    node.accessed = time.millisecondsSinceEpoch;
+  }
+
+  @override
   Future<DateTime> lastModified() async => lastModifiedSync();
 
   @override
   DateTime lastModifiedSync() => (_resolvedBacking as _FileNode).stat.modified;
+
+  @override
+  Future<dynamic> setLastModified(DateTime time) async =>
+      setLastModifiedSync(time);
+
+  @override
+  void setLastModifiedSync(DateTime time) {
+    _FileNode node = _resolvedBacking;
+    node.modified = time.millisecondsSinceEpoch;
+  }
 
   @override
   Future<io.RandomAccessFile> open(
@@ -205,11 +230,12 @@ class _MemoryFile extends _MemoryFileSystemEntity implements File {
     bool flush: false,
   }) {
     if (!_isWriteMode(mode)) {
-      throw new FileSystemException('Bad file descriptor', path);
+      throw common.badFileDescriptor(path);
     }
     _FileNode node = _resolvedBackingOrCreate;
     _truncateIfNecessary(node, mode);
     node.content.addAll(bytes);
+    node.touch();
   }
 
   @override

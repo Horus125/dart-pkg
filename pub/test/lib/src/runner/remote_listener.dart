@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:stream_channel/stream_channel.dart';
+import 'package:term_glyph/term_glyph.dart' as glyph;
 
 import '../backend/declarer.dart';
 import '../backend/group.dart';
@@ -68,15 +69,20 @@ class RemoteListener {
       }
 
       var message = await channel.stream.first;
+
+      if (message['asciiGlyphs']) glyph.ascii = true;
       var metadata = new Metadata.deserialize(message['metadata']);
-      var declarer = new Declarer(metadata);
+      var declarer = new Declarer(
+          metadata: metadata,
+          collectTraces: message['collectTraces']);
       await declarer.declare(main);
 
       var os = message['os'] == null
           ? null
           : OperatingSystem.find(message['os']);
       var platform = TestPlatform.find(message['platform']);
-      var suite = new Suite(declarer.build(), platform: platform, os: os);
+      var suite = new Suite(declarer.build(),
+          platform: platform, os: os, path: message['path']);
       new RemoteListener._(suite, printZone)._listen(channel);
     }, onError: (error, stackTrace) {
       _sendError(channel, error, stackTrace);
@@ -192,6 +198,8 @@ class RemoteListener {
       });
     });
 
-    liveTest.run().then((_) => channel.sink.add({"type": "complete"}));
+    runZoned(() {
+      liveTest.run().then((_) => channel.sink.add({"type": "complete"}));
+    }, zoneValues: {#test.runner.test_channel: channel});
   }
 }

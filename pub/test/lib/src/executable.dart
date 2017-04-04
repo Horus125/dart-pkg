@@ -73,7 +73,7 @@ final String _globalConfigPath = (){
 }();
 
 main(List<String> args) async {
-  var configuration;
+  Configuration configuration;
   try {
     configuration = new Configuration.parse(args);
   } on FormatException catch (error) {
@@ -105,9 +105,9 @@ main(List<String> args) async {
           new Configuration.load(_globalConfigPath, global: true));
     }
 
-    if (new File("dart_test.yaml").existsSync()) {
+    if (new File(configuration.configurationPath).existsSync()) {
       fileConfiguration = fileConfiguration.merge(
-          new Configuration.load("dart_test.yaml"));
+          new Configuration.load(configuration.configurationPath));
     }
 
     configuration = fileConfiguration.merge(configuration);

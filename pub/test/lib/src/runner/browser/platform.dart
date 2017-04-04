@@ -19,7 +19,6 @@ import 'package:shelf_packages_handler/shelf_packages_handler.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import '../../backend/metadata.dart';
 import '../../backend/test_platform.dart';
 import '../../util/io.dart';
 import '../../util/one_off_handler.dart';
@@ -27,6 +26,7 @@ import '../../util/path_handler.dart';
 import '../../util/stack_trace_mapper.dart';
 import '../../utils.dart';
 import '../configuration.dart';
+import '../configuration/suite.dart';
 import '../load_exception.dart';
 import '../plugin/platform.dart';
 import '../runner_suite.dart';
@@ -39,11 +39,14 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// [root] is the root directory that the server should serve. It defaults to
   /// the working directory.
-  static Future<BrowserPlatform> start(Configuration config, {String root})
+  static Future<BrowserPlatform> start({String root})
       async {
     var server = new shelf_io.IOServer(await HttpMultiServer.loopback(0));
-    return new BrowserPlatform._(server, config, root: root);
+    return new BrowserPlatform._(server, Configuration.current, root: root);
   }
+
+  /// The test runner configuration.
+  final Configuration _config;
 
   /// The underlying server.
   final shelf.Server _server;
@@ -56,9 +59,6 @@ class BrowserPlatform extends PlatformPlugin {
 
   /// The URL for this server.
   Uri get url => _server.url.resolve(_secret + "/");
-
-  /// The test runner configuration.
-  Configuration _config;
 
   /// A [OneOffHandler] for servicing WebSocket connections for
   /// [BrowserManager]s.
@@ -101,6 +101,14 @@ class BrowserPlatform extends PlatformPlugin {
   final _browserManagers =
       new Map<TestPlatform, Future<Result<BrowserManager>>>();
 
+  /// A cascade of handlers for suites' precompiled paths.
+  ///
+  /// This is `null` if there are no precompiled suites yet.
+  shelf.Cascade _precompiledCascade;
+
+  /// The precompiled paths that have handlers in [_precompiledHandler].
+  final _precompiledPaths = new Set<String>();
+
   /// A map from test suite paths to Futures that will complete once those
   /// suites are finished compiling.
   ///
@@ -112,11 +120,11 @@ class BrowserPlatform extends PlatformPlugin {
   final _mappers = new Map<String, StackTraceMapper>();
 
   BrowserPlatform._(this._server, Configuration config, {String root})
-      : _root = root == null ? p.current : root,
-        _config = config,
+      : _config = config,
+        _root = root == null ? p.current : root,
         _compiledDir = config.pubServeUrl == null ? createTempDir() : null,
         _http = config.pubServeUrl == null ? null : new HttpClient(),
-        _compilers = new CompilerPool(config) {
+        _compilers = new CompilerPool() {
     var cascade = new shelf.Cascade()
         .add(_webSocketHandler.handler);
 
@@ -125,11 +133,12 @@ class BrowserPlatform extends PlatformPlugin {
           .add(packagesDirHandler())
           .add(_jsHandler.handler)
           .add(createStaticHandler(_root))
-          .add(_wrapperHandler);
 
-      if (config.precompiledPath != null) {
-        cascade = cascade.add(createStaticHandler(config.precompiledPath));
-      }
+          // Add this before the wrapper handler so that its HTML takes
+          // precedence over the test runner's.
+          .add((request) => _precompiledCascade?.handler(request) ??
+              new shelf.Response.notFound(null))
+          .add(_wrapperHandler);
     }
 
     var pipeline = new shelf.Pipeline()
@@ -190,7 +199,9 @@ class BrowserPlatform extends PlatformPlugin {
   /// This will start a browser to load the suite if one isn't already running.
   /// Throws an [ArgumentError] if [browser] isn't a browser platform.
   Future<RunnerSuite> load(String path, TestPlatform browser,
-      Metadata metadata) async {
+      SuiteConfiguration suiteConfig) async {
+    assert(suiteConfig.platforms.contains(browser));
+
     if (!browser.isBrowser) {
       throw new ArgumentError("$browser is not a browser.");
     }
@@ -224,10 +235,34 @@ class BrowserPlatform extends PlatformPlugin {
           '$suitePrefix.dart.browser_test.dart');
       }
 
-      await _pubServeSuite(path, dartUrl, browser);
+      await _pubServeSuite(path, dartUrl, browser, suiteConfig);
       suiteUrl = _config.pubServeUrl.resolveUri(p.toUri('$suitePrefix.html'));
     } else {
-      if (browser.isJS && !_precompiled(path)) await _compileSuite(path);
+      if (browser.isJS) {
+        if (_precompiled(suiteConfig, path)) {
+          if (_precompiledPaths.add(suiteConfig.precompiledPath)) {
+            if (!suiteConfig.jsTrace) {
+              var jsPath = p.join(suiteConfig.precompiledPath,
+                  p.relative(path + ".browser_test.dart.js", from: _root));
+
+              var sourceMapPath = '${jsPath}.map';
+              if (new File(sourceMapPath).existsSync()) {
+                _mappers[path] = new StackTraceMapper(
+                    new File(sourceMapPath).readAsStringSync(),
+                    mapUrl: p.toUri(sourceMapPath),
+                    packageResolver: await PackageResolver.current.asSync,
+                    sdkRoot: p.toUri(sdkDir));
+              }
+            }
+            _precompiledCascade ??= new shelf.Cascade();
+            _precompiledCascade = _precompiledCascade.add(
+                createStaticHandler(suiteConfig.precompiledPath));
+          }
+        } else {
+          await _compileSuite(path, suiteConfig);
+        }
+      }
+
       if (_closed) return null;
       suiteUrl = url.resolveUri(p.toUri(
           p.withoutExtension(p.relative(path, from: _root)) + ".html"));
@@ -239,20 +274,20 @@ class BrowserPlatform extends PlatformPlugin {
     var browserManager = await _browserManagerFor(browser);
     if (_closed) return null;
 
-    var suite = await browserManager.load(path, suiteUrl, metadata,
+    var suite = await browserManager.load(path, suiteUrl, suiteConfig,
         mapper: browser.isJS ? _mappers[path] : null);
     if (_closed) return null;
     return suite;
   }
 
-  /// Returns whether the test at [path] has precompiled JS available underneath
-  /// `_config.precompiledPath`.
-  bool _precompiled(String path) {
-    if (_config.precompiledPath == null) return false;
-    var jsPath =
-        p.join(_config.precompiledPath, p.relative(path, from: _root)) +
-            ".browser_test.dart.js";
-    return new File(jsPath).existsSync();
+  /// Returns whether the test at [path] has precompiled HTML available
+  /// underneath [suiteConfig.precompiledPath].
+  bool _precompiled(SuiteConfiguration suiteConfig, String path) {
+    if (suiteConfig.precompiledPath == null) return false;
+    var htmlPath = p.join(
+        suiteConfig.precompiledPath,
+        p.relative(p.withoutExtension(path) + ".html", from: _root));
+    return new File(htmlPath).existsSync();
   }
 
   StreamChannel loadChannel(String path, TestPlatform platform) =>
@@ -262,7 +297,8 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// This ensures that only one suite is loaded at a time, and that any errors
   /// are exposed as [LoadException]s.
-  Future _pubServeSuite(String path, Uri dartUrl, TestPlatform browser) {
+  Future _pubServeSuite(String path, Uri dartUrl, TestPlatform browser,
+      SuiteConfiguration suiteConfig) {
     return _pubServePool.withResource(() async {
       var timer = new Timer(new Duration(seconds: 1), () {
         print('"pub serve" is compiling $path...');
@@ -294,7 +330,7 @@ class BrowserPlatform extends PlatformPlugin {
               'Make sure "pub serve" is serving the test/ directory.');
         }
 
-        if (getSourceMap && !_config.jsTrace) {
+        if (getSourceMap && !suiteConfig.jsTrace) {
           _mappers[path] = new StackTraceMapper(
               await UTF8.decodeStream(response),
               mapUrl: url,
@@ -326,12 +362,12 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// Once the suite has been compiled, it's added to [_jsHandler] so it can be
   /// served.
-  Future _compileSuite(String dartPath) {
+  Future _compileSuite(String dartPath, SuiteConfiguration suiteConfig) {
     return _compileFutures.putIfAbsent(dartPath, () async {
       var dir = new Directory(_compiledDir).createTempSync('test_').path;
       var jsPath = p.join(dir, p.basename(dartPath) + ".browser_test.dart.js");
 
-      await _compilers.compile(dartPath, jsPath);
+      await _compilers.compile(dartPath, jsPath, suiteConfig);
       if (_closed) return;
 
       var jsUrl = p.toUri(p.relative(dartPath, from: _root)).path +
@@ -349,7 +385,7 @@ class BrowserPlatform extends PlatformPlugin {
             headers: {'Content-Type': 'application/json'});
       });
 
-      if (_config.jsTrace) return;
+      if (suiteConfig.jsTrace) return;
       var mapPath = jsPath + '.map';
       _mappers[dartPath] = new StackTraceMapper(
           new File(mapPath).readAsStringSync(),
@@ -371,7 +407,10 @@ class BrowserPlatform extends PlatformPlugin {
     var webSocketUrl = url.replace(scheme: 'ws').resolve(path);
     var hostUrl = (_config.pubServeUrl == null ? url : _config.pubServeUrl)
         .resolve('packages/test/src/runner/browser/static/index.html')
-        .replace(queryParameters: {'managerUrl': webSocketUrl.toString()});
+        .replace(queryParameters: {
+          'managerUrl': webSocketUrl.toString(),
+          'debug': _config.pauseAfterLoad.toString()
+        });
 
     var future = BrowserManager.start(platform, hostUrl, completer.future,
         debug: _config.pauseAfterLoad);

@@ -45,7 +45,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
           };
           break;
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', newPath);
+          throw common.isADirectory(newPath);
         default:
           // Should never happen.
           throw new AssertionError();
@@ -55,9 +55,9 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     if (_isLink) {
       switch (await fileSystem.type(path)) {
         case FileSystemEntityType.NOT_FOUND:
-          throw new FileSystemException('No such file or directory', path);
+          throw common.noSuchFileOrDirectory(path);
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', path);
+          throw common.isADirectory(path);
         case FileSystemEntityType.FILE:
           await setUp();
           await fileSystem.delegate
@@ -94,7 +94,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
           };
           break;
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', newPath);
+          throw common.isADirectory(newPath);
         default:
           // Should never happen.
           throw new AssertionError();
@@ -104,9 +104,9 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
     if (_isLink) {
       switch (fileSystem.typeSync(path)) {
         case FileSystemEntityType.NOT_FOUND:
-          throw new FileSystemException('No such file or directory', path);
+          throw common.noSuchFileOrDirectory(path);
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', path);
+          throw common.isADirectory(path);
         case FileSystemEntityType.FILE:
           setUp();
           fileSystem.delegate
@@ -149,7 +149,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
           // Nothing to do.
           return this;
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', path);
+          throw common.isADirectory(path);
         default:
           throw new AssertionError();
       }
@@ -181,7 +181,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
           // Nothing to do.
           return;
         case FileSystemEntityType.DIRECTORY:
-          throw new FileSystemException('Is a directory', path);
+          throw common.isADirectory(path);
         default:
           throw new AssertionError();
       }
@@ -209,12 +209,36 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
   int lengthSync() => getDelegate(followLinks: true).lengthSync();
 
   @override
+  Future<DateTime> lastAccessed() =>
+      getDelegate(followLinks: true).lastAccessed();
+
+  @override
+  DateTime lastAccessedSync() =>
+      getDelegate(followLinks: true).lastAccessedSync();
+
+  @override
+  Future<dynamic> setLastAccessed(DateTime time) =>
+      getDelegate(followLinks: true).setLastAccessed(time);
+
+  @override
+  void setLastAccessedSync(DateTime time) =>
+      getDelegate(followLinks: true).setLastAccessedSync(time);
+
+  @override
   Future<DateTime> lastModified() =>
       getDelegate(followLinks: true).lastModified();
 
   @override
   DateTime lastModifiedSync() =>
       getDelegate(followLinks: true).lastModifiedSync();
+
+  @override
+  Future<dynamic> setLastModified(DateTime time) =>
+      getDelegate(followLinks: true).setLastModified(time);
+
+  @override
+  void setLastModifiedSync(DateTime time) =>
+      getDelegate(followLinks: true).setLastModifiedSync(time);
 
   @override
   Future<RandomAccessFile> open({
@@ -309,4 +333,7 @@ class _ChrootFile extends _ChrootFileSystemEntity<File, io.File>
         encoding: encoding,
         flush: flush,
       );
+
+  @override
+  String toString() => "ChrootFile: '$path'";
 }

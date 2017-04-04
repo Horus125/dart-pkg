@@ -13,6 +13,7 @@ import 'package:pool/pool.dart';
 
 import '../../util/io.dart';
 import '../configuration.dart';
+import '../configuration/suite.dart';
 import '../load_exception.dart';
 
 /// A regular expression matching the first status line printed by dart2js.
@@ -23,11 +24,11 @@ final _dart2jsStatus =
 ///
 /// This limits the number of compiler instances running concurrently.
 class CompilerPool {
+  /// The test runner configuration.
+  final _config = Configuration.current;
+
   /// The internal pool that controls the number of process running at once.
   final Pool _pool;
-
-  /// The test runner configuration.
-  final Configuration _config;
 
   /// The currently-active dart2js processes.
   final _processes = new Set<Process>();
@@ -39,9 +40,7 @@ class CompilerPool {
   final _closeMemo = new AsyncMemoizer();
 
   /// Creates a compiler pool that multiple instances of `dart2js` at once.
-  CompilerPool(Configuration config)
-      : _pool = new Pool(config.concurrency),
-        _config = config;
+  CompilerPool() : _pool = new Pool(Configuration.current.concurrency);
 
   /// Compile the Dart code at [dartPath] to [jsPath].
   ///
@@ -49,7 +48,8 @@ class CompilerPool {
   ///
   /// The returned [Future] will complete once the `dart2js` process completes
   /// *and* all its output has been printed to the command line.
-  Future compile(String dartPath, String jsPath) {
+  Future compile(String dartPath, String jsPath,
+      SuiteConfiguration suiteConfig) {
     return _pool.withResource(() {
       if (_closed) return null;
 
@@ -77,7 +77,7 @@ class CompilerPool {
           wrapperPath,
           "--out=$jsPath",
           await PackageResolver.current.processArgument
-        ]..addAll(_config.dart2jsArgs);
+        ]..addAll(suiteConfig.dart2jsArgs);
 
         if (_config.color) args.add("--enable-diagnostic-colors");
 

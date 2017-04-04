@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:convert';
 import 'dart:html';
 
 import 'package:stream_channel/stream_channel.dart';
@@ -20,8 +19,7 @@ StreamChannel postMessageChannel() {
     if (message.origin != window.location.origin) return;
     message.stopPropagation();
 
-    // See host.dart for why we have to explicitly decode here.
-    controller.local.sink.add(JSON.decode(message.data));
+    controller.local.sink.add(message.data);
   });
 
   controller.local.stream.listen((data) {

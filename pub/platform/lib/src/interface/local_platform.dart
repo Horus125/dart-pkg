@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:io' as io show Platform;
+import 'dart:io' as io show Platform, stdin;
 
 import 'platform.dart';
 
@@ -46,4 +46,7 @@ class LocalPlatform extends Platform {
 
   @override
   String get version => io.Platform.version;
+
+  @override
+  bool get ansiSupported => io.stdin.supportsAnsiEscapes;
 }

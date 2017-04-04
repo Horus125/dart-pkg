@@ -24,7 +24,6 @@ class ReplayFile extends ReplayFileSystemEntity implements File {
     Converter<String, String> blobToString = blobToBytes.fuse(UTF8.decoder);
     Converter<String, RandomAccessFile> reviveRandomAccessFile =
         new ReviveRandomAccessFile(fileSystem);
-    // TODO(tvolkert) remove `as`: https://github.com/dart-lang/sdk/issues/28748
     Converter<String, List<String>> lineSplitter =
         const LineSplitter() as Converter<String, List<String>>;
     Converter<String, List<String>> blobToLines =
@@ -43,8 +42,14 @@ class ReplayFile extends ReplayFileSystemEntity implements File {
       #copySync: reviveFile,
       #length: const ToFuture<int>(),
       #lengthSync: const Passthrough<int>(),
+      #lastAccessed: DateTimeCodec.deserialize.fuse(const ToFuture<DateTime>()),
+      #lastAccessedSync: DateTimeCodec.deserialize,
+      #setLastAccessed: const ToFuture<dynamic>(),
+      #setLastAccessedSync: const Passthrough<Null>(),
       #lastModified: DateTimeCodec.deserialize.fuse(const ToFuture<DateTime>()),
       #lastModifiedSync: DateTimeCodec.deserialize,
+      #setLastModified: const ToFuture<dynamic>(),
+      #setLastModifiedSync: const Passthrough<Null>(),
       #open: reviveRandomAccessFile.fuse(const ToFuture<RandomAccessFile>()),
       #openSync: reviveRandomAccessFile,
       #openRead: blobToByteStream,

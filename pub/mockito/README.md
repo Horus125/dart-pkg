@@ -1,7 +1,7 @@
 Mock library for Dart inspired by [Mockito](https://code.google.com/p/mockito/).
 
 [![Pub](https://img.shields.io/pub/v/mockito.svg)]()
-[![Build Status](https://travis-ci.org/fibulwinter/dart-mockito.svg?branch=master)](https://travis-ci.org/fibulwinter/dart-mockito)
+[![Build Status](https://travis-ci.org/dart-lang/dart-mockito.svg?branch=master)](https://travis-ci.org/dart-lang/dart-mockito)
 
 Current mock libraries suffer from specifying method names as strings, which cause a lot of problems:
   * Poor refactoring support: rename method and you need manually search/replace it's usage in when/verify clauses.
@@ -36,7 +36,8 @@ cat.sound();
 //verify interaction
 verify(cat.sound());
 ```
-Once created, mock will remember all interactions. Then you can selectively verify whatever interaction you are interested in.
+Once created, mock will remember all interactions. Then you can selectively verify whatever interaction you are
+interested in.
 
 ## How about some stubbing?
 ```dart
@@ -64,9 +65,12 @@ expect(cat.sound(), "Meow");
 ```
 
 By default, for all methods that return value, mock returns null.
-Stubbing can be overridden: for example common stubbing can go to fixture setup but the test methods can override it. Please note that overridding stubbing is a potential code smell that points out too much stubbing.
+Stubbing can be overridden: for example common stubbing can go to fixture setup but the test methods can override it.
+Please note that overridding stubbing is a potential code smell that points out too much stubbing.
 Once stubbed, the method will always return stubbed value regardless of how many times it is called.
-Last stubbing is more important - when you stubbed the same method with the same arguments many times. Other words: the order of stubbing matters but it is only meaningful rarely, e.g. when stubbing exactly the same method calls or sometimes when argument matchers are used, etc.
+Last stubbing is more important - when you stubbed the same method with the same arguments many times. Other words: the
+order of stubbing matters but it is only meaningful rarely, e.g. when stubbing exactly the same method calls or
+sometimes when argument matchers are used, etc.
 
 ## Argument matchers
 ```dart
@@ -90,7 +94,8 @@ verify(cat.eatFood(argThat(contains("food"))));
 cat.lives = 9;
 verify(cat.lives=9);
 ```
-By default equals matcher is used to argument matching (since 0.11.0). It simplifies matching for collections as arguments. If you need more strict matching consider use `argThat(identical(arg))`.
+By default equals matcher is used to argument matching (since 0.11.0). It simplifies matching for collections as
+arguments. If you need more strict matching consider use `argThat(identical(arg))`.
 Argument matchers allow flexible verification or stubbing
 
 ## Verifying exact number of invocations / at least x / never
@@ -115,18 +120,21 @@ verifyInOrder([
   cat.eatFood("Fish")
 ]);
 ```
-Verification in order is flexible - you don't have to verify all interactions one-by-one but only those that you are interested in testing in order.
+Verification in order is flexible - you don't have to verify all interactions one-by-one but only those that you are
+interested in testing in order.
 
 ## Making sure interaction(s) never happened on mock
 ```dart
   verifyZeroInteractions(cat);
 ```
+
 ## Finding redundant invocations
 ```dart
 cat.sound();
 verify(cat.sound());
 verifyNoMoreInteractions(cat);
 ```
+
 ## Capturing arguments for further assertions
 ```dart
 //simple capture
@@ -141,6 +149,22 @@ cat.eatFood("Milk");
 cat.eatFood("Fish");
 expect(verify(cat.eatFood(captureThat(startsWith("F")).captured, ["Fish"]);
 ```
+
+## Resetting mocks
+```dart
+//clearing collected interactions
+cat.eatFood("Fish");
+clearInteractions(cat);
+cat.eatFood("Fish");
+verify(cat.eatFood("Fish")).called(1);
+//resetting stubs and collected interactions
+when(cat.eatFood("Fish")).thenReturn(true);
+cat.eatFood("Fish");
+reset(cat);
+when(cat.eatFood(any)).thenReturn(false);
+expect(cat.eatFood("Fish"), false);
+```
+
 ## Spy
 ```dart
 //spy creation
@@ -151,6 +175,14 @@ when(cat.sound()).thenReturn("Purr");
 expect(cat.sound(), "Purr");  
 //using real object
 expect(cat.lives, 9);   
+```
+
+## Debugging
+```dart
+//print all collected invocations of any mock methods of a list of mock objects
+logInvocations([catOne, catTwo]);
+//throw every time that a mock method is called without a stub being matched
+throwOnMissingStub(cat);
 ```
 
 ## Strong mode compliance
@@ -282,3 +314,5 @@ values anymore but their matchers. So `mockUtils.stringUtils` will *not* return 
 
 You can look at the `when` and `Mock.noSuchMethod` implementations to see how it's done.
 It's very straightforward.
+
+**NOTE:** This is not an official Google product

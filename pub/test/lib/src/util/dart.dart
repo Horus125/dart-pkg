@@ -3,9 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:analyzer/analyzer.dart';
+import 'package:package_resolver/package_resolver.dart';
 import 'package:source_span/source_span.dart';
 
 import 'string_literal_iterator.dart';
@@ -16,14 +18,21 @@ import 'string_literal_iterator.dart';
 /// they will be resolved in the same context as the host isolate. [message] is
 /// passed to the [main] method of the code being run; the caller is responsible
 /// for using this to establish communication with the isolate.
-Future<Isolate> runInIsolate(String code, message, {bool checked}) async {
+///
+/// If [resolver] is passed, its package resolution strategy is used to resolve
+/// code in the spawned isolate. It defaults to [PackageResolver.current].
+Future<Isolate> runInIsolate(String code, message, {PackageResolver resolver,
+    bool checked, SendPort onExit}) async {
+  resolver ??= PackageResolver.current;
   return await Isolate.spawnUri(
-      Uri.parse('data:application/dart;charset=utf-8,' + Uri.encodeFull(code)),
+      new Uri.dataFromString(code,
+          mimeType: 'application/dart', encoding: UTF8),
       [],
       message,
-      packageRoot: await Isolate.packageRoot,
-      packageConfig: await Isolate.packageConfig,
-      checked: checked);
+      packageRoot: await resolver.packageRoot,
+      packageConfig: await resolver.packageConfigUri,
+      checked: checked,
+      onExit: onExit);
 }
 
 // TODO(nweiz): Move this into the analyzer once it starts using SourceSpan

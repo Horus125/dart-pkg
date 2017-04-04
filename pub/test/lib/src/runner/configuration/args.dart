@@ -95,7 +95,7 @@ final ArgParser _parser = (() {
       allowedHelp: {
     'compact': 'A single line, updated continuously.',
     'expanded': 'A separate line for each update.',
-    'json': 'A machine-readable format (see https://goo.gl/0HRhdZ).'
+    'json': 'A machine-readable format (see https://goo.gl/gBsV1a).'
   });
   parser.addFlag("verbose-trace", negatable: false,
       help: 'Whether to emit stack traces with core library frames.');
@@ -107,6 +107,8 @@ final ArgParser _parser = (() {
   /// The following options are used only by the internal Google test runner.
   /// They're hidden and not supported as stable API surface outside Google.
 
+  parser.addOption("configuration",
+      help: 'The path to the configuration file.', hide: true);
   parser.addOption("dart2js-path",
       help: 'The path to the dart2js executable.', hide: true);
   parser.addOption("dart2js-args",
@@ -120,10 +122,10 @@ final ArgParser _parser = (() {
       hide: true);
 
   // If we're running test/dir/my_test.dart, we'll look for
-  // test/dir/my_test.dart.browser_test.dart.js in the precompiled directory.
+  // test/dir/my_test.dart.html in the precompiled directory.
   parser.addOption("precompiled",
-      help: 'The path to a mirror of the package directory containing '
-          'precompiled JS.',
+      help: 'The path to a mirror of the package directory containing HTML '
+          'that points to precompiled JS.',
       hide: true);
 
   return parser;
@@ -191,6 +193,7 @@ class _Parser {
         jsTrace: _ifParsed('js-trace'),
         pauseAfterLoad: _ifParsed('pause-after-load'),
         color: _ifParsed('color'),
+        configurationPath: _ifParsed('configuration'),
         dart2jsPath: _ifParsed('dart2js-path'),
         dart2jsArgs: _ifParsed('dart2js-args') as List<String>,
         precompiledPath: _ifParsed('precompiled'),

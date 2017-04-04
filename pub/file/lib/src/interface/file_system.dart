@@ -2,7 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of file.src.interface;
+import 'dart:async';
+
+import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
+
+import 'directory.dart';
+import 'file.dart';
+import 'file_system_entity.dart';
+import 'link.dart';
+import '../io.dart' as io;
 
 /// A generic representation of a file system.
 ///
@@ -30,7 +39,7 @@ abstract class FileSystem {
   Link link(dynamic path);
 
   /// An object for manipulating paths in this file system.
-  path.Context get path;
+  p.Context get path;
 
   /// Gets the system temp directory.
   ///
@@ -136,4 +145,20 @@ abstract class FileSystem {
   /// [io.FileSystemEntityType.LINK].
   bool isLinkSync(String path) =>
       typeSync(path) == io.FileSystemEntityType.LINK;
+
+  /// Gets the string path represented by the specified generic [path].
+  ///
+  /// [path] may be a [io.FileSystemEntity], a [String], or a [Uri].
+  @protected
+  String getPath(dynamic path) {
+    if (path is io.FileSystemEntity) {
+      return path.path;
+    } else if (path is String) {
+      return path;
+    } else if (path is Uri) {
+      return this.path.fromUri(path);
+    } else {
+      throw new ArgumentError('Invalid type for "path": ${path?.runtimeType}');
+    }
+  }
 }

@@ -6,21 +6,15 @@ import 'dart:async';
 
 import 'package:matcher/matcher.dart';
 
-import '../backend/invoker.dart';
 import '../utils.dart';
-import 'expect.dart';
+import 'async_matcher.dart';
 
-/// This can be used to match two kinds of objects:
+/// This function is deprecated.
 ///
-/// * A [Function] that throws an exception when called. The function cannot
-///   take any arguments. If you want to test that a function expecting
-///   arguments throws, wrap it in another zero-argument function that calls
-///   the one you want to test.
-///
-/// * A [Future] that completes with an exception. Note that this creates an
-///   asynchronous expectation. The call to `expect()` that includes this will
-///   return immediately and execution will continue. Later, when the future
-///   completes, the actual expectation will run.
+/// Use [throwsA] instead. We strongly recommend that you add assertions about
+/// at least the type of the error, but you can write `throwsA(anything)` to
+/// mimic the behavior of this matcher.
+@Deprecated("Will be removed in 0.13.0")
 const Matcher throws = const Throws();
 
 /// This can be used to match two kinds of objects:
@@ -40,47 +34,31 @@ const Matcher throws = const Throws();
 /// [Matcher], it will implicitly be treated as `equals(matcher)`.
 Matcher throwsA(matcher) => new Throws(wrapMatcher(matcher));
 
-class Throws extends Matcher {
+/// Use the [throwsA] function instead.
+@Deprecated("Will be removed in 0.13.0")
+class Throws extends AsyncMatcher {
   final Matcher _matcher;
 
   const Throws([Matcher matcher]) : this._matcher = matcher;
 
-  bool matches(item, Map matchState) {
-    if (item is! Function && item is! Future) return false;
+  // Avoid async/await so we synchronously fail if we match a synchronous
+  // function.
+  /*FutureOr<String>*/ matchAsync(item) {
+    if (item is! Function && item is! Future) {
+      return "was not a Function or Future";
+    }
+
     if (item is Future) {
-      Invoker.current.addOutstandingCallback();
-      // Queue up an asynchronous expectation that validates when the future
-      // completes.
-      item.then((value) {
-        fail("Expected future to fail, but succeeded with '$value'.");
-      }, onError: (error, trace) {
-        if (_matcher == null) return;
-
-        var reason;
-        if (trace != null) {
-          var chain = terseChain(trace,
-              verbose: Invoker.current.liveTest.test.metadata.verboseTrace);
-          reason = "Actual exception trace:\n"
-              "  ${chain.toString().replaceAll("\n", "\n  ")}";
-        }
-
-        // Re-run [expect] to get the proper formatting.
-        expect(() => throw error, this, reason: reason);
-      }).then((_) => Invoker.current.removeOutstandingCallback());
-      // It hasn't failed yet.
-      return true;
+      return item.then(
+          (value) => indent(prettyPrint(value), first: 'emitted '),
+          onError: _check);
     }
 
     try {
-      item();
-      return false;
-    } catch (e, s) {
-      if (_matcher == null || _matcher.matches(e, matchState)) {
-        return true;
-      } else {
-        addStateInfo(matchState, {'exception': e, 'stack': s});
-        return false;
-      }
+      var value = item();
+      return indent(prettyPrint(value), first: 'returned ');
+    } catch (error, trace) {
+      return _check(error, trace);
     }
   }
 
@@ -92,20 +70,24 @@ class Throws extends Matcher {
     }
   }
 
-  Description describeMismatch(
-      item, Description mismatchDescription, Map matchState, bool verbose) {
-    if (item is! Function && item is! Future) {
-      return mismatchDescription.add('is not a Function or Future');
-    } else if (_matcher == null || matchState['exception'] == null) {
-      return mismatchDescription.add('did not throw');
-    } else {
-      mismatchDescription
-          .add('threw ')
-          .addDescriptionOf(matchState['exception']);
-      if (verbose) {
-        mismatchDescription.add(' at ').add(matchState['stack'].toString());
-      }
-      return mismatchDescription;
+  /// Verifies that [error] matches [_matcher] and returns a [String]
+  /// description of the failure if it doesn't.
+  String _check(error, StackTrace trace) {
+    if (_matcher == null) return null;
+
+    var matchState = {};
+    if (_matcher.matches(error, matchState)) return null;
+
+    var result = _matcher
+        .describeMismatch(error, new StringDescription(), matchState, false)
+        .toString();
+
+    var buffer = new StringBuffer();
+    buffer.writeln(indent(prettyPrint(error),            first: 'threw '));
+    if (trace != null) {
+      buffer.writeln(indent(testChain(trace).toString(), first: 'stack '));
     }
+    if (result.isNotEmpty) buffer.writeln(indent(result, first: 'which '));
+    return buffer.toString().trimRight();
   }
 }

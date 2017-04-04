@@ -25,6 +25,7 @@ class FakePlatform extends Platform {
     this.packageRoot,
     this.packageConfig,
     this.version,
+    this.ansiSupported,
   });
 
   /// Creates a new [FakePlatform] with properties whose initial values mirror
@@ -38,10 +39,12 @@ class FakePlatform extends Platform {
         executable = platform.executable,
         resolvedExecutable = platform.resolvedExecutable,
         script = platform.script,
-        executableArguments = new List<String>.from(platform.executableArguments),
+        executableArguments =
+            new List<String>.from(platform.executableArguments),
         packageRoot = platform.packageRoot,
         packageConfig = platform.packageConfig,
-        version = platform.version;
+        version = platform.version,
+        ansiSupported = platform.ansiSupported;
 
   /// Creates a new [FakePlatform] with properties extracted from the encoded
   /// JSON string.
@@ -52,17 +55,18 @@ class FakePlatform extends Platform {
     Map<String, dynamic> map = new JsonDecoder().convert(json);
     return new FakePlatform(
       numberOfProcessors: map['numberOfProcessors'],
-      pathSeparator : map['pathSeparator'],
-      operatingSystem : map['operatingSystem'],
-      localHostname : map['localHostname'],
-      environment : map['environment'],
-      executable : map['executable'],
-      resolvedExecutable : map['resolvedExecutable'],
-      script : Uri.parse(map['script']),
-      executableArguments : map['executableArguments'],
-      packageRoot : map['packageRoot'],
-      packageConfig : map['packageConfig'],
-      version : map['version'],
+      pathSeparator: map['pathSeparator'],
+      operatingSystem: map['operatingSystem'],
+      localHostname: map['localHostname'],
+      environment: map['environment'],
+      executable: map['executable'],
+      resolvedExecutable: map['resolvedExecutable'],
+      script: Uri.parse(map['script']),
+      executableArguments: map['executableArguments'],
+      packageRoot: map['packageRoot'],
+      packageConfig: map['packageConfig'],
+      version: map['version'],
+      ansiSupported: map['ansiSupported'],
     );
   }
 
@@ -101,4 +105,7 @@ class FakePlatform extends Platform {
 
   @override
   String version;
+
+  @override
+  bool ansiSupported;
 }

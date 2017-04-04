@@ -1,3 +1,26 @@
+## 2.0.2
+
+* Start using the new `InvocationMatcher` instead of the old matcher.
+* Change `throwOnMissingStub` back to invoking `Object.noSuchMethod`:
+  * It was never documented what the thrown type should be expected as
+  * You can now just rely on `throwsNoSuchMethodError` if you want to catch it
+
+## 2.0.1
+
+* Add a new `throwOnMissingStub` method to the API.
+
+## 2.0.0
+
+* Removed `mockito_no_mirrors.dart`
+
+## 2.0.0-dev
+
+* Remove export of `spy` and any `dart:mirrors` based API from
+  `mockito.dart`. Users may import as `package:mockito/mirrors.dart`
+  going forward.
+* Deprecated `mockito_no_mirrors.dart`; replace with `mockito.dart`.
+* Require Dart SDK `>=1.21.0 <2.0.0` to use generic methods.
+
 ## 1.0.1
 
 * Add a new `thenThrow` method to the API.

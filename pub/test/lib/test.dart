@@ -7,8 +7,10 @@ import 'dart:async';
 import 'package:path/path.dart' as p;
 
 import 'src/backend/declarer.dart';
+import 'src/backend/invoker.dart';
 import 'src/backend/test_platform.dart';
 import 'src/frontend/timeout.dart';
+import 'src/runner/configuration/suite.dart';
 import 'src/runner/engine.dart';
 import 'src/runner/plugin/environment.dart';
 import 'src/runner/reporter/expanded.dart';
@@ -17,12 +19,15 @@ import 'src/utils.dart';
 
 export 'package:matcher/matcher.dart';
 
-export 'src/frontend/expect.dart';
+export 'src/frontend/expect.dart' hide formatFailure;
 export 'src/frontend/expect_async.dart';
 export 'src/frontend/future_matchers.dart';
 export 'src/frontend/on_platform.dart';
 export 'src/frontend/prints_matcher.dart';
 export 'src/frontend/skip.dart';
+export 'src/frontend/spawn_hybrid.dart';
+export 'src/frontend/stream_matcher.dart';
+export 'src/frontend/stream_matchers.dart';
 export 'src/frontend/tags.dart';
 export 'src/frontend/test_on.dart';
 export 'src/frontend/throws_matcher.dart';
@@ -52,6 +57,7 @@ Declarer get _declarer {
   scheduleMicrotask(() async {
     var suite = new RunnerSuite(
         const PluginEnvironment(),
+        SuiteConfiguration.empty,
         _globalDeclarer.build(),
         path: p.prettyUri(Uri.base),
         platform: TestPlatform.vm,
@@ -225,7 +231,25 @@ void setUp(callback()) => _declarer.setUp(callback);
 ///
 /// Each callback at the top level or in a given group will be run in the
 /// reverse of the order they were declared.
+///
+/// See also [addTearDown], which adds tear-downs to a running test.
 void tearDown(callback()) => _declarer.tearDown(callback);
+
+/// Registers a function to be run after the current test.
+///
+/// This is called within a running test, and adds a tear-down only for the
+/// current test. It allows testing libraries to add cleanup logic as soon as
+/// there's something to clean up.
+///
+/// The [callback] is run before any callbacks registered with [tearDown]. Like
+/// [tearDown], the most recently registered callback is run first.
+void addTearDown(callback()) {
+  if (Invoker.current == null) {
+    throw new StateError("addTearDown() may only be called within a test.");
+  }
+
+  Invoker.current.addTearDown(callback);
+}
 
 /// Registers a function to be run once before all tests.
 ///
@@ -261,3 +285,11 @@ void registerException(error, [StackTrace stackTrace]) {
   // going through the zone API allows other zones to consistently see errors.
   Zone.current.handleUncaughtError(error, stackTrace);
 }
+
+/// Prints [message] if and when the current test fails.
+///
+/// This is intended for test infrastructure to provide debugging information
+/// without cluttering the output for successful tests. Note that unlike
+/// [print], each individual message passed to [printOnFailure] will be
+/// separated by a blank line.
+void printOnFailure(String message) => Invoker.current.printOnFailure(message);

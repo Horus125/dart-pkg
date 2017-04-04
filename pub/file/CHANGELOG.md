@@ -1,3 +1,29 @@
+#### 2.3.2
+
+* Fixed `FileSystem.directory(Uri)`, `FileSystem.file(Uri)`, and
+  `FileSystem.link(Uri)` to consult the file system's path context when
+  converting the URI to a file path rather than using `Uri.toFilePath()`.
+
+#### 2.3.1
+
+* Fixed `MemoryFileSystem` to make `File.writeAs...()` update the last modified
+  time of the file.
+
+#### 2.3.0
+
+* Added the following convenience methods in `Directory`:
+  * `Directory.childDirectory(String basename)`
+  * `Directory.childFile(String basename)`
+  * `Directory.childLink(String basename)`
+
+#### 2.2.0
+
+* Added `ErrorCodes` class, which holds errno values.
+
+#### 2.1.0
+
+* Add support for new `dart:io` API methods added in Dart SDK 1.23
+
 #### 2.0.1
 
 * Minor doc updates

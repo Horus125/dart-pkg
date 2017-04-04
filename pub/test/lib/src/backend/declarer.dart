@@ -38,6 +38,9 @@ class Declarer {
   /// The stack trace for this group.
   final Trace _trace;
 
+  /// Whether to collect stack traces for [GroupEntry]s.
+  final bool _collectTraces;
+
   /// The set-up functions to run for each test in this group.
   final _setUps = new List<AsyncFunction>();
 
@@ -77,10 +80,15 @@ class Declarer {
   /// This is the implicit group that exists outside of any calls to `group()`.
   /// If [metadata] is passed, it's used as the metadata for the implicit root
   /// group.
-  Declarer([Metadata metadata])
-      : this._(null, null, metadata == null ? new Metadata() : metadata, null);
+  ///
+  /// If [collectTraces] is `true`, this will set [GroupEntry.trace] for all
+  /// entries built by the declarer. Note that this can be noticeably slow when
+  /// thousands of tests are being declared (see #457).
+  Declarer({Metadata metadata, bool collectTraces: false})
+      : this._(null, null, metadata ?? new Metadata(), collectTraces, null);
 
-  Declarer._(this._parent, this._name, this._metadata, this._trace);
+  Declarer._(this._parent, this._name, this._metadata, this._collectTraces,
+      this._trace);
 
   /// Runs [body] with this declarer as [Declarer.current].
   ///
@@ -97,16 +105,25 @@ class Declarer {
         tags: tags));
 
     _entries.add(new LocalTest(_prefix(name), metadata, () async {
-      // TODO(nweiz): It might be useful to throw an error here if a test starts
-      // running while other tests from the same declarer are also running,
-      // since they might share closurized state.
+      var parents = <Declarer>[];
+      for (var declarer = this; declarer != null; declarer = declarer._parent) {
+        parents.add(declarer);
+      }
+
+      // Register all tear-down functions in all declarers. Iterate through
+      // parents outside-in so that the Invoker gets the functions in the order
+      // they were declared in source.
+      for (var declarer in parents.reversed) {
+        for (var tearDown in declarer._tearDowns) {
+          Invoker.current.addTearDown(tearDown);
+        }
+      }
 
       await Invoker.current.waitForOutstandingCallbacks(() async {
         await _runSetUps();
         await body();
       });
-      await _runTearDowns();
-    }, trace: new Trace.current(2)));
+    }, trace: _collectTraces ? new Trace.current(2) : null));
   }
 
   /// Creates a group of tests.
@@ -117,10 +134,17 @@ class Declarer {
     var metadata = _metadata.merge(new Metadata.parse(
         testOn: testOn, timeout: timeout, skip: skip, onPlatform: onPlatform,
         tags: tags));
-    var trace = new Trace.current(2);
+    var trace = _collectTraces ? new Trace.current(2) : null;
 
-    var declarer = new Declarer._(this, _prefix(name), metadata, trace);
-    declarer.declare(body);
+    var declarer = new Declarer._(
+        this, _prefix(name), metadata, _collectTraces, trace);
+    declarer.declare(() {
+      // Cast to dynamic to avoid the analyzer complaining about us using the
+      // result of a void method.
+      var result = (body as dynamic)();
+      if (result is! Future) return;
+      throw new ArgumentError("Groups may not be async.");
+    });
     _entries.add(declarer.build());
   }
 
@@ -142,14 +166,14 @@ class Declarer {
   /// Registers a function to be run once before all tests.
   void setUpAll(callback()) {
     _checkNotBuilt("setUpAll");
-    _setUpAllTrace ??= new Trace.current(2);
+    if (_collectTraces) _setUpAllTrace ??= new Trace.current(2);
     _setUpAlls.add(callback);
   }
 
   /// Registers a function to be run once after all tests.
   void tearDownAll(callback()) {
     _checkNotBuilt("tearDownAll");
-    _tearDownAllTrace ??= new Trace.current(2);
+    if (_collectTraces) _tearDownAllTrace ??= new Trace.current(2);
     _tearDownAlls.add(callback);
   }
 
@@ -182,23 +206,6 @@ class Declarer {
     await Future.forEach(_setUps, (setUp) => setUp());
   }
 
-  /// Run the tear-up functions for this and any parent groups.
-  ///
-  /// If no set-up functions are declared, this returns a [Future] that
-  /// completes immediately.
-  ///
-  /// This should only be called within a test.
-  Future _runTearDowns() {
-    return Invoker.current.unclosable(() {
-      var tearDowns = [];
-      for (var declarer = this; declarer != null; declarer = declarer._parent) {
-        tearDowns.addAll(declarer._tearDowns.reversed);
-      }
-
-      return Future.forEach(tearDowns, _errorsDontStopTest);
-    });
-  }
-
   /// Returns a [Test] that runs the callbacks in [_setUpAll].
   Test get _setUpAll {
     if (_setUpAlls.isEmpty) return null;
@@ -214,24 +221,8 @@ class Declarer {
 
     return new LocalTest(_prefix("(tearDownAll)"), _metadata, () {
       return Invoker.current.unclosable(() {
-        return Future.forEach(_tearDownAlls.reversed, _errorsDontStopTest);
+        return Future.forEach(_tearDownAlls.reversed, errorsDontStopTest);
       });
     }, trace: _tearDownAllTrace);
-  }
-
-  /// Runs [body] with special error-handling behavior.
-  ///
-  /// Errors emitted [body] will still cause the current test to fail, but they
-  /// won't cause it to *stop*. In particular, they won't remove any outstanding
-  /// callbacks registered outside of [body].
-  Future _errorsDontStopTest(body()) {
-    var completer = new Completer();
-
-    Invoker.current.addOutstandingCallback();
-    Invoker.current.waitForOutstandingCallbacks(() {
-      new Future.sync(body).whenComplete(completer.complete);
-    }).then((_) => Invoker.current.removeOutstandingCallback());
-
-    return completer.future;
   }
 }

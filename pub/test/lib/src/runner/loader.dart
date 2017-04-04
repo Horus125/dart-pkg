@@ -11,12 +11,12 @@ import 'package:path/path.dart' as p;
 
 import '../backend/group.dart';
 import '../backend/invoker.dart';
-import '../backend/metadata.dart';
 import '../backend/test_platform.dart';
 import '../util/io.dart';
 import '../utils.dart';
 import 'browser/platform.dart';
 import 'configuration.dart';
+import 'configuration/suite.dart';
 import 'load_exception.dart';
 import 'load_suite.dart';
 import 'parse_metadata.dart';
@@ -29,7 +29,7 @@ import 'vm/platform.dart';
 /// A class for finding test files and loading them into a runnable form.
 class Loader {
   /// The test runner configuration.
-  final Configuration _config;
+  final _config = Configuration.current;
 
   /// All suites that have been created by the loader.
   final _suites = new Set<RunnerSuite>();
@@ -42,12 +42,13 @@ class Loader {
   /// These are passed to the plugins' async memoizers when a plugin is needed.
   final _platformCallbacks = <TestPlatform, AsyncFunction>{};
 
-  /// Creates a new loader that loads tests on platforms defined in [_config].
+  /// Creates a new loader that loads tests on platforms defined in
+  /// [Configuration.current].
   ///
   /// [root] is the root directory that will be served for browser tests. It
   /// defaults to the working directory.
-  Loader(this._config, {String root}) {
-    registerPlatformPlugin([TestPlatform.vm], () => new VMPlatform(_config));
+  Loader({String root}) {
+    registerPlatformPlugin([TestPlatform.vm], () => new VMPlatform());
     registerPlatformPlugin([
       TestPlatform.dartium,
       TestPlatform.contentShell,
@@ -56,7 +57,7 @@ class Loader {
       TestPlatform.firefox,
       TestPlatform.safari,
       TestPlatform.internetExplorer
-    ], () => BrowserPlatform.start(_config, root: root));
+    ], () => BrowserPlatform.start(root: root));
 
     platformCallbacks.forEach((platform, plugin) {
       registerPlatformPlugin([platform], plugin);
@@ -80,14 +81,15 @@ class Loader {
     }
   }
 
-  /// Loads all test suites in [dir].
+  /// Loads all test suites in [dir] according to [suiteConfig].
   ///
-  /// This will load tests from files that match the configuration's filename
-  /// glob. Any tests that fail to load will be emitted as [LoadException]s.
+  /// This will load tests from files that match the global configuration's
+  /// filename glob. Any tests that fail to load will be emitted as
+  /// [LoadException]s.
   ///
   /// This emits [LoadSuite]s that must then be run to emit the actual
   /// [RunnerSuite]s defined in the file.
-  Stream<LoadSuite> loadDir(String dir) {
+  Stream<LoadSuite> loadDir(String dir, SuiteConfiguration suiteConfig) {
     return StreamGroup.merge(new Directory(dir).listSync(recursive: true)
         .map((entry) {
       if (entry is! File) return new Stream.fromIterable([]);
@@ -100,60 +102,64 @@ class Loader {
          return new Stream.fromIterable([]);
       }
 
-      return loadFile(entry.path);
+      return loadFile(entry.path, suiteConfig);
     }));
   }
 
-  /// Loads a test suite from the file at [path].
+  /// Loads a test suite from the file at [path] according to [suiteConfig].
   ///
   /// This emits [LoadSuite]s that must then be run to emit the actual
   /// [RunnerSuite]s defined in the file.
   ///
   /// This will emit a [LoadException] if the file fails to load.
-  Stream<LoadSuite> loadFile(String path) async* {
-    var suiteMetadata;
+  Stream<LoadSuite> loadFile(String path, SuiteConfiguration suiteConfig)
+      async* {
     try {
-      suiteMetadata = parseMetadata(path);
+      suiteConfig = suiteConfig.merge(
+          new SuiteConfiguration.fromMetadata(parseMetadata(path)));
     } on AnalyzerErrorGroup catch (_) {
       // Ignore the analyzer's error, since its formatting is much worse than
       // the VM's or dart2js's.
-      suiteMetadata = new Metadata();
     } on FormatException catch (error, stackTrace) {
       yield new LoadSuite.forLoadException(
-          new LoadException(path, error), stackTrace: stackTrace);
+          new LoadException(path, error), suiteConfig, stackTrace: stackTrace);
       return;
     }
-    suiteMetadata = _config.metadata.merge(suiteMetadata);
 
     if (_config.pubServeUrl != null && !p.isWithin('test', path)) {
-      yield new LoadSuite.forLoadException(new LoadException(
-          path, 'When using "pub serve", all test files must be in test/.'));
+      yield new LoadSuite.forLoadException(
+          new LoadException(
+              path, 'When using "pub serve", all test files must be in test/.'),
+          suiteConfig);
       return;
     }
 
-    for (var platform in _config.platforms) {
-      if (!suiteMetadata.testOn.evaluate(platform, os: currentOS)) continue;
+    for (var platform in suiteConfig.platforms) {
+      if (!suiteConfig.metadata.testOn.evaluate(platform, os: currentOS)) {
+        continue;
+      }
 
-      var metadata = suiteMetadata.forPlatform(platform, os: currentOS);
+      var platformConfig = suiteConfig.forPlatform(platform, os: currentOS);
 
       // Don't load a skipped suite.
-      if (metadata.skip && !_config.runSkipped) {
+      if (platformConfig.metadata.skip && !platformConfig.runSkipped) {
         yield new LoadSuite.forSuite(new RunnerSuite(
             const PluginEnvironment(),
+            platformConfig,
             new Group.root(
-                [new LocalTest("(suite)", metadata, () {})],
-                metadata: metadata),
+                [new LocalTest("(suite)", platformConfig.metadata, () {})],
+                metadata: platformConfig.metadata),
             path: path, platform: platform));
         continue;
       }
 
       var name = (platform.isJS ? "compiling " : "loading ") + path;
-      yield new LoadSuite(name, () async {
+      yield new LoadSuite(name, platformConfig, () async {
         var memo = _platformPlugins[platform];
 
         try {
           var plugin = await memo.runOnce(_platformCallbacks[platform]);
-          var suite = await plugin.load(path, platform, metadata);
+          var suite = await plugin.load(path, platform, platformConfig);
           _suites.add(suite);
           return suite;
         } catch (error, stackTrace) {
