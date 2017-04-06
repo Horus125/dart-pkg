@@ -110,6 +110,8 @@ def main():
     try:
         importer_dir = os.path.join(tempdir, 'importer')
         os.mkdir(importer_dir)
+
+        # Read the requested dependencies from the canonical packages.
         packages = {}
         additional_deps = {}
         for path in args.pubspecs:
@@ -117,47 +119,55 @@ def main():
             package_name, _, dev_deps, _ = parse_full_dependencies(yaml_file)
             packages[package_name] = path
             additional_deps.update(dev_deps)
+
+        # Generate a manifest containing all the dependencies we care about.
+        manifest = {
+            'name': 'importer',
+        }
+        dependencies = {}
+        for package_name in packages.keys():
+            dependencies[package_name] = 'any'
+        for dep, version in additional_deps.iteritems():
+            if dep in packages:
+                continue
+            dependencies[dep] = version
+        for project in args.projects:
+            yaml_file = os.path.join(project, 'dart_dependencies.yaml')
+            project_deps = parse_dependencies(yaml_file)
+            for dep, version in project_deps.iteritems():
+                dependencies[dep] = version
+        manifest['dependencies'] = dependencies
+        overrides = {}
+        for package_name, path in packages.iteritems():
+            overrides[package_name] = {
+                'path': path,
+            }
+        manifest['dependency_overrides'] = overrides
         with open(os.path.join(importer_dir, 'pubspec.yaml'), 'w') as pubspec:
-            pubspec.write('''name: importer
-dependencies:
-''')
-            for package_name in packages.keys():
-                pubspec.write(r'''  %s: any
-''' % package_name)
-            for dep, version in additional_deps.iteritems():
-                if dep in packages:
-                    continue
-                # Note: this won't work for path dependencies.
-                pubspec.write(r'''  %s: "%s"
-''' % (dep, version))
-            for project in args.projects:
-                yaml_file = os.path.join(project, 'dart_dependencies.yaml')
-                project_deps = parse_dependencies(yaml_file)
-                for dep, version in project_deps.iteritems():
-                    pubspec.write('''  %s: "%s"
-''' % (dep, version))
-            # Add dependency overrides for roots.
-            pubspec.write(r'''dependency_overrides:
-''')
-            for package_name, path in packages.iteritems():
-                pubspec.write(r'''  %s:
-    path: %s
-''' % (package_name, path))
+            yaml.safe_dump(manifest, pubspec)
+
+        # Use pub to load the dependencies into a local cache.
         pub_cache_dir = os.path.join(tempdir, 'pub_cache')
         os.mkdir(pub_cache_dir)
         env = os.environ
         env['PUB_CACHE'] = pub_cache_dir
         subprocess.check_call(['flutter', 'pub', 'get'], cwd=importer_dir, env=env)
+
+        # Walk the cache and copy the packages we are interested in.
         if os.path.exists(DEST_PATH):
             shutil.rmtree(DEST_PATH)
-        packages = parse_packages_file(os.path.join(importer_dir, '.packages'))
-        for package in packages:
+        pub_packages = parse_packages_file(os.path.join(importer_dir, '.packages'))
+        for package in pub_packages:
+            if package[0] in packages:
+                # Skip canonical packages.
+                continue
             if not package[1].startswith('file://'):
                 continue
             source_dir = package[1][len('file://'):]
             if not os.path.exists(source_dir):
                 continue
             if source_dir.find('pub.dartlang.org') == -1:
+                print 'Package %s not from dartlang (%s), ignoring' % (package[0], source_dir)
                 continue
             package_name = package[0]
             # Don't import packages that live canonically in the tree.
