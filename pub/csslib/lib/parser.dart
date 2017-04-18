@@ -23,6 +23,12 @@ part 'src/tokenizer_base.dart';
 part 'src/tokenizer.dart';
 part 'src/tokenkind.dart';
 
+enum ClauseType {
+  none,
+  conjunction,
+  disjunction,
+}
+
 /** Used for parser lookup ahead (used for nested selectors Less support). */
 class ParserState extends TokenizerState {
   final Token peekToken;
@@ -485,7 +491,12 @@ class _Parser {
    *  mixin:              '@mixin name [(args,...)] '{' declarations/ruleset '}'
    *  include:            '@include name [(@arg,@arg1)]
    *                      '@include name [(@arg...)]
-   *  content             '@content'
+   *  content:            '@content'
+   *  -moz-document:      '@-moz-document' [ <url> | url-prefix(<string>) |
+   *                          domain(<string>) | regexp(<string) ]# '{'
+   *                        declarations
+   *                      '}'
+   *  supports:           '@supports' supports_condition group_rule_body
    */
   processDirective() {
     var start = _peekToken.span;
@@ -762,11 +773,14 @@ class _Parser {
 
       case TokenKind.DIRECTIVE_INCLUDE:
         return processInclude(_makeSpan(start));
-
       case TokenKind.DIRECTIVE_CONTENT:
         // TODO(terry): TBD
         _warning("@content not implemented.", _makeSpan(start));
         return null;
+      case TokenKind.DIRECTIVE_MOZ_DOCUMENT:
+        return processDocumentDirective();
+      case TokenKind.DIRECTIVE_SUPPORTS:
+        return processSupportsDirective();
     }
     return null;
   }
@@ -987,6 +1001,127 @@ class _Parser {
     return new IncludeDirective(name.name, params, span);
   }
 
+  DocumentDirective processDocumentDirective() {
+    var start = _peekToken.span;
+    _next(); // '@-moz-document'
+    var functions = <LiteralTerm>[];
+    do {
+      var function;
+
+      // Consume function token: IDENT '('
+      var ident = identifier();
+      _eat(TokenKind.LPAREN);
+
+      // Consume function arguments.
+      if (ident.name == 'url-prefix' || ident.name == 'domain') {
+        // @-moz-document allows the 'url-prefix' and 'domain' functions to
+        // omit quotations around their argument, contrary to the standard
+        // in which they must be strings. To support this we consume a
+        // string with optional quotation marks, then reapply quotation
+        // marks so they're present in the emitted CSS.
+        var argumentStart = _peekToken.span;
+        var value = processQuotedString(true);
+        // Don't quote the argument if it's empty. '@-moz-document url-prefix()'
+        // is a common pattern used for browser detection.
+        var argument = value.isNotEmpty ? '"$value"' : '';
+        var argumentSpan = _makeSpan(argumentStart);
+
+        _eat(TokenKind.RPAREN);
+
+        var arguments = new Expressions(_makeSpan(argumentSpan))
+          ..add(new LiteralTerm(argument, argument, argumentSpan));
+        function = new FunctionTerm(
+            ident.name, ident.name, arguments, _makeSpan(ident.span));
+      } else {
+        function = processFunction(ident);
+      }
+
+      functions.add(function);
+    } while (_maybeEat(TokenKind.COMMA));
+
+    _eat(TokenKind.LBRACE);
+    var groupRuleBody = processGroupRuleBody();
+    _eat(TokenKind.RBRACE);
+    return new DocumentDirective(functions, groupRuleBody, _makeSpan(start));
+  }
+
+  SupportsDirective processSupportsDirective() {
+    var start = _peekToken.span;
+    _next(); // '@supports'
+    var condition = processSupportsCondition();
+    _eat(TokenKind.LBRACE);
+    var groupRuleBody = processGroupRuleBody();
+    _eat(TokenKind.RBRACE);
+    return new SupportsDirective(condition, groupRuleBody, _makeSpan(start));
+  }
+
+  SupportsCondition processSupportsCondition() {
+    if (_peekKind(TokenKind.IDENTIFIER)) {
+      return processSupportsNegation();
+    }
+
+    var start = _peekToken.span;
+    var conditions = <SupportsConditionInParens>[];
+    var clauseType = ClauseType.none;
+
+    while (true) {
+      conditions.add(processSupportsConditionInParens());
+
+      var type;
+      var text = _peekToken.text.toLowerCase();
+
+      if (text == 'and') {
+        type = ClauseType.conjunction;
+      } else if (text == 'or') {
+        type = ClauseType.disjunction;
+      } else {
+        break; // Done parsing clause.
+      }
+
+      if (clauseType == ClauseType.none) {
+        clauseType = type; // First operand and operator of clause.
+      } else if (clauseType != type) {
+        _error("Operators can't be mixed without a layer of parentheses",
+            _peekToken.span);
+        break;
+      }
+
+      _next(); // Consume operator.
+    }
+
+    if (clauseType == ClauseType.conjunction) {
+      return new SupportsConjunction(conditions, _makeSpan(start));
+    } else if (clauseType == ClauseType.disjunction) {
+      return new SupportsDisjunction(conditions, _makeSpan(start));
+    } else {
+      return conditions.first;
+    }
+  }
+
+  SupportsNegation processSupportsNegation() {
+    var start = _peekToken.span;
+    var text = _peekToken.text.toLowerCase();
+    if (text != 'not') return null;
+    _next(); // 'not'
+    var condition = processSupportsConditionInParens();
+    return new SupportsNegation(condition, _makeSpan(start));
+  }
+
+  SupportsConditionInParens processSupportsConditionInParens() {
+    var start = _peekToken.span;
+    _eat(TokenKind.LPAREN);
+    // Try to parse a condition.
+    var condition = processSupportsCondition();
+    if (condition != null) {
+      _eat(TokenKind.RPAREN);
+      return new SupportsConditionInParens.nested(condition, _makeSpan(start));
+    }
+    // Otherwise, parse a declaration.
+    var declaration = processDeclaration([]);
+    _eat(TokenKind.RPAREN);
+    return new SupportsConditionInParens(declaration, _makeSpan(start));
+  }
+
   RuleSet processRuleSet([SelectorGroup selectorGroup]) {
     if (selectorGroup == null) {
       selectorGroup = processSelectorGroup();
@@ -996,6 +1131,24 @@ class _Parser {
           selectorGroup, processDeclarations(), selectorGroup.span);
     }
     return null;
+  }
+
+  List<TreeNode> processGroupRuleBody() {
+    var nodes = <TreeNode>[];
+    while (!(_peekKind(TokenKind.RBRACE) || _peekKind(TokenKind.END_OF_FILE))) {
+      var directive = processDirective();
+      if (directive != null) {
+        nodes.add(directive);
+        continue;
+      }
+      var ruleSet = processRuleSet();
+      if (ruleSet != null) {
+        nodes.add(ruleSet);
+        continue;
+      }
+      break;
+    }
+    return nodes;
   }
 
   /**
