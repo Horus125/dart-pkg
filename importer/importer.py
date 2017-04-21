@@ -103,6 +103,8 @@ dart_package("%s") {
 
 def main():
     parser = argparse.ArgumentParser('Import dart packages from pub')
+    parser.add_argument('--pub', required=True,
+                        help='Path to the pub executable')
     parser.add_argument('--pubspecs', nargs='+',
                         help='Paths to packages containing pubspec.yaml files')
     parser.add_argument('--projects', nargs='+',
@@ -153,7 +155,7 @@ def main():
         os.mkdir(pub_cache_dir)
         env = os.environ
         env['PUB_CACHE'] = pub_cache_dir
-        subprocess.check_call(['flutter', 'pub', 'get'], cwd=importer_dir, env=env)
+        subprocess.check_call([args.pub, 'get'], cwd=importer_dir, env=env)
 
         # Walk the cache and copy the packages we are interested in.
         if os.path.exists(DEST_PATH):
