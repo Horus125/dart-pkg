@@ -2,5 +2,4 @@
 .idea/
 .pub/
 build/
-doc/api/
 pubspec.lock

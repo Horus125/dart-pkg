@@ -136,7 +136,7 @@ class IOPersistentProperties extends PersistentProperties {
 /// Return the string for the platform's locale; return's `null` if the locale
 /// can't be determined.
 String getPlatformLocale() {
-  String locale = Platform.localeName;
+  String locale = Platform.environment['LANG'];
   if (locale == null) return null;
 
   if (locale != null) {
