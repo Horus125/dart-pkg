@@ -1,3 +1,63 @@
+## 0.20.4+1
+
+* Support the latest release of `pkg/quiver`.
+
+## 0.20.4
+
+* Bug fix: Additional fix around `ObservableList.listChanges`
+
+## 0.20.3
+
+* Bug fix: Avoid emitting an empty list via `ObservableList.listChanges`
+
+## 0.20.2
+
+* Bug fix: Avoid emitting a no-op `MapChangeRecord`
+* Bug fix: Restore `ObservableList.discardListChanges` functionality
+
+## 0.20.1
+
+* Add `Observable<List|Set|Map>.unmodifiable` for immutable collections
+* Add `Observable<List|Set|Map>.EMPTY` for empty immutable collections
+    * This can be used as an optimization for libraries that always
+      need to return an observable collection, but don't want to
+      allocate a new instance to represent an empty immutable.
+
+## 0.20.0
+
+* Add `ObservableSet`, `SetChangeRecord`, and `SetDiffer`
+
+## 0.19.0
+
+* Refactor and deprecate `ObservableMap`-specific API
+    * `ObservableMap` no longer emits `#keys` and `#values` change records
+    * `ObservableMap.spy` is deprecated, becomes `.delegate` instead
+* Potentially breaking: `ObservableMap` may no longer be extended
+
+It is also considered deprecated to be notified of `length` changes.
+
+## 0.18.1
+
+* Bug fix: Do not throw when `Observable<T>.notifyChange` is used
+
+## 0.18.0
+
+* Refactor and deprecate `ObservableList`-specific API
+    * `ObservableList.applyChangeRecords`
+    * `ObservableList.calculateChangeRecords`
+    * `ObservableList.withLength`
+    * `ObservableList.deliverListChanges`
+    * `ObservableList.discardListChanges`
+    * `ObservableList.hasListChanges`
+    * `ObservableList.listChanges`
+    * `ObservableList.notifyListChange`
+* Potentially breaking: `ObservableList` may no longer be extended
+
+It is also considered deprecated to be notified of `length`, `isEmpty`
+and `isNotEmpty` `PropertyChangeRecord`s on `ObservableList` - in a
+future release `ObservableList.changes` will be
+`Stream<List<ListChangeRecord>>`.
+
 ## 0.17.0+1
 
 * Revert `PropertyChangeMixin`, which does not work in dart2js

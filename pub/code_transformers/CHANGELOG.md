@@ -1,3 +1,33 @@
+## 0.5.1+2
+
+* Support the latest `analyzer` package.
+
+## 0.5.1+1
+
+* Updated mock SDK sources to include FutureOr<T> (and fixed a syntax error)
+
+## 0.5.1
+
+* Resolver has a new method which can check whether an Asset is a Dart library
+  source
+
+## 0.5.0+2
+
+* Resolver no longer returns a partial LibraryElement for assets which are not
+  libraries
+
+## 0.5.0+1
+
+* Stop using deprecated analyzer apis.
+
+## 0.5.0
+
+* Always use a single `Resolver` instance. Fixes an issue where running with the
+  'build' package in file watching mode would treat some files as never
+  changing.
+* Breaking Change: remove the `useSharedSources` argument to Resolvers ctor
+  since sources are always shared.
+
 ## 0.4.2+4
 
 * Update to work with analyzer 0.29.x and transform_test 0.2.x
