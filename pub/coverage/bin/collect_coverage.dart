@@ -19,7 +19,7 @@ main(List<String> arguments) async {
   var options = _parseArgs(arguments);
   await Chain.capture(() async {
     var coverage = await collect(
-        options.host, options.port, options.resume, options.waitPaused,
+        options.serviceUri, options.resume, options.waitPaused,
         timeout: options.timeout);
     options.out.write(JSON.encode(coverage));
     await options.out.close();
@@ -33,21 +33,26 @@ main(List<String> arguments) async {
 }
 
 class Options {
-  final String host;
-  final int port;
+  final Uri serviceUri;
   final IOSink out;
   final Duration timeout;
   final bool waitPaused;
   final bool resume;
-  Options(this.host, this.port, this.out, this.timeout, this.waitPaused,
-      this.resume);
+  Options(
+      this.serviceUri, this.out, this.timeout, this.waitPaused, this.resume);
 }
 
 Options _parseArgs(List<String> arguments) {
   var parser = new ArgParser()
     ..addOption('host',
-        abbr: 'H', defaultsTo: '127.0.0.1', help: 'remote VM host')
-    ..addOption('port', abbr: 'p', help: 'remote VM port', defaultsTo: '8181')
+        abbr: 'H',
+        help: 'remote VM host. DEPRECATED: use --uri',
+        defaultsTo: '127.0.0.1')
+    ..addOption('port',
+        abbr: 'p',
+        help: 'remote VM port. DEPRECATED: use --uri',
+        defaultsTo: '8181')
+    ..addOption('uri', abbr: 'u', help: 'VM observatory service URI')
     ..addOption('out',
         abbr: 'o', defaultsTo: 'stdout', help: 'output: may be file or stdout')
     ..addOption('connect-timeout',
@@ -63,7 +68,7 @@ Options _parseArgs(List<String> arguments) {
   var args = parser.parse(arguments);
 
   printUsage() {
-    print('Usage: dart collect_coverage.dart --port=NNNN [OPTION...]\n');
+    print('Usage: dart collect_coverage.dart --uri=http://... [OPTION...]\n');
     print(parser.usage);
   }
 
@@ -78,8 +83,18 @@ Options _parseArgs(List<String> arguments) {
     exit(0);
   }
 
-  if (args['port'] == null) fail('port not specified');
-  var port = int.parse(args['port']);
+  Uri serviceUri;
+  if (args['uri'] == null) {
+    // TODO(cbracken) eliminate --host and --port support when VM defaults to
+    // requiring an auth token. Estimated for Dart SDK 1.22.
+    serviceUri = Uri.parse('http://${args['host']}:${args['port']}/');
+  } else {
+    try {
+      serviceUri = Uri.parse(args['uri']);
+    } on FormatException {
+      fail('Invalid service URI specified: ${args['uri']}');
+    }
+  }
 
   var out;
   if (args['out'] == 'stdout') {
@@ -91,6 +106,6 @@ Options _parseArgs(List<String> arguments) {
   var timeout = (args['connect-timeout'] == null)
       ? null
       : new Duration(seconds: int.parse(args['connect-timeout']));
-  return new Options(args['host'], port, out, timeout, args['wait-paused'],
-      args['resume-isolates']);
+  return new Options(
+      serviceUri, out, timeout, args['wait-paused'], args['resume-isolates']);
 }

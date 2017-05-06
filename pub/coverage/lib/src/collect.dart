@@ -11,9 +11,13 @@ import 'util.dart';
 
 const _retryInterval = const Duration(milliseconds: 200);
 
-Future<Map> collect(String host, int port, bool resume, bool waitPaused,
+Future<Map<String, dynamic>> collect(
+    Uri serviceUri, bool resume, bool waitPaused,
     {Duration timeout}) async {
-  var uri = 'ws://$host:$port/ws';
+  // Create websocket URI. Handle any trailing slashes.
+  var pathSegments = serviceUri.pathSegments.where((c) => c.isNotEmpty).toList()
+    ..add('ws');
+  var uri = serviceUri.replace(scheme: 'ws', pathSegments: pathSegments);
 
   var vmService;
   await retry(() async {
@@ -39,7 +43,7 @@ Future<Map> collect(String host, int port, bool resume, bool waitPaused,
   }
 }
 
-Future<Map> _getAllCoverage(VMServiceClient service) async {
+Future<Map<String, dynamic>> _getAllCoverage(VMServiceClient service) async {
   var vm = await service.getVM();
   var allCoverage = [];
 
@@ -111,8 +115,9 @@ Future<List> _getCoverageJson(
 }
 
 /// Returns a JSON hit map backward-compatible with pre-1.16.0 SDKs.
-Map _toScriptCoverageJson(VMScript script, Map<int, int> hitMap) {
-  var json = {};
+Map<String, dynamic> _toScriptCoverageJson(
+    VMScript script, Map<int, int> hitMap) {
+  var json = <String, dynamic>{};
   var hits = [];
   hitMap.forEach((line, hitCount) {
     hits.add(line);

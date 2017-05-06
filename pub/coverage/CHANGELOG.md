@@ -1,3 +1,27 @@
+## 0.9.2 - 2017-02-03
+ * Strong mode fixes as of Dart SDK 1.22.0
+
+## 0.9.1 - 2017-01-18
+
+ * Temporarily add back support for the `--host` and `--port` options to
+   `collect_coverage`. This is a temporary measure for backwards-compatibility
+   that may stop working on Dart SDKs >= 1.22. See the related
+   [breaking change note](https://groups.google.com/a/dartlang.org/forum/#!msg/announce/VxSw-V5tx8k/wPV0GfX7BwAJ)
+   for the Dart VM service protocol.
+
+## 0.9.0 - 2017-01-11
+
+ * BREAKING CHANGE: `collect` no longer supports the `host` and `port`
+   parameters. These are replaced with a `serviceUri` parameter. As of Dart SDK
+   1.22, the Dart VM will emit Observatory URIs that include an authentication
+   token for security reasons. Automated tools will need to scrape stdout for
+   this URI and pass it to `collect_coverage`.
+ * BREAKING CHANGE: `collect_coverage`: the `--host` and `--port` options have
+   been replaced with a `--uri` option. See the above change for details.
+ * BREAKING CHANGE: `runAndCollect` now defaults to running in checked mode.
+ * Added `extractObservatoryUri`: scrapes an input string for an Observatory
+   URI. Potentially useful for automated tooling after Dart SDK 1.22.
+
 ## 0.8.1
 
  * Added optional `checked` parameter to `runAndCollect` to run in checked
