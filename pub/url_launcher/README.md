@@ -1,9 +1,11 @@
 # url_launcher
 
+[![pub package](https://img.shields.io/pub/v/url_launcher.svg)](https://pub.dartlang.org/packages/url_launcher)
+
 A Flutter plugin for launching a URL in the mobile platform. Supports iOS and Android.
 
 ## Usage
-To use this plugin, add url_launcher as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To use this plugin, add `url_launcher` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 ### Example
 
@@ -41,7 +43,7 @@ URL schemes depend on the underlying platform and installed apps.
 
 Common schemes supported by both iOS and Android:
 
-| Scheme | Action | Example |
+| Scheme | Example | Action |
 |---|---|---|
 | `http:<URL>` , `https:<URL>` | `http://flutter.io` | Open URL in the default browser |
 | `mailto:<email address>` | `mailto:smith@example.org` | Open <email address> in the default email app |

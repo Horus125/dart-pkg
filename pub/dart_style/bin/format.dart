@@ -8,13 +8,13 @@ import 'dart:io';
 import 'package:args/args.dart';
 
 import 'package:dart_style/src/dart_formatter.dart';
-import 'package:dart_style/src/formatter_exception.dart';
+import 'package:dart_style/src/exceptions.dart';
 import 'package:dart_style/src/formatter_options.dart';
 import 'package:dart_style/src/io.dart';
 import 'package:dart_style/src/source_code.dart';
 
 // Note: The following line of code is modified by tool/grind.dart.
-const version = "0.2.16";
+const version = "1.0.6";
 
 void main(List<String> args) {
   var parser = new ArgParser(allowTrailingOptions: true);
@@ -197,8 +197,8 @@ void formatStdin(FormatterOptions options, List<int> selection) {
           selectionStart: selectionStart,
           selectionLength: selectionLength);
       var output = formatter.formatSource(source);
-      options.reporter
-          .afterFile(null, "<stdin>", output, changed: source != output);
+      options.reporter.afterFile(null, "<stdin>", output,
+          changed: source.text != output.text);
       return;
     } on FormatterException catch (err) {
       stderr.writeln(err.message());

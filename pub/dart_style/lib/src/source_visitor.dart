@@ -340,6 +340,16 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitCascadeExpression(CascadeExpression node) {
+    var splitIfOperandsSplit =
+        node.cascadeSections.length > 1 || _isCollectionLike(node.target);
+
+    // If the cascade sections have consistent names they can be broken
+    // normally otherwise they always get their own line.
+    if (splitIfOperandsSplit) {
+      builder.startLazyRule(
+          _allowInlineCascade(node) ? new Rule() : new Rule.hard());
+    }
+
     // If the target of the cascade is a method call (or chain of them), we
     // treat the nesting specially. Normally, you would end up with:
     //
@@ -368,17 +378,22 @@ class SourceVisitor extends ThrowingAstVisitor {
     builder.nestExpression(indent: Indent.cascade, now: true);
     builder.startBlockArgumentNesting();
 
-    // If the cascade sections have consistent names they can be broken
-    // normally otherwise they always get their own line.
-    if (_allowInlineCascade(node.cascadeSections)) {
-      builder.startRule();
-      zeroSplit();
-      visitNodes(node.cascadeSections, between: zeroSplit);
+    // If the cascade section shouldn't cause the cascade to split, end the
+    // rule early so it isn't affected by it.
+    if (!splitIfOperandsSplit) {
+      builder
+          .startRule(_allowInlineCascade(node) ? new Rule() : new Rule.hard());
+    }
+
+    zeroSplit();
+
+    if (!splitIfOperandsSplit) {
       builder.endRule();
-    } else {
-      builder.startRule(new Rule.hard());
-      zeroSplit();
-      visitNodes(node.cascadeSections, between: zeroSplit);
+    }
+
+    visitNodes(node.cascadeSections, between: zeroSplit);
+
+    if (splitIfOperandsSplit) {
       builder.endRule();
     }
 
@@ -388,16 +403,62 @@ class SourceVisitor extends ThrowingAstVisitor {
     if (node.target is MethodInvocation) builder.unnest();
   }
 
+  /// Whether [expression] is a collection literal, or a call with a trailing
+  /// comma in an argument list.
+  ///
+  /// In that case, when the expression is a target of a cascade, we don't
+  /// force a split before the ".." as eagerly to avoid ugly results like:
+  ///
+  ///     [
+  ///       1,
+  ///       2,
+  ///     ]..addAll(numbers);
+  bool _isCollectionLike(Expression expression) {
+    if (expression is ListLiteral) return false;
+    if (expression is MapLiteral) return false;
+
+    // If the target is a call with a trailing comma in the argument list,
+    // treat it like a collection literal.
+    ArgumentList arguments;
+    if (expression is InvocationExpression) {
+      arguments = expression.argumentList;
+    } else if (expression is InstanceCreationExpression) {
+      arguments = expression.argumentList;
+    }
+
+    // TODO(rnystrom): Do we want to allow an invocation where the last
+    // argument is a collection literal? Like:
+    //
+    //     foo(argument, [
+    //       element
+    //     ])..cascade();
+
+    return arguments == null ||
+        arguments.arguments.isEmpty ||
+        arguments.arguments.last.endToken.next.type != TokenType.COMMA;
+  }
+
   /// Whether a cascade should be allowed to be inline as opposed to one
   /// expression per line.
-  bool _allowInlineCascade(List<Expression> sections) {
-    if (sections.length < 2) return true;
+  bool _allowInlineCascade(CascadeExpression node) {
+    // If the receiver is an expression that makes the cascade's very low
+    // precedence confusing, force it to split. For example:
+    //
+    //     a ? b : c..d();
+    //
+    // Here, the cascade is applied to the result of the conditional, not "c".
+    if (node.target is ConditionalExpression) return false;
+    if (node.target is BinaryExpression) return false;
+    if (node.target is PrefixExpression) return false;
+    if (node.target is AwaitExpression) return false;
+
+    if (node.cascadeSections.length < 2) return true;
 
     var name;
     // We could be more forgiving about what constitutes sections with
     // consistent names but for now we require all sections to have the same
     // method name.
-    for (var expression in sections) {
+    for (var expression in node.cascadeSections) {
       if (expression is MethodInvocation) {
         if (name == null) {
           name = expression.methodName.name;
@@ -781,7 +842,7 @@ class SourceVisitor extends ThrowingAstVisitor {
     space();
 
     _beginBody(node.leftBracket, space: true);
-    visitCommaSeparatedNodes(node.constants, between: split);
+    visitCommaSeparatedNodes(node.constants, between: splitOrTwoNewlines);
 
     // If there is a trailing comma, always force the constants to split.
     if (node.constants.last.endToken.next.type == TokenType.COMMA) {
@@ -792,8 +853,7 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitExportDirective(ExportDirective node) {
-    visitMetadata(node.metadata);
-
+    _visitDirectiveMetadata(node);
     _simpleStatement(node, () {
       token(node.keyword);
       space();
@@ -866,13 +926,17 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitFieldFormalParameter(FieldFormalParameter node) {
     visitParameterMetadata(node.metadata, () {
+      builder.startLazyRule(new Rule(Cost.parameterType));
+      builder.nestExpression();
       modifier(node.covariantKeyword);
       token(node.keyword, after: space);
-      visit(node.type, after: space);
+      visit(node.type, after: split);
       token(node.thisKeyword);
       token(node.period);
       visit(node.identifier);
       visit(node.parameters);
+      builder.unnest();
+      builder.endRule();
     });
   }
 
@@ -1087,8 +1151,16 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitFunctionExpressionInvocation(FunctionExpressionInvocation node) {
+    // Try to keep the entire invocation one line.
+    builder.startSpan();
+    builder.nestExpression();
+
     visit(node.function);
-    visit(node.argumentList);
+    visit(node.typeArguments);
+    visitArgumentList(node.argumentList, nestExpression: false);
+
+    builder.unnest();
+    builder.endSpan();
   }
 
   visitFunctionTypeAlias(FunctionTypeAlias node) {
@@ -1112,8 +1184,46 @@ class SourceVisitor extends ThrowingAstVisitor {
       // Try to keep the function's parameters with its name.
       builder.startSpan();
       visit(node.identifier);
-      visit(node.parameters);
+      _visitParameterSignature(node.typeParameters, node.parameters);
       builder.endSpan();
+    });
+  }
+
+  visitGenericFunctionType(GenericFunctionType node) {
+    builder.startLazyRule();
+    builder.nestExpression();
+
+    visit(node.returnType, after: split);
+    token(node.functionKeyword);
+
+    builder.unnest();
+    builder.endRule();
+
+    _visitParameterSignature(node.typeParameters, node.parameters);
+  }
+
+  visitGenericTypeAlias(GenericTypeAlias node) {
+    visitNodes(node.metadata, between: newline, after: newline);
+    _simpleStatement(node, () {
+      token(node.typedefKeyword);
+      space();
+
+      // If the typedef's type parameters split, split after the "=" too,
+      // mainly to ensure the function's type parameters and parameters get
+      // end up on successive lines with the same indentation.
+      builder.startRule();
+
+      visit(node.name);
+
+      visit(node.typeParameters);
+      split();
+
+      token(node.equals);
+      builder.endRule();
+
+      space();
+
+      visit(node.functionType);
     });
   }
 
@@ -1178,8 +1288,7 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitImportDirective(ImportDirective node) {
-    visitMetadata(node.metadata);
-
+    _visitDirectiveMetadata(node);
     _simpleStatement(node, () {
       token(node.keyword);
       space();
@@ -1293,8 +1402,7 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitLibraryDirective(LibraryDirective node) {
-    visitMetadata(node.metadata);
-
+    _visitDirectiveMetadata(node);
     _simpleStatement(node, () {
       token(node.keyword);
       space();
@@ -1374,8 +1482,7 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitNativeClause(NativeClause node) {
     token(node.nativeKeyword);
-    space();
-    visit(node.name);
+    visit(node.name, before: space);
   }
 
   visitNativeFunctionBody(NativeFunctionBody node) {
@@ -1383,8 +1490,7 @@ class SourceVisitor extends ThrowingAstVisitor {
       builder.nestExpression(now: true);
       soloSplit();
       token(node.nativeKeyword);
-      space();
-      visit(node.stringLiteral);
+      visit(node.stringLiteral, before: space);
       builder.unnest();
     });
   }
@@ -1402,8 +1508,7 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitPartDirective(PartDirective node) {
-    visitMetadata(node.metadata);
-
+    _visitDirectiveMetadata(node);
     _simpleStatement(node, () {
       token(node.keyword);
       space();
@@ -1412,14 +1517,17 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitPartOfDirective(PartOfDirective node) {
-    visitMetadata(node.metadata);
-
+    _visitDirectiveMetadata(node);
     _simpleStatement(node, () {
       token(node.keyword);
       space();
       token(node.ofKeyword);
       space();
+
+      // Part-of may have either a name or a URI. Only one of these will be
+      // non-null. We visit both since visit() ignores null.
       visit(node.libraryName);
+      visit(node.uri);
     });
   }
 
@@ -1435,10 +1543,11 @@ class SourceVisitor extends ThrowingAstVisitor {
   visitPrefixExpression(PrefixExpression node) {
     token(node.operator);
 
-    // Corner case: put a space between successive "-" operators so we don't
-    // inadvertently turn them into a "--" decrement operator.
-    if (node.operand is PrefixExpression &&
-        (node.operand as PrefixExpression).operator.lexeme == "-") {
+    // Edge case: put a space after "-" if the operand is "-" or "--" so we
+    // don't merge the operators.
+    var operand = node.operand;
+    if (operand is PrefixExpression &&
+        (operand.operator.lexeme == "-" || operand.operator.lexeme == "--")) {
       space();
     }
 
@@ -1492,10 +1601,21 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitSimpleFormalParameter(SimpleFormalParameter node) {
     visitParameterMetadata(node.metadata, () {
+      builder.startLazyRule(new Rule(Cost.parameterType));
+      builder.nestExpression();
       modifier(node.covariantKeyword);
       modifier(node.keyword);
-      visit(node.type, after: space);
+
+      visit(node.type);
+
+      // In function declarations and the old typedef syntax, you can have a
+      // parameter name without a type. In the new syntax, you can have a type
+      // without a name. Handle both cases.
+      if (node.type != null && node.identifier != null) split();
+
       visit(node.identifier);
+      builder.unnest();
+      builder.endRule();
     });
   }
 
@@ -1740,11 +1860,25 @@ class SourceVisitor extends ThrowingAstVisitor {
     if (after != null) after();
   }
 
-  /// Visit metadata annotations on directives, declarations, and members.
+  /// Visit metadata annotations on declarations, and members.
   ///
   /// These always force the annotations to be on the previous line.
   void visitMetadata(NodeList<Annotation> metadata) {
     visitNodes(metadata, between: newline, after: newline);
+  }
+
+  /// Visit metadata annotations for a directive.
+  ///
+  /// Always force the annotations to be on a previous line.
+  void _visitDirectiveMetadata(Directive directive) {
+    // Preserve a blank line before the first directive since users (in
+    // particular the test package) sometimes use that for metadata that
+    // applies to the entire library and not the following directive itself.
+    var isFirst =
+        directive == (directive.parent as CompilationUnit).directives.first;
+
+    visitNodes(directive.metadata,
+        between: newline, after: isFirst ? oneOrTwoNewlines : newline);
   }
 
   /// Visits metadata annotations on parameters and type parameters.
@@ -1834,7 +1968,7 @@ class SourceVisitor extends ThrowingAstVisitor {
   void _visitGenericList(
       Token leftBracket, Token rightBracket, List<AstNode> nodes) {
     var rule = new TypeArgumentRule();
-    builder.startRule(rule);
+    builder.startLazyRule(rule);
     builder.startSpan();
     builder.nestExpression();
 
@@ -1939,7 +2073,19 @@ class SourceVisitor extends ThrowingAstVisitor {
       builder.startLazyRule(new Rule(Cost.arrow));
     }
 
-    // Start the nesting for the parameters here, so they wrap around the
+    _visitParameterSignature(typeParameters, parameters);
+
+    if (beforeBody != null) beforeBody();
+    visit(body);
+
+    if (body is ExpressionFunctionBody) builder.unnest();
+  }
+
+  /// Visits the type parameters (if any) and formal parameters of a method
+  /// declaration, function declaration, or generic function type.
+  void _visitParameterSignature(
+      TypeParameterList typeParameters, FormalParameterList parameters) {
+    // Start the nesting for the parameters here, so they indent past the
     // type parameters too, if any.
     builder.nestExpression();
 
@@ -1949,11 +2095,6 @@ class SourceVisitor extends ThrowingAstVisitor {
     }
 
     builder.unnest();
-
-    if (beforeBody != null) beforeBody();
-    visit(body);
-
-    if (body is ExpressionFunctionBody) builder.unnest();
   }
 
   /// Visits the body statement of a `for`, `for in`, or `while` loop.
@@ -2418,6 +2559,13 @@ class SourceVisitor extends ThrowingAstVisitor {
   /// between the last token and the next one.
   void splitOrNewline() {
     builder.writeWhitespace(Whitespace.splitOrNewline);
+  }
+
+  /// Allow either a single split or newline to be emitted before the next
+  /// non-whitespace token based on whether a newline exists in the source
+  /// between the last token and the next one.
+  void splitOrTwoNewlines() {
+    builder.writeWhitespace(Whitespace.splitOrTwoNewlines);
   }
 
   /// Allow either one or two newlines to be emitted before the next

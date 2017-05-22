@@ -1,3 +1,46 @@
+# 1.0.6
+
+* Support URIs in part-of directives (#615).
+
+# 1.0.5
+
+* Support the latest version of `pkg/analyzer`.
+
+# 1.0.4
+
+* Ensure formatter throws an exception instead of introducing non-whitespace
+  changes. This sanity check ensures the formatter does not erase user code
+  when the formatter itself contains a bug.
+* Preserve type arguments in generic typedefs (#619).
+* Preserve type arguments in function expression invocations (#621).
+
+# 1.0.3
+
+* Preserve type arguments in generic function-typed parameters (#613).
+
+# 1.0.2
+
+* Support new generic function typedef syntax (#563).
+
+# 1.0.1
+
+* Ensure space between `-` and `--` (#170).
+* Preserve a blank line between enum cases (#606).
+
+# 1.0.0
+
+* Handle mixed block and arrow bodied function arguments uniformly (#500).
+* Don't add a spurious space after "native" (#541).
+* Handle parenthesized and immediately invoked functions in argument lists
+  like other function literals (#566).
+* Preserve a blank line between an annotation and the first directive (#571).
+* Fix splitting in generic methods with `=>` bodies (#584).
+* Allow splitting between a parameter name and type (#585).
+* Don't split after `<` when a collection is in statement position (#589).
+* Force a split if the cascade target has non-obvious precedence (#590).
+* Split more often if a cascade target contains a split (#591).
+* Correctly report unchanged formatting when reading from stdin.
+
 # 0.2.16
 
 * Don't discard type arguments on method calls with closure arguments (#582).

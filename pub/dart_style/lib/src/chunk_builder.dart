@@ -101,6 +101,7 @@ class ChunkBuilder {
   /// token pair.
   bool get needsToPreserveNewlines =>
       _pendingWhitespace == Whitespace.oneOrTwoNewlines ||
+      _pendingWhitespace == Whitespace.splitOrTwoNewlines ||
       _pendingWhitespace == Whitespace.splitOrNewline;
 
   /// The number of characters of code that can fit in a single line.
@@ -137,7 +138,7 @@ class ChunkBuilder {
     _emitPendingWhitespace();
     _writeText(string);
 
-    _lazyRules.forEach(startRule);
+    _lazyRules.forEach(_activateRule);
     _lazyRules.clear();
 
     _nesting.commitNesting();
@@ -309,6 +310,15 @@ class ChunkBuilder {
         }
         break;
 
+      case Whitespace.splitOrTwoNewlines:
+        if (numLines > 1) {
+          _pendingWhitespace = Whitespace.twoNewlines;
+        } else {
+          _pendingWhitespace = Whitespace.none;
+          split(space: true);
+        }
+        break;
+
       case Whitespace.oneOrTwoNewlines:
         if (numLines > 1) {
           _pendingWhitespace = Whitespace.twoNewlines;
@@ -360,6 +370,15 @@ class ChunkBuilder {
   void startRule([Rule rule]) {
     if (rule == null) rule = new Rule();
 
+    // If there are any pending lazy rules, start them now so that the proper
+    // stack ordering of rules is maintained.
+    _lazyRules.forEach(_activateRule);
+    _lazyRules.clear();
+
+    _activateRule(rule);
+  }
+
+  void _activateRule(Rule rule) {
     // See if any of the rules that contain this one care if it splits.
     _rules.forEach((outer) {
       if (!outer.splitsOnInnerRules) return;
@@ -595,6 +614,7 @@ class ChunkBuilder {
         break;
 
       case Whitespace.splitOrNewline:
+      case Whitespace.splitOrTwoNewlines:
       case Whitespace.oneOrTwoNewlines:
         // We should have pinned these down before getting here.
         assert(false);

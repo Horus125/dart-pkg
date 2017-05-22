@@ -1,4 +1,24 @@
-## [0.3.5] - 2017-05-8
+## [0.4.2+1] - 2017-05-16
+
+* Updated README
+
+## [0.4.2] - 2017-05-15
+
+* Change to README.md.
+
+## [0.4.1] - 2017-05-09
+
+* Upgrade Android SDK Build Tools to 25.0.3.
+
+## [0.4.0] - 2017-05-09
+
+* Upgrade to new plugin registration.
+
+## [0.3.6] - 2017-05-09
+
+* Fix workaround for failing dynamic check in Xcode 7/sdk version 9.
+
+## [0.3.5] - 2017-05-08
 
 * Workaround for failing dynamic check in Xcode 7/sdk version 9.
 
