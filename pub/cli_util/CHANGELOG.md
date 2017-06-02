@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Updated to the output for indeterminate progress
+- Exposed a `Logger.isVerbose` getter
+
 ## 0.1.0
 
 - Use the new `Platform.resolvedExecutable` API to locate the SDK

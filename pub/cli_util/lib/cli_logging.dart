@@ -4,11 +4,10 @@
 
 /// This library contains functionality to help command-line utilities to easily
 /// create aesthetic output.
+library cli_logging;
 
 import 'dart:async';
 import 'dart:io' as io;
-
-/// create aesthetic output.
 
 /// A small utility class to make it easier to work with common ANSI escape
 /// sequences.
@@ -63,6 +62,8 @@ abstract class Logger {
 
   Ansi get ansi;
 
+  bool get isVerbose;
+
   /// Print an error message.
   void stderr(String message);
 
@@ -102,6 +103,8 @@ class _StandardLogger implements Logger {
   _StandardLogger({this.ansi}) {
     ansi ??= new Ansi(Ansi.terminalSupportsAnsi);
   }
+
+  bool get isVerbose => false;
 
   Progress _currentProgress;
 
@@ -202,15 +205,17 @@ class _AnsiProgress extends Progress {
       bool showTiming: false}) {
     String char = kAnimationItems[_index % kAnimationItems.length];
     if (isFinal || cancelled) {
-      char = ' ';
+      char = '';
     }
     io.stdout.write('${ansi.backspace}${char}');
     if (isFinal || cancelled) {
       if (message != null) {
-        io.stdout.write(message);
+        io.stdout.write(message.isEmpty ? ' ' : message);
       } else if (showTiming) {
         String time = (elapsed.inMilliseconds / 1000.0).toStringAsFixed(1);
         io.stdout.write('${time}s');
+      } else {
+        io.stdout.write(' ');
       }
       io.stdout.writeln();
     }
@@ -228,6 +233,8 @@ class _VerboseLogger implements Logger {
     ansi ??= new Ansi(Ansi.terminalSupportsAnsi);
     _timer = new Stopwatch()..start();
   }
+
+  bool get isVerbose => true;
 
   void stderr(String message) {
     flush();
