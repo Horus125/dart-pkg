@@ -66,7 +66,8 @@ class LoadSuite extends Suite implements RunnerSuite {
   ///
   /// If the the load test is closed before [body] is complete, it will close
   /// the suite returned by [body] once it completes.
-  factory LoadSuite(String name, SuiteConfiguration config, body(),
+  factory LoadSuite(
+      String name, SuiteConfiguration config, FutureOr<RunnerSuite> body(),
       {String path, TestPlatform platform}) {
     var completer = new Completer<Pair<RunnerSuite, Zone>>.sync();
     return new LoadSuite._(name, config, () {
@@ -79,12 +80,12 @@ class LoadSuite extends Suite implements RunnerSuite {
           if (completer.isCompleted) {
             // If the load test has already been closed, close the suite it
             // generated.
-            suite.close();
+            suite?.close();
             return;
           }
 
-          completer.complete(
-              suite == null ? null : new Pair(suite, Zone.current));
+          completer
+              .complete(suite == null ? null : new Pair(suite, Zone.current));
           invoker.removeOutstandingCallback();
         } catch (error, stackTrace) {
           registerException(error, stackTrace);
@@ -105,9 +106,9 @@ class LoadSuite extends Suite implements RunnerSuite {
   /// A utility constructor for a load suite that just throws [exception].
   ///
   /// The suite's name will be based on [exception]'s path.
-  factory LoadSuite.forLoadException(LoadException exception,
-      SuiteConfiguration config, {StackTrace stackTrace,
-      TestPlatform platform}) {
+  factory LoadSuite.forLoadException(
+      LoadException exception, SuiteConfiguration config,
+      {StackTrace stackTrace, TestPlatform platform}) {
     if (stackTrace == null) stackTrace = new Trace.current();
 
     return new LoadSuite(
@@ -125,12 +126,16 @@ class LoadSuite extends Suite implements RunnerSuite {
   }
 
   LoadSuite._(String name, this.config, void body(), this._suiteAndZone,
-          {String path, TestPlatform platform})
-      : super(new Group.root([
-        new LocalTest(name,
-            new Metadata(timeout: new Timeout(new Duration(minutes: 5))),
-            body)
-      ]), path: path, platform: platform);
+      {String path, TestPlatform platform})
+      : super(
+            new Group.root([
+              new LocalTest(
+                  name,
+                  new Metadata(timeout: new Timeout(new Duration(minutes: 5))),
+                  body)
+            ]),
+            path: path,
+            platform: platform);
 
   /// A constructor used by [changeSuite].
   LoadSuite._changeSuite(LoadSuite old, this._suiteAndZone)

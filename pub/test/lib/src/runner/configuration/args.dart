@@ -10,6 +10,7 @@ import 'package:boolean_selector/boolean_selector.dart';
 import '../../backend/test_platform.dart';
 import '../../frontend/timeout.dart';
 import '../configuration.dart';
+import 'reporters.dart';
 import 'values.dart';
 
 /// The parser used to parse the command-line arguments.
@@ -20,10 +21,10 @@ final ArgParser _parser = (() {
   if (!Platform.isMacOS) allPlatforms.remove(TestPlatform.safari);
   if (!Platform.isWindows) allPlatforms.remove(TestPlatform.internetExplorer);
 
-  parser.addFlag("help", abbr: "h", negatable: false,
-      help: "Shows this usage information.");
-  parser.addFlag("version", negatable: false,
-      help: "Shows the package's version.");
+  parser.addFlag("help",
+      abbr: "h", negatable: false, help: "Shows this usage information.");
+  parser.addFlag("version",
+      negatable: false, help: "Shows the package's version.");
 
   // Note that defaultsTo declarations here are only for documentation purposes.
   // We pass null values rather than defaults to [new Configuration] so that it
@@ -85,21 +86,30 @@ final ArgParser _parser = (() {
           'Implies --concurrency=1 and --timeout=none.\n'
           'Currently only supported for browser tests.',
       negatable: false);
+  parser.addFlag("chain-stack-traces",
+      help: 'Chained stack traces to provide greater exception details\n'
+          'especially for asynchronous code. It may be useful to disable\n'
+          'to provide improved test performance but at the cost of\n'
+          'debuggability.',
+      defaultsTo: true);
+
+  var reporterDescriptions = <String, String>{};
+  for (var reporter in allReporters.keys) {
+    reporterDescriptions[reporter] = allReporters[reporter].description;
+  }
 
   parser.addSeparator("======== Output");
   parser.addOption("reporter",
       abbr: 'r',
       help: 'The runner used to print test results.',
       defaultsTo: defaultReporter,
-      allowed: allReporters,
-      allowedHelp: {
-    'compact': 'A single line, updated continuously.',
-    'expanded': 'A separate line for each update.',
-    'json': 'A machine-readable format (see https://goo.gl/gBsV1a).'
-  });
-  parser.addFlag("verbose-trace", negatable: false,
+      allowed: reporterDescriptions.keys.toList(),
+      allowedHelp: reporterDescriptions);
+  parser.addFlag("verbose-trace",
+      negatable: false,
       help: 'Whether to emit stack traces with core library frames.');
-  parser.addFlag("js-trace", negatable: false,
+  parser.addFlag("js-trace",
+      negatable: false,
       help: 'Whether to emit raw JavaScript stack traces for browser tests.');
   parser.addFlag("color",
       help: 'Whether to use terminal colors.\n(auto-detected by default)');
@@ -113,7 +123,8 @@ final ArgParser _parser = (() {
       help: 'The path to the dart2js executable.', hide: true);
   parser.addOption("dart2js-args",
       help: 'Extra arguments to pass to dart2js.',
-      allowMultiple: true, hide: true);
+      allowMultiple: true,
+      hide: true);
   parser.addOption("total-shards",
       help: 'The total number of invocations of the test runner being run.',
       hide: true);
@@ -154,7 +165,7 @@ class _Parser {
         .map/*<Pattern>*/(
             (value) => _wrapFormatException('name', () => new RegExp(value)))
         .toList()
-        ..addAll(_options['plain-name'] as List<String>);
+          ..addAll(_options['plain-name'] as List<String>);
 
     var includeTagSet = new Set.from(_options['tags'] ?? [])
       ..addAll(_options['tag'] ?? []);
@@ -190,6 +201,7 @@ class _Parser {
         help: _ifParsed('help'),
         version: _ifParsed('version'),
         verboseTrace: _ifParsed('verbose-trace'),
+        chainStackTraces: _ifParsed('chain-stack-traces'),
         jsTrace: _ifParsed('js-trace'),
         pauseAfterLoad: _ifParsed('pause-after-load'),
         color: _ifParsed('color'),
@@ -204,8 +216,8 @@ class _Parser {
         totalShards: totalShards,
         timeout: _parseOption('timeout', (value) => new Timeout.parse(value)),
         patterns: patterns,
-        platforms: (_ifParsed('platform') as List<String>)
-            ?.map(TestPlatform.find),
+        platforms:
+            (_ifParsed('platform') as List<String>)?.map(TestPlatform.find),
         runSkipped: _ifParsed('run-skipped'),
         chosenPresets: _ifParsed('preset') as List<String>,
         paths: _options.rest.isEmpty ? null : _options.rest,

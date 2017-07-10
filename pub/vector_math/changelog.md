@@ -1,5 +1,9 @@
 # Changelog - vector_math
 
+## v 2.0.5 - July 2017
+
+- Strong mode clean
+
 ## v 2.0.4 - February 2017
 
 - Added Matrix4.isIdentity()

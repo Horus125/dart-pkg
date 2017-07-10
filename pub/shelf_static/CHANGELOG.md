@@ -1,3 +1,7 @@
+## 0.2.5
+
+* Add an optional `contentTypeResolver` argument to `createStaticHandler`.
+
 ## 0.2.4
 
 * Add support for "sniffing" the content of the file for the content-type via an optional
@@ -64,7 +68,7 @@
 * The preferred top-level method is now `createStaticHandler`. `getHandler` is deprecated.
 * Set `content-type` header if the mime type of the requested file can be determined from the file extension.
 * Respond with `304-Not modified` against `IF-MODIFIED-SINCE` request header.
-* Better error when provided a non-existant `fileSystemPath`.
+* Better error when provided a non-existent `fileSystemPath`.
 * Added `example/example_server.dart`.
 
 ## 0.1.1+1

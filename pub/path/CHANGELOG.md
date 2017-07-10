@@ -1,3 +1,9 @@
+## 1.4.2
+
+* Treat `package:` URLs as absolute.
+
+* Normalize `c:\foo\.` to `c:\foo`.
+
 ## 1.4.1
 
 * Root-relative URLs like `/foo` are now resolved relative to the drive letter

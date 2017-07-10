@@ -8,7 +8,6 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 import '../../util/io.dart';
-import '../../utils.dart';
 import 'browser.dart';
 
 // TODO(nweiz): move this into its own package?
@@ -37,41 +36,25 @@ class Chrome extends Browser {
       var tryPort = ([int port]) async {
         var dir = createTempDir();
         var args = [
-          "--user-data-dir=$dir", url.toString(), "--disable-extensions",
-          "--disable-popup-blocking", "--bwsi", "--no-first-run",
-          "--no-default-browser-check", "--disable-default-apps",
+          "--user-data-dir=$dir",
+          url.toString(),
+          "--disable-extensions",
+          "--disable-popup-blocking",
+          "--bwsi",
+          "--no-first-run",
+          "--no-default-browser-check",
+          "--disable-default-apps",
           "--disable-translate",
         ];
 
-        if (port != null) {
-          args.add("--remote-debugging-port=$port");
-          // These flags cause Chrome to print a consistent line of output after
-          // its internal call to `bind()` has succeeded or failed. We wait for
-          // that output to determine whether the port we chose worked.
-          args.add("--enable-logging=stderr");
-          args.add("--vmodule=startup_browser_creator_impl=1");
-        }
+        // Currently, Chrome doesn't provide any way of ensuring that this port
+        // was successfully bound. It produces an error if the binding fails,
+        // but without a reliable and fast way to tell if it succeeded that
+        // doesn't provide us much. It's very unlikely that this port will fail,
+        // though.
+        if (port != null) args.add("--remote-debugging-port=$port");
 
         var process = await Process.start(executable, args);
-
-        if (port != null) {
-          var stderr = new StreamIterator(lineSplitter.bind(process.stderr));
-
-          // Before we can consider Chrome to have started successfully, we have
-          // to make sure the remote debugging port worked. Any errors from this
-          // will always come before the "startup_browser_creater_impl" message.
-          while (await stderr.moveNext() &&
-              !stderr.current.contains("startup_browser_creator_impl")) {
-            if (stderr.current.contains("bind() returned an error")) {
-              // If we failed to bind to the port, return null to tell
-              // getUnusedPort to try another one.
-              stderr.cancel();
-              process.kill();
-              return null;
-            }
-          }
-          stderr.cancel();
-        }
 
         if (port != null) {
           remoteDebuggerCompleter.complete(

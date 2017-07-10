@@ -1,3 +1,9 @@
+# 1.0.7
+
+* Format multiline strings as block arguments (#570).
+* Fix call to analyzer API.
+* Support assert in initializer list experimental syntax (#522).
+
 # 1.0.6
 
 * Support URIs in part-of directives (#615).

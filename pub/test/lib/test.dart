@@ -55,10 +55,8 @@ Declarer get _declarer {
   // finished being defined.
   _globalDeclarer = new Declarer();
   scheduleMicrotask(() async {
-    var suite = new RunnerSuite(
-        const PluginEnvironment(),
-        SuiteConfiguration.empty,
-        _globalDeclarer.build(),
+    var suite = new RunnerSuite(const PluginEnvironment(),
+        SuiteConfiguration.empty, _globalDeclarer.build(),
         path: p.prettyUri(Uri.base),
         platform: TestPlatform.vm,
         os: currentOSGuess);
@@ -125,11 +123,11 @@ Declarer get _declarer {
 /// If multiple platforms match, the annotations apply in order as through
 /// they were in nested groups.
 void test(description, body(),
-        {String testOn,
-        Timeout timeout,
-        skip,
-        tags,
-        Map<String, dynamic> onPlatform}) {
+    {String testOn,
+    Timeout timeout,
+    skip,
+    tags,
+    Map<String, dynamic> onPlatform}) {
   _declarer.test(description.toString(), body,
       testOn: testOn,
       timeout: timeout,
@@ -141,7 +139,7 @@ void test(description, body(),
   // `main()` in JS stack traces in order to properly determine the line and
   // column where the test was defined. See sdk#26705.
   return;
-  return;
+  return; // ignore: dead_code
 }
 
 /// Creates a group of tests.
@@ -192,19 +190,23 @@ void test(description, body(),
 /// If multiple platforms match, the annotations apply in order as through
 /// they were in nested groups.
 void group(description, body(),
-        {String testOn,
-        Timeout timeout,
-        skip,
-        tags,
-        Map<String, dynamic> onPlatform}) {
+    {String testOn,
+    Timeout timeout,
+    skip,
+    tags,
+    Map<String, dynamic> onPlatform}) {
   _declarer.group(description.toString(), body,
-      testOn: testOn, timeout: timeout, skip: skip, tags: tags);
+      testOn: testOn,
+      timeout: timeout,
+      skip: skip,
+      tags: tags,
+      onPlatform: onPlatform);
 
   // Force dart2js not to inline this function. We need it to be separate from
   // `main()` in JS stack traces in order to properly determine the line and
   // column where the test was defined. See sdk#26705.
   return;
-  return;
+  return; // ignore: dead_code
 }
 
 /// Registers a function to be run before tests.

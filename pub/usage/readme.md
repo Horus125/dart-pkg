@@ -1,7 +1,6 @@
 # usage
 
-`usage` is a wrapper around Google Analytics for both command-line, web, and
-Flutter apps.
+`usage` is a wrapper around Google Analytics for command-line, web, and Flutter apps.
 
 [![pub package](https://img.shields.io/pub/v/usage.svg)](https://pub.dartlang.org/packages/usage)
 [![Build Status](https://travis-ci.org/dart-lang/usage.svg)](https://travis-ci.org/dart-lang/usage)
@@ -53,9 +52,15 @@ have completed, or until the specified duration has elapsed. So, CLI apps can do
 something like:
 
 ```dart
-analytics.waitForLastPing(timeout: new Duration(milliseconds: 500)).then((_) {
-  exit(0);
-});
+await analytics.waitForLastPing(timeout: new Duration(milliseconds: 200));
+analytics.close();
+```
+
+or:
+
+```dart
+await analytics.waitForLastPing(timeout: new Duration(milliseconds: 200));
+exit(0);
 ```
 
 ## Using the API
@@ -110,6 +115,10 @@ mobile app style tracking IDs (as opposed to the web site style tracking IDs).
 
 For more information, please see the Google Analytics Measurement Protocol
 [Policy](https://developers.google.com/analytics/devguides/collection/protocol/policy).
+
+## Contributing
+
+Tests can be run using `pub run test`.
 
 ## Issues and bugs
 

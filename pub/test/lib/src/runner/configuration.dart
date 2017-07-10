@@ -16,6 +16,7 @@ import '../frontend/timeout.dart';
 import '../util/io.dart';
 import 'configuration/args.dart' as args;
 import 'configuration/load.dart';
+import 'configuration/reporters.dart';
 import 'configuration/suite.dart';
 import 'configuration/values.dart';
 
@@ -126,6 +127,7 @@ class Configuration {
     _knownTags = new UnmodifiableSetView(known);
     return _knownTags;
   }
+
   Set<String> _knownTags;
 
   /// Configuration presets.
@@ -152,6 +154,7 @@ class Configuration {
     _knownPresets = new UnmodifiableSetView(known);
     return _knownPresets;
   }
+
   Set<String> _knownPresets;
 
   /// The default suite-level configuration.
@@ -179,8 +182,8 @@ class Configuration {
   factory Configuration.load(String path, {bool global: false}) =>
       load(path, global: global);
 
-  factory Configuration({
-      bool help,
+  factory Configuration(
+      {bool help,
       bool version,
       bool pauseAfterLoad,
       bool color,
@@ -211,6 +214,7 @@ class Configuration {
       // Test-level configuration
       Timeout timeout,
       bool verboseTrace,
+      bool chainStackTraces,
       bool skip,
       String skipReason,
       PlatformSelector testOn,
@@ -247,6 +251,7 @@ class Configuration {
             // Test-level configuration
             timeout: timeout,
             verboseTrace: verboseTrace,
+            chainStackTraces: chainStackTraces,
             skip: skip,
             skipReason: skipReason,
             testOn: testOn,
@@ -257,30 +262,31 @@ class Configuration {
   static Map<Object, Configuration> _withChosenPresets(
       Map<Object, Configuration> map, Set<String> chosenPresets) {
     if (map == null || chosenPresets == null) return map;
-    return mapMap(map, value: (_, config) => config.change(
-        chosenPresets: config.chosenPresets.union(chosenPresets)));
+    return mapMap(map,
+        value: (_, config) => config.change(
+            chosenPresets: config.chosenPresets.union(chosenPresets)));
   }
 
   /// Creates new Configuration.
   ///
   /// Unlike [new Configuration], this assumes [presets] is already resolved.
-  Configuration._({
-          bool help,
-          bool version,
-          bool pauseAfterLoad,
-          bool color,
-          String configurationPath,
-          String dart2jsPath,
-          String reporter,
-          int pubServePort,
-          int concurrency,
-          this.shardIndex,
-          this.totalShards,
-          Iterable<String> paths,
-          Glob filename,
-          Iterable<String> chosenPresets,
-          Map<String, Configuration> presets,
-          SuiteConfiguration suiteDefaults})
+  Configuration._(
+      {bool help,
+      bool version,
+      bool pauseAfterLoad,
+      bool color,
+      String configurationPath,
+      String dart2jsPath,
+      String reporter,
+      int pubServePort,
+      int concurrency,
+      this.shardIndex,
+      this.totalShards,
+      Iterable<String> paths,
+      Glob filename,
+      Iterable<String> chosenPresets,
+      Map<String, Configuration> presets,
+      SuiteConfiguration suiteDefaults})
       : _help = help,
         _version = version,
         _pauseAfterLoad = pauseAfterLoad,
@@ -294,17 +300,17 @@ class Configuration {
         _concurrency = concurrency,
         _paths = _list(paths),
         _filename = filename,
-        chosenPresets = new UnmodifiableSetView(
-            chosenPresets?.toSet() ?? new Set()),
+        chosenPresets =
+            new UnmodifiableSetView(chosenPresets?.toSet() ?? new Set()),
         presets = _map(presets),
         suiteDefaults = pauseAfterLoad == true
             ? suiteDefaults?.change(timeout: Timeout.none) ??
-                  new SuiteConfiguration(timeout: Timeout.none)
+                new SuiteConfiguration(timeout: Timeout.none)
             : suiteDefaults ?? SuiteConfiguration.empty {
     if (_filename != null && _filename.context.style != p.style) {
       throw new ArgumentError(
           "filename's context must match the current operating system, was "
-              "${_filename.context.style}.");
+          "${_filename.context.style}.");
     }
 
     if ((shardIndex == null) != (totalShards == null)) {
@@ -327,7 +333,7 @@ class Configuration {
   /// If [input] is `null` or empty, this returns `null`.
   static List/*<T>*/ _list/*<T>*/(Iterable/*<T>*/ input) {
     if (input == null) return null;
-    var list = new List/*<T>*/.unmodifiable(input);
+    var list = new List/*<T>*/ .unmodifiable(input);
     if (list.isEmpty) return null;
     return list;
   }
@@ -383,8 +389,8 @@ class Configuration {
   ///
   /// Note that unlike [merge], this has no merging behavior—the old value is
   /// always replaced by the new one.
-  Configuration change({
-      bool help,
+  Configuration change(
+      {bool help,
       bool version,
       bool pauseAfterLoad,
       bool color,
@@ -415,6 +421,7 @@ class Configuration {
       // Test-level configuration
       Timeout timeout,
       bool verboseTrace,
+      bool chainStackTraces,
       bool skip,
       String skipReason,
       PlatformSelector testOn,
@@ -448,6 +455,7 @@ class Configuration {
             onPlatform: onPlatform,
             timeout: timeout,
             verboseTrace: verboseTrace,
+            chainStackTraces: chainStackTraces,
             skip: skip,
             skipReason: skipReason,
             testOn: testOn,
@@ -459,8 +467,8 @@ class Configuration {
   ///
   /// Any overlapping keys in the maps have their configurations merged in the
   /// returned map.
-  Map<Object, Configuration> _mergeConfigMaps(Map<Object, Configuration> map1,
-          Map<Object, Configuration> map2) =>
+  Map<Object, Configuration> _mergeConfigMaps(
+          Map<Object, Configuration> map1, Map<Object, Configuration> map2) =>
       mergeMaps(map1, map2,
           value: (config1, config2) => config1.merge(config2));
 
@@ -470,8 +478,10 @@ class Configuration {
     if (chosenPresets.isEmpty || presets.isEmpty) return this;
 
     var newPresets = new Map<String, Configuration>.from(presets);
-    var merged = chosenPresets.fold(empty, (merged, preset) =>
-        merged.merge(newPresets.remove(preset) ?? Configuration.empty));
+    var merged = chosenPresets.fold(
+        empty,
+        (merged, preset) =>
+            merged.merge(newPresets.remove(preset) ?? Configuration.empty));
 
     if (merged == empty) return this;
     var result = this.change(presets: newPresets).merge(merged);

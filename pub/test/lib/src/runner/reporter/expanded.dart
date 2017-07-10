@@ -86,6 +86,9 @@ class ExpandedReporter implements Reporter {
   /// The message printed for the last progress notification.
   String _lastProgressMessage;
 
+  /// The suffix added to the last progress notification.
+  String _lastProgressSuffix;
+
   /// Whether the reporter is paused.
   var _paused = false;
 
@@ -101,17 +104,14 @@ class ExpandedReporter implements Reporter {
   /// won't. If [printPath] is `true`, this will print the path name as part of
   /// the test description. Likewise, if [printPlatform] is `true`, this will
   /// print the platform as part of the test description.
-  static ExpandedReporter watch(Engine engine, {bool color: true,
-      bool printPath: true, bool printPlatform: true}) {
-    return new ExpandedReporter._(
-        engine,
-        color: color,
-        printPath: printPath,
-        printPlatform: printPlatform);
+  static ExpandedReporter watch(Engine engine,
+      {bool color: true, bool printPath: true, bool printPlatform: true}) {
+    return new ExpandedReporter._(engine,
+        color: color, printPath: printPath, printPlatform: printPlatform);
   }
 
-  ExpandedReporter._(this._engine, {bool color: true, bool printPath: true,
-      bool printPlatform: true})
+  ExpandedReporter._(this._engine,
+      {bool color: true, bool printPath: true, bool printPlatform: true})
       : _printPath = printPath,
         _printPlatform = printPlatform,
         _color = color,
@@ -177,8 +177,8 @@ class ExpandedReporter implements Reporter {
       _progressLine(_description(liveTest));
     }
 
-    _subscriptions.add(liveTest.onError.listen((error) =>
-        _onError(liveTest, error.error, error.stackTrace)));
+    _subscriptions.add(liveTest.onError
+        .listen((error) => _onError(liveTest, error.error, error.stackTrace)));
 
     _subscriptions.add(liveTest.onMessage.listen((message) {
       _progressLine(_description(liveTest));
@@ -203,12 +203,12 @@ class ExpandedReporter implements Reporter {
   void _onError(LiveTest liveTest, error, StackTrace stackTrace) {
     if (liveTest.state.status != Status.complete) return;
 
-    _progressLine(_description(liveTest));
+    _progressLine(_description(liveTest), suffix: " $_bold$_red[E]$_noColor");
 
     if (error is! LoadException) {
       print(indent(error.toString()));
-      var chain = terseChain(stackTrace,
-          verbose: liveTest.test.metadata.verboseTrace);
+      var chain =
+          terseChain(stackTrace, verbose: liveTest.test.metadata.verboseTrace);
       print(indent(chain.toString()));
       return;
     }
@@ -248,13 +248,16 @@ class ExpandedReporter implements Reporter {
   ///
   /// [message] goes after the progress report, and may be truncated to fit the
   /// entire line within [_lineLength]. If [color] is passed, it's used as the
-  /// color for [message].
-  void _progressLine(String message, {String color}) {
+  /// color for [message]. If [suffix] is passed, it's added to the end of
+  /// [message].
+  void _progressLine(String message, {String color, String suffix}) {
     // Print nothing if nothing has changed since the last progress line.
     if (_engine.passed.length == _lastProgressPassed &&
         _engine.skipped.length == _lastProgressSkipped &&
         _engine.failed.length == _lastProgressFailed &&
-        message == _lastProgressMessage) {
+        message == _lastProgressMessage &&
+        // Don't re-print just because a suffix was removed.
+        (suffix == null || suffix == _lastProgressSuffix)) {
       return;
     }
 
@@ -262,7 +265,9 @@ class ExpandedReporter implements Reporter {
     _lastProgressSkipped = _engine.skipped.length;
     _lastProgressFailed = _engine.failed.length;
     _lastProgressMessage = message;
+    _lastProgressSuffix = suffix;
 
+    if (suffix != null) message += suffix;
     if (color == null) color = '';
     var duration = _stopwatch.elapsed;
     var buffer = new StringBuffer();
@@ -309,7 +314,8 @@ class ExpandedReporter implements Reporter {
   String _description(LiveTest liveTest) {
     var name = liveTest.test.name;
 
-    if (_printPath && liveTest.suite is! LoadSuite &&
+    if (_printPath &&
+        liveTest.suite is! LoadSuite &&
         liveTest.suite.path != null) {
       name = "${liveTest.suite.path}: $name";
     }

@@ -60,10 +60,12 @@ class AnalyticsImpl implements Analytics {
   static const String _defaultAnalyticsUrl =
       'https://www.google-analytics.com/collect';
 
-  /**
-   * Tracking ID / Property ID.
-   */
+  @override
   final String trackingId;
+  @override
+  final String applicationName;
+  @override
+  final String applicationVersion;
 
   final PersistentProperties properties;
   final PostHandler postHandler;
@@ -73,6 +75,7 @@ class AnalyticsImpl implements Analytics {
 
   final List<Future> _futures = [];
 
+  @override
   AnalyticsOpt analyticsOpt = AnalyticsOpt.optOut;
 
   String _url;
@@ -81,9 +84,7 @@ class AnalyticsImpl implements Analytics {
       new StreamController.broadcast(sync: true);
 
   AnalyticsImpl(this.trackingId, this.properties, this.postHandler,
-      {String applicationName,
-      String applicationVersion,
-      String analyticsUrl}) {
+      {this.applicationName, this.applicationVersion, String analyticsUrl}) {
     assert(trackingId != null);
 
     if (applicationName != null) setSessionValue('an', applicationName);
@@ -94,6 +95,7 @@ class AnalyticsImpl implements Analytics {
 
   bool _firstRun;
 
+  @override
   bool get firstRun {
     if (_firstRun == null) {
       _firstRun = properties['firstRun'] == null;
@@ -106,9 +108,7 @@ class AnalyticsImpl implements Analytics {
     return _firstRun;
   }
 
-  /**
-   * Will analytics data be sent?
-   */
+  @override
   bool get enabled {
     bool optIn = analyticsOpt == AnalyticsOpt.optIn;
     return optIn
@@ -116,30 +116,39 @@ class AnalyticsImpl implements Analytics {
         : properties['enabled'] != false;
   }
 
-  /**
-   * Enable or disable sending of analytics data.
-   */
+  @override
   set enabled(bool value) {
     properties['enabled'] = value;
   }
 
-  Future sendScreenView(String viewName) {
+  @override
+  Future sendScreenView(String viewName, {Map<String, String> parameters}) {
     Map<String, dynamic> args = {'cd': viewName};
+    if (parameters != null) {
+      args.addAll(parameters);
+    }
     return _sendPayload('screenview', args);
   }
 
-  Future sendEvent(String category, String action, {String label, int value}) {
+  @override
+  Future sendEvent(String category, String action,
+      {String label, int value, Map<String, String> parameters}) {
     Map<String, dynamic> args = {'ec': category, 'ea': action};
     if (label != null) args['el'] = label;
     if (value != null) args['ev'] = value;
+    if (parameters != null) {
+      args.addAll(parameters);
+    }
     return _sendPayload('event', args);
   }
 
+  @override
   Future sendSocial(String network, String action, String target) {
     Map<String, dynamic> args = {'sn': network, 'sa': action, 'st': target};
     return _sendPayload('social', args);
   }
 
+  @override
   Future sendTiming(String variableName, int time,
       {String category, String label}) {
     Map<String, dynamic> args = {'utv': variableName, 'utt': time};
@@ -148,12 +157,14 @@ class AnalyticsImpl implements Analytics {
     return _sendPayload('timing', args);
   }
 
+  @override
   AnalyticsTimer startTimer(String variableName,
       {String category, String label}) {
     return new AnalyticsTimer(this, variableName,
         category: category, label: label);
   }
 
+  @override
   Future sendException(String description, {bool fatal}) {
     // We trim exceptions to a max length; google analytics will apply it's own
     // truncation, likely around 150 chars or so.
@@ -177,8 +188,10 @@ class AnalyticsImpl implements Analytics {
     return _sendPayload('exception', args);
   }
 
+  @override
   dynamic getSessionValue(String param) => _variableMap[param];
 
+  @override
   void setSessionValue(String param, dynamic value) {
     if (value == null) {
       _variableMap.remove(param);
@@ -187,8 +200,10 @@ class AnalyticsImpl implements Analytics {
     }
   }
 
+  @override
   Stream<Map<String, dynamic>> get onSend => _sendController.stream;
 
+  @override
   Future waitForLastPing({Duration timeout}) {
     Future f = Future.wait(_futures).catchError((e) => null);
 
@@ -200,13 +215,10 @@ class AnalyticsImpl implements Analytics {
   }
 
   @override
-  String get clientId => properties['clientId'];
+  void close() => postHandler.close();
 
-  void _initClientId() {
-    if (clientId == null) {
-      properties['clientId'] = new Uuid().generateV4();
-    }
-  }
+  @override
+  String get clientId => properties['clientId'] ??= new Uuid().generateV4();
 
   /**
    * Send raw data to analytics. Callers should generally use one of the typed
@@ -227,8 +239,6 @@ class AnalyticsImpl implements Analytics {
     if (!enabled) return new Future.value();
 
     if (_bucket.removeDrop()) {
-      _initClientId();
-
       _variableMap.forEach((key, value) {
         args[key] = value;
       });
@@ -267,6 +277,10 @@ abstract class PersistentProperties {
 
   dynamic operator [](String key);
   void operator []=(String key, dynamic value);
+
+  /// Re-read settings from the backing store. This may be a no-op on some
+  /// platforms.
+  void syncSettings();
 }
 
 /**
@@ -280,4 +294,7 @@ abstract class PersistentProperties {
  */
 abstract class PostHandler {
   Future sendPost(String url, Map<String, dynamic> parameters);
+
+  /// Free any used resources.
+  void close();
 }

@@ -1,3 +1,68 @@
+## 0.12.21
+
+* Add a `doesNotComplete` matcher that asserts that a Future never completes.
+
+* `throwsA()` and all related matchers will now match functions that return
+  `Future`s that emit exceptions.
+
+* Respect `onPlatform` for groups.
+
+* Only print browser load errors once per browser.
+
+* Gracefully time out when attempting to deserialize a test suite.
+
+## 0.12.20+13
+
+* Upgrade to package:matcher 0.12.1
+
+## 0.12.20+12
+
+* Now support `v0.30.0` of `pkg/analyzer`
+
+* The test executable now does a "hard exit" when complete to ensure lingering
+  isolates or async code don't block completion. This may affect users trying
+  to use the Dart service protocol or observatory.
+
+## 0.12.20+11
+
+* Refactor bootstrapping to simplify the test/pub_serve transformer.
+
+## 0.12.20+10
+
+* Refactor for internal tools.
+
+## 0.12.20+9
+
+* Introduce new flag `--chain-stack-traces` to conditionally chain stack traces.
+
+## 0.12.20+8
+
+* Fixed more blockers for compiling with `dev_compiler`.
+* Dartfmt the entire repo.
+
+* **Note:** 0.12.20+5-0.12.20+7 were tagged but not officially published.
+
+## 0.12.20+4
+
+* Fixed strong-mode errors and other blockers for compiling with `dev_compiler`.
+
+## 0.12.20+3
+
+* `--pause-after-load` no longer deadlocks with recent versions of Chrome.
+
+* Fix Dartified stack traces for JS-compiled tests run through `pub serve`.
+
+## 0.12.20+2
+
+* Print "[E]" after test failures to make them easier to identify visually and
+  via automated search.
+
+## 0.12.20+1
+
+* Tighten the dependency on `stream_channel` to reflect the APIs being used.
+
+* Use a 1024 x 768 iframe for browser tests.
+
 ## 0.12.20
 
 * **Breaking change:** The `expect()` method no longer returns a `Future`, since

@@ -85,6 +85,9 @@ class CompactReporter implements Reporter {
   /// The message printed for the last progress notification.
   String _lastProgressMessage;
 
+  /// The suffix added to the last progress notification.
+  String _lastProgressSuffix;
+
   /// Whether the message printed for the last progress notification was
   /// truncated.
   bool _lastProgressTruncated;
@@ -100,8 +103,7 @@ class CompactReporter implements Reporter {
 
   /// Watches the tests run by [engine] and prints their results to the
   /// terminal.
-  static CompactReporter watch(Engine engine) =>
-      new CompactReporter._(engine);
+  static CompactReporter watch(Engine engine) => new CompactReporter._(engine);
 
   CompactReporter._(this._engine) {
     _subscriptions.add(_engine.onTestStarted.listen(_onTestStarted));
@@ -152,6 +154,7 @@ class CompactReporter implements Reporter {
     if (!_stopwatchStarted) {
       _stopwatchStarted = true;
       _stopwatch.start();
+
       /// Keep updating the time even when nothing else is happening.
       _subscriptions.add(new Stream.periodic(new Duration(seconds: 1))
           .listen((_) => _progressLine(_lastProgressMessage)));
@@ -167,8 +170,8 @@ class CompactReporter implements Reporter {
     _subscriptions.add(liveTest.onStateChange
         .listen((state) => _onStateChange(liveTest, state)));
 
-    _subscriptions.add(liveTest.onError.listen((error) =>
-        _onError(liveTest, error.error, error.stackTrace)));
+    _subscriptions.add(liveTest.onError
+        .listen((error) => _onError(liveTest, error.error, error.stackTrace)));
 
     _subscriptions.add(liveTest.onMessage.listen((message) {
       _progressLine(_description(liveTest), truncate: false);
@@ -185,6 +188,10 @@ class CompactReporter implements Reporter {
   void _onStateChange(LiveTest liveTest, State state) {
     if (state.status != Status.complete) return;
 
+    // Errors are printed in [onError]; no need to print them here as well.
+    if (state.result == Result.failure) return;
+    if (state.result == Result.error) return;
+
     // Always display the name of the oldest active test, unless testing
     // is finished in which case display the last test to complete.
     if (_engine.active.isEmpty) {
@@ -198,14 +205,15 @@ class CompactReporter implements Reporter {
   void _onError(LiveTest liveTest, error, StackTrace stackTrace) {
     if (liveTest.state.status != Status.complete) return;
 
-    _progressLine(_description(liveTest), truncate: false);
+    _progressLine(_description(liveTest),
+        truncate: false, suffix: " $_bold$_red[E]$_noColor");
     if (!_printedNewline) print('');
     _printedNewline = true;
 
     if (error is! LoadException) {
       print(indent(error.toString()));
-      var chain = terseChain(stackTrace,
-          verbose: liveTest.test.metadata.verboseTrace);
+      var chain =
+          terseChain(stackTrace, verbose: liveTest.test.metadata.verboseTrace);
       print(indent(chain.toString()));
       return;
     }
@@ -263,8 +271,10 @@ class CompactReporter implements Reporter {
   ///
   /// [message] goes after the progress report, and may be truncated to fit the
   /// entire line within [_lineLength]. If [color] is passed, it's used as the
-  /// color for [message].
-  bool _progressLine(String message, {String color, bool truncate: true}) {
+  /// color for [message]. If [suffix] is passed, it's added to the end of
+  /// [message].
+  bool _progressLine(String message,
+      {String color, bool truncate: true, String suffix}) {
     var elapsed = _stopwatch.elapsed.inSeconds;
 
     // Print nothing if nothing has changed since the last progress line.
@@ -272,6 +282,8 @@ class CompactReporter implements Reporter {
         _engine.skipped.length == _lastProgressSkipped &&
         _engine.failed.length == _lastProgressFailed &&
         message == _lastProgressMessage &&
+        // Don't re-print just because a suffix was removed.
+        (suffix == null || suffix == _lastProgressSuffix) &&
         // Don't re-print just because the message became re-truncated, because
         // that doesn't add information.
         (truncate || !_lastProgressTruncated) &&
@@ -287,8 +299,10 @@ class CompactReporter implements Reporter {
     _lastProgressFailed = _engine.failed.length;
     _lastProgressElapsed = elapsed;
     _lastProgressMessage = message;
+    _lastProgressSuffix = suffix;
     _lastProgressTruncated = truncate;
 
+    if (suffix != null) message += suffix;
     if (color == null) color = '';
     var duration = _stopwatch.elapsed;
     var buffer = new StringBuffer();
@@ -346,7 +360,8 @@ class CompactReporter implements Reporter {
   String _description(LiveTest liveTest) {
     var name = liveTest.test.name;
 
-    if (_printPath && liveTest.suite is! LoadSuite &&
+    if (_printPath &&
+        liveTest.suite is! LoadSuite &&
         liveTest.suite.path != null) {
       name = "${liveTest.suite.path}: $name";
     }

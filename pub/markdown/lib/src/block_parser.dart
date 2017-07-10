@@ -335,10 +335,7 @@ class BlockquoteSyntax extends BlockSyntax {
       // a Setext header.
       if (parser.blockSyntaxes.firstWhere((s) => s.canParse(parser))
           is ParagraphSyntax) {
-        var continuedLine = childLines.last + parser.current;
-        childLines
-          ..removeLast()
-          ..add(continuedLine);
+        childLines.add(parser.current);
         parser.advance();
       } else {
         break;
@@ -531,18 +528,17 @@ class OtherTagBlockHtmlSyntax extends BlockTagBlockHtmlSyntax {
   const OtherTagBlockHtmlSyntax();
 }
 
-/// A BlockHtmlSyntax that has a specific [endPattern].
+/// A BlockHtmlSyntax that has a specific `endPattern`.
 ///
 /// In practice this means that the syntax dominates; it is allowed to eat
-/// many lines, including blank lines, before matching its [endPattern].
+/// many lines, including blank lines, before matching its `endPattern`.
 class LongBlockHtmlSyntax extends BlockHtmlSyntax {
-  RegExp _pattern;
-  RegExp _endPattern;
+  final RegExp _pattern;
+  final RegExp _endPattern;
 
-  LongBlockHtmlSyntax(pattern, endPattern) {
-    _pattern = new RegExp(pattern);
-    _endPattern = new RegExp(endPattern);
-  }
+  LongBlockHtmlSyntax(pattern, endPattern)
+      : _pattern = new RegExp(pattern),
+        _endPattern = new RegExp(endPattern);
 
   RegExp get pattern => _pattern;
 
@@ -672,10 +668,7 @@ abstract class ListSyntax extends BlockSyntax {
         }
 
         // Anything else is paragraph continuation text.
-        var continuedLine = childLines.last + parser.current;
-        childLines
-          ..removeLast()
-          ..add(continuedLine);
+        childLines.add(parser.current);
       }
       parser.advance();
     }

@@ -1,3 +1,11 @@
+## 0.12.1+1
+
+* Produce a better error message when a `CustomMatcher`'s feature throws.
+
+## 0.12.1
+
+* Add containsAllInOrder matcher for Iterables
+
 ## 0.12.0+2
 
 * Fix all strong-mode warnings.

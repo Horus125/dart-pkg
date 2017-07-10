@@ -7,15 +7,14 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:matcher/matcher.dart';
 
+import '../utils.dart';
 import 'async_matcher.dart';
 import 'stream_matcher.dart';
 import 'throws_matcher.dart';
-import '../utils.dart';
 
 /// Returns a [StreamMatcher] that asserts that the stream emits a "done" event.
 final emitsDone = new StreamMatcher(
-    (queue) async => (await queue.hasNext) ? "" : null,
-    "be done");
+    (queue) async => (await queue.hasNext) ? "" : null, "be done");
 
 /// Returns a [StreamMatcher] for [matcher].
 ///
@@ -70,13 +69,13 @@ StreamMatcher emitsError(matcher) {
 StreamMatcher mayEmit(matcher) {
   var streamMatcher = emits(matcher);
   return new StreamMatcher((queue) async {
-    await queue.withTransaction((copy) async =>
-        (await streamMatcher.matchQueue(copy)) == null);
+    await queue.withTransaction(
+        (copy) async => (await streamMatcher.matchQueue(copy)) == null);
     return null;
   }, "maybe ${streamMatcher.description}");
 }
 
-/// Returns a [streamMatcher] that matches the stream if at least one of
+/// Returns a [StreamMatcher] that matches the stream if at least one of
 /// [matchers] matches.
 ///
 /// If multiple matchers match the stream, this chooses the matcher that
@@ -169,8 +168,8 @@ StreamMatcher emitsInOrder(Iterable matchers) {
   var streamMatchers = matchers.map(emits).toList();
   if (streamMatchers.length == 1) return streamMatchers.first;
 
-  var description = "do the following in order:\n" + bullet(
-      streamMatchers.map((matcher) => matcher.description));
+  var description = "do the following in order:\n" +
+      bullet(streamMatchers.map((matcher) => matcher.description));
 
   return new StreamMatcher((queue) async {
     for (var i = 0; i < streamMatchers.length; i++) {
@@ -200,11 +199,11 @@ StreamMatcher emitsThrough(matcher) {
     var failures = <String>[];
 
     tryHere() => queue.withTransaction((copy) async {
-      var result = await streamMatcher.matchQueue(copy);
-      if (result == null) return true;
-      failures.add(result);
-      return false;
-    });
+          var result = await streamMatcher.matchQueue(copy);
+          if (result == null) return true;
+          failures.add(result);
+          return false;
+        });
 
     while (await queue.hasNext) {
       if (await tryHere()) return null;
@@ -313,18 +312,18 @@ StreamMatcher emitsInAnyOrder(Iterable matchers) {
   var streamMatchers = matchers.map(emits).toSet();
   if (streamMatchers.length == 1) return streamMatchers.first;
   var description = "do the following in any order:\n" +
-    bullet(streamMatchers.map((matcher) => matcher.description));
+      bullet(streamMatchers.map((matcher) => matcher.description));
 
   return new StreamMatcher(
-      (queue) async =>
-          await _tryInAnyOrder(queue, streamMatchers) ? null : "",
+      (queue) async => await _tryInAnyOrder(queue, streamMatchers) ? null : "",
       description);
 }
 
 /// Returns whether [queue] matches [matchers] in any order.
-Future<bool> _tryInAnyOrder(StreamQueue queue, Set<StreamMatcher> matchers)
-    async {
-  if (matchers.length == 1) return await matchers.first.matchQueue(queue) == null;
+Future<bool> _tryInAnyOrder(
+    StreamQueue queue, Set<StreamMatcher> matchers) async {
+  if (matchers.length == 1)
+    return await matchers.first.matchQueue(queue) == null;
 
   var transaction = queue.startTransaction();
   StreamQueue consumedMost;

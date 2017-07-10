@@ -36,16 +36,19 @@ class ContentShell extends Browser {
         var args = ["--dump-render-tree", url.toString()];
         if (port != null) args.add("--remote-debugging-port=$port");
 
-        var process = await Process.start(executable, args,
-            environment: {"DART_FLAGS": "--checked"});
+        var process = await Process
+            .start(executable, args, environment: {"DART_FLAGS": "--checked"});
 
         if (debug) {
-          observatoryCompleter.complete(lineSplitter.bind(process.stdout)
+          observatoryCompleter.complete(lineSplitter
+              .bind(process.stdout)
               .map((line) {
-            var match = _observatoryRegExp.firstMatch(line);
-            if (match == null) return null;
-            return Uri.parse(match[1]);
-          }).where((uri) => uri != null).first);
+                var match = _observatoryRegExp.firstMatch(line);
+                if (match == null) return null;
+                return Uri.parse(match[1]);
+              })
+              .where((uri) => uri != null)
+              .first);
         } else {
           observatoryCompleter.complete(null);
         }
@@ -57,7 +60,8 @@ class ContentShell extends Browser {
         // Any errors from this will always come before the "Running without
         // renderer sandbox" message.
         while (await stderr.moveNext() &&
-            !stderr.current.endsWith("Running without renderer sandbox")) {
+            !stderr.current.endsWith("Running without renderer sandbox") &&
+            !stderr.current.contains("Running without the SUID sandbox")) {
           if (stderr.current == "[dartToStderr]: Dartium build has expired") {
             stderr.cancel();
             process.kill();
@@ -66,9 +70,9 @@ class ContentShell extends Browser {
             // (https://github.com/dart-lang/www.dartlang.org/issues/1164).
             throw new ApplicationException(
                 "You're using an expired content_shell. Upgrade to the latest "
-                    "version:\n"
+                "version:\n"
                 "http://gsdview.appspot.com/dart-archive/channels/stable/"
-                    "release/latest/dartium/");
+                "release/latest/dartium/");
           } else if (stderr.current.contains("bind() returned an error")) {
             // If we failed to bind to the port, return null to tell
             // getUnusedPort to try another one.
@@ -95,7 +99,7 @@ class ContentShell extends Browser {
   }
 
   ContentShell._(Future<Process> startBrowser(), this.observatoryUrl,
-          this.remoteDebuggerUrl)
+      this.remoteDebuggerUrl)
       : super(startBrowser);
 
   /// Return the default executable for the current operating system.

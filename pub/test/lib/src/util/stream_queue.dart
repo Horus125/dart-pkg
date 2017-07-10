@@ -104,9 +104,8 @@ class StreamQueue<T> {
 
   /// Create a `StreamQueue` of the events of [source].
   StreamQueue(Stream<T> source)
-      : _sourceStream = source is ForkableStream
-          ? source
-          : new ForkableStream(source);
+      : _sourceStream =
+            source is ForkableStream ? source : new ForkableStream(source);
 
   /// Asks if the stream has any more events.
   ///
@@ -440,7 +439,7 @@ class _NextRequest<T> implements _EventRequest {
 
   void close(Queue<Result> events) {
     var errorFuture =
-        new Future.sync(() => throw new StateError("No elements"));
+        new Future<T>.sync(() => throw new StateError("No elements"));
     _completer.complete(errorFuture);
   }
 }
@@ -488,7 +487,7 @@ class _TakeRequest<T> implements _EventRequest {
   final _completer = new Completer<List<T>>();
 
   /// List collecting events until enough have been seen.
-  final List _list = <T>[];
+  final _list = <T>[];
 
   /// Number of events to capture.
   ///
@@ -602,8 +601,9 @@ class _RestRequest<T> implements _EventRequest {
       for (var event in events) {
         event.addTo(controller);
       }
-      controller.addStream(_getRestStream(), cancelOnError: false)
-                .whenComplete(controller.close);
+      controller
+          .addStream(_getRestStream(), cancelOnError: false)
+          .whenComplete(controller.close);
       _completer.setSourceStream(controller.stream);
     }
   }
@@ -689,7 +689,8 @@ class _ForkRequest<T> implements _EventRequest {
       }
 
       var fork = _streamQueue._sourceStream.fork();
-      controller.addStream(fork, cancelOnError: false)
+      controller
+          .addStream(fork, cancelOnError: false)
           .whenComplete(controller.close);
       _completer.setSourceStream(controller.stream);
     }

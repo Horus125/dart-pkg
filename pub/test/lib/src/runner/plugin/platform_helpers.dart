@@ -14,6 +14,7 @@ import '../../backend/test.dart';
 import '../../backend/test_platform.dart';
 import '../../util/io.dart';
 import '../../util/remote_exception.dart';
+import '../application_exception.dart';
 import '../configuration.dart';
 import '../configuration/suite.dart';
 import '../environment.dart';
@@ -22,6 +23,8 @@ import '../runner_suite.dart';
 import '../runner_test.dart';
 
 typedef StackTrace _MapTrace(StackTrace trace);
+
+final _deserializeTimeout = new Duration(seconds: 45);
 
 /// A helper method for creating a [RunnerSuiteController] containing tests
 /// that communicate over [channel].
@@ -37,9 +40,12 @@ typedef StackTrace _MapTrace(StackTrace trace);
 /// If [asciiSymbols] is passed, it controls whether the `symbol` package is
 /// configured to use plain ASCII or Unicode symbols. It defaults to `true` on
 /// Windows and `false` elsewhere.
-Future<RunnerSuiteController> deserializeSuite(String path,
-    TestPlatform platform, SuiteConfiguration suiteConfig,
-    Environment environment, StreamChannel channel,
+Future<RunnerSuiteController> deserializeSuite(
+    String path,
+    TestPlatform platform,
+    SuiteConfiguration suiteConfig,
+    Environment environment,
+    StreamChannel channel,
     {StackTrace mapTrace(StackTrace trace)}) async {
   if (mapTrace == null) mapTrace = (trace) => trace;
 
@@ -71,42 +77,47 @@ Future<RunnerSuiteController> deserializeSuite(String path,
     }
   }
 
-  suiteChannel.stream.listen((response) {
-    switch (response["type"]) {
-      case "print":
-        print(response["line"]);
-        break;
+  suiteChannel.stream.listen(
+      (response) {
+        switch (response["type"]) {
+          case "print":
+            print(response["line"]);
+            break;
 
-      case "loadException":
-        handleError(
-            new LoadException(path, response["message"]),
+          case "loadException":
+            handleError(new LoadException(path, response["message"]),
+                new Trace.current());
+            break;
+
+          case "error":
+            var asyncError = RemoteException.deserialize(response["error"]);
+            handleError(new LoadException(path, asyncError.error),
+                mapTrace(asyncError.stackTrace));
+            break;
+
+          case "success":
+            var deserializer = new _Deserializer(suiteChannel, mapTrace);
+            completer.complete(deserializer.deserializeGroup(response["root"]));
+            break;
+        }
+      },
+      onError: handleError,
+      onDone: () {
+        if (completer.isCompleted) return;
+        completer.completeError(
+            new LoadException(
+                path, "Connection closed before test suite loaded."),
             new Trace.current());
-        break;
-
-      case "error":
-        var asyncError = RemoteException.deserialize(response["error"]);
-        handleError(
-            new LoadException(path, asyncError.error),
-            mapTrace(asyncError.stackTrace));
-        break;
-
-      case "success":
-        var deserializer = new _Deserializer(suiteChannel, mapTrace);
-        completer.complete(deserializer.deserializeGroup(response["root"]));
-        break;
-    }
-  }, onError: handleError, onDone: () {
-    if (completer.isCompleted) return;
-    completer.completeError(
-        new LoadException(
-            path, "Connection closed before test suite loaded."),
-        new Trace.current());
-  });
+      });
 
   return new RunnerSuiteController(
       environment,
       suiteConfig,
-      await completer.future,
+      await completer.future.timeout(_deserializeTimeout, onTimeout: () {
+        throw new ApplicationException(
+            "Timed out while loading the test suite.\n"
+            "It's likely that there's a missing import or syntax error.");
+      }),
       path: path,
       platform: platform,
       os: currentOS,
@@ -126,11 +137,13 @@ class _Deserializer {
   /// Deserializes [group] into a concrete [Group].
   Group deserializeGroup(Map group) {
     var metadata = new Metadata.deserialize(group['metadata']);
-    return new Group(group['name'], (group['entries'] as List).map((entry) {
-      var map = entry as Map;
-      if (map['type'] == 'group') return deserializeGroup(map);
-      return _deserializeTest(map);
-    }),
+    return new Group(
+        group['name'],
+        (group['entries'] as List).map((entry) {
+          var map = entry as Map;
+          if (map['type'] == 'group') return deserializeGroup(map);
+          return _deserializeTest(map);
+        }),
         metadata: metadata,
         trace: group['trace'] == null ? null : new Trace.parse(group['trace']),
         setUpAll: _deserializeTest(group['setUpAll']),

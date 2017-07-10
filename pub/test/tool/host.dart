@@ -2,6 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+@JS()
+library test.host;
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
@@ -159,8 +162,8 @@ MultiChannel _connectToServer() {
     controller.local.sink.add(JSON.decode(message.data));
   });
 
-  controller.local.stream.listen(
-      (message) => webSocket.send(JSON.encode(message)));
+  controller.local.stream
+      .listen((message) => webSocket.send(JSON.encode(message)));
 
   return new MultiChannel(controller.foreign);
 }

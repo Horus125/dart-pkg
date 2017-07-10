@@ -69,7 +69,7 @@ abstract class GrammarDefinition {
 
   /// Internal helper to resolve a complete parser graph.
   Parser _resolve(_Reference reference) {
-    var mapping = new Map();
+    Map<_Reference, Parser> mapping = new Map();
 
     Parser _dereference(_Reference reference) {
       var parser = mapping[reference];
@@ -77,14 +77,15 @@ abstract class GrammarDefinition {
         var references = [reference];
         parser = reference.resolve();
         while (parser is _Reference) {
-          if (references.contains(parser)) {
+          var otherReference = parser as _Reference;
+          if (references.contains(otherReference)) {
             throw new StateError('Recursive references detected: $references');
           }
-          references.add(parser);
-          parser = parser.resolve();
+          references.add(otherReference);
+          parser = otherReference.resolve();
         }
-        for (var each in references) {
-          mapping[each] = parser;
+        for (var otherReference in references) {
+          mapping[otherReference] = parser;
         }
       }
       return parser;
@@ -127,27 +128,29 @@ class _Reference extends Parser {
 
   @override
   bool operator ==(other) {
-    if (other is! _Reference ||
-        other.function != function ||
-        other.arguments.length != arguments.length) {
-      return false;
-    }
-    for (var i = 0; i < arguments.length; i++) {
-      var a = arguments[i],
-          b = other.arguments[i];
-      if (a is Parser && a is! _Reference && b is Parser && b is! _Reference) {
-        // for parsers do a deep equality check
-        if (!a.isEqualTo(b)) {
-          return false;
-        }
-      } else {
-        // for everything else just do standard equality
-        if (a != b) {
-          return false;
+    if (other is _Reference) {
+      if (other.function != function ||
+          other.arguments.length != arguments.length) {
+        return false;
+      }
+      for (var i = 0; i < arguments.length; i++) {
+        var a = arguments[i],
+            b = other.arguments[i];
+        if (a is Parser && a is! _Reference && b is Parser && b is! _Reference) {
+          // for parsers do a deep equality check
+          if (!a.isEqualTo(b)) {
+            return false;
+          }
+        } else {
+          // for everything else just do standard equality
+          if (a != b) {
+            return false;
+          }
         }
       }
+      return true;
     }
-    return true;
+    return false;
   }
 
   @override

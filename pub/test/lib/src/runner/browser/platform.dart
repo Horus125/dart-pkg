@@ -39,8 +39,7 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// [root] is the root directory that the server should serve. It defaults to
   /// the working directory.
-  static Future<BrowserPlatform> start({String root})
-      async {
+  static Future<BrowserPlatform> start({String root}) async {
     var server = new shelf_io.IOServer(await HttpMultiServer.loopback(0));
     return new BrowserPlatform._(server, Configuration.current, root: root);
   }
@@ -94,12 +93,10 @@ class BrowserPlatform extends PlatformPlugin {
   bool get _closed => _closeMemo.hasRun;
 
   /// A map from browser identifiers to futures that will complete to the
-  /// [BrowserManager]s for those browsers, or the errors that occurred when
-  /// trying to load those managers.
+  /// [BrowserManager]s for those browsers, or `null` if they failed to load.
   ///
   /// This should only be accessed through [_browserManagerFor].
-  final _browserManagers =
-      new Map<TestPlatform, Future<Result<BrowserManager>>>();
+  final _browserManagers = new Map<TestPlatform, Future<BrowserManager>>();
 
   /// A cascade of handlers for suites' precompiled paths.
   ///
@@ -125,8 +122,7 @@ class BrowserPlatform extends PlatformPlugin {
         _compiledDir = config.pubServeUrl == null ? createTempDir() : null,
         _http = config.pubServeUrl == null ? null : new HttpClient(),
         _compilers = new CompilerPool() {
-    var cascade = new shelf.Cascade()
-        .add(_webSocketHandler.handler);
+    var cascade = new shelf.Cascade().add(_webSocketHandler.handler);
 
     if (_config.pubServeUrl == null) {
       cascade = cascade
@@ -136,7 +132,8 @@ class BrowserPlatform extends PlatformPlugin {
 
           // Add this before the wrapper handler so that its HTML takes
           // precedence over the test runner's.
-          .add((request) => _precompiledCascade?.handler(request) ??
+          .add((request) =>
+              _precompiledCascade?.handler(request) ??
               new shelf.Response.notFound(null))
           .add(_wrapperHandler);
     }
@@ -154,7 +151,8 @@ class BrowserPlatform extends PlatformPlugin {
 
     if (path.endsWith(".browser_test.dart")) {
       var testPath = p.basename(p.withoutExtension(p.withoutExtension(path)));
-      return new shelf.Response.ok('''
+      return new shelf.Response.ok(
+          '''
         import "package:stream_channel/stream_channel.dart";
 
         import "package:test/src/runner/plugin/remote_platform_helpers.dart";
@@ -166,7 +164,8 @@ class BrowserPlatform extends PlatformPlugin {
           var channel = serializeSuite(() => test.main, hidePrints: false);
           postMessageChannel().pipe(channel);
         }
-      ''', headers: {'Content-Type': 'application/dart'});
+      ''',
+          headers: {'Content-Type': 'application/dart'});
     }
 
     if (path.endsWith(".html")) {
@@ -180,7 +179,8 @@ class BrowserPlatform extends PlatformPlugin {
           ? 'type="application/dart" src="$scriptBase"'
           : 'src="$scriptBase.js"';
 
-      return new shelf.Response.ok('''
+      return new shelf.Response.ok(
+          '''
         <!DOCTYPE html>
         <html>
         <head>
@@ -188,7 +188,8 @@ class BrowserPlatform extends PlatformPlugin {
           <script $script></script>
         </head>
         </html>
-      ''', headers: {'Content-Type': 'text/html'});
+      ''',
+          headers: {'Content-Type': 'text/html'});
     }
 
     return new shelf.Response.notFound('Not found.');
@@ -198,8 +199,8 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// This will start a browser to load the suite if one isn't already running.
   /// Throws an [ArgumentError] if [browser] isn't a browser platform.
-  Future<RunnerSuite> load(String path, TestPlatform browser,
-      SuiteConfiguration suiteConfig) async {
+  Future<RunnerSuite> load(
+      String path, TestPlatform browser, SuiteConfiguration suiteConfig) async {
     assert(suiteConfig.platforms.contains(browser));
 
     if (!browser.isBrowser) {
@@ -208,18 +209,21 @@ class BrowserPlatform extends PlatformPlugin {
 
     var htmlPath = p.withoutExtension(path) + '.html';
     if (new File(htmlPath).existsSync() &&
-        !new File(htmlPath).readAsStringSync()
+        !new File(htmlPath)
+            .readAsStringSync()
             .contains('packages/test/dart.js')) {
       throw new LoadException(
           path,
           '"${htmlPath}" must contain <script src="packages/test/dart.js">'
-              '</script>.');
+          '</script>.');
     }
 
     var suiteUrl;
     if (_config.pubServeUrl != null) {
-      var suitePrefix = p.toUri(p.withoutExtension(
-          p.relative(path, from: p.join(_root, 'test')))).path;
+      var suitePrefix = p
+          .toUri(
+              p.withoutExtension(p.relative(path, from: p.join(_root, 'test'))))
+          .path;
 
       var dartUrl;
       // Polymer generates a bootstrap entrypoint that wraps the entrypoint we
@@ -231,8 +235,8 @@ class BrowserPlatform extends PlatformPlugin {
         dartUrl = _config.pubServeUrl.resolve(
             "$suitePrefix.html.polymer.bootstrap.dart.browser_test.dart");
       } else {
-        dartUrl = _config.pubServeUrl.resolve(
-          '$suitePrefix.dart.browser_test.dart');
+        dartUrl =
+            _config.pubServeUrl.resolve('$suitePrefix.dart.browser_test.dart');
       }
 
       await _pubServeSuite(path, dartUrl, browser, suiteConfig);
@@ -255,8 +259,8 @@ class BrowserPlatform extends PlatformPlugin {
               }
             }
             _precompiledCascade ??= new shelf.Cascade();
-            _precompiledCascade = _precompiledCascade.add(
-                createStaticHandler(suiteConfig.precompiledPath));
+            _precompiledCascade = _precompiledCascade
+                .add(createStaticHandler(suiteConfig.precompiledPath));
           }
         } else {
           await _compileSuite(path, suiteConfig);
@@ -264,15 +268,15 @@ class BrowserPlatform extends PlatformPlugin {
       }
 
       if (_closed) return null;
-      suiteUrl = url.resolveUri(p.toUri(
-          p.withoutExtension(p.relative(path, from: _root)) + ".html"));
+      suiteUrl = url.resolveUri(
+          p.toUri(p.withoutExtension(p.relative(path, from: _root)) + ".html"));
     }
 
     if (_closed) return null;
 
     // TODO(nweiz): Don't start the browser until all the suites are compiled.
     var browserManager = await _browserManagerFor(browser);
-    if (_closed) return null;
+    if (_closed || browserManager == null) return null;
 
     var suite = await browserManager.load(path, suiteUrl, suiteConfig,
         mapper: browser.isJS ? _mappers[path] : null);
@@ -284,8 +288,7 @@ class BrowserPlatform extends PlatformPlugin {
   /// underneath [suiteConfig.precompiledPath].
   bool _precompiled(SuiteConfiguration suiteConfig, String path) {
     if (suiteConfig.precompiledPath == null) return false;
-    var htmlPath = p.join(
-        suiteConfig.precompiledPath,
+    var htmlPath = p.join(suiteConfig.precompiledPath,
         p.relative(p.withoutExtension(path) + ".html", from: _root));
     return new File(htmlPath).existsSync();
   }
@@ -324,9 +327,10 @@ class BrowserPlatform extends PlatformPlugin {
           // else the process can't exit.
           response.listen((_) {});
 
-          throw new LoadException(path,
+          throw new LoadException(
+              path,
               "Error getting $url: ${response.statusCode} "
-                  "${response.reasonPhrase}\n"
+              "${response.reasonPhrase}\n"
               'Make sure "pub serve" is serving the test/ directory.');
         }
 
@@ -334,9 +338,8 @@ class BrowserPlatform extends PlatformPlugin {
           _mappers[path] = new StackTraceMapper(
               await UTF8.decodeStream(response),
               mapUrl: url,
-              packageResolver: new SyncPackageResolver.root(
-                  _config.pubServeUrl.resolve('packages')),
-              sdkRoot: _config.pubServeUrl.resolve('packages/\$sdk'));
+              packageResolver: new SyncPackageResolver.root('packages'),
+              sdkRoot: p.toUri('packages/\$sdk'));
           return;
         }
 
@@ -349,7 +352,8 @@ class BrowserPlatform extends PlatformPlugin {
               "(errno ${error.osError.errorCode})";
         }
 
-        throw new LoadException(path,
+        throw new LoadException(
+            path,
             "Error getting $url: $message\n"
             'Make sure "pub serve" is running.');
       } finally {
@@ -399,8 +403,8 @@ class BrowserPlatform extends PlatformPlugin {
   ///
   /// If no browser manager is running yet, starts one.
   Future<BrowserManager> _browserManagerFor(TestPlatform platform) {
-    var manager = _browserManagers[platform];
-    if (manager != null) return Result.release(manager);
+    var managerFuture = _browserManagers[platform];
+    if (managerFuture != null) return managerFuture;
 
     var completer = new Completer<WebSocketChannel>.sync();
     var path = _webSocketHandler.create(webSocketHandler(completer.complete));
@@ -408,19 +412,16 @@ class BrowserPlatform extends PlatformPlugin {
     var hostUrl = (_config.pubServeUrl == null ? url : _config.pubServeUrl)
         .resolve('packages/test/src/runner/browser/static/index.html')
         .replace(queryParameters: {
-          'managerUrl': webSocketUrl.toString(),
-          'debug': _config.pauseAfterLoad.toString()
-        });
+      'managerUrl': webSocketUrl.toString(),
+      'debug': _config.pauseAfterLoad.toString()
+    });
 
     var future = BrowserManager.start(platform, hostUrl, completer.future,
         debug: _config.pauseAfterLoad);
 
-    // Capture errors and release them later to avoid Zone issues. This call to
-    // [_browserManagerFor] is running in a different [LoadSuite] than future
-    // calls, which means they're also running in different error zones so
-    // errors can't be freely passed between them. Storing the error or value as
-    // an explicit [Result] fixes that.
-    _browserManagers[platform] = Result.capture(future);
+    // Store null values for browsers that error out so we know not to load them
+    // again.
+    _browserManagers[platform] = future.catchError((_) => null);
 
     return future;
   }
@@ -434,8 +435,8 @@ class BrowserPlatform extends PlatformPlugin {
     _browserManagers.clear();
     return Future.wait(managers.map((manager) async {
       var result = await manager;
-      if (result.isError) return;
-      await result.asValue.value.close();
+      if (result == null) return;
+      await result.close();
     }));
   }
 
@@ -444,23 +445,24 @@ class BrowserPlatform extends PlatformPlugin {
   /// Returns a [Future] that completes once the server is closed and its
   /// resources have been fully released.
   Future close() => _closeMemo.runOnce(() async {
-    var futures = _browserManagers.values.map((future) async {
-      var result = await future;
-      if (result.isError) return;
+        var futures =
+            _browserManagers.values.map<Future<dynamic>>((future) async {
+          var result = await future;
+          if (result == null) return;
 
-      await result.asValue.value.close();
-    }).toList();
+          await result.close();
+        }).toList();
 
-    futures.add(_server.close());
-    futures.add(_compilers.close());
+        futures.add(_server.close());
+        futures.add(_compilers.close());
 
-    await Future.wait(futures);
+        await Future.wait(futures);
 
-    if (_config.pubServeUrl == null) {
-      new Directory(_compiledDir).deleteSync(recursive: true);
-    } else {
-      _http.close();
-    }
-  });
+        if (_config.pubServeUrl == null) {
+          new Directory(_compiledDir).deleteSync(recursive: true);
+        } else {
+          _http.close();
+        }
+      });
   final _closeMemo = new AsyncMemoizer();
 }

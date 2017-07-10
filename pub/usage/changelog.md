@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.3.0
+- added a `close()` method to the `Analytics` class
+- change our minimum SDK from `1.24.0-dev` to `1.24.0` stable
+
+## 3.2.0
+- expose the `Analytics.applicationName` and `Analytics.applicationVersion`
+  properties
+- make it easier for clients to extend the `AnalyticsIO` class
+- allow for custom parameters when sending a screenView
+
+## 3.1.1
+- make Analytics.clientId available immediately
+
+## 3.1.0
+- switch the technique we use to determine the locale to the new dart:io
+  `Platform.localeName` field
+- change our minimum SDK version to `1.24.0`
+
 ## 3.0.1
 - expose the `Analytics.clientId` field
 

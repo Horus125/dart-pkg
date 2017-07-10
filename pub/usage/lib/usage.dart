@@ -47,6 +47,12 @@ abstract class Analytics {
    */
   String get trackingId;
 
+  /// The application name.
+  String get applicationName;
+
+  /// The application version.
+  String get applicationVersion;
+
   /**
    * Is this the first time the tool has run?
    */
@@ -77,14 +83,21 @@ abstract class Analytics {
 
   /**
    * Sends a screen view hit to Google Analytics.
+   *
+   * [parameters] can be any analytics key/value pair. Useful
+   * for custom dimensions, etc.
    */
-  Future sendScreenView(String viewName);
+  Future sendScreenView(String viewName, {Map<String, String> parameters});
 
   /**
    * Sends an Event hit to Google Analytics. [label] specifies the event label.
    * [value] specifies the event value. Values must be non-negative.
+   *
+   * [parameters] can be any analytics key/value pair. Useful
+   * for custom dimensions, etc.
    */
-  Future sendEvent(String category, String action, {String label, int value});
+  Future sendEvent(String category, String action,
+      {String label, int value, Map<String, String> parameters});
 
   /**
    * Sends a Social hit to Google Analytics. [network] specifies the social
@@ -151,9 +164,15 @@ abstract class Analytics {
    * users won't want their CLI app to pause at the end of the process waiting
    * for Google analytics requests to complete. This method allows CLI apps to
    * delay for a short time waiting for GA requests to complete, and then do
-   * something like call `exit()` explicitly themselves.
+   * something like call `dart:io`'s `exit()` explicitly themselves (or the
+   * [close] method below).
    */
   Future waitForLastPing({Duration timeout});
+
+  /// Free any used resources.
+  ///
+  /// The [Analytics] instance should not be used after this call.
+  void close();
 }
 
 enum AnalyticsOpt {
@@ -212,7 +231,13 @@ class AnalyticsTimer {
  * stand-in for that will never ping the GA server, or as a mock in test code.
  */
 class AnalyticsMock implements Analytics {
+  @override
   String get trackingId => 'UA-0';
+  @override
+  String get applicationName => 'mock-app';
+  @override
+  String get applicationVersion => '1.0.0';
+
   final bool logCalls;
 
   /**
@@ -227,30 +252,40 @@ class AnalyticsMock implements Analytics {
    */
   AnalyticsMock([this.logCalls = false]);
 
+  @override
   bool get firstRun => false;
 
+  @override
   AnalyticsOpt analyticsOpt = AnalyticsOpt.optOut;
 
+  @override
   bool enabled = true;
 
   @override
   String get clientId => '00000000-0000-4000-0000-000000000000';
 
-  Future sendScreenView(String viewName) =>
-      _log('screenView', {'viewName': viewName});
-
-  Future sendEvent(String category, String action, {String label, int value}) {
-    return _log('event', {
-      'category': category,
-      'action': action,
-      'label': label,
-      'value': value
-    });
+  @override
+  Future sendScreenView(String viewName, {Map<String, String> parameters}) {
+    parameters ??= <String, String>{};
+    parameters['viewName'] = viewName;
+    return _log('screenView', parameters);
   }
 
+  @override
+  Future sendEvent(String category, String action,
+      {String label, int value, Map<String, String> parameters}) {
+    parameters ??= <String, String>{};
+    return _log(
+        'event',
+        {'category': category, 'action': action, 'label': label, 'value': value}
+          ..addAll(parameters));
+  }
+
+  @override
   Future sendSocial(String network, String action, String target) =>
       _log('social', {'network': network, 'action': action, 'target': target});
 
+  @override
   Future sendTiming(String variableName, int time,
       {String category, String label}) {
     return _log('timing', {
@@ -261,22 +296,31 @@ class AnalyticsMock implements Analytics {
     });
   }
 
+  @override
   AnalyticsTimer startTimer(String variableName,
       {String category, String label}) {
     return new AnalyticsTimer(this, variableName,
         category: category, label: label);
   }
 
+  @override
   Future sendException(String description, {bool fatal}) =>
       _log('exception', {'description': description, 'fatal': fatal});
 
+  @override
   dynamic getSessionValue(String param) => null;
 
+  @override
   void setSessionValue(String param, dynamic value) {}
 
+  @override
   Stream<Map<String, dynamic>> get onSend => _sendController.stream;
 
+  @override
   Future waitForLastPing({Duration timeout}) => new Future.value();
+
+  @override
+  void close() {}
 
   Future _log(String hitType, Map m) {
     if (logCalls) {

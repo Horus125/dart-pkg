@@ -86,6 +86,7 @@ class SuiteConfiguration {
         forTag: mapMap(tags, value: (_, config) => config.metadata),
         onPlatform: mapMap(onPlatform, value: (_, config) => config.metadata));
   }
+
   final Metadata _metadata;
 
   /// The set of tags that have been declared in any way in this configuration.
@@ -107,6 +108,7 @@ class SuiteConfiguration {
     _knownTags = new UnmodifiableSetView(known);
     return _knownTags;
   }
+
   Set<String> _knownTags;
 
   /// All child configurations of [this] that may be selected under various
@@ -116,8 +118,8 @@ class SuiteConfiguration {
     yield* onPlatform.values;
   }
 
-  factory SuiteConfiguration({
-      bool jsTrace,
+  factory SuiteConfiguration(
+      {bool jsTrace,
       bool runSkipped,
       Iterable<String> dart2jsArgs,
       String precompiledPath,
@@ -131,6 +133,7 @@ class SuiteConfiguration {
       // Test-level configuration
       Timeout timeout,
       bool verboseTrace,
+      bool chainStackTraces,
       bool skip,
       String skipReason,
       PlatformSelector testOn,
@@ -149,6 +152,7 @@ class SuiteConfiguration {
         metadata: new Metadata(
             timeout: timeout,
             verboseTrace: verboseTrace,
+            chainStackTraces: chainStackTraces,
             skip: skip,
             skipReason: skipReason,
             testOn: testOn,
@@ -160,18 +164,18 @@ class SuiteConfiguration {
   ///
   /// Unlike [new SuiteConfiguration], this assumes [tags] is already
   /// resolved.
-  SuiteConfiguration._({
-          bool jsTrace,
-          bool runSkipped,
-          Iterable<String> dart2jsArgs,
-          this.precompiledPath,
-          Iterable<Pattern> patterns,
-          Iterable<TestPlatform> platforms,
-          BooleanSelector includeTags,
-          BooleanSelector excludeTags,
-          Map<BooleanSelector, SuiteConfiguration> tags,
-          Map<PlatformSelector, SuiteConfiguration> onPlatform,
-          Metadata metadata})
+  SuiteConfiguration._(
+      {bool jsTrace,
+      bool runSkipped,
+      Iterable<String> dart2jsArgs,
+      this.precompiledPath,
+      Iterable<Pattern> patterns,
+      Iterable<TestPlatform> platforms,
+      BooleanSelector includeTags,
+      BooleanSelector excludeTags,
+      Map<BooleanSelector, SuiteConfiguration> tags,
+      Map<PlatformSelector, SuiteConfiguration> onPlatform,
+      Metadata metadata})
       : _jsTrace = jsTrace,
         _runSkipped = runSkipped,
         dart2jsArgs = _list(dart2jsArgs) ?? const [],
@@ -198,7 +202,7 @@ class SuiteConfiguration {
   /// If [input] is `null` or empty, this returns `null`.
   static List/*<T>*/ _list/*<T>*/(Iterable/*<T>*/ input) {
     if (input == null) return null;
-    var list = new List/*<T>*/.unmodifiable(input);
+    var list = new List/*<T>*/ .unmodifiable(input);
     if (list.isEmpty) return null;
     return list;
   }
@@ -237,8 +241,8 @@ class SuiteConfiguration {
   ///
   /// Note that unlike [merge], this has no merging behavior—the old value is
   /// always replaced by the new one.
-  SuiteConfiguration change({
-      bool jsTrace,
+  SuiteConfiguration change(
+      {bool jsTrace,
       bool runSkipped,
       Iterable<String> dart2jsArgs,
       String precompiledPath,
@@ -252,6 +256,7 @@ class SuiteConfiguration {
       // Test-level configuration
       Timeout timeout,
       bool verboseTrace,
+      bool chainStackTraces,
       bool skip,
       String skipReason,
       PlatformSelector testOn,
@@ -270,6 +275,7 @@ class SuiteConfiguration {
         metadata: _metadata.change(
             timeout: timeout,
             verboseTrace: verboseTrace,
+            chainStackTraces: chainStackTraces,
             skip: skip,
             skipReason: skipReason,
             testOn: testOn,

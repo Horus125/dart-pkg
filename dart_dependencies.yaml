@@ -7,6 +7,3 @@
 
 name: emergency_deps
 dependencies:
-  # 3.1.0 uses Platform.localeName which crashes if the LANG environment
-  # variable is not set, which is the case on bots.
-  usage: 3.0.1

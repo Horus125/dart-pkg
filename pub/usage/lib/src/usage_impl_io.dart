@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:convert' show JSON;
+import 'dart:convert' show JSON, JsonEncoder;
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -60,7 +60,7 @@ String _createUserAgent() {
   }
 }
 
-String _userHomeDir() {
+String userHomeDir() {
   String envKey = Platform.operatingSystem == 'windows' ? 'APPDATA' : 'HOME';
   String value = Platform.environment[envKey];
   return value == null ? '.' : value;
@@ -77,15 +77,21 @@ class IOPostHandler extends PostHandler {
   final String _userAgent;
   final HttpClient mockClient;
 
-  IOPostHandler({HttpClient this.mockClient}) : _userAgent = _createUserAgent();
+  HttpClient _client;
 
+  IOPostHandler({this.mockClient}) : _userAgent = _createUserAgent();
+
+  @override
   Future sendPost(String url, Map<String, dynamic> parameters) async {
     String data = postEncode(parameters);
 
-    HttpClient client = mockClient != null ? mockClient : new HttpClient();
-    client.userAgent = _userAgent;
+    if (_client == null) {
+      _client = mockClient != null ? mockClient : new HttpClient();
+      _client.userAgent = _userAgent;
+    }
+
     try {
-      HttpClientRequest req = await client.postUrl(Uri.parse(url));
+      HttpClientRequest req = await _client.postUrl(Uri.parse(url));
       req.write(data);
       HttpClientResponse response = await req.close();
       response.drain();
@@ -94,7 +100,12 @@ class IOPostHandler extends PostHandler {
       // anything about, e.g. a missing internet connection.
     }
   }
+
+  @override
+  void close() => _client?.close();
 }
+
+JsonEncoder _jsonEncoder = new JsonEncoder.withIndent('  ');
 
 class IOPersistentProperties extends PersistentProperties {
   File _file;
@@ -102,21 +113,26 @@ class IOPersistentProperties extends PersistentProperties {
 
   IOPersistentProperties(String name, {String documentDirPath}) : super(name) {
     String fileName = '.${name.replaceAll(' ', '_')}';
-    documentDirPath ??= _userHomeDir();
+    documentDirPath ??= userHomeDir();
     _file = new File(path.join(documentDirPath, fileName));
-
-    try {
-      if (!_file.existsSync()) _file.createSync();
-      String contents = _file.readAsStringSync();
-      if (contents.isEmpty) contents = '{}';
-      _map = JSON.decode(contents);
-    } catch (_) {
-      _map = {};
+    if (!_file.existsSync()) {
+      _file.createSync();
     }
+    syncSettings();
   }
 
+  IOPersistentProperties.fromFile(File file) : super(path.basename(file.path)) {
+    _file = file;
+    if (!_file.existsSync()) {
+      _file.createSync();
+    }
+    syncSettings();
+  }
+
+  @override
   dynamic operator [](String key) => _map[key];
 
+  @override
   void operator []=(String key, dynamic value) {
     if (value == null && !_map.containsKey(key)) return;
     if (_map[key] == value) return;
@@ -128,15 +144,26 @@ class IOPersistentProperties extends PersistentProperties {
     }
 
     try {
-      _file.writeAsStringSync(JSON.encode(_map) + '\n');
+      _file.writeAsStringSync(_jsonEncoder.convert(_map) + '\n');
     } catch (_) {}
+  }
+
+  @override
+  void syncSettings() {
+    try {
+      String contents = _file.readAsStringSync();
+      if (contents.isEmpty) contents = '{}';
+      _map = JSON.decode(contents);
+    } catch (_) {
+      _map = {};
+    }
   }
 }
 
 /// Return the string for the platform's locale; return's `null` if the locale
 /// can't be determined.
 String getPlatformLocale() {
-  String locale = Platform.environment['LANG'];
+  String locale = Platform.localeName;
   if (locale == null) return null;
 
   if (locale != null) {
