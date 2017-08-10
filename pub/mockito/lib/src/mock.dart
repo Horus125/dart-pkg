@@ -48,30 +48,31 @@ void throwOnMissingStub(Mock mock) {
 /// customized at runtime to define how it may behave using [when].
 ///
 /// __Example use__:
-///   // Real class.
-///   class Cat {
-///     String getSound() => 'Meow';
-///   }
 ///
-///   // Mock class.
-///   class MockCat extends Mock implements Cat {}
+///     // Real class.
+///     class Cat {
+///       String getSound() => 'Meow';
+///     }
 ///
-///   void main() {
-///     // Create a new mocked Cat at runtime.
-///     var cat = new MockCat();
+///     // Mock class.
+///     class MockCat extends Mock implements Cat {}
 ///
-///     // When 'getSound' is called, return 'Woof'
-///     when(cat.getSound()).thenReturn('Woof');
+///     void main() {
+///       // Create a new mocked Cat at runtime.
+///       var cat = new MockCat();
 ///
-///     // Try making a Cat sound...
-///     print(cat.getSound()); // Prints 'Woof'
-///   }
+///       // When 'getSound' is called, return 'Woof'
+///       when(cat.getSound()).thenReturn('Woof');
+///
+///       // Try making a Cat sound...
+///       print(cat.getSound()); // Prints 'Woof'
+///     }
 ///
 /// **WARNING**: [Mock] uses [noSuchMethod](goo.gl/r3IQUH), which is a _form_ of
 /// runtime reflection, and causes sub-standard code to be generated. As such,
 /// [Mock] should strictly _not_ be used in any production code, especially if
-/// used within the context of Dart for Web (dart2js/ddc) and Dart for Mobile
-/// (flutter).
+/// used within the context of Dart for Web (dart2js, DDC) and Dart for Mobile
+/// (Flutter).
 class Mock {
   static _answerNull(_) => null;
 
@@ -490,12 +491,16 @@ class _VerifyCall {
 
   void _checkWith(bool never) {
     if (!never && matchingInvocations.isEmpty) {
-      var otherCallsText = "";
-      if (mock._realCalls.isNotEmpty) {
-        otherCallsText = " All calls: ";
+      var message;
+      if (mock._realCalls.isEmpty) {
+        message = "No matching calls (actually, no calls at all).";
+      } else {
+        var otherCalls = mock._realCalls.join(", ");
+        message = "No matching calls. All calls: $otherCalls";
       }
-      var calls = mock._realCalls.join(", ");
-      fail("No matching calls.$otherCallsText$calls");
+      fail("$message\n"
+          "(If you called `verify(...).called(0);`, please instead use "
+          "`verifyNever(...);`.)");
     }
     if (never && matchingInvocations.isNotEmpty) {
       var calls = mock._realCalls.join(", ");
@@ -533,7 +538,7 @@ captureThat(Matcher matcher) => new ArgMatcher(matcher, true);
 
 /// A Strong-mode safe argument matcher that wraps other argument matchers.
 /// See the README for a full explanation.
-/*=T*/ typed/*<T>*/(ArgMatcher matcher, {String named}) {
+T typed<T>(ArgMatcher matcher, {String named}) {
   if (named == null) {
     _typedArgs.add(matcher);
   } else {
@@ -563,8 +568,43 @@ typedef VerificationResult Verification(matchingInvocations);
 
 typedef void _InOrderVerification(List<dynamic> recordedInvocations);
 
+/// Verify that a method on a mock object was never called with the given
+/// arguments.
+///
+/// Call a method on a mock object within a `verifyNever` call. For example:
+///
+/// ```dart
+/// cat.eatFood("chicken");
+/// verifyNever(cat.eatFood("fish"));
+/// ```
+///
+/// Mockito will pass the current test case, as `cat.eatFood` has not been
+/// called with `"chicken"`.
 Verification get verifyNever => _makeVerify(true);
 
+/// Verify that a method on a mock object was called with the given arguments.
+///
+/// Call a method on a mock object within the call to `verify`. For example:
+///
+/// ```dart
+/// cat.eatFood("chicken");
+/// verify(cat.eatFood("fish"));
+/// ```
+///
+/// Mockito will fail the current test case if `cat.eatFood` has not been called
+/// with `"fish"`. Optionally, call `called` on the result, to verify that the
+/// method was called a certain number of times. For example:
+///
+/// ```dart
+/// verify(cat.eatFood("fish")).called(2);
+/// verify(cat.eatFood("fish")).called(greaterThan(3));
+/// ```
+///
+/// Note: because of an unintended limitation, `verify(...).called(0);` will
+/// not work as expected. Please use `verifyNever(...);` instead.
+///
+/// See also: [verifyNever], [verifyInOrder], [verifyZeroInteractions], and
+/// [verifyNoMoreInteractions].
 Verification get verify => _makeVerify(false);
 
 Verification _makeVerify(bool never) {
@@ -581,7 +621,7 @@ Verification _makeVerify(bool never) {
       verifyCall._checkWith(never);
       return result;
     } else {
-      fail("Used on non-mockito");
+      fail("Used on a non-mockito object");
     }
   };
 }
@@ -639,7 +679,27 @@ void verifyZeroInteractions(var mock) {
 
 typedef PostExpectation Expectation(x);
 
+/// Create a stub method response.
+///
+/// Call a method on a mock object within the call to `when`, and call a
+/// canned response method on the result. For example:
+///
+/// ```dart
+/// when(cat.eatFood("fish")).thenReturn(true);
+/// ```
+///
+/// Mockito will store the fake call to `cat.eatFood`, and pair the exact
+/// arguments given with the response. When `cat.eatFood` is called outside a
+/// `when` or `verify` context (a call "for real"), Mockito will respond with
+/// the stored canned response, if it can match the mock method parameters.
+///
+/// The response generators include [thenReturn], [thenAnswer], and [thenThrow].
+///
+/// See the README for more information.
 Expectation get when {
+  if (_whenCall != null) {
+    throw new StateError('Cannot call `when` within a stub response');
+  }
   _whenInProgress = true;
   return (_) {
     _whenInProgress = false;
@@ -657,7 +717,15 @@ void logInvocations(List<Mock> mocks) {
   });
 }
 
-/// Only for mockito testing.
+/// Reset the state of Mockito, typically for use between tests.
+///
+/// For example, when using the test package, mock methods may accumulate calls
+/// in a `setUp` method, making it hard to verify method calls that were made
+/// _during_ an individual test. Or, there may be unverified calls from previous
+/// test cases that should not affect later test cases.
+///
+/// In these cases, [resetMockitoState] might be called at the end of `setUp`,
+/// or in `tearDown`.
 void resetMockitoState() {
   _whenInProgress = false;
   _verificationInProgress = false;
