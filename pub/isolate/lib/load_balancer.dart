@@ -24,7 +24,7 @@ class LoadBalancer implements Runner {
   int _length;
 
   // Whether [stop] has been called.
-  Future _stopFuture = null;
+  Future _stopFuture;
 
   /// Create a load balancer for [service] with [size] isolates.
   LoadBalancer(Iterable<Runner> runners) : this._(_createEntries(runners));
@@ -48,8 +48,9 @@ class LoadBalancer implements Runner {
   ///     var isolatePool = LoadBalancer.create(10, IsolateRunner.spawn);
   static Future<LoadBalancer> create(int size, Future<Runner> createRunner()) {
     return Future.wait(new Iterable.generate(size, (_) => createRunner()),
-                       cleanUp: (Runner runner) { runner.close(); })
-           .then((runners) => new LoadBalancer(runners));
+        cleanUp: (Runner runner) {
+      runner.close();
+    }).then((runners) => new LoadBalancer(runners));
   }
 
   static List<_LoadBalancerEntry> _createEntries(Iterable<Runner> runners) {
@@ -68,9 +69,8 @@ class LoadBalancer implements Runner {
   /// If [timeout] and [onTimeout] are provided, they are forwarded to
   /// the runner running the function, which will handle a timeout
   /// as normal.
-  Future run(function(argument), argument, {Duration timeout,
-                                            onTimeout(),
-                                            int load: 100}) {
+  Future<R> run<R, P>(R function(P argument), argument,
+      {Duration timeout, onTimeout(), int load: 100}) {
     RangeError.checkNotNegative(load, "load");
     _LoadBalancerEntry entry = _first;
     _increaseLoad(entry, load);
@@ -92,14 +92,12 @@ class LoadBalancer implements Runner {
   /// the runners running the function, which will handle any timeouts
   /// as normal.
   List<Future> runMultiple(int count, function(argument), argument,
-                           {Duration timeout,
-                            onTimeout(),
-                            int load: 100}) {
+      {Duration timeout, onTimeout(), int load: 100}) {
     RangeError.checkValueInInterval(count, 1, _length, "count");
     RangeError.checkNotNegative(load, "load");
     if (count == 1) {
-      return list1(run(function, argument, load: load,
-                       timeout: timeout, onTimeout: onTimeout));
+      return list1(run(function, argument,
+          load: load, timeout: timeout, onTimeout: onTimeout));
     }
     List result = new List<Future>(count);
     if (count == _length) {
@@ -166,7 +164,7 @@ class LoadBalancer implements Runner {
   /// swap it with the highest priority child.
   void _bubbleDown(_LoadBalancerEntry element, int index) {
     while (true) {
-      int childIndex = index * 2 + 1;  // Left child index.
+      int childIndex = index * 2 + 1; // Left child index.
       if (childIndex >= _length) break;
       _LoadBalancerEntry child = _queue[childIndex];
       int rightChildIndex = childIndex + 1;
@@ -267,10 +265,11 @@ class _LoadBalancerEntry implements Comparable<_LoadBalancerEntry> {
   /// Whether the entry is still in the queue.
   bool get inQueue => queueIndex >= 0;
 
-  Future run(LoadBalancer balancer, int load, function(argument), argument,
-             Duration timeout, onTimeout()) {
-    return runner.run(function, argument,
-                      timeout: timeout, onTimeout: onTimeout).whenComplete(() {
+  Future<R> run<R, P>(LoadBalancer balancer, int load, R function(P argument),
+      argument, Duration timeout, onTimeout()) {
+    return runner
+        .run<R, P>(function, argument, timeout: timeout, onTimeout: onTimeout)
+        .whenComplete(() {
       balancer._decreaseLoad(this, load);
     });
   }

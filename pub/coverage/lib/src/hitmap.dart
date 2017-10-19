@@ -15,28 +15,28 @@ Map createHitmap(List<Map> json) {
     map[line] = count + oldCount;
   }
 
-  for (Map e in json) {
-    var source = e['source'];
+  for (Map<String, dynamic> e in json) {
+    String source = e['source'];
     if (source == null) {
       // Couldn't resolve import, so skip this entry.
       continue;
     }
 
     var sourceHitMap = globalHitMap.putIfAbsent(source, () => <int, int>{});
-    var hits = e['hits'];
+    List<dynamic> hits = e['hits'];
     // hits is a flat array of the following format:
     // [ <line|linerange>, <hitcount>,...]
     // line: number.
     // linerange: '<line>-<line>'.
     for (var i = 0; i < hits.length; i += 2) {
-      var k = hits[i];
+      dynamic k = hits[i];
       if (k is num) {
         // Single line.
         addToMap(sourceHitMap, k, hits[i + 1]);
       } else {
         assert(k is String);
         // Linerange. We expand line ranges to actual lines at this point.
-        var splitPos = k.indexOf('-');
+        int splitPos = k.indexOf('-');
         int start = int.parse(k.substring(0, splitPos));
         int end = int.parse(k.substring(splitPos + 1));
         for (var j = start; j <= end; j++) {
@@ -49,7 +49,7 @@ Map createHitmap(List<Map> json) {
 }
 
 /// Merges [newMap] into [result].
-mergeHitmaps(Map newMap, Map result) {
+void mergeHitmaps(Map newMap, Map result) {
   newMap.forEach((String file, Map v) {
     if (result.containsKey(file)) {
       v.forEach((int line, int cnt) {
@@ -66,11 +66,11 @@ mergeHitmaps(Map newMap, Map result) {
 }
 
 /// Generates a merged hitmap from a set of coverage JSON files.
-Future<Map> parseCoverage(Iterable<File> files, _) async {
-  Map globalHitmap = {};
+Future<Map> parseCoverage(Iterable<File> files, int _) async {
+  Map globalHitmap = <String, Map<int, int>>{};
   for (var file in files) {
     String contents = file.readAsStringSync();
-    var json = JSON.decode(contents)['coverage'] as List<Map>;
+    List<Map<String, dynamic>> json = JSON.decode(contents)['coverage'];
     mergeHitmaps(createHitmap(json), globalHitmap);
   }
   return globalHitmap;

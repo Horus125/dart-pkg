@@ -48,7 +48,7 @@ class Registry<T> {
   // The cache is stored in an [Expando], not on the object.
   // This allows sending the `Registry` object through a `SendPort` without
   // also copying the cache.
-  static Expando _caches = new Expando();
+  static final Expando _caches = new Expando();
 
   /// Port for sending command to the central registry manager.
   SendPort _commandPort;
@@ -67,7 +67,7 @@ class Registry<T> {
   /// this registry should wait before assuming that an operation
   /// has failed.
   Registry.fromPort(SendPort commandPort,
-                    {Duration timeout: const Duration(seconds: 5)})
+      {Duration timeout: const Duration(seconds: 5)})
       : _commandPort = commandPort,
         _timeout = timeout;
 
@@ -112,16 +112,19 @@ class Registry<T> {
       });
     }
     Completer completer = new Completer<Capability>();
-    SendPort port = singleCompletePort(completer, callback: (List response) {
-      assert(cache.isAdding(element));
-      int id = response[0];
-      Capability removeCapability = response[1];
-      cache.register(id, element);
-      return removeCapability;
-    }, timeout: _timeout, onTimeout: () {
-      cache.stopAdding(element);
-      throw new TimeoutException("Future not completed", _timeout);
-    });
+    SendPort port = singleCompletePort(completer,
+        callback: (List response) {
+          assert(cache.isAdding(element));
+          int id = response[0];
+          Capability removeCapability = response[1];
+          cache.register(id, element);
+          return removeCapability;
+        },
+        timeout: _timeout,
+        onTimeout: () {
+          cache.stopAdding(element);
+          throw new TimeoutException("Future not completed", _timeout);
+        });
     if (tags != null) tags = tags.toList(growable: false);
     cache.setAdding(element);
     _commandPort.send(list4(_ADD, element, tags, port));
@@ -281,15 +284,15 @@ class RegistryManager {
 
   /// Maps id to entry. Each entry contains the id, the element, its tags,
   /// and a capability required to remove it again.
-  Map<int, _RegistryEntry> _entries = new HashMap();
-  Map<Object, Set<int>> _tag2id = new HashMap();
+  final _entries = new HashMap<int, _RegistryEntry>();
+  final _tag2id = new HashMap<Object, Set<int>>();
 
   /// Create a new registry managed by the created [RegistryManager].
   ///
   /// The optional [timeout] parameter can be set to the duration
   /// registry objects should wait before assuming that an operation
   /// has failed.
-  RegistryManager({timeout: const Duration(seconds: 5)})
+  RegistryManager({Duration timeout: const Duration(seconds: 5)})
       : _timeout = timeout,
         _commandPort = new RawReceivePort() {
     _commandPort.handler = _handleCommand;
@@ -367,7 +370,7 @@ class RegistryManager {
     assert(tags.isNotEmpty);
     for (int id in ids) {
       _RegistryEntry entry = _entries[id];
-      if (entry == null) continue;  // Entry was removed.
+      if (entry == null) continue; // Entry was removed.
       entry.tags.addAll(tags);
       for (var tag in tags) {
         Set ids = _tag2id.putIfAbsent(tag, _createSet);
@@ -382,7 +385,7 @@ class RegistryManager {
     assert(tags.isNotEmpty);
     for (int id in ids) {
       _RegistryEntry entry = _entries[id];
-      if (entry == null) continue;  // Object was removed.
+      if (entry == null) continue; // Object was removed.
       entry.tags.removeAll(tags);
     }
     for (var tag in tags) {
@@ -436,7 +439,7 @@ class RegistryManager {
       return;
     }
     var matchingIds = _findTaggedIds(tags);
-    if (max == null) max = matchingIds.length;  // All results.
+    if (max == null) max = matchingIds.length; // All results.
     for (var id in matchingIds) {
       result.add(id);
       result.add(_entries[id].element);

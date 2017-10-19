@@ -41,7 +41,7 @@ class MultiError extends Error {
   /// The order of values is not preserved (if that is needed, use
   /// [wait]).
   static Future<List> waitUnordered(Iterable<Future> futures,
-                                    {cleanUp(successResult)}) {
+      {cleanUp(successResult)}) {
     Completer completer;
     int count = 0;
     int errors = 0;
@@ -58,7 +58,8 @@ class MultiError extends Error {
       }
       var errorList = results.sublist(results.length - errors);
       completer.completeError(new MultiError(errorList));
-    };
+    }
+
     var handleValue = (v) {
       // If this fails because [results] is null, there is a future
       // which breaks the Future API by completing immediately when
@@ -115,7 +116,8 @@ class MultiError extends Error {
         return;
       }
       completer.completeError(new MultiError(results));
-    };
+    }
+
     for (Future future in futures) {
       int i = count;
       count++;

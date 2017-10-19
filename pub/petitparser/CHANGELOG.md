@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1
+
+* Fix bug with duplicated package name.
+* Update documentation.
+
 ## 1.6.0
 
 * Migrate to micro libraries.
@@ -30,7 +35,7 @@
 
 * Update documentation to match the style guide.
 * Change library names.
-* Add optimizations and tests for the Dart language grammer.
+* Add optimizations and tests for the Dart language grammar.
 * Improve comments.
 * Better error-handling and primitives for Lisp command line app.
 * Fix unicode parsing in the JSON parser.

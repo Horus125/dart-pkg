@@ -4,7 +4,7 @@
 
 library isolate.example.runner_pool;
 
-import 'dart:async' show Future, Completer;
+import 'dart:async' show Future;
 
 import 'package:isolate/load_balancer.dart';
 import 'package:isolate/isolate_runner.dart';
@@ -30,29 +30,31 @@ void main() {
 
 // Compute fibonacci 1..limit
 Future<List<int>> parfib(int limit, int parallelity) {
-  return LoadBalancer.create(parallelity, IsolateRunner.spawn).then(
-    (LoadBalancer pool) {
-      List<Future> fibs = new List(limit + 1);
-      // Schedule all calls with exact load value and the heaviest task
-      // assigned first.
-      schedule(a, b, i) {
-        if (i < limit) {
-          schedule(a + b, a, i + 1);
-        }
-        fibs[i] = pool.run(fib, i, load: a);
+  return LoadBalancer
+      .create(parallelity, IsolateRunner.spawn)
+      .then((LoadBalancer pool) {
+    var fibs = new List<Future<int>>(limit + 1);
+    // Schedule all calls with exact load value and the heaviest task
+    // assigned first.
+    schedule(a, b, i) {
+      if (i < limit) {
+        schedule(a + b, a, i + 1);
       }
-      schedule(0, 1, 0);
-      // And wait for them all to complete.
-      return Future.wait(fibs).whenComplete(pool.close);
-    });
+      fibs[i] = pool.run<int, int>(fib, i, load: a);
+    }
+
+    schedule(0, 1, 0);
+    // And wait for them all to complete.
+    return Future.wait(fibs).whenComplete(pool.close);
+  });
 }
 
-int computeFib(n) {
-  int result = fib(n);
+int computeFib(int n) {
+  var result = fib(n);
   return result;
 }
 
-int fib(n) {
+int fib(int n) {
   if (n < 2) return n;
   return fib(n - 1) + fib(n - 2);
 }

@@ -28,11 +28,12 @@ class LcovFormatter implements Formatter {
   /// are reported relative to that path.
   LcovFormatter(this.resolver, {this.reportOn, this.basePath});
 
+  @override
   Future<String> format(Map hitmap) async {
     _PathFilter pathFilter = _getPathFilter(reportOn);
     var buf = new StringBuffer();
     for (var key in hitmap.keys) {
-      var v = hitmap[key];
+      Map<int, int> v = hitmap[key];
       var source = resolver.resolve(key);
       if (source == null) {
         continue;
@@ -46,11 +47,11 @@ class LcovFormatter implements Formatter {
         source = p.relative(source, from: basePath);
       }
 
-      buf.write('SF:${source}\n');
+      buf.write('SF:$source\n');
       v.keys.toList()
         ..sort()
-        ..forEach((k) {
-          buf.write('DA:${k},${v[k]}\n');
+        ..forEach((int k) {
+          buf.write('DA:$k,${v[k]}\n');
         });
       buf.write('end_of_record\n');
     }
@@ -72,15 +73,15 @@ class PrettyPrintFormatter implements Formatter {
   /// Creates a new pretty-print formatter.
   ///
   /// If [reportOn] is provided, coverage report output is limited to files
-  /// prefixed with one of the paths included. If [basePath] is provided, paths
-  /// are reported relative to that path.
+  /// prefixed with one of the paths included.
   PrettyPrintFormatter(this.resolver, this.loader, {this.reportOn});
 
+  @override
   Future<String> format(Map hitmap) async {
     _PathFilter pathFilter = _getPathFilter(reportOn);
     var buf = new StringBuffer();
     for (var key in hitmap.keys) {
-      var v = hitmap[key];
+      Map<int, int> v = hitmap[key];
       var source = resolver.resolve(key);
       if (source == null) {
         continue;
@@ -100,7 +101,7 @@ class PrettyPrintFormatter implements Formatter {
         if (v.containsKey(line)) {
           prefix = v[line].toString().padLeft(_prefix.length);
         }
-        buf.writeln('${prefix}|${lines[line-1]}');
+        buf.writeln('$prefix|${lines[line-1]}');
       }
     }
 

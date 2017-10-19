@@ -57,15 +57,13 @@ class _WebSocketOpcode {
   static const int RESERVED_F = 15;
 }
 
-/**
- * The web socket protocol transformer handles the protocol byte stream
- * which is supplied through the [:handleData:]. As the protocol is processed,
- * it'll output frame data as either a List<int> or String.
- *
- * Important information about usage: Be sure you use cancelOnError, so the
- * socket will be closed when the processor encounter an error. Not using it
- * will lead to undefined behaviour.
- */
+/// The web socket protocol transformer handles the protocol byte stream
+/// which is supplied through the [:handleData:]. As the protocol is processed,
+/// it'll output frame data as either a List<int> or String.
+///
+/// Important information about usage: Be sure you use cancelOnError, so the
+/// socket will be closed when the processor encounter an error. Not using it
+/// will lead to undefined behaviour.
 // TODO(ajohnsen): make this transformer reusable?
 class _WebSocketProtocolTransformer
     implements StreamTransformer<List<int>, dynamic>, EventSink<List<int>> {
@@ -84,7 +82,6 @@ class _WebSocketProtocolTransformer
 
   int _state = START;
   bool _fin = false;
-  bool _compressed = false;
   int _opcode = -1;
   int _len = -1;
   bool _masked = false;
@@ -118,11 +115,11 @@ class _WebSocketProtocolTransformer
     _eventSink.addError(error, stackTrace);
   }
 
-  void close() { _eventSink.close(); }
+  void close() {
+    _eventSink.close();
+  }
 
-  /**
-   * Process data received from the underlying communication channel.
-   */
+  /// Process data received from the underlying communication channel.
   void add(List<int> bytes) {
     var buffer = bytes is Uint8List ? bytes : new Uint8List.fromList(bytes);
     int index = 0;
@@ -139,20 +136,12 @@ class _WebSocketProtocolTransformer
         if (_state == START) {
           _fin = (byte & FIN) != 0;
 
-          if((byte & (RSV2 | RSV3)) != 0) {
+          if ((byte & (RSV2 | RSV3)) != 0) {
             // The RSV2, RSV3 bits must both be zero.
             throw new WebSocketChannelException("Protocol error");
           }
 
           _opcode = (byte & OPCODE);
-
-          if (_opcode != _WebSocketOpcode.CONTINUATION) {
-            if ((byte & RSV1) != 0) {
-              _compressed = true;
-            } else {
-              _compressed = false;
-            }
-          }
 
           if (_opcode <= _WebSocketOpcode.BINARY) {
             if (_opcode == _WebSocketOpcode.CONTINUATION) {
@@ -393,12 +382,12 @@ class _WebSocketProtocolTransformer
 
 class _WebSocketPing {
   final List<int> payload;
-  _WebSocketPing([this.payload = null]);
+  _WebSocketPing([this.payload]);
 }
 
 class _WebSocketPong {
   final List<int> payload;
-  _WebSocketPong([this.payload = null]);
+  _WebSocketPong([this.payload]);
 }
 
 // TODO(ajohnsen): Make this transformer reusable.
@@ -468,11 +457,8 @@ class _WebSocketOutgoingTransformer
     _eventSink.close();
   }
 
-  void addFrame(int opcode, List<int> data) => createFrame(
-          opcode,
-          data,
-          webSocket._serverSide,
-          false).forEach((e) {
+  void addFrame(int opcode, List<int> data) =>
+      createFrame(opcode, data, webSocket._serverSide, false).forEach((e) {
         _eventSink.add(e);
       });
 
@@ -491,9 +477,9 @@ class _WebSocketOutgoingTransformer
     int index = 0;
 
     // Set FIN and opcode.
-    var hoc = _WebSocketProtocolTransformer.FIN
-              | (compressed ? _WebSocketProtocolTransformer.RSV1 : 0)
-              | (opcode & _WebSocketProtocolTransformer.OPCODE);
+    var hoc = _WebSocketProtocolTransformer.FIN |
+        (compressed ? _WebSocketProtocolTransformer.RSV1 : 0) |
+        (opcode & _WebSocketProtocolTransformer.OPCODE);
 
     header[index++] = hoc;
     // Determine size and position of length field.
@@ -511,8 +497,12 @@ class _WebSocketOutgoingTransformer
     }
     if (mask) {
       header[1] |= 1 << 7;
-      var maskBytes = [_random.nextInt(256), _random.nextInt(256),
-          _random.nextInt(256), _random.nextInt(256)];
+      var maskBytes = [
+        _random.nextInt(256),
+        _random.nextInt(256),
+        _random.nextInt(256),
+        _random.nextInt(256)
+      ];
       header.setRange(index, index + 4, maskBytes);
       index += 4;
       if (data != null) {
@@ -573,7 +563,7 @@ class _WebSocketConsumer implements StreamConsumer {
   StreamSubscription _subscription;
   bool _issuedPause = false;
   bool _closed = false;
-  Completer _closeCompleter = new Completer();
+  final Completer _closeCompleter = new Completer();
   Completer _completer;
 
   _WebSocketConsumer(this.webSocket, this.sink);
@@ -667,6 +657,7 @@ class _WebSocketConsumer implements StreamConsumer {
     Future closeSocket() {
       return sink.close().catchError((_) {}).then((_) => webSocket);
     }
+
     _controller.close();
     return _closeCompleter.future.then((_) => closeSocket());
   }
@@ -686,7 +677,8 @@ class _WebSocketConsumer implements StreamConsumer {
 
 class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
   // Use default Map so we keep order.
-  static Map<int, WebSocketImpl> _webSockets = new Map<int, WebSocketImpl>();
+  static final Map<int, WebSocketImpl> _webSockets =
+      new Map<int, WebSocketImpl>();
   static const int DEFAULT_WINDOW_BITS = 15;
   static const String PER_MESSAGE_DEFLATE = "permessage-deflate";
 
@@ -755,10 +747,14 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
     }, cancelOnError: true);
     _subscription.pause();
     _controller = new StreamController(
-        sync: true, onListen: () => _subscription.resume(), onCancel: () {
-      _subscription.cancel();
-      _subscription = null;
-    }, onPause: _subscription.pause, onResume: _subscription.resume);
+        sync: true,
+        onListen: () => _subscription.resume(),
+        onCancel: () {
+          _subscription.cancel();
+          _subscription = null;
+        },
+        onPause: _subscription.pause,
+        onResume: _subscription.resume);
 
     _webSockets[_serviceId] = this;
   }
@@ -771,7 +767,7 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
 
   Duration get pingInterval => _pingInterval;
 
-  void set pingInterval(Duration interval) {
+  set pingInterval(Duration interval) {
     if (_writeClosed) return;
     if (_pingTimer != null) _pingTimer.cancel();
     _pingInterval = interval;
@@ -794,10 +790,14 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
   int get closeCode => _closeCode;
   String get closeReason => _closeReason;
 
-  void add(data) { _sink.add(data); }
+  void add(data) {
+    _sink.add(data);
+  }
+
   void addError(error, [StackTrace stackTrace]) {
     _sink.addError(error, stackTrace);
   }
+
   Future addStream(Stream stream) => _sink.addStream(stream);
   Future get done => _sink.done;
 

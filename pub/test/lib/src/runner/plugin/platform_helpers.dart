@@ -23,9 +23,7 @@ import '../load_exception.dart';
 import '../runner_suite.dart';
 import '../runner_test.dart';
 
-typedef StackTrace _MapTrace(StackTrace trace);
-
-final _deserializeTimeout = new Duration(minutes: 3);
+final _deserializeTimeout = new Duration(minutes: 8);
 
 /// A helper method for creating a [RunnerSuiteController] containing tests
 /// that communicate over [channel].

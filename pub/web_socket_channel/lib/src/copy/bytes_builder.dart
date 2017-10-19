@@ -14,21 +14,17 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-/**
- * Builds a list of bytes, allowing bytes and lists of bytes to be added at the
- * end.
- *
- * Used to efficiently collect bytes and lists of bytes.
- */
+/// Builds a list of bytes, allowing bytes and lists of bytes to be added at the
+/// end.
+///
+/// Used to efficiently collect bytes and lists of bytes.
 abstract class BytesBuilder {
-  /**
-   * Construct a new empty [BytesBuilder].
-   *
-   * If [copy] is true, the data is always copied when added to the list. If
-   * it [copy] is false, the data is only copied if needed. That means that if
-   * the lists are changed after added to the [BytesBuilder], it may effect the
-   * output. Default is `true`.
-   */
+  /// Construct a new empty [BytesBuilder].
+  ///
+  /// If [copy] is true, the data is always copied when added to the list. If
+  /// it [copy] is false, the data is only copied if needed. That means that if
+  /// the lists are changed after added to the [BytesBuilder], it may effect the
+  /// output. Default is `true`.
   factory BytesBuilder({bool copy: true}) {
     if (copy) {
       return new _CopyingBytesBuilder();
@@ -37,57 +33,40 @@ abstract class BytesBuilder {
     }
   }
 
-  /**
-   * Appends [bytes] to the current contents of the builder.
-   *
-   * Each value of [bytes] will be bit-representation truncated to the range
-   * 0 .. 255.
-   */
+  /// Appends [bytes] to the current contents of the builder.
+  ///
+  /// Each value of [bytes] will be bit-representation truncated to the range
+  /// 0 .. 255.
   void add(List<int> bytes);
 
-  /**
-   * Append [byte] to the current contents of the builder.
-   *
-   * The [byte] will be bit-representation truncated to the range 0 .. 255.
-   */
+  /// Append [byte] to the current contents of the builder.
+  ///
+  /// The [byte] will be bit-representation truncated to the range 0 .. 255.
   void addByte(int byte);
 
-  /**
-   * Returns the contents of `this` and clears `this`.
-   *
-   * The list returned is a view of the the internal buffer, limited to the
-   * [length].
-   */
+  /// Returns the contents of `this` and clears `this`.
+  ///
+  /// The list returned is a view of the the internal buffer, limited to the
+  /// [length].
   List<int> takeBytes();
 
-  /**
-   * Returns a copy of the current contents of the builder.
-   *
-   * Leaves the contents of the builder intact.
-   */
+  /// Returns a copy of the current contents of the builder.
+  ///
+  /// Leaves the contents of the builder intact.
   List<int> toBytes();
 
-  /**
-   * The number of bytes in the builder.
-   */
+  /// The number of bytes in the builder.
   int get length;
 
-  /**
-   * Returns `true` if the buffer is empty.
-   */
+  /// Returns `true` if the buffer is empty.
   bool get isEmpty;
 
-  /**
-   * Returns `true` if the buffer is not empty.
-   */
+  /// Returns `true` if the buffer is not empty.
   bool get isNotEmpty;
 
-  /**
-   * Clear the contents of the builder.
-   */
+  /// Clear the contents of the builder.
   void clear();
 }
-
 
 class _CopyingBytesBuilder implements BytesBuilder {
   // Start with 1024 bytes.
@@ -123,7 +102,9 @@ class _CopyingBytesBuilder implements BytesBuilder {
     _length = required;
   }
 
-  void addByte(int byte) { add([byte]); }
+  void addByte(int byte) {
+    add([byte]);
+  }
 
   List<int> takeBytes() {
     if (_buffer == null) return new Uint8List(0);
@@ -160,7 +141,6 @@ class _CopyingBytesBuilder implements BytesBuilder {
   }
 }
 
-
 class _BytesBuilder implements BytesBuilder {
   int _length = 0;
   final _chunks = <List<int>>[];
@@ -173,7 +153,9 @@ class _BytesBuilder implements BytesBuilder {
     _length += bytes.length;
   }
 
-  void addByte(int byte) { add([byte]); }
+  void addByte(int byte) {
+    add([byte]);
+  }
 
   List<int> takeBytes() {
     if (_chunks.length == 0) return new Uint8List(0);

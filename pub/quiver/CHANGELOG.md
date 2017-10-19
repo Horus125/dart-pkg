@@ -1,3 +1,19 @@
+#### 0.25.0 - 2017-03-28
+   * BREAKING CHANGE: minimum SDK constraint increased to 1.21.0. This allows
+     use of async-await and generic function in Quiver.
+   * BREAKING CHANGE: eliminated deprecated `FakeTimer`.
+   * BREAKING CHANGE: `StreamBuffer<T>` now implements `StreamConsumer<T>` as
+     opposed to `StreamConsumer<T|List<T>>`.
+   * Deprecated: `FutureGroup`. Use the replacement in `package:async` which
+     requires a `close()` call to trigger auto-completion when the count of
+     pending tasks drops to 0.
+   * Deprecated: `repeat` in the `strings` library. Use the `*` operator on
+     the String class.
+   * Deprecated: in the strings library, `flip` has been renamed `reverse`.
+     `flip` is deprecated and will be removed in the next release.
+   * Iterables: `enumerate` is now generic.
+   * Collection: added `indexOf`.
+
 #### 0.24.0 - 2016-10-31
    * BREAKING CHANGE: eliminated deprecated `nullToEmpty`, `emptyToNull`.
    * Fix: Strong mode: As of Dart SDK 1.21.0, `Set.difference` takes a

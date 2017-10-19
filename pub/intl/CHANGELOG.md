@@ -1,3 +1,25 @@
+## 0.15.1
+ * Use the platform.locale API to get the OS platform.
+ * Convert to use package:test
+
+## 0.15.0
+ * Fix compactCurrency to correctly use passed-in symbol.
+ * A tweak to the way we retry on DateTime.asDate to compensate for a VM bug.
+ * Update CLDR version to 30.
+ * Cache the last result of isRtlLanguage
+ * Some strong mode fixes
+ * Allow passing enums to a select.
+ * Remove the cacheBlocker parameter from HttpRequestDataReader
+ * Optimize padding numbers when printing
+ * Remove the out of date example directory
+ * Add a facility to check if messages are being called before locale
+   initialization, which can lead to errors if the results are being cached. See
+   UninitializedLocaleData.throwOnFallback.
+ * Restore dependency on path which was removed when intl_translation was
+   separated.
+ * Improve the error message when date parsing fails validation to show what the
+   parsed date was.
+
 ## 0.14.0
  * MAJOR BREAKING CHANGE! Remove message extraction and code generation into a
    separate intl_translation package. This means packages with a runtime

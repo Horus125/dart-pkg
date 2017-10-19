@@ -25,7 +25,7 @@ bool isEmpty(String s) => s == null || s.isEmpty;
 bool isNotEmpty(String s) => s != null && s.isNotEmpty;
 
 /// Returns a string with characters from the given [s] in reverse order.
-String flip(String s) {
+String reverse(String s) {
   if (s == null || s == '') return s;
   StringBuffer sb = new StringBuffer();
   var runes = s.runes;
@@ -35,16 +35,25 @@ String flip(String s) {
   return sb.toString();
 }
 
+/// Returns a string with characters from the given [s] in reverse order.
+///
+/// DEPRECATED: use [reverse] instead.
+@deprecated
+String flip(String s) => reverse(s);
+
 /// Concatenates [s] to itself a given number of [times]. Empty and null
 /// strings will always result in empty and null strings respectively no matter
 /// how many [times] they are [repeat]ed.
 ///
-/// If [times] is negative, returns the [flip]ped string repeated given number
+/// If [times] is negative, returns the reversed string repeated given number
 /// of [times].
+///
+/// DEPRECATED: use the `*` operator on [String].
+@deprecated
 String repeat(String s, int times) {
   if (s == null || s == '') return s;
   if (times < 0) {
-    return repeat(flip(s), -times);
+    return repeat(reverse(s), -times);
   }
   StringBuffer sink = new StringBuffer();
   _repeat(sink, s, times);
@@ -76,7 +85,7 @@ String loop(String s, int from, [int to]) {
     throw new ArgumentError('Input string cannot be null or empty');
   }
   if (to != null && to < from) {
-    return loop(flip(s), -from, -to);
+    return loop(reverse(s), -from, -to);
   }
   int len = s.length;
   int leftFrag = from >= 0 ? from ~/ len : ((from - len) ~/ len);
@@ -153,7 +162,8 @@ String center(String input, int width, String fill) {
 
 /// Returns `true` if [a] and [b] are equal after being converted to lower
 /// case, or are both null.
-bool equalsIgnoreCase(String a, String b) => (a == null && b == null) ||
+bool equalsIgnoreCase(String a, String b) =>
+    (a == null && b == null) ||
     (a != null && b != null && a.toLowerCase() == b.toLowerCase());
 
 /// Compares [a] and [b] after converting to lower case.

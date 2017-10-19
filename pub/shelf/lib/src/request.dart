@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:http_parser/http_parser.dart';
@@ -12,15 +11,9 @@ import 'hijack_exception.dart';
 import 'message.dart';
 import 'util.dart';
 
-/// A callback provided by a Shelf handler that's passed to [Request.hijack].
-@Deprecated("Will be removed in shelf 0.7.0.")
-typedef void HijackCallback(
-    Stream<List<int>> stream, StreamSink<List<int>> sink);
-
 /// A callback provided by a Shelf adapter that's used by [Request.hijack] to
 /// provide a [HijackCallback] with a socket.
-@Deprecated("Will be removed in shelf 0.7.0.")
-typedef void OnHijackCallback(HijackCallback callback);
+typedef void _OnHijackCallback(void callback(StreamChannel<List<int>> channel));
 
 /// Represents an HTTP request to be processed by a Shelf application.
 class Request extends Message {
@@ -51,7 +44,7 @@ class Request extends Message {
   ///
   /// [handlerPath] is always a root-relative URL path; that is, it always
   /// starts with `/`. It will also end with `/` whenever [url]'s path is
-  /// non-empty, or if [requestUri]'s path ends with `/`.
+  /// non-empty, or if [requestedUri]'s path ends with `/`.
   ///
   /// [handlerPath] and [url]'s path combine to create [requestedUri]'s path.
   final String handlerPath;
@@ -115,11 +108,9 @@ class Request extends Message {
   /// the bidirectional socket underlying the HTTP connection stream.
   ///
   /// The [onHijack] callback will only be called once per request. It will be
-  /// passed another callback which takes a byte stream and a byte sink.
-  /// [onHijack] must pass the stream and sink for the connection stream to this
-  /// callback, although it may do so asynchronously. Both parameters may be the
-  /// same object. If the user closes the sink, the adapter should ensure that
-  /// the stream is closed as well.
+  /// passed another callback which takes a byte StreamChannel. [onHijack] must
+  /// pass the channel for the connection stream to this callback, although it
+  /// may do so asynchronously.
   ///
   /// If a request is hijacked, the adapter should expect to receive a
   /// [HijackException] from the handler. This is a special exception used to
@@ -142,8 +133,7 @@ class Request extends Message {
       body,
       Encoding encoding,
       Map<String, Object> context,
-      void onHijack(
-          void hijack(Stream<List<int>> stream, StreamSink<List<int>> sink))})
+      void onHijack(void hijack(StreamChannel<List<int>> channel))})
       : this._(method, requestedUri,
             protocolVersion: protocolVersion,
             headers: headers,
@@ -247,26 +237,16 @@ class Request extends Message {
   /// [callback] is called with a [StreamChannel<List<int>>] that provides
   /// access to the underlying request socket.
   ///
-  /// For backwards compatibility, if the callback takes two arguments, it will
-  /// be passed a `Stream<List<int>>` and a `StreamSink<List<int>>` separately,
-  /// but this behavior is deprecated.
-  ///
   /// This may only be called when using a Shelf adapter that supports
   /// hijacking, such as the `dart:io` adapter. In addition, a given request may
   /// only be hijacked once. [canHijack] can be used to detect whether this
   /// request can be hijacked.
-  void hijack(Function callback) {
+  void hijack(void callback(StreamChannel<List<int>> channel)) {
     if (_onHijack == null) {
       throw new StateError("This request can't be hijacked.");
     }
 
-    if (callback is HijackCallback) {
-      _onHijack.run(callback);
-    } else {
-      _onHijack.run((Stream<List<int>> stream, StreamSink<List<int>> sink) {
-        callback(new StreamChannel<List<int>>(stream, sink));
-      });
-    }
+    _onHijack.run(callback);
 
     throw const HijackException();
   }
@@ -276,7 +256,7 @@ class Request extends Message {
 /// the callback has been called.
 class _OnHijack {
   /// The callback.
-  final OnHijackCallback _callback;
+  final _OnHijackCallback _callback;
 
   /// Whether [this] has been called.
   bool called = false;
@@ -286,7 +266,7 @@ class _OnHijack {
   /// Calls [this].
   ///
   /// Throws a [StateError] if [this] has already been called.
-  void run(HijackCallback callback) {
+  void run(void callback(StreamChannel<List<int>> channel)) {
     if (called) throw new StateError("This request has already been hijacked.");
     called = true;
     newFuture(() => _callback(callback));
@@ -295,7 +275,7 @@ class _OnHijack {
 
 /// Computes `url` from the provided [Request] constructor arguments.
 ///
-/// If [url] is `null`, the value is inferred from [requestedUrl] and
+/// If [url] is `null`, the value is inferred from [requestedUri] and
 /// [handlerPath] if available. Otherwise [url] is returned.
 Uri _computeUrl(Uri requestedUri, String handlerPath, Uri url) {
   if (handlerPath != null &&
@@ -345,7 +325,7 @@ Uri _computeUrl(Uri requestedUri, String handlerPath, Uri url) {
 
 /// Computes `handlerPath` from the provided [Request] constructor arguments.
 ///
-/// If [handlerPath] is `null`, the value is inferred from [requestedUrl] and
+/// If [handlerPath] is `null`, the value is inferred from [requestedUri] and
 /// [url] if available. Otherwise [handlerPath] is returned.
 String _computeHandlerPath(Uri requestedUri, String handlerPath, Uri url) {
   if (handlerPath != null &&

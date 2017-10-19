@@ -1,3 +1,29 @@
+## 0.12.24+8
+
+* `spawnHybridUri()` now interprets relative URIs correctly in browser tests.
+
+## 0.12.24+7
+
+* Declare support for `async` 2.0.0.
+
+## 0.12.24+6
+
+* Small refactoring to make the package compatible with strong-mode compliant Zone API.
+  No user-visible change.
+
+## 0.12.24+5
+
+* Expose a way for tests to forward a `loadException` to the server.
+
+## 0.12.24+4
+
+* Drain browser process `stdout` and `stdin`. This resolves test flakiness, especially in Travis
+  with the `Precise` image.
+
+## 0.12.24+3
+
+* Extend `deserializeTimeout`.
+
 ## 0.12.24+2
 
 * Only force exit if `FORCE_TEST_EXIT` is set in the environment.

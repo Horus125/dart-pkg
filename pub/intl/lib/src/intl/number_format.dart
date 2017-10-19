@@ -488,6 +488,9 @@ class NumberFormat {
     this._currencySymbol = currencySymbol;
     this._decimalDigits = decimalDigits;
     _symbols = numberFormatSymbols[_locale];
+    _localeZero = _symbols.ZERO_DIGIT.codeUnitAt(0);
+    _zeroOffset = _localeZero - _zero;
+    _negativePrefix = _symbols.MINUS_SIGN;
     currencyName = name ?? _symbols.DEF_CURRENCY_CODE;
     if (this._currencySymbol == null && computeCurrencySymbol != null) {
       this._currencySymbol = computeCurrencySymbol(this);
@@ -534,6 +537,8 @@ class NumberFormat {
         locale: locale,
         formatType: _CompactFormatType.COMPACT_DECIMAL_SHORT_CURRENCY_PATTERN,
         name: name,
+        getPattern: (symbols) => symbols.CURRENCY_PATTERN,
+        currencySymbol: symbol,
         decimalDigits: decimalDigits,
         isForCurrency: true);
   }
@@ -756,7 +761,7 @@ class NumberFormat {
         fractionDigits > 0 && (minimumFractionDigits > 0 || fractionPart > 0);
 
     if (_hasIntegerDigits(integerDigits)) {
-      _pad(minimumIntegerDigits - digitLength);
+      _padEmpty(minimumIntegerDigits - digitLength);
       for (var i = 0; i < digitLength; i++) {
         _addDigit(integerDigits.codeUnitAt(i));
         _group(digitLength, i);
@@ -780,7 +785,7 @@ class NumberFormat {
     if (1 is double && integerPart is num && integerPart > _maxInt) {
       var howManyDigitsTooBig = (log(integerPart) / LN10).ceil() - 16;
       var divisor = pow(10, howManyDigitsTooBig).round();
-      paddingDigits = symbols.ZERO_DIGIT * howManyDigitsTooBig.toInt();
+      paddingDigits = '0' * howManyDigitsTooBig.toInt();
       integerPart = (integerPart / divisor).truncate();
     }
 
@@ -809,14 +814,13 @@ class NumberFormat {
 
   /// Format the part after the decimal place in a fixed point number.
   void _formatFractionPart(String fractionPart) {
-    var fractionCodes = fractionPart.codeUnits;
     var fractionLength = fractionPart.length;
-    while (fractionCodes[fractionLength - 1] == _zero &&
+    while (fractionPart.codeUnitAt(fractionLength - 1) == _zero &&
         fractionLength > minimumFractionDigits + 1) {
       fractionLength--;
     }
     for (var i = 1; i < fractionLength; i++) {
-      _addDigit(fractionCodes[i]);
+      _addDigit(fractionPart.codeUnitAt(i));
     }
   }
 
@@ -845,16 +849,28 @@ class NumberFormat {
   }
 
   void _addDigit(int x) {
-    _buffer.writeCharCode(_localeZero + x - _zero);
+    _buffer.writeCharCode(x + _zeroOffset);
+  }
+
+  void _padEmpty(int howMany) {
+    _buffer.write(symbols.ZERO_DIGIT * howMany);
+  }
+
+  void _pad(int numberOfDigits, String basic) {
+    if (_zeroOffset == 0) {
+      _buffer.write(basic.padLeft(numberOfDigits, '0'));
+    } else {
+      _slowPad(numberOfDigits, basic);
+    }
   }
 
   /// Print padding up to [numberOfDigits] above what's included in [basic].
-  void _pad(int numberOfDigits, [String basic = '']) {
+  void _slowPad(int numberOfDigits, String basic) {
     for (var i = 0; i < numberOfDigits - basic.length; i++) {
       _add(symbols.ZERO_DIGIT);
     }
-    for (int i = 0; i < basic.codeUnits.length; i++) {
-      _addDigit(basic.codeUnits[i]);
+    for (int i = 0; i < basic.length; i++) {
+      _addDigit(basic.codeUnitAt(i));
     }
   }
 
@@ -875,15 +891,19 @@ class NumberFormat {
     }
   }
 
-  /// Returns the code point for the character '0'.
-  final _zero = '0'.codeUnits.first;
+  /// The code point for the character '0'.
+  static const _zero = 48;
 
-  /// Returns the code point for the locale's zero digit.
-  // Note that there is a slight risk of a locale's zero digit not fitting
-  // into a single code unit, but it seems very unlikely, and if it did,
-  // there's a pretty good chance that our assumptions about being able to do
-  // arithmetic on it would also be invalid.
-  get _localeZero => symbols.ZERO_DIGIT.codeUnits.first;
+  /// The code point for the locale's zero digit.
+  ///
+  ///  Initialized when the locale is set.
+  int _localeZero = 0;
+
+  /// The difference between our zero and '0'.
+  ///
+  /// In other words, a constant _localeZero - _zero. Initialized when
+  /// the locale is set.
+  int _zeroOffset = 0;
 
   /// Returns the prefix for [x] based on whether it's positive or negative.
   /// In en_US this would be '' and '-' respectively.
@@ -972,7 +992,7 @@ class _NumberParser {
   String get _negativePrefix => format._negativePrefix;
   String get _positiveSuffix => format._positiveSuffix;
   String get _negativeSuffix => format._negativeSuffix;
-  int get _zero => format._zero;
+  int get _zero => NumberFormat._zero;
   int get _localeZero => format._localeZero;
 
   ///  Create a new [_NumberParser] on which we can call parse().
@@ -1044,26 +1064,27 @@ class _NumberParser {
   /// Check to see if the input begins with either the positive or negative
   /// prefixes. Set the [gotPositive] and [gotNegative] variables accordingly.
   void checkPrefixes({bool skip: false}) {
-    bool checkPrefix(String prefix, skip) {
-      var matched = prefix.isNotEmpty && input.startsWith(prefix);
-      if (skip && matched) input.read(prefix.length);
-      return matched;
-    }
+    bool checkPrefix(String prefix) =>
+        prefix.isNotEmpty && input.startsWith(prefix);
 
     // TODO(alanknight): There's a faint possibility of a bug here where
     // a positive prefix is followed by a negative prefix that's also a valid
     // part of the number, but that seems very unlikely.
-    if (checkPrefix(_positivePrefix, skip)) gotPositive = true;
-    if (checkPrefix(_negativePrefix, skip)) gotNegative = true;
+    if (checkPrefix(_positivePrefix)) gotPositive = true;
+    if (checkPrefix(_negativePrefix)) gotNegative = true;
 
-    // Copied from Closure. It doesn't seem to be necessary to pass the test
-    // suite, so I'm not sure it's really needed.
+    // The positive prefix might be a substring of the negative, in
+    // which case both would match.
     if (gotPositive && gotNegative) {
       if (_positivePrefix.length > _negativePrefix.length) {
         gotNegative = false;
       } else if (_negativePrefix.length > _positivePrefix.length) {
         gotPositive = false;
       }
+    }
+    if (skip) {
+      if (gotPositive) input.read(_positivePrefix.length);
+      if (gotNegative) input.read(_negativePrefix.length);
     }
   }
 

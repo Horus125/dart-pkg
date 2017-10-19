@@ -66,22 +66,24 @@ class _DateBuilder {
     // check the year, which we otherwise can't verify, and the hours,
     // which will catch cases like "14:00:00 PM".
     var date = asDate();
-    _verify(hour24, date.hour, date.hour, "hour", s);
-    _verify(day, date.day, date.day, "day", s);
-    _verify(year, date.year, date.year, "year", s);
+    _verify(hour24, date.hour, date.hour, "hour", s, date);
+    _verify(day, date.day, date.day, "day", s, date);
+    _verify(year, date.year, date.year, "year", s, date);
   }
 
-  _verify(int value, int min, int max, String desc, String originalInput) {
+  _verify(int value, int min, int max, String desc, String originalInput,
+      [DateTime parsed]) {
     if (value < min || value > max) {
+      var parsedDescription = parsed == null ? "" : " Date parsed as $parsed.";
       throw new FormatException(
           "Error parsing $originalInput, invalid $desc value: $value."
-          " Expected value between $min and $max.");
+          " Expected value between $min and $max.$parsedDescription");
     }
   }
 
   /// Return a date built using our values. If no date portion is set,
   /// use the "Epoch" of January 1, 1970.
-  DateTime asDate({retry: true}) {
+  DateTime asDate({int retries: 10}) {
     // TODO(alanknight): Validate the date, especially for things which
     // can crash the VM, e.g. large month values.
     var result;
@@ -91,11 +93,12 @@ class _DateBuilder {
     } else {
       result = new DateTime(
           year, month, day, hour24, minute, second, fractionalSecond);
-      // TODO(alanknight): Issue 15560 means non-UTC dates occasionally come
-      // out in UTC. If that happens, retry once. This will always happen if
-      // the local time zone is UTC, but that's ok.
-      if (result.toUtc() == result) {
-        result = asDate(retry: false);
+      // TODO(alanknight): Issue 15560 means non-UTC dates occasionally come out
+      // in UTC, or, alternatively, are constructed as if in UTC and then have
+      // the offset subtracted. If that happens, retry, several times if
+      // necessary.
+      if (retries > 0 && (result.hour != hour24 || result.day != day)) {
+        result = asDate(retries: retries - 1);
       }
     }
     return result;
@@ -140,7 +143,9 @@ class _Stream {
   peek([int howMany = 1]) {
     var result;
     if (contents is String) {
-      result = contents.substring(index, min(index + howMany, contents.length));
+      String stringContents = contents;
+      result = stringContents.substring(
+          index, min(index + howMany, stringContents.length));
     } else {
       // Assume List
       result = contents.sublist(index, index + howMany);

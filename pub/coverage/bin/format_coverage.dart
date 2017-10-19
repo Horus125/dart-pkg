@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -26,7 +27,7 @@ class Environment {
   bool verbose;
 }
 
-main(List<String> arguments) async {
+Future<Null> main(List<String> arguments) async {
   final env = parseArgs(arguments);
 
   List<File> files = filesToProcess(env.input);
@@ -124,12 +125,12 @@ Environment parseArgs(List<String> arguments) {
 
   var args = parser.parse(arguments);
 
-  printUsage() {
+  void printUsage() {
     print('Usage: dart format_coverage.dart [OPTION...]\n');
     print(parser.usage);
   }
 
-  fail(String msg) {
+  void fail(String msg) {
     print('\n$msg\n');
     printUsage();
     exit(1);
@@ -184,7 +185,7 @@ Environment parseArgs(List<String> arguments) {
   }
 
   env.reportOn =
-      args['report-on'].isNotEmpty ? args['report-on'] as List<String> : null;
+      args['report-on'].isNotEmpty ? args['report-on'] : null;
 
   env.bazel = args['bazel'];
   env.bazelWorkspace = args['bazel-workspace'];

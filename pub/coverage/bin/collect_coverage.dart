@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:convert' show JSON;
 import 'dart:io';
 
@@ -10,7 +11,7 @@ import 'package:coverage/src/collect.dart';
 import 'package:logging/logging.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-main(List<String> arguments) async {
+Future<Null> main(List<String> arguments) async {
   Logger.root.level = Level.WARNING;
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
@@ -23,7 +24,7 @@ main(List<String> arguments) async {
         timeout: options.timeout);
     options.out.write(JSON.encode(coverage));
     await options.out.close();
-  }, onError: (error, Chain chain) {
+  }, onError: (dynamic error, Chain chain) {
     stderr.writeln(error);
     stderr.writeln(chain.terse);
     // See http://www.retro11.de/ouxr/211bsd/usr/include/sysexits.h.html
@@ -67,12 +68,12 @@ Options _parseArgs(List<String> arguments) {
 
   var args = parser.parse(arguments);
 
-  printUsage() {
+  void printUsage() {
     print('Usage: dart collect_coverage.dart --uri=http://... [OPTION...]\n');
     print(parser.usage);
   }
 
-  fail(message) {
+  void fail(String message) {
     print('Error: $message\n');
     printUsage();
     exit(1);
@@ -96,7 +97,7 @@ Options _parseArgs(List<String> arguments) {
     }
   }
 
-  var out;
+  IOSink out;
   if (args['out'] == 'stdout') {
     out = stdout;
   } else {
