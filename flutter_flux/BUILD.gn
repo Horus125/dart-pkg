@@ -11,6 +11,6 @@ dart_package("flutter_flux") {
 
   deps = [
     "//third_party/dart-pkg/pub/meta",
-    "//lib/flutter/packages/flutter",
+    "//third_party/dart-pkg/git/flutter/packages/flutter",
   ]
 }
