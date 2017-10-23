@@ -9,45 +9,50 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
 
 const core.String USER_AGENT = 'dart-api-client oauth2/v2';
 
-/** Obtains end-user authorization grants for use with other Google APIs. */
+/// Obtains end-user authorization grants for use with other Google APIs.
 class Oauth2Api {
-  /** Know the list of people in your circles, your age range, and language */
+  /// Know the list of people in your circles, your age range, and language
   static const PlusLoginScope = "https://www.googleapis.com/auth/plus.login";
 
-  /** Know who you are on Google */
+  /// Know who you are on Google
   static const PlusMeScope = "https://www.googleapis.com/auth/plus.me";
 
-  /** View your email address */
-  static const UserinfoEmailScope = "https://www.googleapis.com/auth/userinfo.email";
+  /// View your email address
+  static const UserinfoEmailScope =
+      "https://www.googleapis.com/auth/userinfo.email";
 
-  /** View your basic profile info */
-  static const UserinfoProfileScope = "https://www.googleapis.com/auth/userinfo.profile";
-
+  /// View your basic profile info
+  static const UserinfoProfileScope =
+      "https://www.googleapis.com/auth/userinfo.profile";
 
   final commons.ApiRequester _requester;
 
   UserinfoResourceApi get userinfo => new UserinfoResourceApi(_requester);
 
-  Oauth2Api(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: ""}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  Oauth2Api(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: ""})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 
-  /**
-   * Request parameters:
-   *
-   * Completes with a [Jwk].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Jwk> getCertForOpenIdConnect() {
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Jwk].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Jwk> getCertForOpenIdConnect({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -55,37 +60,44 @@ class Oauth2Api {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'oauth2/v2/certs';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Jwk.fromJson(data));
   }
 
-  /**
-   * Request parameters:
-   *
-   * [accessToken] - null
-   *
-   * [idToken] - null
-   *
-   * [tokenHandle] - null
-   *
-   * Completes with a [Tokeninfo].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Tokeninfo> tokeninfo({core.String accessToken, core.String idToken, core.String tokenHandle}) {
+  /// Request parameters:
+  ///
+  /// [accessToken] - null
+  ///
+  /// [idToken] - null
+  ///
+  /// [tokenHandle] - null
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Tokeninfo].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Tokeninfo> tokeninfo(
+      {core.String accessToken,
+      core.String idToken,
+      core.String tokenHandle,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -102,42 +114,42 @@ class Oauth2Api {
     if (tokenHandle != null) {
       _queryParams["token_handle"] = [tokenHandle];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'oauth2/v2/tokeninfo';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Tokeninfo.fromJson(data));
   }
-
 }
-
 
 class UserinfoResourceApi {
   final commons.ApiRequester _requester;
 
   UserinfoV2ResourceApi get v2 => new UserinfoV2ResourceApi(_requester);
 
-  UserinfoResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  UserinfoResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Request parameters:
-   *
-   * Completes with a [Userinfoplus].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Userinfoplus> get() {
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Userinfoplus].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Userinfoplus> get({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -145,50 +157,48 @@ class UserinfoResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'oauth2/v2/userinfo';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Userinfoplus.fromJson(data));
   }
-
 }
-
 
 class UserinfoV2ResourceApi {
   final commons.ApiRequester _requester;
 
   UserinfoV2MeResourceApi get me => new UserinfoV2MeResourceApi(_requester);
 
-  UserinfoV2ResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  UserinfoV2ResourceApi(commons.ApiRequester client) : _requester = client;
 }
-
 
 class UserinfoV2MeResourceApi {
   final commons.ApiRequester _requester;
 
-  UserinfoV2MeResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  UserinfoV2MeResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Request parameters:
-   *
-   * Completes with a [Userinfoplus].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Userinfoplus> get() {
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Userinfoplus].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Userinfoplus> get({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -196,22 +206,21 @@ class UserinfoV2MeResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'userinfo/v2/me';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Userinfoplus.fromJson(data));
   }
-
 }
-
-
 
 class JwkKeys {
   core.String alg;
@@ -244,8 +253,9 @@ class JwkKeys {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (alg != null) {
       _json["alg"] = alg;
     }
@@ -279,8 +289,9 @@ class Jwk {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (keys != null) {
       _json["keys"] = keys.map((value) => (value).toJson()).toList();
     }
@@ -289,32 +300,34 @@ class Jwk {
 }
 
 class Tokeninfo {
-  /** The access type granted with this token. It can be offline or online. */
+  /// The access type granted with this token. It can be offline or online.
   core.String accessType;
-  /**
-   * Who is the intended audience for this token. In general the same as
-   * issued_to.
-   */
+
+  /// Who is the intended audience for this token. In general the same as
+  /// issued_to.
   core.String audience;
-  /**
-   * The email address of the user. Present only if the email scope is present
-   * in the request.
-   */
+
+  /// The email address of the user. Present only if the email scope is present
+  /// in the request.
   core.String email;
-  /** The expiry time of the token, as number of seconds left until expiry. */
+
+  /// The expiry time of the token, as number of seconds left until expiry.
   core.int expiresIn;
-  /** To whom was the token issued to. In general the same as audience. */
+
+  /// To whom was the token issued to. In general the same as audience.
   core.String issuedTo;
-  /** The space separated list of scopes granted to this token. */
+
+  /// The space separated list of scopes granted to this token.
   core.String scope;
-  /** The token handle associated with this token. */
+
+  /// The token handle associated with this token.
   core.String tokenHandle;
-  /** The obfuscated user id. */
+
+  /// The obfuscated user id.
   core.String userId;
-  /**
-   * Boolean flag which is true if the email address is verified. Present only
-   * if the email scope is present in the request.
-   */
+
+  /// Boolean flag which is true if the email address is verified. Present only
+  /// if the email scope is present in the request.
   core.bool verifiedEmail;
 
   Tokeninfo();
@@ -349,8 +362,9 @@ class Tokeninfo {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accessType != null) {
       _json["access_type"] = accessType;
     }
@@ -383,30 +397,38 @@ class Tokeninfo {
 }
 
 class Userinfoplus {
-  /** The user's email address. */
+  /// The user's email address.
   core.String email;
-  /** The user's last name. */
+
+  /// The user's last name.
   core.String familyName;
-  /** The user's gender. */
+
+  /// The user's gender.
   core.String gender;
-  /** The user's first name. */
+
+  /// The user's first name.
   core.String givenName;
-  /** The hosted domain e.g. example.com if the user is Google apps user. */
+
+  /// The hosted domain e.g. example.com if the user is Google apps user.
   core.String hd;
-  /** The obfuscated ID of the user. */
+
+  /// The obfuscated ID of the user.
   core.String id;
-  /** URL of the profile page. */
+
+  /// URL of the profile page.
   core.String link;
-  /** The user's preferred locale. */
+
+  /// The user's preferred locale.
   core.String locale;
-  /** The user's full name. */
+
+  /// The user's full name.
   core.String name;
-  /** URL of the user's picture image. */
+
+  /// URL of the user's picture image.
   core.String picture;
-  /**
-   * Boolean flag which is true if the email address is verified. Always
-   * verified because we only return the user's primary email address.
-   */
+
+  /// Boolean flag which is true if the email address is verified. Always
+  /// verified because we only return the user's primary email address.
   core.bool verifiedEmail;
 
   Userinfoplus();
@@ -447,8 +469,9 @@ class Userinfoplus {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (email != null) {
       _json["email"] = email;
     }

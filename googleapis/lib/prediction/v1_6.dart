@@ -9,68 +9,75 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
 
 const core.String USER_AGENT = 'dart-api-client prediction/v1.6';
 
-/**
- * Lets you access a cloud hosted machine learning service that makes it easy to
- * build smart apps
- */
+/// Lets you access a cloud hosted machine learning service that makes it easy
+/// to build smart apps
 class PredictionApi {
-  /** View and manage your data across Google Cloud Platform services */
-  static const CloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform";
+  /// View and manage your data across Google Cloud Platform services
+  static const CloudPlatformScope =
+      "https://www.googleapis.com/auth/cloud-platform";
 
-  /** Manage your data and permissions in Google Cloud Storage */
-  static const DevstorageFullControlScope = "https://www.googleapis.com/auth/devstorage.full_control";
+  /// Manage your data and permissions in Google Cloud Storage
+  static const DevstorageFullControlScope =
+      "https://www.googleapis.com/auth/devstorage.full_control";
 
-  /** View your data in Google Cloud Storage */
-  static const DevstorageReadOnlyScope = "https://www.googleapis.com/auth/devstorage.read_only";
+  /// View your data in Google Cloud Storage
+  static const DevstorageReadOnlyScope =
+      "https://www.googleapis.com/auth/devstorage.read_only";
 
-  /** Manage your data in Google Cloud Storage */
-  static const DevstorageReadWriteScope = "https://www.googleapis.com/auth/devstorage.read_write";
+  /// Manage your data in Google Cloud Storage
+  static const DevstorageReadWriteScope =
+      "https://www.googleapis.com/auth/devstorage.read_write";
 
-  /** Manage your data in the Google Prediction API */
+  /// Manage your data in the Google Prediction API
   static const PredictionScope = "https://www.googleapis.com/auth/prediction";
-
 
   final commons.ApiRequester _requester;
 
-  HostedmodelsResourceApi get hostedmodels => new HostedmodelsResourceApi(_requester);
-  TrainedmodelsResourceApi get trainedmodels => new TrainedmodelsResourceApi(_requester);
+  HostedmodelsResourceApi get hostedmodels =>
+      new HostedmodelsResourceApi(_requester);
+  TrainedmodelsResourceApi get trainedmodels =>
+      new TrainedmodelsResourceApi(_requester);
 
-  PredictionApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "prediction/v1.6/projects/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  PredictionApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "prediction/v1.6/projects/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class HostedmodelsResourceApi {
   final commons.ApiRequester _requester;
 
-  HostedmodelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  HostedmodelsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Submit input and request an output against a hosted model.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [hostedModelName] - The name of a hosted model.
-   *
-   * Completes with a [Output].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Output> predict(Input request, core.String project, core.String hostedModelName) {
+  /// Submit input and request an output against a hosted model.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [hostedModelName] - The name of a hosted model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Output].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Output> predict(
+      Input request, core.String project, core.String hostedModelName,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -87,46 +94,50 @@ class HostedmodelsResourceApi {
     if (hostedModelName == null) {
       throw new core.ArgumentError("Parameter hostedModelName is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/hostedmodels/' + commons.Escaper.ecapeVariable('$hostedModelName') + '/predict';
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/hostedmodels/' +
+        commons.Escaper.ecapeVariable('$hostedModelName') +
+        '/predict';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Output.fromJson(data));
   }
-
 }
-
 
 class TrainedmodelsResourceApi {
   final commons.ApiRequester _requester;
 
-  TrainedmodelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  TrainedmodelsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Get analysis of the model and the data the model was trained on.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [id] - The unique name for the predictive model.
-   *
-   * Completes with a [Analyze].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Analyze> analyze(core.String project, core.String id) {
+  /// Get analysis of the model and the data the model was trained on.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [id] - The unique name for the predictive model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Analyze].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Analyze> analyze(core.String project, core.String id,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -140,35 +151,42 @@ class TrainedmodelsResourceApi {
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/' + commons.Escaper.ecapeVariable('$id') + '/analyze';
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/trainedmodels/' +
+        commons.Escaper.ecapeVariable('$id') +
+        '/analyze';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Analyze.fromJson(data));
   }
 
-  /**
-   * Delete a trained model.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [id] - The unique name for the predictive model.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String project, core.String id) {
+  /// Delete a trained model.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [id] - The unique name for the predictive model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String project, core.String id,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -181,40 +199,46 @@ class TrainedmodelsResourceApi {
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/' + commons.Escaper.ecapeVariable('$id');
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/trainedmodels/' +
+        commons.Escaper.ecapeVariable('$id');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Check training status of your model.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [id] - The unique name for the predictive model.
-   *
-   * Completes with a [Insert2].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Insert2> get(core.String project, core.String id) {
+  /// Check training status of your model.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [id] - The unique name for the predictive model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Insert2].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Insert2> get(core.String project, core.String id,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -228,37 +252,43 @@ class TrainedmodelsResourceApi {
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/' + commons.Escaper.ecapeVariable('$id');
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/trainedmodels/' +
+        commons.Escaper.ecapeVariable('$id');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Insert2.fromJson(data));
   }
 
-  /**
-   * Train a Prediction API model.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * Completes with a [Insert2].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Insert2> insert(Insert request, core.String project) {
+  /// Train a Prediction API model.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Insert2].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Insert2> insert(Insert request, core.String project,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -272,39 +302,43 @@ class TrainedmodelsResourceApi {
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Insert2.fromJson(data));
   }
 
-  /**
-   * List available models.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [maxResults] - Maximum number of results to return.
-   *
-   * [pageToken] - Pagination token.
-   *
-   * Completes with a [List].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<List> list(core.String project, {core.int maxResults, core.String pageToken}) {
+  /// List available models.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [maxResults] - Maximum number of results to return.
+  ///
+  /// [pageToken] - Pagination token.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [List].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<List> list(core.String project,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -321,39 +355,44 @@ class TrainedmodelsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/list';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new List.fromJson(data));
   }
 
-  /**
-   * Submit model id and request a prediction.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [id] - The unique name for the predictive model.
-   *
-   * Completes with a [Output].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Output> predict(Input request, core.String project, core.String id) {
+  /// Submit model id and request a prediction.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [id] - The unique name for the predictive model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Output].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Output> predict(
+      Input request, core.String project, core.String id,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -370,39 +409,47 @@ class TrainedmodelsResourceApi {
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/' + commons.Escaper.ecapeVariable('$id') + '/predict';
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/trainedmodels/' +
+        commons.Escaper.ecapeVariable('$id') +
+        '/predict';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Output.fromJson(data));
   }
 
-  /**
-   * Add new data to a trained model.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [project] - The project associated with the model.
-   *
-   * [id] - The unique name for the predictive model.
-   *
-   * Completes with a [Insert2].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Insert2> update(Update request, core.String project, core.String id) {
+  /// Add new data to a trained model.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - The project associated with the model.
+  ///
+  /// [id] - The unique name for the predictive model.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Insert2].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Insert2> update(
+      Update request, core.String project, core.String id,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -419,27 +466,29 @@ class TrainedmodelsResourceApi {
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$project') + '/trainedmodels/' + commons.Escaper.ecapeVariable('$id');
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/trainedmodels/' +
+        commons.Escaper.ecapeVariable('$id');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Insert2.fromJson(data));
   }
-
 }
 
-
-
 class AnalyzeDataDescriptionFeaturesCategoricalValues {
-  /** Number of times this feature had this value. */
+  /// Number of times this feature had this value.
   core.String count;
-  /** The category name. */
+
+  /// The category name.
   core.String value;
 
   AnalyzeDataDescriptionFeaturesCategoricalValues();
@@ -453,8 +502,9 @@ class AnalyzeDataDescriptionFeaturesCategoricalValues {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -465,11 +515,12 @@ class AnalyzeDataDescriptionFeaturesCategoricalValues {
   }
 }
 
-/** Description of the categorical values of this feature. */
+/// Description of the categorical values of this feature.
 class AnalyzeDataDescriptionFeaturesCategorical {
-  /** Number of categorical values for this feature in the data. */
+  /// Number of categorical values for this feature in the data.
   core.String count;
-  /** List of all the categories for this feature in the data set. */
+
+  /// List of all the categories for this feature in the data set.
   core.List<AnalyzeDataDescriptionFeaturesCategoricalValues> values;
 
   AnalyzeDataDescriptionFeaturesCategorical();
@@ -479,12 +530,17 @@ class AnalyzeDataDescriptionFeaturesCategorical {
       count = _json["count"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"].map((value) => new AnalyzeDataDescriptionFeaturesCategoricalValues.fromJson(value)).toList();
+      values = _json["values"]
+          .map((value) =>
+              new AnalyzeDataDescriptionFeaturesCategoricalValues.fromJson(
+                  value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -495,13 +551,15 @@ class AnalyzeDataDescriptionFeaturesCategorical {
   }
 }
 
-/** Description of the numeric values of this feature. */
+/// Description of the numeric values of this feature.
 class AnalyzeDataDescriptionFeaturesNumeric {
-  /** Number of numeric values for this feature in the data set. */
+  /// Number of numeric values for this feature in the data set.
   core.String count;
-  /** Mean of the numeric values of this feature in the data set. */
+
+  /// Mean of the numeric values of this feature in the data set.
   core.String mean;
-  /** Variance of the numeric values of this feature in the data set. */
+
+  /// Variance of the numeric values of this feature in the data set.
   core.String variance;
 
   AnalyzeDataDescriptionFeaturesNumeric();
@@ -518,8 +576,9 @@ class AnalyzeDataDescriptionFeaturesNumeric {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -533,9 +592,9 @@ class AnalyzeDataDescriptionFeaturesNumeric {
   }
 }
 
-/** Description of multiple-word text values of this feature. */
+/// Description of multiple-word text values of this feature.
 class AnalyzeDataDescriptionFeaturesText {
-  /** Number of multiple-word text values for this feature. */
+  /// Number of multiple-word text values for this feature.
   core.String count;
 
   AnalyzeDataDescriptionFeaturesText();
@@ -546,8 +605,9 @@ class AnalyzeDataDescriptionFeaturesText {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -556,34 +616,40 @@ class AnalyzeDataDescriptionFeaturesText {
 }
 
 class AnalyzeDataDescriptionFeatures {
-  /** Description of the categorical values of this feature. */
+  /// Description of the categorical values of this feature.
   AnalyzeDataDescriptionFeaturesCategorical categorical;
-  /** The feature index. */
+
+  /// The feature index.
   core.String index;
-  /** Description of the numeric values of this feature. */
+
+  /// Description of the numeric values of this feature.
   AnalyzeDataDescriptionFeaturesNumeric numeric;
-  /** Description of multiple-word text values of this feature. */
+
+  /// Description of multiple-word text values of this feature.
   AnalyzeDataDescriptionFeaturesText text;
 
   AnalyzeDataDescriptionFeatures();
 
   AnalyzeDataDescriptionFeatures.fromJson(core.Map _json) {
     if (_json.containsKey("categorical")) {
-      categorical = new AnalyzeDataDescriptionFeaturesCategorical.fromJson(_json["categorical"]);
+      categorical = new AnalyzeDataDescriptionFeaturesCategorical.fromJson(
+          _json["categorical"]);
     }
     if (_json.containsKey("index")) {
       index = _json["index"];
     }
     if (_json.containsKey("numeric")) {
-      numeric = new AnalyzeDataDescriptionFeaturesNumeric.fromJson(_json["numeric"]);
+      numeric =
+          new AnalyzeDataDescriptionFeaturesNumeric.fromJson(_json["numeric"]);
     }
     if (_json.containsKey("text")) {
       text = new AnalyzeDataDescriptionFeaturesText.fromJson(_json["text"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (categorical != null) {
       _json["categorical"] = (categorical).toJson();
     }
@@ -600,13 +666,15 @@ class AnalyzeDataDescriptionFeatures {
   }
 }
 
-/** Description of the output values in the data set. */
+/// Description of the output values in the data set.
 class AnalyzeDataDescriptionOutputFeatureNumeric {
-  /** Number of numeric output values in the data set. */
+  /// Number of numeric output values in the data set.
   core.String count;
-  /** Mean of the output values in the data set. */
+
+  /// Mean of the output values in the data set.
   core.String mean;
-  /** Variance of the output values in the data set. */
+
+  /// Variance of the output values in the data set.
   core.String variance;
 
   AnalyzeDataDescriptionOutputFeatureNumeric();
@@ -623,8 +691,9 @@ class AnalyzeDataDescriptionOutputFeatureNumeric {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -639,9 +708,10 @@ class AnalyzeDataDescriptionOutputFeatureNumeric {
 }
 
 class AnalyzeDataDescriptionOutputFeatureText {
-  /** Number of times the output label occurred in the data set. */
+  /// Number of times the output label occurred in the data set.
   core.String count;
-  /** The output label. */
+
+  /// The output label.
   core.String value;
 
   AnalyzeDataDescriptionOutputFeatureText();
@@ -655,8 +725,9 @@ class AnalyzeDataDescriptionOutputFeatureText {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
@@ -667,26 +738,32 @@ class AnalyzeDataDescriptionOutputFeatureText {
   }
 }
 
-/** Description of the output value or label. */
+/// Description of the output value or label.
 class AnalyzeDataDescriptionOutputFeature {
-  /** Description of the output values in the data set. */
+  /// Description of the output values in the data set.
   AnalyzeDataDescriptionOutputFeatureNumeric numeric;
-  /** Description of the output labels in the data set. */
+
+  /// Description of the output labels in the data set.
   core.List<AnalyzeDataDescriptionOutputFeatureText> text;
 
   AnalyzeDataDescriptionOutputFeature();
 
   AnalyzeDataDescriptionOutputFeature.fromJson(core.Map _json) {
     if (_json.containsKey("numeric")) {
-      numeric = new AnalyzeDataDescriptionOutputFeatureNumeric.fromJson(_json["numeric"]);
+      numeric = new AnalyzeDataDescriptionOutputFeatureNumeric.fromJson(
+          _json["numeric"]);
     }
     if (_json.containsKey("text")) {
-      text = _json["text"].map((value) => new AnalyzeDataDescriptionOutputFeatureText.fromJson(value)).toList();
+      text = _json["text"]
+          .map((value) =>
+              new AnalyzeDataDescriptionOutputFeatureText.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (numeric != null) {
       _json["numeric"] = (numeric).toJson();
     }
@@ -697,26 +774,31 @@ class AnalyzeDataDescriptionOutputFeature {
   }
 }
 
-/** Description of the data the model was trained on. */
+/// Description of the data the model was trained on.
 class AnalyzeDataDescription {
-  /** Description of the input features in the data set. */
+  /// Description of the input features in the data set.
   core.List<AnalyzeDataDescriptionFeatures> features;
-  /** Description of the output value or label. */
+
+  /// Description of the output value or label.
   AnalyzeDataDescriptionOutputFeature outputFeature;
 
   AnalyzeDataDescription();
 
   AnalyzeDataDescription.fromJson(core.Map _json) {
     if (_json.containsKey("features")) {
-      features = _json["features"].map((value) => new AnalyzeDataDescriptionFeatures.fromJson(value)).toList();
+      features = _json["features"]
+          .map((value) => new AnalyzeDataDescriptionFeatures.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("outputFeature")) {
-      outputFeature = new AnalyzeDataDescriptionOutputFeature.fromJson(_json["outputFeature"]);
+      outputFeature = new AnalyzeDataDescriptionOutputFeature.fromJson(
+          _json["outputFeature"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (features != null) {
       _json["features"] = features.map((value) => (value).toJson()).toList();
     }
@@ -727,20 +809,20 @@ class AnalyzeDataDescription {
   }
 }
 
-/** Description of the model. */
+/// Description of the model.
 class AnalyzeModelDescription {
-  /**
-   * An output confusion matrix. This shows an estimate for how this model will
-   * do in predictions. This is first indexed by the true class label. For each
-   * true class label, this provides a pair {predicted_label, count}, where
-   * count is the estimated number of times the model will predict the predicted
-   * label given the true label. Will not output if more then 100 classes
-   * (Categorical models only).
-   */
+  /// An output confusion matrix. This shows an estimate for how this model will
+  /// do in predictions. This is first indexed by the true class label. For each
+  /// true class label, this provides a pair {predicted_label, count}, where
+  /// count is the estimated number of times the model will predict the
+  /// predicted label given the true label. Will not output if more then 100
+  /// classes (Categorical models only).
   core.Map<core.String, core.Map<core.String, core.String>> confusionMatrix;
-  /** A list of the confusion matrix row totals. */
+
+  /// A list of the confusion matrix row totals.
   core.Map<core.String, core.String> confusionMatrixRowTotals;
-  /** Basic information about the model. */
+
+  /// Basic information about the model.
   Insert2 modelinfo;
 
   AnalyzeModelDescription();
@@ -757,8 +839,9 @@ class AnalyzeModelDescription {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (confusionMatrix != null) {
       _json["confusionMatrix"] = confusionMatrix;
     }
@@ -773,24 +856,30 @@ class AnalyzeModelDescription {
 }
 
 class Analyze {
-  /** Description of the data the model was trained on. */
+  /// Description of the data the model was trained on.
   AnalyzeDataDescription dataDescription;
-  /** List of errors with the data. */
+
+  /// List of errors with the data.
   core.List<core.Map<core.String, core.String>> errors;
-  /** The unique name for the predictive model. */
+
+  /// The unique name for the predictive model.
   core.String id;
-  /** What kind of resource this is. */
+
+  /// What kind of resource this is.
   core.String kind;
-  /** Description of the model. */
+
+  /// Description of the model.
   AnalyzeModelDescription modelDescription;
-  /** A URL to re-request this resource. */
+
+  /// A URL to re-request this resource.
   core.String selfLink;
 
   Analyze();
 
   Analyze.fromJson(core.Map _json) {
     if (_json.containsKey("dataDescription")) {
-      dataDescription = new AnalyzeDataDescription.fromJson(_json["dataDescription"]);
+      dataDescription =
+          new AnalyzeDataDescription.fromJson(_json["dataDescription"]);
     }
     if (_json.containsKey("errors")) {
       errors = _json["errors"];
@@ -802,15 +891,17 @@ class Analyze {
       kind = _json["kind"];
     }
     if (_json.containsKey("modelDescription")) {
-      modelDescription = new AnalyzeModelDescription.fromJson(_json["modelDescription"]);
+      modelDescription =
+          new AnalyzeModelDescription.fromJson(_json["modelDescription"]);
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (dataDescription != null) {
       _json["dataDescription"] = (dataDescription).toJson();
     }
@@ -833,14 +924,12 @@ class Analyze {
   }
 }
 
-/** Input to the model for a prediction. */
+/// Input to the model for a prediction.
 class InputInput {
-  /**
-   * A list of input features, these can be strings or doubles.
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+  /// A list of input features, these can be strings or doubles.
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.List<core.Object> csvInstance;
 
   InputInput();
@@ -851,8 +940,9 @@ class InputInput {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (csvInstance != null) {
       _json["csvInstance"] = csvInstance;
     }
@@ -861,7 +951,7 @@ class InputInput {
 }
 
 class Input {
-  /** Input to the model for a prediction. */
+  /// Input to the model for a prediction.
   InputInput input;
 
   Input();
@@ -872,8 +962,9 @@ class Input {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (input != null) {
       _json["input"] = (input).toJson();
     }
@@ -882,14 +973,13 @@ class Input {
 }
 
 class InsertTrainingInstances {
-  /**
-   * The input features for this instance.
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+  /// The input features for this instance.
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.List<core.Object> csvInstance;
-  /** The generic output value - could be regression or class label. */
+
+  /// The generic output value - could be regression or class label.
   core.String output;
 
   InsertTrainingInstances();
@@ -903,8 +993,9 @@ class InsertTrainingInstances {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (csvInstance != null) {
       _json["csvInstance"] = csvInstance;
     }
@@ -916,24 +1007,29 @@ class InsertTrainingInstances {
 }
 
 class Insert {
-  /** The unique name for the predictive model. */
+  /// The unique name for the predictive model.
   core.String id;
-  /** Type of predictive model (classification or regression). */
+
+  /// Type of predictive model (classification or regression).
   core.String modelType;
-  /** The Id of the model to be copied over. */
+
+  /// The Id of the model to be copied over.
   core.String sourceModel;
-  /** Google storage location of the training data file. */
+
+  /// Google storage location of the training data file.
   core.String storageDataLocation;
-  /** Google storage location of the preprocessing pmml file. */
+
+  /// Google storage location of the preprocessing pmml file.
   core.String storagePMMLLocation;
-  /** Google storage location of the pmml model file. */
+
+  /// Google storage location of the pmml model file.
   core.String storagePMMLModelLocation;
-  /** Instances to train model on. */
+
+  /// Instances to train model on.
   core.List<InsertTrainingInstances> trainingInstances;
-  /**
-   * A class weighting function, which allows the importance weights for class
-   * labels to be specified (Categorical models only).
-   */
+
+  /// A class weighting function, which allows the importance weights for class
+  /// labels to be specified (Categorical models only).
   core.List<core.Map<core.String, core.double>> utility;
 
   Insert();
@@ -958,15 +1054,18 @@ class Insert {
       storagePMMLModelLocation = _json["storagePMMLModelLocation"];
     }
     if (_json.containsKey("trainingInstances")) {
-      trainingInstances = _json["trainingInstances"].map((value) => new InsertTrainingInstances.fromJson(value)).toList();
+      trainingInstances = _json["trainingInstances"]
+          .map((value) => new InsertTrainingInstances.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("utility")) {
       utility = _json["utility"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -986,7 +1085,8 @@ class Insert {
       _json["storagePMMLModelLocation"] = storagePMMLModelLocation;
     }
     if (trainingInstances != null) {
-      _json["trainingInstances"] = trainingInstances.map((value) => (value).toJson()).toList();
+      _json["trainingInstances"] =
+          trainingInstances.map((value) => (value).toJson()).toList();
     }
     if (utility != null) {
       _json["utility"] = utility;
@@ -995,32 +1095,31 @@ class Insert {
   }
 }
 
-/** Model metadata. */
+/// Model metadata.
 class Insert2ModelInfo {
-  /**
-   * Estimated accuracy of model taking utility weights into account
-   * (Categorical models only).
-   */
+  /// Estimated accuracy of model taking utility weights into account
+  /// (Categorical models only).
   core.String classWeightedAccuracy;
-  /**
-   * A number between 0.0 and 1.0, where 1.0 is 100% accurate. This is an
-   * estimate, based on the amount and quality of the training data, of the
-   * estimated prediction accuracy. You can use this is a guide to decide
-   * whether the results are accurate enough for your needs. This estimate will
-   * be more reliable if your real input data is similar to your training data
-   * (Categorical models only).
-   */
+
+  /// A number between 0.0 and 1.0, where 1.0 is 100% accurate. This is an
+  /// estimate, based on the amount and quality of the training data, of the
+  /// estimated prediction accuracy. You can use this is a guide to decide
+  /// whether the results are accurate enough for your needs. This estimate will
+  /// be more reliable if your real input data is similar to your training data
+  /// (Categorical models only).
   core.String classificationAccuracy;
-  /**
-   * An estimated mean squared error. The can be used to measure the quality of
-   * the predicted model (Regression models only).
-   */
+
+  /// An estimated mean squared error. The can be used to measure the quality of
+  /// the predicted model (Regression models only).
   core.String meanSquaredError;
-  /** Type of predictive model (CLASSIFICATION or REGRESSION). */
+
+  /// Type of predictive model (CLASSIFICATION or REGRESSION).
   core.String modelType;
-  /** Number of valid data instances used in the trained model. */
+
+  /// Number of valid data instances used in the trained model.
   core.String numberInstances;
-  /** Number of class labels in the trained model (Categorical models only). */
+
+  /// Number of class labels in the trained model (Categorical models only).
   core.String numberLabels;
 
   Insert2ModelInfo();
@@ -1046,8 +1145,9 @@ class Insert2ModelInfo {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (classWeightedAccuracy != null) {
       _json["classWeightedAccuracy"] = classWeightedAccuracy;
     }
@@ -1071,30 +1171,38 @@ class Insert2ModelInfo {
 }
 
 class Insert2 {
-  /** Insert time of the model (as a RFC 3339 timestamp). */
+  /// Insert time of the model (as a RFC 3339 timestamp).
   core.DateTime created;
-  /** The unique name for the predictive model. */
+
+  /// The unique name for the predictive model.
   core.String id;
-  /** What kind of resource this is. */
+
+  /// What kind of resource this is.
   core.String kind;
-  /** Model metadata. */
+
+  /// Model metadata.
   Insert2ModelInfo modelInfo;
-  /** Type of predictive model (CLASSIFICATION or REGRESSION). */
+
+  /// Type of predictive model (CLASSIFICATION or REGRESSION).
   core.String modelType;
-  /** A URL to re-request this resource. */
+
+  /// A URL to re-request this resource.
   core.String selfLink;
-  /** Google storage location of the training data file. */
+
+  /// Google storage location of the training data file.
   core.String storageDataLocation;
-  /** Google storage location of the preprocessing pmml file. */
+
+  /// Google storage location of the preprocessing pmml file.
   core.String storagePMMLLocation;
-  /** Google storage location of the pmml model file. */
+
+  /// Google storage location of the pmml model file.
   core.String storagePMMLModelLocation;
-  /** Training completion time (as a RFC 3339 timestamp). */
+
+  /// Training completion time (as a RFC 3339 timestamp).
   core.DateTime trainingComplete;
-  /**
-   * The current status of the training job. This can be one of following:
-   * RUNNING; DONE; ERROR; ERROR: TRAINING JOB NOT FOUND
-   */
+
+  /// The current status of the training job. This can be one of following:
+  /// RUNNING; DONE; ERROR; ERROR: TRAINING JOB NOT FOUND
   core.String trainingStatus;
 
   Insert2();
@@ -1135,8 +1243,9 @@ class Insert2 {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (created != null) {
       _json["created"] = (created).toIso8601String();
     }
@@ -1175,20 +1284,24 @@ class Insert2 {
 }
 
 class List {
-  /** List of models. */
+  /// List of models.
   core.List<Insert2> items;
-  /** What kind of resource this is. */
+
+  /// What kind of resource this is.
   core.String kind;
-  /** Pagination token to fetch the next page, if one exists. */
+
+  /// Pagination token to fetch the next page, if one exists.
   core.String nextPageToken;
-  /** A URL to re-request this resource. */
+
+  /// A URL to re-request this resource.
   core.String selfLink;
 
   List();
 
   List.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Insert2.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Insert2.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1201,8 +1314,9 @@ class List {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -1220,9 +1334,10 @@ class List {
 }
 
 class OutputOutputMulti {
-  /** The class label. */
+  /// The class label.
   core.String label;
-  /** The probability of the class label. */
+
+  /// The probability of the class label.
   core.String score;
 
   OutputOutputMulti();
@@ -1236,8 +1351,9 @@ class OutputOutputMulti {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (label != null) {
       _json["label"] = label;
     }
@@ -1249,20 +1365,23 @@ class OutputOutputMulti {
 }
 
 class Output {
-  /** The unique name for the predictive model. */
+  /// The unique name for the predictive model.
   core.String id;
-  /** What kind of resource this is. */
+
+  /// What kind of resource this is.
   core.String kind;
-  /** The most likely class label (Categorical models only). */
+
+  /// The most likely class label (Categorical models only).
   core.String outputLabel;
-  /**
-   * A list of class labels with their estimated probabilities (Categorical
-   * models only).
-   */
+
+  /// A list of class labels with their estimated probabilities (Categorical
+  /// models only).
   core.List<OutputOutputMulti> outputMulti;
-  /** The estimated regression value (Regression models only). */
+
+  /// The estimated regression value (Regression models only).
   core.String outputValue;
-  /** A URL to re-request this resource. */
+
+  /// A URL to re-request this resource.
   core.String selfLink;
 
   Output();
@@ -1278,7 +1397,9 @@ class Output {
       outputLabel = _json["outputLabel"];
     }
     if (_json.containsKey("outputMulti")) {
-      outputMulti = _json["outputMulti"].map((value) => new OutputOutputMulti.fromJson(value)).toList();
+      outputMulti = _json["outputMulti"]
+          .map((value) => new OutputOutputMulti.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("outputValue")) {
       outputValue = _json["outputValue"];
@@ -1288,8 +1409,9 @@ class Output {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -1300,7 +1422,8 @@ class Output {
       _json["outputLabel"] = outputLabel;
     }
     if (outputMulti != null) {
-      _json["outputMulti"] = outputMulti.map((value) => (value).toJson()).toList();
+      _json["outputMulti"] =
+          outputMulti.map((value) => (value).toJson()).toList();
     }
     if (outputValue != null) {
       _json["outputValue"] = outputValue;
@@ -1313,14 +1436,13 @@ class Output {
 }
 
 class Update {
-  /**
-   * The input features for this instance.
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+  /// The input features for this instance.
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.List<core.Object> csvInstance;
-  /** The generic output value - could be regression or class label. */
+
+  /// The generic output value - could be regression or class label.
   core.String output;
 
   Update();
@@ -1334,8 +1456,9 @@ class Update {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (csvInstance != null) {
       _json["csvInstance"] = csvInstance;
     }

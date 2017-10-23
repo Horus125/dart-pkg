@@ -9,202 +9,232 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
 
 const core.String USER_AGENT = 'dart-api-client customsearch/v1';
 
-/** Lets you search over a website or collection of websites */
+/// Searches over a website or collection of websites
 class CustomsearchApi {
-
   final commons.ApiRequester _requester;
 
   CseResourceApi get cse => new CseResourceApi(_requester);
 
-  CustomsearchApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "customsearch/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  CustomsearchApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "customsearch/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class CseResourceApi {
   final commons.ApiRequester _requester;
 
-  CseResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  CseResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Returns metadata about the search performed, metadata about the custom
-   * search engine used for the search, and the search results.
-   *
-   * Request parameters:
-   *
-   * [q] - Query
-   *
-   * [c2coff] - Turns off the translation between zh-CN and zh-TW.
-   *
-   * [cr] - Country restrict(s).
-   *
-   * [cref] - The URL of a linked custom search engine
-   *
-   * [cx] - The custom search engine ID to scope this search query
-   *
-   * [dateRestrict] - Specifies all search results are from a time period
-   *
-   * [exactTerms] - Identifies a phrase that all documents in the search results
-   * must contain
-   *
-   * [excludeTerms] - Identifies a word or phrase that should not appear in any
-   * documents in the search results
-   *
-   * [fileType] - Returns images of a specified type. Some of the allowed values
-   * are: bmp, gif, png, jpg, svg, pdf, ...
-   *
-   * [filter] - Controls turning on or off the duplicate content filter.
-   * Possible string values are:
-   * - "0" : Turns off duplicate content filter.
-   * - "1" : Turns on duplicate content filter.
-   *
-   * [gl] - Geolocation of end user.
-   *
-   * [googlehost] - The local Google domain to use to perform the search.
-   *
-   * [highRange] - Creates a range in form as_nlo value..as_nhi value and
-   * attempts to append it to query
-   *
-   * [hl] - Sets the user interface language.
-   *
-   * [hq] - Appends the extra query terms to the query.
-   *
-   * [imgColorType] - Returns black and white, grayscale, or color images: mono,
-   * gray, and color.
-   * Possible string values are:
-   * - "color" : color
-   * - "gray" : gray
-   * - "mono" : mono
-   *
-   * [imgDominantColor] - Returns images of a specific dominant color: yellow,
-   * green, teal, blue, purple, pink, white, gray, black and brown.
-   * Possible string values are:
-   * - "black" : black
-   * - "blue" : blue
-   * - "brown" : brown
-   * - "gray" : gray
-   * - "green" : green
-   * - "pink" : pink
-   * - "purple" : purple
-   * - "teal" : teal
-   * - "white" : white
-   * - "yellow" : yellow
-   *
-   * [imgSize] - Returns images of a specified size, where size can be one of:
-   * icon, small, medium, large, xlarge, xxlarge, and huge.
-   * Possible string values are:
-   * - "huge" : huge
-   * - "icon" : icon
-   * - "large" : large
-   * - "medium" : medium
-   * - "small" : small
-   * - "xlarge" : xlarge
-   * - "xxlarge" : xxlarge
-   *
-   * [imgType] - Returns images of a type, which can be one of: clipart, face,
-   * lineart, news, and photo.
-   * Possible string values are:
-   * - "clipart" : clipart
-   * - "face" : face
-   * - "lineart" : lineart
-   * - "news" : news
-   * - "photo" : photo
-   *
-   * [linkSite] - Specifies that all search results should contain a link to a
-   * particular URL
-   *
-   * [lowRange] - Creates a range in form as_nlo value..as_nhi value and
-   * attempts to append it to query
-   *
-   * [lr] - The language restriction for the search results
-   * Possible string values are:
-   * - "lang_ar" : Arabic
-   * - "lang_bg" : Bulgarian
-   * - "lang_ca" : Catalan
-   * - "lang_cs" : Czech
-   * - "lang_da" : Danish
-   * - "lang_de" : German
-   * - "lang_el" : Greek
-   * - "lang_en" : English
-   * - "lang_es" : Spanish
-   * - "lang_et" : Estonian
-   * - "lang_fi" : Finnish
-   * - "lang_fr" : French
-   * - "lang_hr" : Croatian
-   * - "lang_hu" : Hungarian
-   * - "lang_id" : Indonesian
-   * - "lang_is" : Icelandic
-   * - "lang_it" : Italian
-   * - "lang_iw" : Hebrew
-   * - "lang_ja" : Japanese
-   * - "lang_ko" : Korean
-   * - "lang_lt" : Lithuanian
-   * - "lang_lv" : Latvian
-   * - "lang_nl" : Dutch
-   * - "lang_no" : Norwegian
-   * - "lang_pl" : Polish
-   * - "lang_pt" : Portuguese
-   * - "lang_ro" : Romanian
-   * - "lang_ru" : Russian
-   * - "lang_sk" : Slovak
-   * - "lang_sl" : Slovenian
-   * - "lang_sr" : Serbian
-   * - "lang_sv" : Swedish
-   * - "lang_tr" : Turkish
-   * - "lang_zh-CN" : Chinese (Simplified)
-   * - "lang_zh-TW" : Chinese (Traditional)
-   *
-   * [num] - Number of search results to return
-   *
-   * [orTerms] - Provides additional search terms to check for in a document,
-   * where each document in the search results must contain at least one of the
-   * additional search terms
-   *
-   * [relatedSite] - Specifies that all search results should be pages that are
-   * related to the specified URL
-   *
-   * [rights] - Filters based on licensing. Supported values include:
-   * cc_publicdomain, cc_attribute, cc_sharealike, cc_noncommercial,
-   * cc_nonderived and combinations of these.
-   *
-   * [safe] - Search safety level
-   * Possible string values are:
-   * - "high" : Enables highest level of safe search filtering.
-   * - "medium" : Enables moderate safe search filtering.
-   * - "off" : Disables safe search filtering.
-   *
-   * [searchType] - Specifies the search type: image.
-   * Possible string values are:
-   * - "image" : custom image search
-   *
-   * [siteSearch] - Specifies all search results should be pages from a given
-   * site
-   *
-   * [siteSearchFilter] - Controls whether to include or exclude results from
-   * the site named in the as_sitesearch parameter
-   * Possible string values are:
-   * - "e" : exclude
-   * - "i" : include
-   *
-   * [sort] - The sort expression to apply to the results
-   *
-   * [start] - The index of the first result to return
-   *
-   * Completes with a [Search].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Search> list(core.String q, {core.String c2coff, core.String cr, core.String cref, core.String cx, core.String dateRestrict, core.String exactTerms, core.String excludeTerms, core.String fileType, core.String filter, core.String gl, core.String googlehost, core.String highRange, core.String hl, core.String hq, core.String imgColorType, core.String imgDominantColor, core.String imgSize, core.String imgType, core.String linkSite, core.String lowRange, core.String lr, core.int num, core.String orTerms, core.String relatedSite, core.String rights, core.String safe, core.String searchType, core.String siteSearch, core.String siteSearchFilter, core.String sort, core.int start}) {
+  /// Returns metadata about the search performed, metadata about the custom
+  /// search engine used for the search, and the search results.
+  ///
+  /// Request parameters:
+  ///
+  /// [q] - Query
+  ///
+  /// [c2coff] - Turns off the translation between zh-CN and zh-TW.
+  ///
+  /// [cr] - Country restrict(s).
+  ///
+  /// [cx] - The custom search engine ID to scope this search query
+  ///
+  /// [dateRestrict] - Specifies all search results are from a time period
+  ///
+  /// [exactTerms] - Identifies a phrase that all documents in the search
+  /// results must contain
+  ///
+  /// [excludeTerms] - Identifies a word or phrase that should not appear in any
+  /// documents in the search results
+  ///
+  /// [fileType] - Returns images of a specified type. Some of the allowed
+  /// values are: bmp, gif, png, jpg, svg, pdf, ...
+  ///
+  /// [filter] - Controls turning on or off the duplicate content filter.
+  /// Possible string values are:
+  /// - "0" : Turns off duplicate content filter.
+  /// - "1" : Turns on duplicate content filter.
+  ///
+  /// [gl] - Geolocation of end user.
+  ///
+  /// [googlehost] - The local Google domain to use to perform the search.
+  ///
+  /// [highRange] - Creates a range in form as_nlo value..as_nhi value and
+  /// attempts to append it to query
+  ///
+  /// [hl] - Sets the user interface language.
+  ///
+  /// [hq] - Appends the extra query terms to the query.
+  ///
+  /// [imgColorType] - Returns black and white, grayscale, or color images:
+  /// mono, gray, and color.
+  /// Possible string values are:
+  /// - "color" : color
+  /// - "gray" : gray
+  /// - "mono" : mono
+  ///
+  /// [imgDominantColor] - Returns images of a specific dominant color: yellow,
+  /// green, teal, blue, purple, pink, white, gray, black and brown.
+  /// Possible string values are:
+  /// - "black" : black
+  /// - "blue" : blue
+  /// - "brown" : brown
+  /// - "gray" : gray
+  /// - "green" : green
+  /// - "pink" : pink
+  /// - "purple" : purple
+  /// - "teal" : teal
+  /// - "white" : white
+  /// - "yellow" : yellow
+  ///
+  /// [imgSize] - Returns images of a specified size, where size can be one of:
+  /// icon, small, medium, large, xlarge, xxlarge, and huge.
+  /// Possible string values are:
+  /// - "huge" : huge
+  /// - "icon" : icon
+  /// - "large" : large
+  /// - "medium" : medium
+  /// - "small" : small
+  /// - "xlarge" : xlarge
+  /// - "xxlarge" : xxlarge
+  ///
+  /// [imgType] - Returns images of a type, which can be one of: clipart, face,
+  /// lineart, news, and photo.
+  /// Possible string values are:
+  /// - "clipart" : clipart
+  /// - "face" : face
+  /// - "lineart" : lineart
+  /// - "news" : news
+  /// - "photo" : photo
+  ///
+  /// [linkSite] - Specifies that all search results should contain a link to a
+  /// particular URL
+  ///
+  /// [lowRange] - Creates a range in form as_nlo value..as_nhi value and
+  /// attempts to append it to query
+  ///
+  /// [lr] - The language restriction for the search results
+  /// Possible string values are:
+  /// - "lang_ar" : Arabic
+  /// - "lang_bg" : Bulgarian
+  /// - "lang_ca" : Catalan
+  /// - "lang_cs" : Czech
+  /// - "lang_da" : Danish
+  /// - "lang_de" : German
+  /// - "lang_el" : Greek
+  /// - "lang_en" : English
+  /// - "lang_es" : Spanish
+  /// - "lang_et" : Estonian
+  /// - "lang_fi" : Finnish
+  /// - "lang_fr" : French
+  /// - "lang_hr" : Croatian
+  /// - "lang_hu" : Hungarian
+  /// - "lang_id" : Indonesian
+  /// - "lang_is" : Icelandic
+  /// - "lang_it" : Italian
+  /// - "lang_iw" : Hebrew
+  /// - "lang_ja" : Japanese
+  /// - "lang_ko" : Korean
+  /// - "lang_lt" : Lithuanian
+  /// - "lang_lv" : Latvian
+  /// - "lang_nl" : Dutch
+  /// - "lang_no" : Norwegian
+  /// - "lang_pl" : Polish
+  /// - "lang_pt" : Portuguese
+  /// - "lang_ro" : Romanian
+  /// - "lang_ru" : Russian
+  /// - "lang_sk" : Slovak
+  /// - "lang_sl" : Slovenian
+  /// - "lang_sr" : Serbian
+  /// - "lang_sv" : Swedish
+  /// - "lang_tr" : Turkish
+  /// - "lang_zh-CN" : Chinese (Simplified)
+  /// - "lang_zh-TW" : Chinese (Traditional)
+  ///
+  /// [num] - Number of search results to return
+  ///
+  /// [orTerms] - Provides additional search terms to check for in a document,
+  /// where each document in the search results must contain at least one of the
+  /// additional search terms
+  ///
+  /// [relatedSite] - Specifies that all search results should be pages that are
+  /// related to the specified URL
+  ///
+  /// [rights] - Filters based on licensing. Supported values include:
+  /// cc_publicdomain, cc_attribute, cc_sharealike, cc_noncommercial,
+  /// cc_nonderived and combinations of these.
+  ///
+  /// [safe] - Search safety level
+  /// Possible string values are:
+  /// - "high" : Enables highest level of safe search filtering.
+  /// - "medium" : Enables moderate safe search filtering.
+  /// - "off" : Disables safe search filtering.
+  ///
+  /// [searchType] - Specifies the search type: image.
+  /// Possible string values are:
+  /// - "image" : custom image search
+  ///
+  /// [siteSearch] - Specifies all search results should be pages from a given
+  /// site
+  ///
+  /// [siteSearchFilter] - Controls whether to include or exclude results from
+  /// the site named in the as_sitesearch parameter
+  /// Possible string values are:
+  /// - "e" : exclude
+  /// - "i" : include
+  ///
+  /// [sort] - The sort expression to apply to the results
+  ///
+  /// [start] - The index of the first result to return
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Search].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Search> list(core.String q,
+      {core.String c2coff,
+      core.String cr,
+      core.String cx,
+      core.String dateRestrict,
+      core.String exactTerms,
+      core.String excludeTerms,
+      core.String fileType,
+      core.String filter,
+      core.String gl,
+      core.String googlehost,
+      core.String highRange,
+      core.String hl,
+      core.String hq,
+      core.String imgColorType,
+      core.String imgDominantColor,
+      core.String imgSize,
+      core.String imgType,
+      core.String linkSite,
+      core.String lowRange,
+      core.String lr,
+      core.int num,
+      core.String orTerms,
+      core.String relatedSite,
+      core.String rights,
+      core.String safe,
+      core.String searchType,
+      core.String siteSearch,
+      core.String siteSearchFilter,
+      core.String sort,
+      core.int start,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -221,9 +251,6 @@ class CseResourceApi {
     }
     if (cr != null) {
       _queryParams["cr"] = [cr];
-    }
-    if (cref != null) {
-      _queryParams["cref"] = [cref];
     }
     if (cx != null) {
       _queryParams["cx"] = [cx];
@@ -309,22 +336,21 @@ class CseResourceApi {
     if (start != null) {
       _queryParams["start"] = ["${start}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'v1';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Search.fromJson(data));
   }
-
 }
-
-
 
 class ContextFacets {
   core.String anchor;
@@ -345,8 +371,9 @@ class ContextFacets {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (anchor != null) {
       _json["anchor"] = anchor;
     }
@@ -368,17 +395,23 @@ class Context {
 
   Context.fromJson(core.Map _json) {
     if (_json.containsKey("facets")) {
-      facets = _json["facets"].map((value) => value.map((value) => new ContextFacets.fromJson(value)).toList()).toList();
+      facets = _json["facets"]
+          .map((value) =>
+              value.map((value) => new ContextFacets.fromJson(value)).toList())
+          .toList();
     }
     if (_json.containsKey("title")) {
       title = _json["title"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (facets != null) {
-      _json["facets"] = facets.map((value) => value.map((value) => (value).toJson()).toList()).toList();
+      _json["facets"] = facets
+          .map((value) => value.map((value) => (value).toJson()).toList())
+          .toList();
     }
     if (title != null) {
       _json["title"] = title;
@@ -410,8 +443,9 @@ class PromotionBodyLines {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (htmlTitle != null) {
       _json["htmlTitle"] = htmlTitle;
     }
@@ -447,8 +481,9 @@ class PromotionImage {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (height != null) {
       _json["height"] = height;
     }
@@ -474,7 +509,9 @@ class Promotion {
 
   Promotion.fromJson(core.Map _json) {
     if (_json.containsKey("bodyLines")) {
-      bodyLines = _json["bodyLines"].map((value) => new PromotionBodyLines.fromJson(value)).toList();
+      bodyLines = _json["bodyLines"]
+          .map((value) => new PromotionBodyLines.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("displayLink")) {
       displayLink = _json["displayLink"];
@@ -493,8 +530,9 @@ class Promotion {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (bodyLines != null) {
       _json["bodyLines"] = bodyLines.map((value) => (value).toJson()).toList();
     }
@@ -520,7 +558,6 @@ class Promotion {
 class Query {
   core.int count;
   core.String cr;
-  core.String cref;
   core.String cx;
   core.String dateRestrict;
   core.String disableCnTwTranslation;
@@ -564,9 +601,6 @@ class Query {
     }
     if (_json.containsKey("cr")) {
       cr = _json["cr"];
-    }
-    if (_json.containsKey("cref")) {
-      cref = _json["cref"];
     }
     if (_json.containsKey("cx")) {
       cx = _json["cx"];
@@ -672,16 +706,14 @@ class Query {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (count != null) {
       _json["count"] = count;
     }
     if (cr != null) {
       _json["cr"] = cr;
-    }
-    if (cref != null) {
-      _json["cref"] = cref;
     }
     if (cx != null) {
       _json["cx"] = cx;
@@ -824,8 +856,9 @@ class ResultImage {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (byteSize != null) {
       _json["byteSize"] = byteSize;
     }
@@ -870,8 +903,9 @@ class ResultLabels {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (displayName != null) {
       _json["displayName"] = displayName;
     }
@@ -898,12 +932,11 @@ class Result {
   core.List<ResultLabels> labels;
   core.String link;
   core.String mime;
-  /**
-   *
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+
+  ///
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.Map<core.String, core.List<core.Map<core.String, core.Object>>> pagemap;
   core.String snippet;
   core.String title;
@@ -939,7 +972,9 @@ class Result {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"].map((value) => new ResultLabels.fromJson(value)).toList();
+      labels = _json["labels"]
+          .map((value) => new ResultLabels.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("link")) {
       link = _json["link"];
@@ -958,8 +993,9 @@ class Result {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (cacheId != null) {
       _json["cacheId"] = cacheId;
     }
@@ -1032,8 +1068,9 @@ class SearchSearchInformation {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (formattedSearchTime != null) {
       _json["formattedSearchTime"] = formattedSearchTime;
     }
@@ -1065,8 +1102,9 @@ class SearchSpelling {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (correctedQuery != null) {
       _json["correctedQuery"] = correctedQuery;
     }
@@ -1092,8 +1130,9 @@ class SearchUrl {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (template != null) {
       _json["template"] = template;
     }
@@ -1121,19 +1160,27 @@ class Search {
       context = new Context.fromJson(_json["context"]);
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Result.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Result.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"].map((value) => new Promotion.fromJson(value)).toList();
+      promotions = _json["promotions"]
+          .map((value) => new Promotion.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("queries")) {
-      queries = commons.mapMap(_json["queries"], (item) => item.map((value) => new Query.fromJson(value)).toList());
+      queries = commons.mapMap<core.List<core.Map<core.String, core.Object>>,
+              core.List<Query>>(
+          _json["queries"],
+          (core.List<core.Map<core.String, core.Object>> item) =>
+              item.map((value) => new Query.fromJson(value)).toList());
     }
     if (_json.containsKey("searchInformation")) {
-      searchInformation = new SearchSearchInformation.fromJson(_json["searchInformation"]);
+      searchInformation =
+          new SearchSearchInformation.fromJson(_json["searchInformation"]);
     }
     if (_json.containsKey("spelling")) {
       spelling = new SearchSpelling.fromJson(_json["spelling"]);
@@ -1143,8 +1190,9 @@ class Search {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (context != null) {
       _json["context"] = (context).toJson();
     }
@@ -1155,10 +1203,15 @@ class Search {
       _json["kind"] = kind;
     }
     if (promotions != null) {
-      _json["promotions"] = promotions.map((value) => (value).toJson()).toList();
+      _json["promotions"] =
+          promotions.map((value) => (value).toJson()).toList();
     }
     if (queries != null) {
-      _json["queries"] = commons.mapMap(queries, (item) => item.map((value) => (value).toJson()).toList());
+      _json["queries"] = commons.mapMap<core.List<Query>,
+              core.List<core.Map<core.String, core.Object>>>(
+          queries,
+          (core.List<Query> item) =>
+              item.map((value) => (value).toJson()).toList());
     }
     if (searchInformation != null) {
       _json["searchInformation"] = (searchInformation).toJson();

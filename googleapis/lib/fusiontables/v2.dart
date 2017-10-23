@@ -9,21 +9,28 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError, Media, UploadOptions,
-    ResumableUploadOptions, DownloadOptions, PartialDownloadOptions,
-    ByteRange;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show
+        ApiRequestError,
+        DetailedApiRequestError,
+        Media,
+        UploadOptions,
+        ResumableUploadOptions,
+        DownloadOptions,
+        PartialDownloadOptions,
+        ByteRange;
 
 const core.String USER_AGENT = 'dart-api-client fusiontables/v2';
 
-/** API for working with Fusion Tables data. */
+/// API for working with Fusion Tables data.
 class FusiontablesApi {
-  /** Manage your Fusion Tables */
-  static const FusiontablesScope = "https://www.googleapis.com/auth/fusiontables";
+  /// Manage your Fusion Tables
+  static const FusiontablesScope =
+      "https://www.googleapis.com/auth/fusiontables";
 
-  /** View your Fusion Tables */
-  static const FusiontablesReadonlyScope = "https://www.googleapis.com/auth/fusiontables.readonly";
-
+  /// View your Fusion Tables
+  static const FusiontablesReadonlyScope =
+      "https://www.googleapis.com/auth/fusiontables.readonly";
 
   final commons.ApiRequester _requester;
 
@@ -34,33 +41,36 @@ class FusiontablesApi {
   TaskResourceApi get task => new TaskResourceApi(_requester);
   TemplateResourceApi get template => new TemplateResourceApi(_requester);
 
-  FusiontablesApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "fusiontables/v2/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  FusiontablesApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "fusiontables/v2/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class ColumnResourceApi {
   final commons.ApiRequester _requester;
 
-  ColumnResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ColumnResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Deletes the specified column.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table from which the column is being deleted.
-   *
-   * [columnId] - Name or identifier for the column being deleted.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String tableId, core.String columnId) {
+  /// Deletes the specified column.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table from which the column is being deleted.
+  ///
+  /// [columnId] - Name or identifier for the column being deleted.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String tableId, core.String columnId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -73,40 +83,47 @@ class ColumnResourceApi {
     }
     if (columnId == null) {
       throw new core.ArgumentError("Parameter columnId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns/' + commons.Escaper.ecapeVariable('$columnId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/columns/' +
+        commons.Escaper.ecapeVariable('$columnId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a specific column by its ID.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the column belongs.
-   *
-   * [columnId] - Name or identifier for the column that is being requested.
-   *
-   * Completes with a [Column].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Column> get(core.String tableId, core.String columnId) {
+  /// Retrieves a specific column by its ID.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the column belongs.
+  ///
+  /// [columnId] - Name or identifier for the column that is being requested.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Column].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Column> get(core.String tableId, core.String columnId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -120,37 +137,44 @@ class ColumnResourceApi {
     if (columnId == null) {
       throw new core.ArgumentError("Parameter columnId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns/' + commons.Escaper.ecapeVariable('$columnId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/columns/' +
+        commons.Escaper.ecapeVariable('$columnId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Column.fromJson(data));
   }
 
-  /**
-   * Adds a new column to the table.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table for which a new column is being added.
-   *
-   * Completes with a [Column].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Column> insert(Column request, core.String tableId) {
+  /// Adds a new column to the table.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table for which a new column is being added.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Column].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Column> insert(Column request, core.String tableId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -164,39 +188,43 @@ class ColumnResourceApi {
     if (tableId == null) {
       throw new core.ArgumentError("Parameter tableId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Column.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of columns.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose columns are being listed.
-   *
-   * [maxResults] - Maximum number of columns to return. Default is 5.
-   *
-   * [pageToken] - Continuation token specifying which result page to return.
-   *
-   * Completes with a [ColumnList].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ColumnList> list(core.String tableId, {core.int maxResults, core.String pageToken}) {
+  /// Retrieves a list of columns.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose columns are being listed.
+  ///
+  /// [maxResults] - Maximum number of columns to return. Default is 5.
+  ///
+  /// [pageToken] - Continuation token specifying which result page to return.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ColumnList].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ColumnList> list(core.String tableId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -213,40 +241,45 @@ class ColumnResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ColumnList.fromJson(data));
   }
 
-  /**
-   * Updates the name or type of an existing column. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table for which the column is being updated.
-   *
-   * [columnId] - Name or identifier for the column that is being updated.
-   *
-   * Completes with a [Column].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Column> patch(Column request, core.String tableId, core.String columnId) {
+  /// Updates the name or type of an existing column. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table for which the column is being updated.
+  ///
+  /// [columnId] - Name or identifier for the column that is being updated.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Column].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Column> patch(
+      Column request, core.String tableId, core.String columnId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -263,39 +296,47 @@ class ColumnResourceApi {
     if (columnId == null) {
       throw new core.ArgumentError("Parameter columnId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns/' + commons.Escaper.ecapeVariable('$columnId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/columns/' +
+        commons.Escaper.ecapeVariable('$columnId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Column.fromJson(data));
   }
 
-  /**
-   * Updates the name or type of an existing column.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table for which the column is being updated.
-   *
-   * [columnId] - Name or identifier for the column that is being updated.
-   *
-   * Completes with a [Column].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Column> update(Column request, core.String tableId, core.String columnId) {
+  /// Updates the name or type of an existing column.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table for which the column is being updated.
+  ///
+  /// [columnId] - Name or identifier for the column that is being updated.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Column].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Column> update(
+      Column request, core.String tableId, core.String columnId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -312,72 +353,81 @@ class ColumnResourceApi {
     if (columnId == null) {
       throw new core.ArgumentError("Parameter columnId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/columns/' + commons.Escaper.ecapeVariable('$columnId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/columns/' +
+        commons.Escaper.ecapeVariable('$columnId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Column.fromJson(data));
   }
-
 }
-
 
 class QueryResourceApi {
   final commons.ApiRequester _requester;
 
-  QueryResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  QueryResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Executes a Fusion Tables SQL statement, which can be any of
-   * - SELECT
-   * - INSERT
-   * - UPDATE
-   * - DELETE
-   * - SHOW
-   * - DESCRIBE
-   * - CREATE statement.
-   *
-   * Request parameters:
-   *
-   * [sql_1] - A Fusion Tables SQL statement, which can be any of
-   * - SELECT
-   * - INSERT
-   * - UPDATE
-   * - DELETE
-   * - SHOW
-   * - DESCRIBE
-   * - CREATE
-   *
-   * [hdrs] - Whether column names are included in the first row. Default is
-   * true.
-   *
-   * [typed] - Whether typed values are returned in the (JSON) response: numbers
-   * for numeric values and parsed geometries for KML values. Default is true.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Sqlresponse] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future sql(core.String sql_1, {core.bool hdrs, core.bool typed, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Executes a Fusion Tables SQL statement, which can be any of
+  /// - SELECT
+  /// - INSERT
+  /// - UPDATE
+  /// - DELETE
+  /// - SHOW
+  /// - DESCRIBE
+  /// - CREATE statement.
+  ///
+  /// Request parameters:
+  ///
+  /// [sql_1] - A Fusion Tables SQL statement, which can be any of
+  /// - SELECT
+  /// - INSERT
+  /// - UPDATE
+  /// - DELETE
+  /// - SHOW
+  /// - DESCRIBE
+  /// - CREATE
+  ///
+  /// [hdrs] - Whether column names are included in the first row. Default is
+  /// true.
+  ///
+  /// [typed] - Whether typed values are returned in the (JSON) response:
+  /// numbers for numeric values and parsed geometries for KML values. Default
+  /// is true.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Sqlresponse] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future sql(core.String sql_1,
+      {core.bool hdrs,
+      core.bool typed,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -395,18 +445,20 @@ class QueryResourceApi {
     if (typed != null) {
       _queryParams["typed"] = ["${typed}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
     _url = 'query';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Sqlresponse.fromJson(data));
@@ -415,42 +467,49 @@ class QueryResourceApi {
     }
   }
 
-  /**
-   * Executes a SQL statement which can be any of
-   * - SELECT
-   * - SHOW
-   * - DESCRIBE
-   *
-   * Request parameters:
-   *
-   * [sql_1] - A SQL statement which can be any of
-   * - SELECT
-   * - SHOW
-   * - DESCRIBE
-   *
-   * [hdrs] - Whether column names are included (in the first row). Default is
-   * true.
-   *
-   * [typed] - Whether typed values are returned in the (JSON) response: numbers
-   * for numeric values and parsed geometries for KML values. Default is true.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Sqlresponse] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future sqlGet(core.String sql_1, {core.bool hdrs, core.bool typed, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Executes a SQL statement which can be any of
+  /// - SELECT
+  /// - SHOW
+  /// - DESCRIBE
+  ///
+  /// Request parameters:
+  ///
+  /// [sql_1] - A SQL statement which can be any of
+  /// - SELECT
+  /// - SHOW
+  /// - DESCRIBE
+  ///
+  /// [hdrs] - Whether column names are included (in the first row). Default is
+  /// true.
+  ///
+  /// [typed] - Whether typed values are returned in the (JSON) response:
+  /// numbers for numeric values and parsed geometries for KML values. Default
+  /// is true.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Sqlresponse] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future sqlGet(core.String sql_1,
+      {core.bool hdrs,
+      core.bool typed,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -468,18 +527,20 @@ class QueryResourceApi {
     if (typed != null) {
       _queryParams["typed"] = ["${typed}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
     _url = 'query';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Sqlresponse.fromJson(data));
@@ -487,32 +548,31 @@ class QueryResourceApi {
       return _response;
     }
   }
-
 }
-
 
 class StyleResourceApi {
   final commons.ApiRequester _requester;
 
-  StyleResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  StyleResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Deletes a style.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table from which the style is being deleted
-   *
-   * [styleId] - Identifier (within a table) for the style being deleted
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String tableId, core.int styleId) {
+  /// Deletes a style.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table from which the style is being deleted
+  ///
+  /// [styleId] - Identifier (within a table) for the style being deleted
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String tableId, core.int styleId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -525,40 +585,47 @@ class StyleResourceApi {
     }
     if (styleId == null) {
       throw new core.ArgumentError("Parameter styleId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles/' + commons.Escaper.ecapeVariable('$styleId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/styles/' +
+        commons.Escaper.ecapeVariable('$styleId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Gets a specific style.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the requested style belongs
-   *
-   * [styleId] - Identifier (integer) for a specific style in a table
-   *
-   * Completes with a [StyleSetting].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<StyleSetting> get(core.String tableId, core.int styleId) {
+  /// Gets a specific style.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the requested style belongs
+  ///
+  /// [styleId] - Identifier (integer) for a specific style in a table
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [StyleSetting].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<StyleSetting> get(core.String tableId, core.int styleId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -572,37 +639,44 @@ class StyleResourceApi {
     if (styleId == null) {
       throw new core.ArgumentError("Parameter styleId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles/' + commons.Escaper.ecapeVariable('$styleId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/styles/' +
+        commons.Escaper.ecapeVariable('$styleId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new StyleSetting.fromJson(data));
   }
 
-  /**
-   * Adds a new style for the table.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table for which a new style is being added
-   *
-   * Completes with a [StyleSetting].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<StyleSetting> insert(StyleSetting request, core.String tableId) {
+  /// Adds a new style for the table.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table for which a new style is being added
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [StyleSetting].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<StyleSetting> insert(StyleSetting request, core.String tableId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -616,40 +690,44 @@ class StyleResourceApi {
     if (tableId == null) {
       throw new core.ArgumentError("Parameter tableId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new StyleSetting.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of styles.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose styles are being listed
-   *
-   * [maxResults] - Maximum number of styles to return. Optional. Default is 5.
-   *
-   * [pageToken] - Continuation token specifying which result page to return.
-   * Optional.
-   *
-   * Completes with a [StyleSettingList].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<StyleSettingList> list(core.String tableId, {core.int maxResults, core.String pageToken}) {
+  /// Retrieves a list of styles.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose styles are being listed
+  ///
+  /// [maxResults] - Maximum number of styles to return. Optional. Default is 5.
+  ///
+  /// [pageToken] - Continuation token specifying which result page to return.
+  /// Optional.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [StyleSettingList].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<StyleSettingList> list(core.String tableId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -666,39 +744,44 @@ class StyleResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new StyleSettingList.fromJson(data));
   }
 
-  /**
-   * Updates an existing style. This method supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose style is being updated.
-   *
-   * [styleId] - Identifier (within a table) for the style being updated.
-   *
-   * Completes with a [StyleSetting].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<StyleSetting> patch(StyleSetting request, core.String tableId, core.int styleId) {
+  /// Updates an existing style. This method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose style is being updated.
+  ///
+  /// [styleId] - Identifier (within a table) for the style being updated.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [StyleSetting].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<StyleSetting> patch(
+      StyleSetting request, core.String tableId, core.int styleId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -715,39 +798,47 @@ class StyleResourceApi {
     if (styleId == null) {
       throw new core.ArgumentError("Parameter styleId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles/' + commons.Escaper.ecapeVariable('$styleId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/styles/' +
+        commons.Escaper.ecapeVariable('$styleId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new StyleSetting.fromJson(data));
   }
 
-  /**
-   * Updates an existing style.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose style is being updated.
-   *
-   * [styleId] - Identifier (within a table) for the style being updated.
-   *
-   * Completes with a [StyleSetting].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<StyleSetting> update(StyleSetting request, core.String tableId, core.int styleId) {
+  /// Updates an existing style.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose style is being updated.
+  ///
+  /// [styleId] - Identifier (within a table) for the style being updated.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [StyleSetting].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<StyleSetting> update(
+      StyleSetting request, core.String tableId, core.int styleId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -764,47 +855,51 @@ class StyleResourceApi {
     if (styleId == null) {
       throw new core.ArgumentError("Parameter styleId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/styles/' + commons.Escaper.ecapeVariable('$styleId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/styles/' +
+        commons.Escaper.ecapeVariable('$styleId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new StyleSetting.fromJson(data));
   }
-
 }
-
 
 class TableResourceApi {
   final commons.ApiRequester _requester;
 
-  TableResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  TableResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Copies a table.
-   *
-   * Request parameters:
-   *
-   * [tableId] - ID of the table that is being copied.
-   *
-   * [copyPresentation] - Whether to also copy tabs, styles, and templates.
-   * Default is false.
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> copy(core.String tableId, {core.bool copyPresentation}) {
+  /// Copies a table.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - ID of the table that is being copied.
+  ///
+  /// [copyPresentation] - Whether to also copy tabs, styles, and templates.
+  /// Default is false.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> copy(core.String tableId,
+      {core.bool copyPresentation, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -818,33 +913,36 @@ class TableResourceApi {
     if (copyPresentation != null) {
       _queryParams["copyPresentation"] = ["${copyPresentation}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/copy';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
 
-  /**
-   * Deletes a table.
-   *
-   * Request parameters:
-   *
-   * [tableId] - ID of the table to be deleted.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String tableId) {
+  /// Deletes a table.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - ID of the table to be deleted.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String tableId, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -854,38 +952,41 @@ class TableResourceApi {
 
     if (tableId == null) {
       throw new core.ArgumentError("Parameter tableId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a specific table by its ID.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Identifier for the table being requested.
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> get(core.String tableId) {
+  /// Retrieves a specific table by its ID.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Identifier for the table being requested.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> get(core.String tableId, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -896,58 +997,70 @@ class TableResourceApi {
     if (tableId == null) {
       throw new core.ArgumentError("Parameter tableId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
 
-  /**
-   * Imports more rows into a table.
-   *
-   * Request parameters:
-   *
-   * [tableId] - The table into which new rows are being imported.
-   *
-   * [delimiter] - The delimiter used to separate cell values. This can only
-   * consist of a single character. Default is ,.
-   *
-   * [encoding] - The encoding of the content. Default is UTF-8. Use auto-detect
-   * if you are unsure of the encoding.
-   *
-   * [endLine] - The index of the line up to which data will be imported.
-   * Default is to import the entire file. If endLine is negative, it is an
-   * offset from the end of the file; the imported content will exclude the last
-   * endLine lines.
-   *
-   * [isStrict] - Whether the imported CSV must have the same number of values
-   * for each row. If false, rows with fewer values will be padded with empty
-   * values. Default is true.
-   *
-   * [startLine] - The index of the first line from which to start importing,
-   * inclusive. Default is 0.
-   *
-   * [uploadMedia] - The media to upload.
-   *
-   * [uploadOptions] - Options for the media upload. Streaming Media without the
-   * length being known ahead of time is only supported via resumable uploads.
-   *
-   * Completes with a [Import].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Import> importRows(core.String tableId, {core.String delimiter, core.String encoding, core.int endLine, core.bool isStrict, core.int startLine, commons.UploadOptions uploadOptions : commons.UploadOptions.Default, commons.Media uploadMedia}) {
+  /// Imports more rows into a table.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - The table into which new rows are being imported.
+  ///
+  /// [delimiter] - The delimiter used to separate cell values. This can only
+  /// consist of a single character. Default is ,.
+  ///
+  /// [encoding] - The encoding of the content. Default is UTF-8. Use
+  /// auto-detect if you are unsure of the encoding.
+  ///
+  /// [endLine] - The index of the line up to which data will be imported.
+  /// Default is to import the entire file. If endLine is negative, it is an
+  /// offset from the end of the file; the imported content will exclude the
+  /// last endLine lines.
+  ///
+  /// [isStrict] - Whether the imported CSV must have the same number of values
+  /// for each row. If false, rows with fewer values will be padded with empty
+  /// values. Default is true.
+  ///
+  /// [startLine] - The index of the first line from which to start importing,
+  /// inclusive. Default is 0.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [uploadMedia] - The media to upload.
+  ///
+  /// [uploadOptions] - Options for the media upload. Streaming Media without
+  /// the length being known ahead of time is only supported via resumable
+  /// uploads.
+  ///
+  /// Completes with a [Import].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Import> importRows(core.String tableId,
+      {core.String delimiter,
+      core.String encoding,
+      core.int endLine,
+      core.bool isStrict,
+      core.int startLine,
+      core.String $fields,
+      commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
+      commons.Media uploadMedia}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -973,56 +1086,68 @@ class TableResourceApi {
     if (startLine != null) {
       _queryParams["startLine"] = ["${startLine}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _uploadMedia =  uploadMedia;
-    _uploadOptions =  uploadOptions;
+    _uploadMedia = uploadMedia;
+    _uploadOptions = uploadOptions;
 
     if (_uploadMedia == null) {
       _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/import';
     } else if (_uploadOptions is commons.ResumableUploadOptions) {
-      _url = '/resumable/upload/fusiontables/v2/tables/' + commons.Escaper.ecapeVariable('$tableId') + '/import';
+      _url = '/resumable/upload/fusiontables/v2/tables/' +
+          commons.Escaper.ecapeVariable('$tableId') +
+          '/import';
     } else {
-      _url = '/upload/fusiontables/v2/tables/' + commons.Escaper.ecapeVariable('$tableId') + '/import';
+      _url = '/upload/fusiontables/v2/tables/' +
+          commons.Escaper.ecapeVariable('$tableId') +
+          '/import';
     }
 
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Import.fromJson(data));
   }
 
-  /**
-   * Imports a new table.
-   *
-   * Request parameters:
-   *
-   * [name] - The name to be assigned to the new table.
-   *
-   * [delimiter] - The delimiter used to separate cell values. This can only
-   * consist of a single character. Default is ,.
-   *
-   * [encoding] - The encoding of the content. Default is UTF-8. Use auto-detect
-   * if you are unsure of the encoding.
-   *
-   * [uploadMedia] - The media to upload.
-   *
-   * [uploadOptions] - Options for the media upload. Streaming Media without the
-   * length being known ahead of time is only supported via resumable uploads.
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> importTable(core.String name, {core.String delimiter, core.String encoding, commons.UploadOptions uploadOptions : commons.UploadOptions.Default, commons.Media uploadMedia}) {
+  /// Imports a new table.
+  ///
+  /// Request parameters:
+  ///
+  /// [name] - The name to be assigned to the new table.
+  ///
+  /// [delimiter] - The delimiter used to separate cell values. This can only
+  /// consist of a single character. Default is ,.
+  ///
+  /// [encoding] - The encoding of the content. Default is UTF-8. Use
+  /// auto-detect if you are unsure of the encoding.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [uploadMedia] - The media to upload.
+  ///
+  /// [uploadOptions] - Options for the media upload. Streaming Media without
+  /// the length being known ahead of time is only supported via resumable
+  /// uploads.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> importTable(core.String name,
+      {core.String delimiter,
+      core.String encoding,
+      core.String $fields,
+      commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
+      commons.Media uploadMedia}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1040,9 +1165,12 @@ class TableResourceApi {
     if (encoding != null) {
       _queryParams["encoding"] = [encoding];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _uploadMedia =  uploadMedia;
-    _uploadOptions =  uploadOptions;
+    _uploadMedia = uploadMedia;
+    _uploadOptions = uploadOptions;
 
     if (_uploadMedia == null) {
       _url = 'tables/import';
@@ -1052,33 +1180,32 @@ class TableResourceApi {
       _url = '/upload/fusiontables/v2/tables/import';
     }
 
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
 
-  /**
-   * Creates a new table.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> insert(Table request) {
+  /// Creates a new table.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> insert(Table request, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1089,37 +1216,41 @@ class TableResourceApi {
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of tables a user owns.
-   *
-   * Request parameters:
-   *
-   * [maxResults] - Maximum number of tables to return. Default is 5.
-   *
-   * [pageToken] - Continuation token specifying which result page to return.
-   *
-   * Completes with a [TableList].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<TableList> list({core.int maxResults, core.String pageToken}) {
+  /// Retrieves a list of tables a user owns.
+  ///
+  /// Request parameters:
+  ///
+  /// [maxResults] - Maximum number of tables to return. Default is 5.
+  ///
+  /// [pageToken] - Continuation token specifying which result page to return.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [TableList].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<TableList> list(
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1133,43 +1264,47 @@ class TableResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new TableList.fromJson(data));
   }
 
-  /**
-   * Updates an existing table. Unless explicitly requested, only the name,
-   * description, and attribution will be updated. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - ID of the table that is being updated.
-   *
-   * [replaceViewDefinition] - Whether the view definition is also updated. The
-   * specified view definition replaces the existing one. Only a view can be
-   * updated with a new definition.
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> patch(Table request, core.String tableId, {core.bool replaceViewDefinition}) {
+  /// Updates an existing table. Unless explicitly requested, only the name,
+  /// description, and attribution will be updated. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - ID of the table that is being updated.
+  ///
+  /// [replaceViewDefinition] - Whether the view definition is also updated. The
+  /// specified view definition replaces the existing one. Only a view can be
+  /// updated with a new definition.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> patch(Table request, core.String tableId,
+      {core.bool replaceViewDefinition, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1186,60 +1321,72 @@ class TableResourceApi {
     if (replaceViewDefinition != null) {
       _queryParams["replaceViewDefinition"] = ["${replaceViewDefinition}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
 
-  /**
-   * Replaces rows of an existing table. Current rows remain visible until all
-   * replacement rows are ready.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose rows will be replaced.
-   *
-   * [delimiter] - The delimiter used to separate cell values. This can only
-   * consist of a single character. Default is ,.
-   *
-   * [encoding] - The encoding of the content. Default is UTF-8. Use
-   * 'auto-detect' if you are unsure of the encoding.
-   *
-   * [endLine] - The index of the line up to which data will be imported.
-   * Default is to import the entire file. If endLine is negative, it is an
-   * offset from the end of the file; the imported content will exclude the last
-   * endLine lines.
-   *
-   * [isStrict] - Whether the imported CSV must have the same number of column
-   * values for each row. If true, throws an exception if the CSV does not have
-   * the same number of columns. If false, rows with fewer column values will be
-   * padded with empty values. Default is true.
-   *
-   * [startLine] - The index of the first line from which to start importing,
-   * inclusive. Default is 0.
-   *
-   * [uploadMedia] - The media to upload.
-   *
-   * [uploadOptions] - Options for the media upload. Streaming Media without the
-   * length being known ahead of time is only supported via resumable uploads.
-   *
-   * Completes with a [Task].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Task> replaceRows(core.String tableId, {core.String delimiter, core.String encoding, core.int endLine, core.bool isStrict, core.int startLine, commons.UploadOptions uploadOptions : commons.UploadOptions.Default, commons.Media uploadMedia}) {
+  /// Replaces rows of an existing table. Current rows remain visible until all
+  /// replacement rows are ready.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose rows will be replaced.
+  ///
+  /// [delimiter] - The delimiter used to separate cell values. This can only
+  /// consist of a single character. Default is ,.
+  ///
+  /// [encoding] - The encoding of the content. Default is UTF-8. Use
+  /// 'auto-detect' if you are unsure of the encoding.
+  ///
+  /// [endLine] - The index of the line up to which data will be imported.
+  /// Default is to import the entire file. If endLine is negative, it is an
+  /// offset from the end of the file; the imported content will exclude the
+  /// last endLine lines.
+  ///
+  /// [isStrict] - Whether the imported CSV must have the same number of column
+  /// values for each row. If true, throws an exception if the CSV does not have
+  /// the same number of columns. If false, rows with fewer column values will
+  /// be padded with empty values. Default is true.
+  ///
+  /// [startLine] - The index of the first line from which to start importing,
+  /// inclusive. Default is 0.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [uploadMedia] - The media to upload.
+  ///
+  /// [uploadOptions] - Options for the media upload. Streaming Media without
+  /// the length being known ahead of time is only supported via resumable
+  /// uploads.
+  ///
+  /// Completes with a [Task].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Task> replaceRows(core.String tableId,
+      {core.String delimiter,
+      core.String encoding,
+      core.int endLine,
+      core.bool isStrict,
+      core.int startLine,
+      core.String $fields,
+      commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
+      commons.Media uploadMedia}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1265,52 +1412,59 @@ class TableResourceApi {
     if (startLine != null) {
       _queryParams["startLine"] = ["${startLine}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _uploadMedia =  uploadMedia;
-    _uploadOptions =  uploadOptions;
+    _uploadMedia = uploadMedia;
+    _uploadOptions = uploadOptions;
 
     if (_uploadMedia == null) {
       _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/replace';
     } else if (_uploadOptions is commons.ResumableUploadOptions) {
-      _url = '/resumable/upload/fusiontables/v2/tables/' + commons.Escaper.ecapeVariable('$tableId') + '/replace';
+      _url = '/resumable/upload/fusiontables/v2/tables/' +
+          commons.Escaper.ecapeVariable('$tableId') +
+          '/replace';
     } else {
-      _url = '/upload/fusiontables/v2/tables/' + commons.Escaper.ecapeVariable('$tableId') + '/replace';
+      _url = '/upload/fusiontables/v2/tables/' +
+          commons.Escaper.ecapeVariable('$tableId') +
+          '/replace';
     }
 
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Task.fromJson(data));
   }
 
-  /**
-   * Updates an existing table. Unless explicitly requested, only the name,
-   * description, and attribution will be updated.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - ID of the table that is being updated.
-   *
-   * [replaceViewDefinition] - Whether the view definition is also updated. The
-   * specified view definition replaces the existing one. Only a view can be
-   * updated with a new definition.
-   *
-   * Completes with a [Table].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Table> update(Table request, core.String tableId, {core.bool replaceViewDefinition}) {
+  /// Updates an existing table. Unless explicitly requested, only the name,
+  /// description, and attribution will be updated.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - ID of the table that is being updated.
+  ///
+  /// [replaceViewDefinition] - Whether the view definition is also updated. The
+  /// specified view definition replaces the existing one. Only a view can be
+  /// updated with a new definition.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Table].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Table> update(Table request, core.String tableId,
+      {core.bool replaceViewDefinition, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1327,45 +1481,46 @@ class TableResourceApi {
     if (replaceViewDefinition != null) {
       _queryParams["replaceViewDefinition"] = ["${replaceViewDefinition}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Table.fromJson(data));
   }
-
 }
-
 
 class TaskResourceApi {
   final commons.ApiRequester _requester;
 
-  TaskResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  TaskResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Deletes a specific task by its ID, unless that task has already started
-   * running.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table from which the task is being deleted.
-   *
-   * [taskId] - The identifier of the task to delete.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String tableId, core.String taskId) {
+  /// Deletes a specific task by its ID, unless that task has already started
+  /// running.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table from which the task is being deleted.
+  ///
+  /// [taskId] - The identifier of the task to delete.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String tableId, core.String taskId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1378,40 +1533,47 @@ class TaskResourceApi {
     }
     if (taskId == null) {
       throw new core.ArgumentError("Parameter taskId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/tasks/' + commons.Escaper.ecapeVariable('$taskId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/tasks/' +
+        commons.Escaper.ecapeVariable('$taskId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a specific task by its ID.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the task belongs.
-   *
-   * [taskId] - The identifier of the task to get.
-   *
-   * Completes with a [Task].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Task> get(core.String tableId, core.String taskId) {
+  /// Retrieves a specific task by its ID.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the task belongs.
+  ///
+  /// [taskId] - The identifier of the task to get.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Task].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Task> get(core.String tableId, core.String taskId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1425,41 +1587,51 @@ class TaskResourceApi {
     if (taskId == null) {
       throw new core.ArgumentError("Parameter taskId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/tasks/' + commons.Escaper.ecapeVariable('$taskId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/tasks/' +
+        commons.Escaper.ecapeVariable('$taskId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Task.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of tasks.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table whose tasks are being listed.
-   *
-   * [maxResults] - Maximum number of tasks to return. Default is 5.
-   *
-   * [pageToken] - Continuation token specifying which result page to return.
-   *
-   * [startIndex] - Index of the first result returned in the current page.
-   *
-   * Completes with a [TaskList].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<TaskList> list(core.String tableId, {core.int maxResults, core.String pageToken, core.int startIndex}) {
+  /// Retrieves a list of tasks.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table whose tasks are being listed.
+  ///
+  /// [maxResults] - Maximum number of tasks to return. Default is 5.
+  ///
+  /// [pageToken] - Continuation token specifying which result page to return.
+  ///
+  /// [startIndex] - Index of the first result returned in the current page.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [TaskList].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<TaskList> list(core.String tableId,
+      {core.int maxResults,
+      core.String pageToken,
+      core.int startIndex,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1479,44 +1651,45 @@ class TaskResourceApi {
     if (startIndex != null) {
       _queryParams["startIndex"] = ["${startIndex}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/tasks';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new TaskList.fromJson(data));
   }
-
 }
-
 
 class TemplateResourceApi {
   final commons.ApiRequester _requester;
 
-  TemplateResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  TemplateResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Deletes a template
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table from which the template is being deleted
-   *
-   * [templateId] - Identifier for the template which is being deleted
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String tableId, core.int templateId) {
+  /// Deletes a template
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table from which the template is being deleted
+  ///
+  /// [templateId] - Identifier for the template which is being deleted
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String tableId, core.int templateId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1529,40 +1702,47 @@ class TemplateResourceApi {
     }
     if (templateId == null) {
       throw new core.ArgumentError("Parameter templateId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates/' + commons.Escaper.ecapeVariable('$templateId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/templates/' +
+        commons.Escaper.ecapeVariable('$templateId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a specific template by its id
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the template belongs
-   *
-   * [templateId] - Identifier for the template that is being requested
-   *
-   * Completes with a [Template].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Template> get(core.String tableId, core.int templateId) {
+  /// Retrieves a specific template by its id
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the template belongs
+  ///
+  /// [templateId] - Identifier for the template that is being requested
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Template].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Template> get(core.String tableId, core.int templateId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1576,37 +1756,44 @@ class TemplateResourceApi {
     if (templateId == null) {
       throw new core.ArgumentError("Parameter templateId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates/' + commons.Escaper.ecapeVariable('$templateId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/templates/' +
+        commons.Escaper.ecapeVariable('$templateId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Template.fromJson(data));
   }
 
-  /**
-   * Creates a new template for the table.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table for which a new template is being created
-   *
-   * Completes with a [Template].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Template> insert(Template request, core.String tableId) {
+  /// Creates a new template for the table.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table for which a new template is being created
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Template].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Template> insert(Template request, core.String tableId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1620,41 +1807,45 @@ class TemplateResourceApi {
     if (tableId == null) {
       throw new core.ArgumentError("Parameter tableId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Template.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of templates.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Identifier for the table whose templates are being requested
-   *
-   * [maxResults] - Maximum number of templates to return. Optional. Default is
-   * 5.
-   *
-   * [pageToken] - Continuation token specifying which results page to return.
-   * Optional.
-   *
-   * Completes with a [TemplateList].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<TemplateList> list(core.String tableId, {core.int maxResults, core.String pageToken}) {
+  /// Retrieves a list of templates.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Identifier for the table whose templates are being requested
+  ///
+  /// [maxResults] - Maximum number of templates to return. Optional. Default is
+  /// 5.
+  ///
+  /// [pageToken] - Continuation token specifying which results page to return.
+  /// Optional.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [TemplateList].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<TemplateList> list(core.String tableId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1671,39 +1862,44 @@ class TemplateResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new TemplateList.fromJson(data));
   }
 
-  /**
-   * Updates an existing template. This method supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the updated template belongs
-   *
-   * [templateId] - Identifier for the template that is being updated
-   *
-   * Completes with a [Template].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Template> patch(Template request, core.String tableId, core.int templateId) {
+  /// Updates an existing template. This method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the updated template belongs
+  ///
+  /// [templateId] - Identifier for the template that is being updated
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Template].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Template> patch(
+      Template request, core.String tableId, core.int templateId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1720,39 +1916,47 @@ class TemplateResourceApi {
     if (templateId == null) {
       throw new core.ArgumentError("Parameter templateId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates/' + commons.Escaper.ecapeVariable('$templateId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/templates/' +
+        commons.Escaper.ecapeVariable('$templateId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Template.fromJson(data));
   }
 
-  /**
-   * Updates an existing template
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [tableId] - Table to which the updated template belongs
-   *
-   * [templateId] - Identifier for the template that is being updated
-   *
-   * Completes with a [Template].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Template> update(Template request, core.String tableId, core.int templateId) {
+  /// Updates an existing template
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [tableId] - Table to which the updated template belongs
+  ///
+  /// [templateId] - Identifier for the template that is being updated
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Template].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Template> update(
+      Template request, core.String tableId, core.int templateId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1769,45 +1973,46 @@ class TemplateResourceApi {
     if (templateId == null) {
       throw new core.ArgumentError("Parameter templateId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'tables/' + commons.Escaper.ecapeVariable('$tableId') + '/templates/' + commons.Escaper.ecapeVariable('$templateId');
+    _url = 'tables/' +
+        commons.Escaper.ecapeVariable('$tableId') +
+        '/templates/' +
+        commons.Escaper.ecapeVariable('$templateId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Template.fromJson(data));
   }
-
 }
 
-
-
-/**
- * Specifies the minimum and maximum values, the color, opacity, icon and weight
- * of a bucket within a StyleSetting.
- */
+/// Specifies the minimum and maximum values, the color, opacity, icon and
+/// weight of a bucket within a StyleSetting.
 class Bucket {
-  /** Color of line or the interior of a polygon in #RRGGBB format. */
+  /// Color of line or the interior of a polygon in #RRGGBB format.
   core.String color;
-  /** Icon name used for a point. */
+
+  /// Icon name used for a point.
   core.String icon;
-  /**
-   * Maximum value in the selected column for a row to be styled according to
-   * the bucket color, opacity, icon, or weight.
-   */
+
+  /// Maximum value in the selected column for a row to be styled according to
+  /// the bucket color, opacity, icon, or weight.
   core.double max;
-  /**
-   * Minimum value in the selected column for a row to be styled according to
-   * the bucket color, opacity, icon, or weight.
-   */
+
+  /// Minimum value in the selected column for a row to be styled according to
+  /// the bucket color, opacity, icon, or weight.
   core.double min;
-  /** Opacity of the color: 0.0 (transparent) to 1.0 (opaque). */
+
+  /// Opacity of the color: 0.0 (transparent) to 1.0 (opaque).
   core.double opacity;
-  /** Width of a line (in pixels). */
+
+  /// Width of a line (in pixels).
   core.int weight;
 
   Bucket();
@@ -1833,8 +2038,9 @@ class Bucket {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (color != null) {
       _json["color"] = color;
     }
@@ -1857,18 +2063,13 @@ class Bucket {
   }
 }
 
-/**
- * Identifier of the base column. If present, this column is derived from the
- * specified base column.
- */
+/// Identifier of the base column. If present, this column is derived from the
+/// specified base column.
 class ColumnBaseColumn {
-  /**
-   * The id of the column in the base table from which this column is derived.
-   */
+  /// The id of the column in the base table from which this column is derived.
   core.int columnId;
-  /**
-   * Offset to the entry in the list of base tables in the table definition.
-   */
+
+  /// Offset to the entry in the list of base tables in the table definition.
   core.int tableIndex;
 
   ColumnBaseColumn();
@@ -1882,8 +2083,9 @@ class ColumnBaseColumn {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (columnId != null) {
       _json["columnId"] = columnId;
     }
@@ -1894,68 +2096,71 @@ class ColumnBaseColumn {
   }
 }
 
-/** Specifies the details of a column in a table. */
+/// Specifies the details of a column in a table.
 class Column {
-  /**
-   * Identifier of the base column. If present, this column is derived from the
-   * specified base column.
-   */
+  /// Identifier of the base column. If present, this column is derived from the
+  /// specified base column.
   ColumnBaseColumn baseColumn;
-  /** Identifier for the column. */
+
+  /// Identifier for the column.
   core.int columnId;
-  /** JSON schema for interpreting JSON in this column. */
+
+  /// JSON schema for interpreting JSON in this column.
   core.String columnJsonSchema;
-  /** JSON object containing custom column properties. */
+
+  /// JSON object containing custom column properties.
   core.String columnPropertiesJson;
-  /** Column description. */
+
+  /// Column description.
   core.String description;
-  /**
-   * Format pattern.
-   * Acceptable values are DT_DATE_MEDIUMe.g Dec 24, 2008 DT_DATE_SHORTfor
-   * example 12/24/08 DT_DATE_TIME_MEDIUMfor example Dec 24, 2008 8:30:45 PM
-   * DT_DATE_TIME_SHORTfor example 12/24/08 8:30 PM DT_DAY_MONTH_2_DIGIT_YEARfor
-   * example 24/12/08 DT_DAY_MONTH_2_DIGIT_YEAR_TIMEfor example 24/12/08 20:30
-   * DT_DAY_MONTH_2_DIGIT_YEAR_TIME_MERIDIANfor example 24/12/08 8:30 PM
-   * DT_DAY_MONTH_4_DIGIT_YEARfor example 24/12/2008
-   * DT_DAY_MONTH_4_DIGIT_YEAR_TIMEfor example 24/12/2008 20:30
-   * DT_DAY_MONTH_4_DIGIT_YEAR_TIME_MERIDIANfor example 24/12/2008 8:30 PM
-   * DT_ISO_YEAR_MONTH_DAYfor example 2008-12-24 DT_ISO_YEAR_MONTH_DAY_TIMEfor
-   * example 2008-12-24 20:30:45 DT_MONTH_DAY_4_DIGIT_YEARfor example 12/24/2008
-   * DT_TIME_LONGfor example 8:30:45 PM UTC-6 DT_TIME_MEDIUMfor example 8:30:45
-   * PM DT_TIME_SHORTfor example 8:30 PM DT_YEAR_ONLYfor example 2008
-   * HIGHLIGHT_UNTYPED_CELLSHighlight cell data that does not match the data
-   * type NONENo formatting (default) NUMBER_CURRENCYfor example $1234.56
-   * NUMBER_DEFAULTfor example 1,234.56 NUMBER_INTEGERfor example 1235
-   * NUMBER_NO_SEPARATORfor example 1234.56 NUMBER_PERCENTfor example 123,456%
-   * NUMBER_SCIENTIFICfor example 1E3 STRING_EIGHT_LINE_IMAGEDisplays thumbnail
-   * images as tall as eight lines of text STRING_FOUR_LINE_IMAGEDisplays
-   * thumbnail images as tall as four lines of text STRING_JSON_TEXTAllows
-   * editing of text as JSON in UI STRING_JSON_LISTAllows editing of text as a
-   * JSON list in UI STRING_LINKTreats cell as a link (must start with http://
-   * or https://) STRING_ONE_LINE_IMAGEDisplays thumbnail images as tall as one
-   * line of text STRING_VIDEO_OR_MAPDisplay a video or map thumbnail
-   */
+
+  /// Format pattern.
+  /// Acceptable values are DT_DATE_MEDIUMe.g Dec 24, 2008 DT_DATE_SHORTfor
+  /// example 12/24/08 DT_DATE_TIME_MEDIUMfor example Dec 24, 2008 8:30:45 PM
+  /// DT_DATE_TIME_SHORTfor example 12/24/08 8:30 PM
+  /// DT_DAY_MONTH_2_DIGIT_YEARfor example 24/12/08
+  /// DT_DAY_MONTH_2_DIGIT_YEAR_TIMEfor example 24/12/08 20:30
+  /// DT_DAY_MONTH_2_DIGIT_YEAR_TIME_MERIDIANfor example 24/12/08 8:30 PM
+  /// DT_DAY_MONTH_4_DIGIT_YEARfor example 24/12/2008
+  /// DT_DAY_MONTH_4_DIGIT_YEAR_TIMEfor example 24/12/2008 20:30
+  /// DT_DAY_MONTH_4_DIGIT_YEAR_TIME_MERIDIANfor example 24/12/2008 8:30 PM
+  /// DT_ISO_YEAR_MONTH_DAYfor example 2008-12-24 DT_ISO_YEAR_MONTH_DAY_TIMEfor
+  /// example 2008-12-24 20:30:45 DT_MONTH_DAY_4_DIGIT_YEARfor example
+  /// 12/24/2008 DT_TIME_LONGfor example 8:30:45 PM UTC-6 DT_TIME_MEDIUMfor
+  /// example 8:30:45 PM DT_TIME_SHORTfor example 8:30 PM DT_YEAR_ONLYfor
+  /// example 2008 HIGHLIGHT_UNTYPED_CELLSHighlight cell data that does not
+  /// match the data type NONENo formatting (default) NUMBER_CURRENCYfor example
+  /// $1234.56 NUMBER_DEFAULTfor example 1,234.56 NUMBER_INTEGERfor example 1235
+  /// NUMBER_NO_SEPARATORfor example 1234.56 NUMBER_PERCENTfor example 123,456%
+  /// NUMBER_SCIENTIFICfor example 1E3 STRING_EIGHT_LINE_IMAGEDisplays thumbnail
+  /// images as tall as eight lines of text STRING_FOUR_LINE_IMAGEDisplays
+  /// thumbnail images as tall as four lines of text STRING_JSON_TEXTAllows
+  /// editing of text as JSON in UI STRING_JSON_LISTAllows editing of text as a
+  /// JSON list in UI STRING_LINKTreats cell as a link (must start with http://
+  /// or https://) STRING_ONE_LINE_IMAGEDisplays thumbnail images as tall as one
+  /// line of text STRING_VIDEO_OR_MAPDisplay a video or map thumbnail
   core.String formatPattern;
-  /**
-   * Column graph predicate.
-   * Used to map table to graph data model (subject,predicate,object)
-   * See W3C Graph-based Data Model.
-   */
+
+  /// Column graph predicate.
+  /// Used to map table to graph data model (subject,predicate,object)
+  /// See W3C Graph-based Data Model.
   core.String graphPredicate;
-  /**
-   * The kind of item this is. For a column, this is always fusiontables#column.
-   */
+
+  /// The kind of item this is. For a column, this is always
+  /// fusiontables#column.
   core.String kind;
-  /** Name of the column. */
+
+  /// Name of the column.
   core.String name;
-  /** Type of the column. */
+
+  /// Type of the column.
   core.String type;
-  /**
-   * List of valid values used to validate data and supply a drop-down list of
-   * values in the web application.
-   */
+
+  /// List of valid values used to validate data and supply a drop-down list of
+  /// values in the web application.
   core.List<core.String> validValues;
-  /** If true, data entered via the web application is validated. */
+
+  /// If true, data entered via the web application is validated.
   core.bool validateData;
 
   Column();
@@ -1999,8 +2204,9 @@ class Column {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (baseColumn != null) {
       _json["baseColumn"] = (baseColumn).toJson();
     }
@@ -2041,28 +2247,28 @@ class Column {
   }
 }
 
-/** Represents a list of columns in a table. */
+/// Represents a list of columns in a table.
 class ColumnList {
-  /** List of all requested columns. */
+  /// List of all requested columns.
   core.List<Column> items;
-  /**
-   * The kind of item this is. For a column list, this is always
-   * fusiontables#columnList.
-   */
+
+  /// The kind of item this is. For a column list, this is always
+  /// fusiontables#columnList.
   core.String kind;
-  /**
-   * Token used to access the next page of this result. No token is displayed if
-   * there are no more pages left.
-   */
+
+  /// Token used to access the next page of this result. No token is displayed
+  /// if there are no more pages left.
   core.String nextPageToken;
-  /** Total number of columns for the table. */
+
+  /// Total number of columns for the table.
   core.int totalItems;
 
   ColumnList();
 
   ColumnList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Column.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Column.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2075,8 +2281,9 @@ class ColumnList {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -2093,23 +2300,21 @@ class ColumnList {
   }
 }
 
-/** Represents a Geometry object. */
+/// Represents a Geometry object.
 class Geometry {
-  /**
-   * The list of geometries in this geometry collection.
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+  /// The list of geometries in this geometry collection.
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.List<core.Object> geometries;
-  /**
-   *
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+
+  ///
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.Object geometry;
-  /** Type: A collection of geometries. */
+
+  /// Type: A collection of geometries.
   core.String type;
 
   Geometry();
@@ -2126,8 +2331,9 @@ class Geometry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (geometries != null) {
       _json["geometries"] = geometries;
     }
@@ -2141,14 +2347,13 @@ class Geometry {
   }
 }
 
-/** Represents an import request. */
+/// Represents an import request.
 class Import {
-  /**
-   * The kind of item this is. For an import, this is always
-   * fusiontables#import.
-   */
+  /// The kind of item this is. For an import, this is always
+  /// fusiontables#import.
   core.String kind;
-  /** The number of rows received from the import request. */
+
+  /// The number of rows received from the import request.
   core.String numRowsReceived;
 
   Import();
@@ -2162,8 +2367,9 @@ class Import {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2174,11 +2380,12 @@ class Import {
   }
 }
 
-/** Represents a line geometry. */
+/// Represents a line geometry.
 class Line {
-  /** The coordinates that define the line. */
+  /// The coordinates that define the line.
   core.List<core.List<core.double>> coordinates;
-  /** Type: A line geometry. */
+
+  /// Type: A line geometry.
   core.String type;
 
   Line();
@@ -2192,8 +2399,9 @@ class Line {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (coordinates != null) {
       _json["coordinates"] = coordinates;
     }
@@ -2204,23 +2412,23 @@ class Line {
   }
 }
 
-/** Represents a LineStyle within a StyleSetting */
+/// Represents a LineStyle within a StyleSetting
 class LineStyle {
-  /** Color of the line in #RRGGBB format. */
+  /// Color of the line in #RRGGBB format.
   core.String strokeColor;
-  /**
-   * Column-value, gradient or buckets styler that is used to determine the line
-   * color and opacity.
-   */
+
+  /// Column-value, gradient or buckets styler that is used to determine the
+  /// line color and opacity.
   StyleFunction strokeColorStyler;
-  /** Opacity of the line : 0.0 (transparent) to 1.0 (opaque). */
+
+  /// Opacity of the line : 0.0 (transparent) to 1.0 (opaque).
   core.double strokeOpacity;
-  /** Width of the line in pixels. */
+
+  /// Width of the line in pixels.
   core.int strokeWeight;
-  /**
-   * Column-value or bucket styler that is used to determine the width of the
-   * line.
-   */
+
+  /// Column-value or bucket styler that is used to determine the width of the
+  /// line.
   StyleFunction strokeWeightStyler;
 
   LineStyle();
@@ -2230,7 +2438,8 @@ class LineStyle {
       strokeColor = _json["strokeColor"];
     }
     if (_json.containsKey("strokeColorStyler")) {
-      strokeColorStyler = new StyleFunction.fromJson(_json["strokeColorStyler"]);
+      strokeColorStyler =
+          new StyleFunction.fromJson(_json["strokeColorStyler"]);
     }
     if (_json.containsKey("strokeOpacity")) {
       strokeOpacity = _json["strokeOpacity"];
@@ -2239,12 +2448,14 @@ class LineStyle {
       strokeWeight = _json["strokeWeight"];
     }
     if (_json.containsKey("strokeWeightStyler")) {
-      strokeWeightStyler = new StyleFunction.fromJson(_json["strokeWeightStyler"]);
+      strokeWeightStyler =
+          new StyleFunction.fromJson(_json["strokeWeightStyler"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (strokeColor != null) {
       _json["strokeColor"] = strokeColor;
     }
@@ -2264,11 +2475,12 @@ class LineStyle {
   }
 }
 
-/** Represents a point object. */
+/// Represents a point object.
 class Point {
-  /** The coordinates that define the point. */
+  /// The coordinates that define the point.
   core.List<core.double> coordinates;
-  /** Point: A point geometry. */
+
+  /// Point: A point geometry.
   core.String type;
 
   Point();
@@ -2282,8 +2494,9 @@ class Point {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (coordinates != null) {
       _json["coordinates"] = coordinates;
     }
@@ -2294,14 +2507,13 @@ class Point {
   }
 }
 
-/** Represents a PointStyle within a StyleSetting */
+/// Represents a PointStyle within a StyleSetting
 class PointStyle {
-  /**
-   * Name of the icon. Use values defined in
-   * http://www.google.com/fusiontables/DataSource?dsrcid=308519
-   */
+  /// Name of the icon. Use values defined in
+  /// http://www.google.com/fusiontables/DataSource?dsrcid=308519
   core.String iconName;
-  /** Column or a bucket value from which the icon name is to be determined. */
+
+  /// Column or a bucket value from which the icon name is to be determined.
   StyleFunction iconStyler;
 
   PointStyle();
@@ -2315,8 +2527,9 @@ class PointStyle {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (iconName != null) {
       _json["iconName"] = iconName;
     }
@@ -2327,11 +2540,12 @@ class PointStyle {
   }
 }
 
-/** Represents a polygon object. */
+/// Represents a polygon object.
 class Polygon {
-  /** The coordinates that define the polygon. */
+  /// The coordinates that define the polygon.
   core.List<core.List<core.List<core.double>>> coordinates;
-  /** Type: A polygon geometry. */
+
+  /// Type: A polygon geometry.
   core.String type;
 
   Polygon();
@@ -2345,8 +2559,9 @@ class Polygon {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (coordinates != null) {
       _json["coordinates"] = coordinates;
     }
@@ -2357,34 +2572,33 @@ class Polygon {
   }
 }
 
-/** Represents a PolygonStyle within a StyleSetting */
+/// Represents a PolygonStyle within a StyleSetting
 class PolygonStyle {
-  /** Color of the interior of the polygon in #RRGGBB format. */
+  /// Color of the interior of the polygon in #RRGGBB format.
   core.String fillColor;
-  /**
-   * Column-value, gradient, or bucket styler that is used to determine the
-   * interior color and opacity of the polygon.
-   */
+
+  /// Column-value, gradient, or bucket styler that is used to determine the
+  /// interior color and opacity of the polygon.
   StyleFunction fillColorStyler;
-  /**
-   * Opacity of the interior of the polygon: 0.0 (transparent) to 1.0 (opaque).
-   */
+
+  /// Opacity of the interior of the polygon: 0.0 (transparent) to 1.0 (opaque).
   core.double fillOpacity;
-  /** Color of the polygon border in #RRGGBB format. */
+
+  /// Color of the polygon border in #RRGGBB format.
   core.String strokeColor;
-  /**
-   * Column-value, gradient or buckets styler that is used to determine the
-   * border color and opacity.
-   */
+
+  /// Column-value, gradient or buckets styler that is used to determine the
+  /// border color and opacity.
   StyleFunction strokeColorStyler;
-  /** Opacity of the polygon border: 0.0 (transparent) to 1.0 (opaque). */
+
+  /// Opacity of the polygon border: 0.0 (transparent) to 1.0 (opaque).
   core.double strokeOpacity;
-  /** Width of the polyon border in pixels. */
+
+  /// Width of the polyon border in pixels.
   core.int strokeWeight;
-  /**
-   * Column-value or bucket styler that is used to determine the width of the
-   * polygon border.
-   */
+
+  /// Column-value or bucket styler that is used to determine the width of the
+  /// polygon border.
   StyleFunction strokeWeightStyler;
 
   PolygonStyle();
@@ -2403,7 +2617,8 @@ class PolygonStyle {
       strokeColor = _json["strokeColor"];
     }
     if (_json.containsKey("strokeColorStyler")) {
-      strokeColorStyler = new StyleFunction.fromJson(_json["strokeColorStyler"]);
+      strokeColorStyler =
+          new StyleFunction.fromJson(_json["strokeColorStyler"]);
     }
     if (_json.containsKey("strokeOpacity")) {
       strokeOpacity = _json["strokeOpacity"];
@@ -2412,12 +2627,14 @@ class PolygonStyle {
       strokeWeight = _json["strokeWeight"];
     }
     if (_json.containsKey("strokeWeightStyler")) {
-      strokeWeightStyler = new StyleFunction.fromJson(_json["strokeWeightStyler"]);
+      strokeWeightStyler =
+          new StyleFunction.fromJson(_json["strokeWeightStyler"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (fillColor != null) {
       _json["fillColor"] = fillColor;
     }
@@ -2446,23 +2663,21 @@ class PolygonStyle {
   }
 }
 
-/** Represents a response to a SQL statement. */
+/// Represents a response to a SQL statement.
 class Sqlresponse {
-  /** Columns in the table. */
+  /// Columns in the table.
   core.List<core.String> columns;
-  /**
-   * The kind of item this is. For responses to SQL queries, this is always
-   * fusiontables#sqlresponse.
-   */
+
+  /// The kind of item this is. For responses to SQL queries, this is always
+  /// fusiontables#sqlresponse.
   core.String kind;
-  /**
-   * The rows in the table. For each cell we print out whatever cell value
-   * (e.g., numeric, string) exists. Thus it is important that each cell
-   * contains only one value.
-   *
-   * The values for Object must be JSON objects. It can consist of `num`,
-   * `String`, `bool` and `null` as well as `Map` and `List` values.
-   */
+
+  /// The rows in the table. For each cell we print out whatever cell value
+  /// (e.g., numeric, string) exists. Thus it is important that each cell
+  /// contains only one value.
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
   core.List<core.List<core.Object>> rows;
 
   Sqlresponse();
@@ -2479,8 +2694,9 @@ class Sqlresponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (columns != null) {
       _json["columns"] = columns;
     }
@@ -2495,9 +2711,10 @@ class Sqlresponse {
 }
 
 class StyleFunctionGradientColors {
-  /** Color in #RRGGBB format. */
+  /// Color in #RRGGBB format.
   core.String color;
-  /** Opacity of the color: 0.0 (transparent) to 1.0 (opaque). */
+
+  /// Opacity of the color: 0.0 (transparent) to 1.0 (opaque).
   core.double opacity;
 
   StyleFunctionGradientColors();
@@ -2511,8 +2728,9 @@ class StyleFunctionGradientColors {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (color != null) {
       _json["color"] = color;
     }
@@ -2523,28 +2741,26 @@ class StyleFunctionGradientColors {
   }
 }
 
-/**
- * Gradient function that interpolates a range of colors based on column value.
- */
+/// Gradient function that interpolates a range of colors based on column value.
 class StyleFunctionGradient {
-  /** Array with two or more colors. */
+  /// Array with two or more colors.
   core.List<StyleFunctionGradientColors> colors;
-  /**
-   * Higher-end of the interpolation range: rows with this value will be
-   * assigned to colors[n-1].
-   */
+
+  /// Higher-end of the interpolation range: rows with this value will be
+  /// assigned to colors[n-1].
   core.double max;
-  /**
-   * Lower-end of the interpolation range: rows with this value will be assigned
-   * to colors[0].
-   */
+
+  /// Lower-end of the interpolation range: rows with this value will be
+  /// assigned to colors[0].
   core.double min;
 
   StyleFunctionGradient();
 
   StyleFunctionGradient.fromJson(core.Map _json) {
     if (_json.containsKey("colors")) {
-      colors = _json["colors"].map((value) => new StyleFunctionGradientColors.fromJson(value)).toList();
+      colors = _json["colors"]
+          .map((value) => new StyleFunctionGradientColors.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("max")) {
       max = _json["max"];
@@ -2554,8 +2770,9 @@ class StyleFunctionGradient {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (colors != null) {
       _json["colors"] = colors.map((value) => (value).toJson()).toList();
     }
@@ -2569,35 +2786,33 @@ class StyleFunctionGradient {
   }
 }
 
-/** Represents a StyleFunction within a StyleSetting */
+/// Represents a StyleFunction within a StyleSetting
 class StyleFunction {
-  /**
-   * Bucket function that assigns a style based on the range a column value
-   * falls into.
-   */
+  /// Bucket function that assigns a style based on the range a column value
+  /// falls into.
   core.List<Bucket> buckets;
-  /** Name of the column whose value is used in the style. */
+
+  /// Name of the column whose value is used in the style.
   core.String columnName;
-  /**
-   * Gradient function that interpolates a range of colors based on column
-   * value.
-   */
+
+  /// Gradient function that interpolates a range of colors based on column
+  /// value.
   StyleFunctionGradient gradient;
-  /**
-   * Stylers can be one of three kinds: "fusiontables#fromColumn if the column
-   * value is to be used as is, i.e., the column values can have colors in
-   * #RRGGBBAA format or integer line widths or icon names;
-   * fusiontables#gradient if the styling of the row is to be based on applying
-   * the gradient function on the column value; or fusiontables#buckets if the
-   * styling is to based on the bucket into which the the column value falls.
-   */
+
+  /// Stylers can be one of three kinds: "fusiontables#fromColumn if the column
+  /// value is to be used as is, i.e., the column values can have colors in
+  /// #RRGGBBAA format or integer line widths or icon names;
+  /// fusiontables#gradient if the styling of the row is to be based on applying
+  /// the gradient function on the column value; or fusiontables#buckets if the
+  /// styling is to based on the bucket into which the the column value falls.
   core.String kind;
 
   StyleFunction();
 
   StyleFunction.fromJson(core.Map _json) {
     if (_json.containsKey("buckets")) {
-      buckets = _json["buckets"].map((value) => new Bucket.fromJson(value)).toList();
+      buckets =
+          _json["buckets"].map((value) => new Bucket.fromJson(value)).toList();
     }
     if (_json.containsKey("columnName")) {
       columnName = _json["columnName"];
@@ -2610,8 +2825,9 @@ class StyleFunction {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (buckets != null) {
       _json["buckets"] = buckets.map((value) => (value).toJson()).toList();
     }
@@ -2628,29 +2844,31 @@ class StyleFunction {
   }
 }
 
-/**
- * Represents a complete StyleSettings object. The primary key is a combination
- * of the tableId and a styleId.
- */
+/// Represents a complete StyleSettings object. The primary key is a combination
+/// of the tableId and a styleId.
 class StyleSetting {
-  /**
-   * The kind of item this is. A StyleSetting contains the style definitions for
-   * points, lines, and polygons in a table. Since a table can have any one or
-   * all of them, a style definition can have point, line and polygon style
-   * definitions.
-   */
+  /// The kind of item this is. A StyleSetting contains the style definitions
+  /// for points, lines, and polygons in a table. Since a table can have any one
+  /// or all of them, a style definition can have point, line and polygon style
+  /// definitions.
   core.String kind;
-  /** Style definition for points in the table. */
+
+  /// Style definition for points in the table.
   PointStyle markerOptions;
-  /** Optional name for the style setting. */
+
+  /// Optional name for the style setting.
   core.String name;
-  /** Style definition for polygons in the table. */
+
+  /// Style definition for polygons in the table.
   PolygonStyle polygonOptions;
-  /** Style definition for lines in the table. */
+
+  /// Style definition for lines in the table.
   LineStyle polylineOptions;
-  /** Identifier for the style setting (unique only within tables). */
+
+  /// Identifier for the style setting (unique only within tables).
   core.int styleId;
-  /** Identifier for the table. */
+
+  /// Identifier for the table.
   core.String tableId;
 
   StyleSetting();
@@ -2679,8 +2897,9 @@ class StyleSetting {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2706,28 +2925,29 @@ class StyleSetting {
   }
 }
 
-/** Represents a list of styles for a given table. */
+/// Represents a list of styles for a given table.
 class StyleSettingList {
-  /** All requested style settings. */
+  /// All requested style settings.
   core.List<StyleSetting> items;
-  /**
-   * The kind of item this is. For a style list, this is always
-   * fusiontables#styleSettingList .
-   */
+
+  /// The kind of item this is. For a style list, this is always
+  /// fusiontables#styleSettingList .
   core.String kind;
-  /**
-   * Token used to access the next page of this result. No token is displayed if
-   * there are no more styles left.
-   */
+
+  /// Token used to access the next page of this result. No token is displayed
+  /// if there are no more styles left.
   core.String nextPageToken;
-  /** Total number of styles for the table. */
+
+  /// Total number of styles for the table.
   core.int totalItems;
 
   StyleSettingList();
 
   StyleSettingList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new StyleSetting.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new StyleSetting.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2740,8 +2960,9 @@ class StyleSettingList {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -2758,35 +2979,45 @@ class StyleSettingList {
   }
 }
 
-/** Represents a table. */
+/// Represents a table.
 class Table {
-  /** Attribution assigned to the table. */
+  /// Attribution assigned to the table.
   core.String attribution;
-  /** Optional link for attribution. */
+
+  /// Optional link for attribution.
   core.String attributionLink;
-  /** Base table identifier if this table is a view or merged table. */
+
+  /// Base table identifier if this table is a view or merged table.
   core.List<core.String> baseTableIds;
-  /** Default JSON schema for validating all JSON column properties. */
+
+  /// Default JSON schema for validating all JSON column properties.
   core.String columnPropertiesJsonSchema;
-  /** Columns in the table. */
+
+  /// Columns in the table.
   core.List<Column> columns;
-  /** Description assigned to the table. */
+
+  /// Description assigned to the table.
   core.String description;
-  /** Variable for whether table is exportable. */
+
+  /// Variable for whether table is exportable.
   core.bool isExportable;
-  /**
-   * The kind of item this is. For a table, this is always fusiontables#table.
-   */
+
+  /// The kind of item this is. For a table, this is always fusiontables#table.
   core.String kind;
-  /** Name assigned to a table. */
+
+  /// Name assigned to a table.
   core.String name;
-  /** SQL that encodes the table definition for derived tables. */
+
+  /// SQL that encodes the table definition for derived tables.
   core.String sql;
-  /** Encrypted unique alphanumeric identifier for the table. */
+
+  /// Encrypted unique alphanumeric identifier for the table.
   core.String tableId;
-  /** JSON object containing custom table properties. */
+
+  /// JSON object containing custom table properties.
   core.String tablePropertiesJson;
-  /** JSON schema for validating the JSON table properties. */
+
+  /// JSON schema for validating the JSON table properties.
   core.String tablePropertiesJsonSchema;
 
   Table();
@@ -2805,7 +3036,8 @@ class Table {
       columnPropertiesJsonSchema = _json["columnPropertiesJsonSchema"];
     }
     if (_json.containsKey("columns")) {
-      columns = _json["columns"].map((value) => new Column.fromJson(value)).toList();
+      columns =
+          _json["columns"].map((value) => new Column.fromJson(value)).toList();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
@@ -2833,8 +3065,9 @@ class Table {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (attribution != null) {
       _json["attribution"] = attribution;
     }
@@ -2878,19 +3111,17 @@ class Table {
   }
 }
 
-/** Represents a list of tables. */
+/// Represents a list of tables.
 class TableList {
-  /** List of all requested tables. */
+  /// List of all requested tables.
   core.List<Table> items;
-  /**
-   * The kind of item this is. For table list, this is always
-   * fusiontables#tableList.
-   */
+
+  /// The kind of item this is. For table list, this is always
+  /// fusiontables#tableList.
   core.String kind;
-  /**
-   * Token used to access the next page of this result. No token is displayed if
-   * there are no more pages left.
-   */
+
+  /// Token used to access the next page of this result. No token is displayed
+  /// if there are no more pages left.
   core.String nextPageToken;
 
   TableList();
@@ -2907,8 +3138,9 @@ class TableList {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -2922,23 +3154,23 @@ class TableList {
   }
 }
 
-/**
- * A background task on a table, initiated for time- or resource-consuming
- * operations such as changing column types or deleting all rows.
- */
+/// A background task on a table, initiated for time- or resource-consuming
+/// operations such as changing column types or deleting all rows.
 class Task {
-  /** Type of the resource. This is always "fusiontables#task". */
+  /// Type of the resource. This is always "fusiontables#task".
   core.String kind;
-  /** Task percentage completion. */
+
+  /// Task percentage completion.
   core.String progress;
-  /**
-   * false while the table is busy with some other task. true if this background
-   * task is currently running.
-   */
+
+  /// false while the table is busy with some other task. true if this
+  /// background task is currently running.
   core.bool started;
-  /** Identifier for the task. */
+
+  /// Identifier for the task.
   core.String taskId;
-  /** Type of background task. */
+
+  /// Type of background task.
   core.String type;
 
   Task();
@@ -2961,8 +3193,9 @@ class Task {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2982,18 +3215,19 @@ class Task {
   }
 }
 
-/** Represents a list of tasks for a table. */
+/// Represents a list of tasks for a table.
 class TaskList {
-  /** List of all requested tasks. */
+  /// List of all requested tasks.
   core.List<Task> items;
-  /** Type of the resource. This is always "fusiontables#taskList". */
+
+  /// Type of the resource. This is always "fusiontables#taskList".
   core.String kind;
-  /**
-   * Token used to access the next page of this result. No token is displayed if
-   * there are no more pages left.
-   */
+
+  /// Token used to access the next page of this result. No token is displayed
+  /// if there are no more pages left.
   core.String nextPageToken;
-  /** Total number of tasks for the table. */
+
+  /// Total number of tasks for the table.
   core.int totalItems;
 
   TaskList();
@@ -3013,8 +3247,9 @@ class TaskList {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -3031,32 +3266,29 @@ class TaskList {
   }
 }
 
-/** Represents the contents of InfoWindow templates. */
+/// Represents the contents of InfoWindow templates.
 class Template {
-  /**
-   * List of columns from which the template is to be automatically constructed.
-   * Only one of body or automaticColumns can be specified.
-   */
+  /// List of columns from which the template is to be automatically
+  /// constructed. Only one of body or automaticColumns can be specified.
   core.List<core.String> automaticColumnNames;
-  /**
-   * Body of the template. It contains HTML with {column_name} to insert values
-   * from a particular column. The body is sanitized to remove certain tags,
-   * e.g., script. Only one of body or automaticColumns can be specified.
-   */
+
+  /// Body of the template. It contains HTML with {column_name} to insert values
+  /// from a particular column. The body is sanitized to remove certain tags,
+  /// e.g., script. Only one of body or automaticColumns can be specified.
   core.String body;
-  /**
-   * The kind of item this is. For a template, this is always
-   * fusiontables#template.
-   */
+
+  /// The kind of item this is. For a template, this is always
+  /// fusiontables#template.
   core.String kind;
-  /** Optional name assigned to a template. */
+
+  /// Optional name assigned to a template.
   core.String name;
-  /** Identifier for the table for which the template is defined. */
+
+  /// Identifier for the table for which the template is defined.
   core.String tableId;
-  /**
-   * Identifier for the template, unique within the context of a particular
-   * table.
-   */
+
+  /// Identifier for the template, unique within the context of a particular
+  /// table.
   core.int templateId;
 
   Template();
@@ -3082,8 +3314,9 @@ class Template {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (automaticColumnNames != null) {
       _json["automaticColumnNames"] = automaticColumnNames;
     }
@@ -3106,28 +3339,28 @@ class Template {
   }
 }
 
-/** Represents a list of templates for a given table. */
+/// Represents a list of templates for a given table.
 class TemplateList {
-  /** List of all requested templates. */
+  /// List of all requested templates.
   core.List<Template> items;
-  /**
-   * The kind of item this is. For a template list, this is always
-   * fusiontables#templateList .
-   */
+
+  /// The kind of item this is. For a template list, this is always
+  /// fusiontables#templateList .
   core.String kind;
-  /**
-   * Token used to access the next page of this result. No token is displayed if
-   * there are no more pages left.
-   */
+
+  /// Token used to access the next page of this result. No token is displayed
+  /// if there are no more pages left.
   core.String nextPageToken;
-  /** Total number of templates for the table. */
+
+  /// Total number of templates for the table.
   core.int totalItems;
 
   TemplateList();
 
   TemplateList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Template.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Template.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3140,8 +3373,9 @@ class TemplateList {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }

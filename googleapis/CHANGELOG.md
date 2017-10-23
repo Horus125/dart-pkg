@@ -1,3 +1,343 @@
+## 0.46.0
+
+* [api] admin:directory_v1
+* [api] bigquery:v2
+* [api] cloudfunctions:v1
+* [api] cloudtrace:v2
+* [api] compute:v1
+* [api] datastore:v1
+* [api] firebasedynamiclinks:v1
+* [api] firebaserules:v1
+* [api] manufacturers:v1
+* [api] monitoring:v3
+* [api] partners:v2
+* [api] slides:v1
+* [api] speech:v1
+* [api-breaking] cloudtrace:v2
+* [api-breaking] manufacturers:v1
+* [api-breaking] servicecontrol:v1
+
+## 0.45.0
+* [api-new] cloudiot:v1
+* [api-new] testing:v1
+* [api] admin:directory_v1
+* [api] androidenterprise:v1
+* [api] androidmanagement:v1
+* [api] appengine:v1
+* [api] bigquerydatatransfer:v1
+* [api] bigquery:v2
+* [api] classroom:v1
+* [api] cloudfunctions:v1
+* [api] compute:v1
+* [api] container:v1
+* [api] content:v2
+* [api] content:v2sandbox
+* [api] firebaserules:v1
+* [api] fitness:v1
+* [api] identitytoolkit:v3
+* [api] language:v1
+* [api] ml:v1
+* [api] people:v1
+* [api] servicecontrol:v1
+* [api] servicemanagement:v1
+* [api] serviceuser:v1
+* [api] sheets:v4
+* [api] sourcerepo:v1
+* [api] spanner:v1
+* [api] streetviewpublish:v1
+* [api] tagmanager:v2
+* [api] vault:v1
+* [api] youtube:v3
+* [api-breaking] adexperiencereport:v1
+* [api-breaking] admin:directory_v1
+* [api-breaking] bigquerydatatransfer:v1
+* [api-breaking] cloudtrace:v2
+* [api-breaking] gmail:v1
+* [api-breaking] servicecontrol:v1
+* [api-breaking] serviceuser:v1
+* [api-breaking] sourcerepo:v1
+* [api-breaking] spanner:v1
+* [api-breaking] storage:v1
+* [api-breaking] youtube:v3
+
+## 0.44.0
+* [api-new] firebaseremoteconfig:v1
+* [api] androiddeviceprovisioning:v1
+* [api] androidenterprise:v1
+* [api] androidmanagement:v1
+* [api] appengine:v1
+* [api] bigquerydatatransfer:v1
+* [api] bigquery:v2
+* [api] cloudkms:v1
+* [api] cloudtrace:v2
+* [api] container:v1
+* [api] content:v2
+* [api] dfareporting:v2_8
+* [api] drive:v2
+* [api] drive:v3
+* [api] firebasedynamiclinks:v1
+* [api] gmail:v1
+* [api] identitytoolkit:v3
+* [api] logging:v2
+* [api] monitoring:v3
+* [api] people:v1
+* [api] servicecontrol:v1
+* [api] storage:v1
+* [api-breaking] bigquerydatatransfer:v1
+* [api-breaking] bigquerydatatransfer:v1
+* [api-breaking] cloudkms:v1
+* [api-breaking] cloudtrace:v2
+* [api-breaking] ml:v1
+* [api-breaking] script:v1
+* [api-breaking] servicemanagement:v1
+* [api-breaking] spanner:v1
+
+## 0.43.0
+* [api] adexperiencereport:v1
+* [api] analytics:v3
+* [api] androidmanagement:v1
+* [api] androidpublisher:v2
+* [api] bigquerydatatransfer:v1
+* [api] bigquery:v2
+* [api] classroom:v1
+* [api] cloudbilling:v1
+* [api] cloudkms:v1
+* [api] compute:v1
+* [api] content:v2
+* [api] datastore:v1
+* [api] deploymentmanager:v2
+* [api] firebasedynamiclinks:v1
+* [api] logging:v2
+* [api] manufacturers:v1
+* [api] ml:v1
+* [api] servicemanagement:v1
+* [api] serviceuser:v1
+* [api] spanner:v1
+* [api-breaking] adexperiencereport:v1
+* [api-breaking] androiddeviceprovisioning:v1
+* [api-breaking] iam:v1
+* [api-breaking] monitoring:v3
+* [api-breaking] script:v1
+* [api-breaking] servicemanagement:v1
+
+## 0.42.0
+
+* [api-new] androiddeviceprovisioning:v1
+* [api-new] streetviewpublish:v1
+* [api-new] playcustomapp:v1
+* [api-new] vault:v1
+* [api-new] androidmanagement:v1
+* [api-removed] dataproc:v1beta2
+* [api-removed] tracing:v2
+
+## 0.41.0
+
+* [api-new] dataproc:v1beta2
+* [api-new] cloudtrace:v2
+* [api-new] adexperiencereport:v1
+* [api-new] cloudresourcemanager:v2beta1
+* [api-removed] cloudtrace:v1
+* [api-removed] tracing:v2
+
+## 0.40.0
+
+* [api] appengine:v1
+* [api] bigquerydatatransfer:v1
+* [api] classroom:v1
+* [api] cloudkms:v1
+* [api] compute:v1
+* [api] content:v2
+* [api] firebasedynamiclinks:v1
+* [api] firebaserules:v1
+* [api] ml:v1
+* [api] partners:v2
+* [api] servicemanagement:v1
+* [api] serviceuser:v1
+* [api] sheets:v4
+* [api] slides:v1
+* [api] sourcerepo:v1
+* [api] storage:v1
+* [api] translate:v2
+* [api-breaking] bigquerydatatransfer:v1
+* [api-breaking] customsearch:v1
+* [api-breaking] customsearch:v1
+* [api-breaking] dataproc:v1
+* [api-removed] dfareporting:v2_6
+* [api-removed] dfareporting:v2_7
+
+## 0.39.0
+
+* [api-new] dfareporting:v2_8
+* [api-new] tagmanager:v2
+* [api-new] speech:v1
+* [api-new] bigquerydatatransfer:v1
+* [api] classroom:v1
+* [api] content:v2
+* [api] cloudkms:v1
+* [api] container:v1
+* [api] sourcerepo:v1
+* [api] serviceuser:v1
+* [api] storage:v1
+* [api] compute:v1
+* [api] drive:v3
+* [api] drive:v2
+* [api] tracing:v2
+* [api] adexchangebuyer:v1_4
+* [api] servicemanagement:v1
+* [api] cloudbuild:v1
+* [api] iam:v1
+* [api] sheets:v4
+* [api] logging:v2
+* [api] doubleclickbidmanager:v1
+* [api] androidenterprise:v1
+* [api] admin:directory_v1
+* [api] script:v1
+* [api] people:v1
+* [api-breaking] container:v1
+* [api-breaking] container:v1
+* [api-breaking] monitoring:v3
+* [api-breaking] tracing:v2
+* [api-breaking] tracing:v2
+
+## 0.38.0
+
+* [api-new] tracing:v2
+* [api] books:v1
+* [api] compute:v1
+* [api] container:v1
+* [api] drive:v2
+* [api] drive:v3
+* [api] iam:v1
+* [api] identitytoolkit:v3
+* [api] logging:v2
+* [api] servicemanagement:v1
+* [api] serviceuser:v1
+* [api] storage:v1
+* [api-breaking] cloudfunctions:v1
+* [api-breaking] cloudresourcemanager:v1
+* [api-breaking] compute:v1
+* [api-breaking] consumersurveys:v2
+* [api-breaking] content:v2
+* [api-breaking] servicemanagement:v1
+* [api-breaking] storagetransfer:v1
+* [api-breaking] surveys:v2
+* [api-removed] tracingv1
+
+## 0.37.0
+
+* [api-new] cloudfunctions:v1
+* [api-new] cloudkms:v1
+* [api-new] ml:v1
+* [api] admin:directory_v1
+* [api] analytics:v3
+* [api] appengine:v1
+* [api] calendar:v3
+* [api] cloudresourcemanager:v1
+* [api] compute:v1
+* [api] dataproc:v1
+* [api] firebasedynamiclinks:v1
+* [api] firebaserules:v1
+* [api] identitytoolkit:v3
+* [api] licensing:v1
+* [api] manufacturers:v1
+* [api] partners:v2
+* [api] people:v1
+* [api] reseller:v1
+* [api] safebrowsing:v4
+* [api] servicemanagement:v1
+* [api] serviceuser:v1
+* [api] sheets:v4
+* [api] slides:v1
+* [api] storage:v1
+* [api] vision:v1
+* [api-breaking] classroom:v1
+
+## 0.36.0
+
+* [api-new] sourcerepo:v1
+* [api-new] tracing:v1
+* [api-new] spanner:v1
+* [api] adexchangebuyer
+* [api] androidpublisher
+* [api] bigquery
+* [api] cloudresourcemanager
+* [api] dataproc
+* [api] drive
+* [api] people
+* [api] reseller
+* [api] servicemanagement
+* [api] serviceuser
+* [api] slides
+* [api] vision
+* [api-breaking] serviceuser
+* [api-breaking] people
+* [api-removed] dfareporting
+
+## 0.35.0
+
+[api-new] serviceuser:v1
+[api-new] searchconsole:v1
+[api-breaking] androidenterprise
+[api-breaking] container
+[api-breaking] genomics
+[api-breaking] people
+[api-breaking] script
+[api] cloudbuild: changes
+[api] container
+[api] content
+[api] dataproc
+[api] deploymentmanager
+[api] drive
+[api] gmail
+[api] iam
+[api] identitytoolkit
+[api] people
+[api] servicecontrol
+[api] sheets
+[api] slides
+[api] youtube
+
+## 0.34.0
+
+* [api] adexchangebuyer:v1_4: schema changes
+* [api] directory:v1: schema ehanges
+* [api] directory:v1: schema changes
+* [api] androidpublisher:v2: new resource, schema changes
+* [api] bigquery:v2: schema changes
+* [api] classroom:v1: new methods
+* [api] cloudbuild:v1: schema changes
+* [api] compute:v1: schema changes
+* [api] servicemanagement:v1: schema changes
+* [api] sheets:v1: schema changes
+* [api-breaking] androidenterprise:v1: resource removal
+* [api-breaking] kgsearch:v1: schema changes
+* [api-breaking] playmoviespartner:v1: resource removal
+
+## 0.33.0
+
+* [api-new] language:v1
+* [api-new] slides:v1
+* [api-breaking] appengine:v1: resource removal
+* [api-breaking] firebasedynamiclinks:v1: schema changes
+* [api-breaking] youtube-analytics:v1: removal of resources
+* [api-removal] dfareporting:v2_4
+* [api] analyticsreporting:v4: schema changes
+* [api] androidenterprise:v1: schema changes
+* [api] books:v1: schema changes
+* [api] cloudbuild:v1: schema/method changes
+* [api] cloudresourcemanager:v1: schema/method changes
+* [api] compute:v1: new resources
+* [api] deploymentmanager:v2: schema changes
+* [api] drive:v2: schema changes
+* [api] drive:v3: schema changes
+* [api] gmail:v1: schema changes
+* [api] identitytoolkit:v3: schema changes
+* [api] logging:v2: new resource
+* [api] servicemanagement:v1: schema changes
+* [api] sheets:v4: schema changes
+* [api] storage:v1: schema changes
+* [api] youtube:v3: schema changes
+
 ## 0.32.0
 
 * [api-new] dfareporting:v2_7

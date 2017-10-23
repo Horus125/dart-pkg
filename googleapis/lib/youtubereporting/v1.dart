@@ -9,67 +9,74 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError, Media, UploadOptions,
-    ResumableUploadOptions, DownloadOptions, PartialDownloadOptions,
-    ByteRange;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show
+        ApiRequestError,
+        DetailedApiRequestError,
+        Media,
+        UploadOptions,
+        ResumableUploadOptions,
+        DownloadOptions,
+        PartialDownloadOptions,
+        ByteRange;
 
 const core.String USER_AGENT = 'dart-api-client youtubereporting/v1';
 
-/**
- * Schedules reporting jobs containing your YouTube Analytics data and downloads
- * the resulting bulk data reports in the form of CSV files.
- */
+/// Schedules reporting jobs containing your YouTube Analytics data and
+/// downloads the resulting bulk data reports in the form of CSV files.
 class YoutubereportingApi {
-  /**
-   * View monetary and non-monetary YouTube Analytics reports for your YouTube
-   * content
-   */
-  static const YtAnalyticsMonetaryReadonlyScope = "https://www.googleapis.com/auth/yt-analytics-monetary.readonly";
+  /// View monetary and non-monetary YouTube Analytics reports for your YouTube
+  /// content
+  static const YtAnalyticsMonetaryReadonlyScope =
+      "https://www.googleapis.com/auth/yt-analytics-monetary.readonly";
 
-  /** View YouTube Analytics reports for your YouTube content */
-  static const YtAnalyticsReadonlyScope = "https://www.googleapis.com/auth/yt-analytics.readonly";
-
+  /// View YouTube Analytics reports for your YouTube content
+  static const YtAnalyticsReadonlyScope =
+      "https://www.googleapis.com/auth/yt-analytics.readonly";
 
   final commons.ApiRequester _requester;
 
   JobsResourceApi get jobs => new JobsResourceApi(_requester);
   MediaResourceApi get media => new MediaResourceApi(_requester);
-  ReportTypesResourceApi get reportTypes => new ReportTypesResourceApi(_requester);
+  ReportTypesResourceApi get reportTypes =>
+      new ReportTypesResourceApi(_requester);
 
-  YoutubereportingApi(http.Client client, {core.String rootUrl: "https://youtubereporting.googleapis.com/", core.String servicePath: ""}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  YoutubereportingApi(http.Client client,
+      {core.String rootUrl: "https://youtubereporting.googleapis.com/",
+      core.String servicePath: ""})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class JobsResourceApi {
   final commons.ApiRequester _requester;
 
   JobsReportsResourceApi get reports => new JobsReportsResourceApi(_requester);
 
-  JobsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  JobsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Creates a job and returns it.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * Completes with a [Job].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Job> create(Job request, {core.String onBehalfOfContentOwner}) {
+  /// Creates a job and returns it.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Job].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Job> create(Job request,
+      {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -83,39 +90,43 @@ class JobsResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'v1/jobs';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Job.fromJson(data));
   }
 
-  /**
-   * Deletes a job.
-   *
-   * Request parameters:
-   *
-   * [jobId] - The ID of the job to delete.
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * Completes with a [Empty].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Empty> delete(core.String jobId, {core.String onBehalfOfContentOwner}) {
+  /// Deletes a job.
+  ///
+  /// Request parameters:
+  ///
+  /// [jobId] - The ID of the job to delete.
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Empty].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Empty> delete(core.String jobId,
+      {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -129,39 +140,43 @@ class JobsResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'v1/jobs/' + commons.Escaper.ecapeVariable('$jobId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Empty.fromJson(data));
   }
 
-  /**
-   * Gets a job.
-   *
-   * Request parameters:
-   *
-   * [jobId] - The ID of the job to retrieve.
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * Completes with a [Job].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Job> get(core.String jobId, {core.String onBehalfOfContentOwner}) {
+  /// Gets a job.
+  ///
+  /// Request parameters:
+  ///
+  /// [jobId] - The ID of the job to retrieve.
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Job].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Job> get(core.String jobId,
+      {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -175,49 +190,60 @@ class JobsResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'v1/jobs/' + commons.Escaper.ecapeVariable('$jobId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Job.fromJson(data));
   }
 
-  /**
-   * Lists jobs.
-   *
-   * Request parameters:
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * [pageSize] - Requested page size. Server may return fewer jobs than
-   * requested. If unspecified, server will pick an appropriate default.
-   *
-   * [pageToken] - A token identifying a page of results the server should
-   * return. Typically, this is the value of
-   * ListReportTypesResponse.next_page_token returned in response to the
-   * previous call to the `ListJobs` method.
-   *
-   * [includeSystemManaged] - If set to true, also system-managed jobs will be
-   * returned; otherwise only user-created jobs will be returned. System-managed
-   * jobs can neither be modified nor deleted.
-   *
-   * Completes with a [ListJobsResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ListJobsResponse> list({core.String onBehalfOfContentOwner, core.int pageSize, core.String pageToken, core.bool includeSystemManaged}) {
+  /// Lists jobs.
+  ///
+  /// Request parameters:
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [includeSystemManaged] - If set to true, also system-managed jobs will be
+  /// returned; otherwise only
+  /// user-created jobs will be returned. System-managed jobs can neither be
+  /// modified nor deleted.
+  ///
+  /// [pageToken] - A token identifying a page of results the server should
+  /// return. Typically,
+  /// this is the value of
+  /// ListReportTypesResponse.next_page_token
+  /// returned in response to the previous call to the `ListJobs` method.
+  ///
+  /// [pageSize] - Requested page size. Server may return fewer jobs than
+  /// requested.
+  /// If unspecified, server will pick an appropriate default.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ListJobsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ListJobsResponse> list(
+      {core.String onBehalfOfContentOwner,
+      core.bool includeSystemManaged,
+      core.String pageToken,
+      core.int pageSize,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -227,60 +253,61 @@ class JobsResourceApi {
 
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
-    }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
     }
     if (includeSystemManaged != null) {
       _queryParams["includeSystemManaged"] = ["${includeSystemManaged}"];
     }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'v1/jobs';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ListJobsResponse.fromJson(data));
   }
-
 }
-
 
 class JobsReportsResourceApi {
   final commons.ApiRequester _requester;
 
-  JobsReportsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  JobsReportsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Gets the metadata of a specific report.
-   *
-   * Request parameters:
-   *
-   * [jobId] - The ID of the job.
-   *
-   * [reportId] - The ID of the report to retrieve.
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * Completes with a [Report].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Report> get(core.String jobId, core.String reportId, {core.String onBehalfOfContentOwner}) {
+  /// Gets the metadata of a specific report.
+  ///
+  /// Request parameters:
+  ///
+  /// [jobId] - The ID of the job.
+  ///
+  /// [reportId] - The ID of the report to retrieve.
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Report].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Report> get(core.String jobId, core.String reportId,
+      {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -297,56 +324,74 @@ class JobsReportsResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'v1/jobs/' + commons.Escaper.ecapeVariable('$jobId') + '/reports/' + commons.Escaper.ecapeVariable('$reportId');
+    _url = 'v1/jobs/' +
+        commons.Escaper.ecapeVariable('$jobId') +
+        '/reports/' +
+        commons.Escaper.ecapeVariable('$reportId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Report.fromJson(data));
   }
 
-  /**
-   * Lists reports created by a specific job. Returns NOT_FOUND if the job does
-   * not exist.
-   *
-   * Request parameters:
-   *
-   * [jobId] - The ID of the job.
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * [pageSize] - Requested page size. Server may return fewer report types than
-   * requested. If unspecified, server will pick an appropriate default.
-   *
-   * [pageToken] - A token identifying a page of results the server should
-   * return. Typically, this is the value of ListReportsResponse.next_page_token
-   * returned in response to the previous call to the `ListReports` method.
-   *
-   * [createdAfter] - If set, only reports created after the specified date/time
-   * are returned.
-   *
-   * [startTimeAtOrAfter] - If set, only reports whose start time is greater
-   * than or equal the specified date/time are returned.
-   *
-   * [startTimeBefore] - If set, only reports whose start time is smaller than
-   * the specified date/time are returned.
-   *
-   * Completes with a [ListReportsResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ListReportsResponse> list(core.String jobId, {core.String onBehalfOfContentOwner, core.int pageSize, core.String pageToken, core.String createdAfter, core.String startTimeAtOrAfter, core.String startTimeBefore}) {
+  /// Lists reports created by a specific job.
+  /// Returns NOT_FOUND if the job does not exist.
+  ///
+  /// Request parameters:
+  ///
+  /// [jobId] - The ID of the job.
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [startTimeBefore] - If set, only reports whose start time is smaller than
+  /// the specified
+  /// date/time are returned.
+  ///
+  /// [createdAfter] - If set, only reports created after the specified
+  /// date/time are returned.
+  ///
+  /// [startTimeAtOrAfter] - If set, only reports whose start time is greater
+  /// than or equal the
+  /// specified date/time are returned.
+  ///
+  /// [pageToken] - A token identifying a page of results the server should
+  /// return. Typically,
+  /// this is the value of
+  /// ListReportsResponse.next_page_token
+  /// returned in response to the previous call to the `ListReports` method.
+  ///
+  /// [pageSize] - Requested page size. Server may return fewer report types
+  /// than requested.
+  /// If unspecified, server will pick an appropriate default.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ListReportsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ListReportsResponse> list(core.String jobId,
+      {core.String onBehalfOfContentOwner,
+      core.String startTimeBefore,
+      core.String createdAfter,
+      core.String startTimeAtOrAfter,
+      core.String pageToken,
+      core.int pageSize,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -360,11 +405,8 @@ class JobsReportsResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
+    if (startTimeBefore != null) {
+      _queryParams["startTimeBefore"] = [startTimeBefore];
     }
     if (createdAfter != null) {
       _queryParams["createdAfter"] = [createdAfter];
@@ -372,58 +414,64 @@ class JobsReportsResourceApi {
     if (startTimeAtOrAfter != null) {
       _queryParams["startTimeAtOrAfter"] = [startTimeAtOrAfter];
     }
-    if (startTimeBefore != null) {
-      _queryParams["startTimeBefore"] = [startTimeBefore];
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'v1/jobs/' + commons.Escaper.ecapeVariable('$jobId') + '/reports';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ListReportsResponse.fromJson(data));
   }
-
 }
-
 
 class MediaResourceApi {
   final commons.ApiRequester _requester;
 
-  MediaResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  MediaResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Method for media download. Download is supported on the URI
-   * `/v1/media/{+name}?alt=media`.
-   *
-   * Request parameters:
-   *
-   * [resourceName] - Name of the media that is being downloaded. See
-   * ReadRequest.resource_name.
-   * Value must have pattern "^.*$".
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Media] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future download(core.String resourceName, {commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Method for media download. Download is supported
+  /// on the URI `/v1/media/{+name}?alt=media`.
+  ///
+  /// Request parameters:
+  ///
+  /// [resourceName] - Name of the media that is being downloaded.  See
+  /// ReadRequest.resource_name.
+  /// Value must have pattern "^.+$".
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Media] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future download(core.String resourceName,
+      {core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -434,18 +482,20 @@ class MediaResourceApi {
     if (resourceName == null) {
       throw new core.ArgumentError("Parameter resourceName is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
     _url = 'v1/media/' + commons.Escaper.ecapeVariableReserved('$resourceName');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Media.fromJson(data));
@@ -453,46 +503,52 @@ class MediaResourceApi {
       return _response;
     }
   }
-
 }
-
 
 class ReportTypesResourceApi {
   final commons.ApiRequester _requester;
 
-  ReportTypesResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ReportTypesResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Lists report types.
-   *
-   * Request parameters:
-   *
-   * [onBehalfOfContentOwner] - The content owner's external ID on which behalf
-   * the user is acting on. If not set, the user is acting for himself (his own
-   * channel).
-   *
-   * [pageSize] - Requested page size. Server may return fewer report types than
-   * requested. If unspecified, server will pick an appropriate default.
-   *
-   * [pageToken] - A token identifying a page of results the server should
-   * return. Typically, this is the value of
-   * ListReportTypesResponse.next_page_token returned in response to the
-   * previous call to the `ListReportTypes` method.
-   *
-   * [includeSystemManaged] - If set to true, also system-managed report types
-   * will be returned; otherwise only the report types that can be used to
-   * create new reporting jobs will be returned.
-   *
-   * Completes with a [ListReportTypesResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ListReportTypesResponse> list({core.String onBehalfOfContentOwner, core.int pageSize, core.String pageToken, core.bool includeSystemManaged}) {
+  /// Lists report types.
+  ///
+  /// Request parameters:
+  ///
+  /// [onBehalfOfContentOwner] - The content owner's external ID on which behalf
+  /// the user is acting on. If
+  /// not set, the user is acting for himself (his own channel).
+  ///
+  /// [includeSystemManaged] - If set to true, also system-managed report types
+  /// will be returned;
+  /// otherwise only the report types that can be used to create new reporting
+  /// jobs will be returned.
+  ///
+  /// [pageToken] - A token identifying a page of results the server should
+  /// return. Typically,
+  /// this is the value of
+  /// ListReportTypesResponse.next_page_token
+  /// returned in response to the previous call to the `ListReportTypes` method.
+  ///
+  /// [pageSize] - Requested page size. Server may return fewer report types
+  /// than requested.
+  /// If unspecified, server will pick an appropriate default.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ListReportTypesResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ListReportTypesResponse> list(
+      {core.String onBehalfOfContentOwner,
+      core.bool includeSystemManaged,
+      core.String pageToken,
+      core.int pageSize,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -503,74 +559,73 @@ class ReportTypesResourceApi {
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
+    if (includeSystemManaged != null) {
+      _queryParams["includeSystemManaged"] = ["${includeSystemManaged}"];
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
-    if (includeSystemManaged != null) {
-      _queryParams["includeSystemManaged"] = ["${includeSystemManaged}"];
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'v1/reportTypes';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ListReportTypesResponse.fromJson(data));
   }
-
 }
 
-
-
-/**
- * A generic empty message that you can re-use to avoid defining duplicated
- * empty messages in your APIs. A typical example is to use it as the request or
- * the response type of an API method. For instance: service Foo { rpc
- * Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON
- * representation for `Empty` is empty JSON object `{}`.
- */
+/// A generic empty message that you can re-use to avoid defining duplicated
+/// empty messages in your APIs. A typical example is to use it as the request
+/// or the response type of an API method. For instance:
+///
+///     service Foo {
+///       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+///     }
+///
+/// The JSON representation for `Empty` is empty JSON object `{}`.
 class Empty {
-
   Empty();
 
-  Empty.fromJson(core.Map _json) {
-  }
+  Empty.fromJson(core.Map _json) {}
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     return _json;
   }
 }
 
-/** A job creating reports of a specific type. */
+/// A job creating reports of a specific type.
 class Job {
-  /** The creation date/time of the job. */
+  /// The creation date/time of the job.
   core.String createTime;
-  /**
-   * The date/time when this job will expire/expired. After a job expired, no
-   * new reports are generated.
-   */
+
+  /// The date/time when this job will expire/expired. After a job expired, no
+  /// new reports are generated.
   core.String expireTime;
-  /** The server-generated ID of the job (max. 40 characters). */
+
+  /// The server-generated ID of the job (max. 40 characters).
   core.String id;
-  /** The name of the job (max. 100 characters). */
+
+  /// The name of the job (max. 100 characters).
   core.String name;
-  /**
-   * The type of reports this job creates. Corresponds to the ID of a
-   * ReportType.
-   */
+
+  /// The type of reports this job creates. Corresponds to the ID of a
+  /// ReportType.
   core.String reportTypeId;
-  /**
-   * True if this a system-managed job that cannot be modified by the user;
-   * otherwise false.
-   */
+
+  /// True if this a system-managed job that cannot be modified by the user;
+  /// otherwise false.
   core.bool systemManaged;
 
   Job();
@@ -596,8 +651,9 @@ class Job {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (createTime != null) {
       _json["createTime"] = createTime;
     }
@@ -620,15 +676,16 @@ class Job {
   }
 }
 
-/** Response message for ReportingService.ListJobs. */
+/// Response message for ReportingService.ListJobs.
 class ListJobsResponse {
-  /** The list of jobs. */
+  /// The list of jobs.
   core.List<Job> jobs;
-  /**
-   * A token to retrieve next page of results. Pass this value in the
-   * ListJobsRequest.page_token field in the subsequent call to `ListJobs`
-   * method to retrieve the next page of results.
-   */
+
+  /// A token to retrieve next page of results.
+  /// Pass this value in the
+  /// ListJobsRequest.page_token
+  /// field in the subsequent call to `ListJobs` method to retrieve the next
+  /// page of results.
   core.String nextPageToken;
 
   ListJobsResponse();
@@ -642,8 +699,9 @@ class ListJobsResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (jobs != null) {
       _json["jobs"] = jobs.map((value) => (value).toJson()).toList();
     }
@@ -654,15 +712,17 @@ class ListJobsResponse {
   }
 }
 
-/** Response message for ReportingService.ListReportTypes. */
+/// Response message for ReportingService.ListReportTypes.
 class ListReportTypesResponse {
-  /**
-   * A token to retrieve next page of results. Pass this value in the
-   * ListReportTypesRequest.page_token field in the subsequent call to
-   * `ListReportTypes` method to retrieve the next page of results.
-   */
+  /// A token to retrieve next page of results.
+  /// Pass this value in the
+  /// ListReportTypesRequest.page_token
+  /// field in the subsequent call to `ListReportTypes` method to retrieve the
+  /// next
+  /// page of results.
   core.String nextPageToken;
-  /** The list of report types. */
+
+  /// The list of report types.
   core.List<ReportType> reportTypes;
 
   ListReportTypesResponse();
@@ -672,31 +732,36 @@ class ListReportTypesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("reportTypes")) {
-      reportTypes = _json["reportTypes"].map((value) => new ReportType.fromJson(value)).toList();
+      reportTypes = _json["reportTypes"]
+          .map((value) => new ReportType.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (nextPageToken != null) {
       _json["nextPageToken"] = nextPageToken;
     }
     if (reportTypes != null) {
-      _json["reportTypes"] = reportTypes.map((value) => (value).toJson()).toList();
+      _json["reportTypes"] =
+          reportTypes.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
-/** Response message for ReportingService.ListReports. */
+/// Response message for ReportingService.ListReports.
 class ListReportsResponse {
-  /**
-   * A token to retrieve next page of results. Pass this value in the
-   * ListReportsRequest.page_token field in the subsequent call to `ListReports`
-   * method to retrieve the next page of results.
-   */
+  /// A token to retrieve next page of results.
+  /// Pass this value in the
+  /// ListReportsRequest.page_token
+  /// field in the subsequent call to `ListReports` method to retrieve the next
+  /// page of results.
   core.String nextPageToken;
-  /** The list of report types. */
+
+  /// The list of report types.
   core.List<Report> reports;
 
   ListReportsResponse();
@@ -706,12 +771,14 @@ class ListReportsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("reports")) {
-      reports = _json["reports"].map((value) => new Report.fromJson(value)).toList();
+      reports =
+          _json["reports"].map((value) => new Report.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (nextPageToken != null) {
       _json["nextPageToken"] = nextPageToken;
     }
@@ -722,9 +789,9 @@ class ListReportsResponse {
   }
 }
 
-/** Media resource. */
+/// Media resource.
 class Media {
-  /** Name of the media resource. */
+  /// Name of the media resource.
   core.String resourceName;
 
   Media();
@@ -735,8 +802,9 @@ class Media {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (resourceName != null) {
       _json["resourceName"] = resourceName;
     }
@@ -744,32 +812,30 @@ class Media {
   }
 }
 
-/**
- * A report's metadata including the URL from which the report itself can be
- * downloaded.
- */
+/// A report's metadata including the URL from which the report itself can be
+/// downloaded.
 class Report {
-  /** The date/time when this report was created. */
+  /// The date/time when this report was created.
   core.String createTime;
-  /**
-   * The URL from which the report can be downloaded (max. 1000 characters).
-   */
+
+  /// The URL from which the report can be downloaded (max. 1000 characters).
   core.String downloadUrl;
-  /**
-   * The end of the time period that the report instance covers. The value is
-   * exclusive.
-   */
+
+  /// The end of the time period that the report instance covers. The value is
+  /// exclusive.
   core.String endTime;
-  /** The server-generated ID of the report. */
+
+  /// The server-generated ID of the report.
   core.String id;
-  /** The date/time when the job this report belongs to will expire/expired. */
+
+  /// The date/time when the job this report belongs to will expire/expired.
   core.String jobExpireTime;
-  /** The ID of the job that created this report. */
+
+  /// The ID of the job that created this report.
   core.String jobId;
-  /**
-   * The start of the time period that the report instance covers. The value is
-   * inclusive.
-   */
+
+  /// The start of the time period that the report instance covers. The value is
+  /// inclusive.
   core.String startTime;
 
   Report();
@@ -798,8 +864,9 @@ class Report {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (createTime != null) {
       _json["createTime"] = createTime;
     }
@@ -825,19 +892,20 @@ class Report {
   }
 }
 
-/** A report type. */
+/// A report type.
 class ReportType {
-  /** The date/time when this report type was/will be deprecated. */
+  /// The date/time when this report type was/will be deprecated.
   core.String deprecateTime;
-  /** The ID of the report type (max. 100 characters). */
+
+  /// The ID of the report type (max. 100 characters).
   core.String id;
-  /** The name of the report type (max. 100 characters). */
+
+  /// The name of the report type (max. 100 characters).
   core.String name;
-  /**
-   * True if this a system-managed report type; otherwise false. Reporting jobs
-   * for system-managed report types are created automatically and can thus not
-   * be used in the `CreateJob` method.
-   */
+
+  /// True if this a system-managed report type; otherwise false. Reporting jobs
+  /// for system-managed report types are created automatically and can thus not
+  /// be used in the `CreateJob` method.
   core.bool systemManaged;
 
   ReportType();
@@ -857,8 +925,9 @@ class ReportType {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (deprecateTime != null) {
       _json["deprecateTime"] = deprecateTime;
     }

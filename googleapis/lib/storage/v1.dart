@@ -9,70 +9,93 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError, Media, UploadOptions,
-    ResumableUploadOptions, DownloadOptions, PartialDownloadOptions,
-    ByteRange;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show
+        ApiRequestError,
+        DetailedApiRequestError,
+        Media,
+        UploadOptions,
+        ResumableUploadOptions,
+        DownloadOptions,
+        PartialDownloadOptions,
+        ByteRange;
 
 const core.String USER_AGENT = 'dart-api-client storage/v1';
 
-/** Stores and retrieves potentially large, immutable data objects. */
+/// Stores and retrieves potentially large, immutable data objects.
 class StorageApi {
-  /** View and manage your data across Google Cloud Platform services */
-  static const CloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform";
+  /// View and manage your data across Google Cloud Platform services
+  static const CloudPlatformScope =
+      "https://www.googleapis.com/auth/cloud-platform";
 
-  /** View your data across Google Cloud Platform services */
-  static const CloudPlatformReadOnlyScope = "https://www.googleapis.com/auth/cloud-platform.read-only";
+  /// View your data across Google Cloud Platform services
+  static const CloudPlatformReadOnlyScope =
+      "https://www.googleapis.com/auth/cloud-platform.read-only";
 
-  /** Manage your data and permissions in Google Cloud Storage */
-  static const DevstorageFullControlScope = "https://www.googleapis.com/auth/devstorage.full_control";
+  /// Manage your data and permissions in Google Cloud Storage
+  static const DevstorageFullControlScope =
+      "https://www.googleapis.com/auth/devstorage.full_control";
 
-  /** View your data in Google Cloud Storage */
-  static const DevstorageReadOnlyScope = "https://www.googleapis.com/auth/devstorage.read_only";
+  /// View your data in Google Cloud Storage
+  static const DevstorageReadOnlyScope =
+      "https://www.googleapis.com/auth/devstorage.read_only";
 
-  /** Manage your data in Google Cloud Storage */
-  static const DevstorageReadWriteScope = "https://www.googleapis.com/auth/devstorage.read_write";
-
+  /// Manage your data in Google Cloud Storage
+  static const DevstorageReadWriteScope =
+      "https://www.googleapis.com/auth/devstorage.read_write";
 
   final commons.ApiRequester _requester;
 
-  BucketAccessControlsResourceApi get bucketAccessControls => new BucketAccessControlsResourceApi(_requester);
+  BucketAccessControlsResourceApi get bucketAccessControls =>
+      new BucketAccessControlsResourceApi(_requester);
   BucketsResourceApi get buckets => new BucketsResourceApi(_requester);
   ChannelsResourceApi get channels => new ChannelsResourceApi(_requester);
-  DefaultObjectAccessControlsResourceApi get defaultObjectAccessControls => new DefaultObjectAccessControlsResourceApi(_requester);
-  ObjectAccessControlsResourceApi get objectAccessControls => new ObjectAccessControlsResourceApi(_requester);
+  DefaultObjectAccessControlsResourceApi get defaultObjectAccessControls =>
+      new DefaultObjectAccessControlsResourceApi(_requester);
+  NotificationsResourceApi get notifications =>
+      new NotificationsResourceApi(_requester);
+  ObjectAccessControlsResourceApi get objectAccessControls =>
+      new ObjectAccessControlsResourceApi(_requester);
   ObjectsResourceApi get objects => new ObjectsResourceApi(_requester);
+  ProjectsResourceApi get projects => new ProjectsResourceApi(_requester);
 
-  StorageApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "storage/v1/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  StorageApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "storage/v1/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class BucketAccessControlsResourceApi {
   final commons.ApiRequester _requester;
 
-  BucketAccessControlsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  BucketAccessControlsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * Permanently deletes the ACL entry for the specified entity on the specified
-   * bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String bucket, core.String entity) {
+  /// Permanently deletes the ACL entry for the specified entity on the
+  /// specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -85,42 +108,55 @@ class BucketAccessControlsResourceApi {
     }
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Returns the ACL entry for the specified entity on the specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [BucketAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<BucketAccessControl> get(core.String bucket, core.String entity) {
+  /// Returns the ACL entry for the specified entity on the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [BucketAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<BucketAccessControl> get(core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -134,37 +170,51 @@ class BucketAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new BucketAccessControl.fromJson(data));
   }
 
-  /**
-   * Creates a new ACL entry on the specified bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * Completes with a [BucketAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<BucketAccessControl> insert(BucketAccessControl request, core.String bucket) {
+  /// Creates a new ACL entry on the specified bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [BucketAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<BucketAccessControl> insert(
+      BucketAccessControl request, core.String bucket,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -178,35 +228,45 @@ class BucketAccessControlsResourceApi {
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new BucketAccessControl.fromJson(data));
   }
 
-  /**
-   * Retrieves ACL entries on the specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * Completes with a [BucketAccessControls].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<BucketAccessControls> list(core.String bucket) {
+  /// Retrieves ACL entries on the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [BucketAccessControls].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<BucketAccessControls> list(core.String bucket,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -217,42 +277,53 @@ class BucketAccessControlsResourceApi {
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new BucketAccessControls.fromJson(data));
   }
 
-  /**
-   * Updates an ACL entry on the specified bucket. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [BucketAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<BucketAccessControl> patch(BucketAccessControl request, core.String bucket, core.String entity) {
+  /// Updates an ACL entry on the specified bucket. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [BucketAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<BucketAccessControl> patch(
+      BucketAccessControl request, core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -269,41 +340,55 @@ class BucketAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new BucketAccessControl.fromJson(data));
   }
 
-  /**
-   * Updates an ACL entry on the specified bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [BucketAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<BucketAccessControl> update(BucketAccessControl request, core.String bucket, core.String entity) {
+  /// Updates an ACL entry on the specified bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [BucketAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<BucketAccessControl> update(
+      BucketAccessControl request, core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -320,48 +405,61 @@ class BucketAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new BucketAccessControl.fromJson(data));
   }
-
 }
-
 
 class BucketsResourceApi {
   final commons.ApiRequester _requester;
 
-  BucketsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  BucketsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Permanently deletes an empty bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [ifMetagenerationMatch] - If set, only deletes the bucket if its
-   * metageneration matches this value.
-   *
-   * [ifMetagenerationNotMatch] - If set, only deletes the bucket if its
-   * metageneration does not match this value.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String bucket, {core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch}) {
+  /// Permanently deletes an empty bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [ifMetagenerationMatch] - If set, only deletes the bucket if its
+  /// metageneration matches this value.
+  ///
+  /// [ifMetagenerationNotMatch] - If set, only deletes the bucket if its
+  /// metageneration does not match this value.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String bucket,
+      {core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -378,50 +476,64 @@ class BucketsResourceApi {
     if (ifMetagenerationNotMatch != null) {
       _queryParams["ifMetagenerationNotMatch"] = [ifMetagenerationNotMatch];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = null;
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Returns metadata for the specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [ifMetagenerationMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration matches the
-   * given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration does not match
-   * the given value.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
-   *
-   * Completes with a [Bucket].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Bucket> get(core.String bucket, {core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String projection}) {
+  /// Returns metadata for the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [ifMetagenerationMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration matches the
+  /// given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration does not match
+  /// the given value.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Bucket].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Bucket> get(core.String bucket,
+      {core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -441,71 +553,134 @@ class BucketsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Bucket.fromJson(data));
   }
 
-  /**
-   * Creates a new bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [project] - A valid API project identifier.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Project team owners get OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "private" : Project team owners get OWNER access.
-   * - "projectPrivate" : Project team members get access according to their
-   * roles.
-   * - "publicRead" : Project team owners get OWNER access, and allUsers get
-   * READER access.
-   * - "publicReadWrite" : Project team owners get OWNER access, and allUsers
-   * get WRITER access.
-   *
-   * [predefinedDefaultObjectAcl] - Apply a predefined set of default object
-   * access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl, unless the
-   * bucket resource specifies acl or defaultObjectAcl properties, when it
-   * defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
-   *
-   * Completes with a [Bucket].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Bucket> insert(Bucket request, core.String project, {core.String predefinedAcl, core.String predefinedDefaultObjectAcl, core.String projection}) {
+  /// Returns an IAM policy for the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Policy].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Policy> getIamPolicy(core.String bucket,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/iam';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Policy.fromJson(data));
+  }
+
+  /// Creates a new bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - A valid API project identifier.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Project team owners get OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "private" : Project team owners get OWNER access.
+  /// - "projectPrivate" : Project team members get access according to their
+  /// roles.
+  /// - "publicRead" : Project team owners get OWNER access, and allUsers get
+  /// READER access.
+  /// - "publicReadWrite" : Project team owners get OWNER access, and allUsers
+  /// get WRITER access.
+  ///
+  /// [predefinedDefaultObjectAcl] - Apply a predefined set of default object
+  /// access controls to this bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl, unless the
+  /// bucket resource specifies acl or defaultObjectAcl properties, when it
+  /// defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
+  ///
+  /// [userProject] - The project to be billed for this request
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Bucket].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Bucket> insert(Bucket request, core.String project,
+      {core.String predefinedAcl,
+      core.String predefinedDefaultObjectAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -529,47 +704,62 @@ class BucketsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Bucket.fromJson(data));
   }
 
-  /**
-   * Retrieves a list of buckets for a given project.
-   *
-   * Request parameters:
-   *
-   * [project] - A valid API project identifier.
-   *
-   * [maxResults] - Maximum number of buckets to return.
-   *
-   * [pageToken] - A previously-returned page token representing part of the
-   * larger set of results to view.
-   *
-   * [prefix] - Filter results to buckets whose names begin with this prefix.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
-   *
-   * Completes with a [Buckets].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Buckets> list(core.String project, {core.int maxResults, core.String pageToken, core.String prefix, core.String projection}) {
+  /// Retrieves a list of buckets for a given project.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - A valid API project identifier.
+  ///
+  /// [maxResults] - Maximum number of buckets to return in a single response.
+  /// The service will use this parameter or 1,000 items, whichever is smaller.
+  ///
+  /// [pageToken] - A previously-returned page token representing part of the
+  /// larger set of results to view.
+  ///
+  /// [prefix] - Filter results to buckets whose names begin with this prefix.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
+  ///
+  /// [userProject] - The project to be billed for this request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Buckets].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Buckets> list(core.String project,
+      {core.int maxResults,
+      core.String pageToken,
+      core.String prefix,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -593,79 +783,96 @@ class BucketsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Buckets.fromJson(data));
   }
 
-  /**
-   * Updates a bucket. Changes to the bucket will be readable immediately after
-   * writing, but configuration changes may take time to propagate. This method
-   * supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [ifMetagenerationMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration matches the
-   * given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration does not match
-   * the given value.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Project team owners get OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "private" : Project team owners get OWNER access.
-   * - "projectPrivate" : Project team members get access according to their
-   * roles.
-   * - "publicRead" : Project team owners get OWNER access, and allUsers get
-   * READER access.
-   * - "publicReadWrite" : Project team owners get OWNER access, and allUsers
-   * get WRITER access.
-   *
-   * [predefinedDefaultObjectAcl] - Apply a predefined set of default object
-   * access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
-   *
-   * Completes with a [Bucket].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Bucket> patch(Bucket request, core.String bucket, {core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String predefinedAcl, core.String predefinedDefaultObjectAcl, core.String projection}) {
+  /// Updates a bucket. Changes to the bucket will be readable immediately after
+  /// writing, but configuration changes may take time to propagate. This method
+  /// supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [ifMetagenerationMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration matches the
+  /// given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration does not match
+  /// the given value.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Project team owners get OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "private" : Project team owners get OWNER access.
+  /// - "projectPrivate" : Project team members get access according to their
+  /// roles.
+  /// - "publicRead" : Project team owners get OWNER access, and allUsers get
+  /// READER access.
+  /// - "publicReadWrite" : Project team owners get OWNER access, and allUsers
+  /// get WRITER access.
+  ///
+  /// [predefinedDefaultObjectAcl] - Apply a predefined set of default object
+  /// access controls to this bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Bucket].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Bucket> patch(Bucket request, core.String bucket,
+      {core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String predefinedAcl,
+      core.String predefinedDefaultObjectAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -694,78 +901,209 @@ class BucketsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Bucket.fromJson(data));
   }
 
-  /**
-   * Updates a bucket. Changes to the bucket will be readable immediately after
-   * writing, but configuration changes may take time to propagate.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [ifMetagenerationMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration matches the
-   * given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
-   * conditional on whether the bucket's current metageneration does not match
-   * the given value.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Project team owners get OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "private" : Project team owners get OWNER access.
-   * - "projectPrivate" : Project team members get access according to their
-   * roles.
-   * - "publicRead" : Project team owners get OWNER access, and allUsers get
-   * READER access.
-   * - "publicReadWrite" : Project team owners get OWNER access, and allUsers
-   * get WRITER access.
-   *
-   * [predefinedDefaultObjectAcl] - Apply a predefined set of default object
-   * access controls to this bucket.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
-   *
-   * Completes with a [Bucket].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Bucket> update(Bucket request, core.String bucket, {core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String predefinedAcl, core.String predefinedDefaultObjectAcl, core.String projection}) {
+  /// Updates an IAM policy for the specified bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Policy].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Policy> setIamPolicy(Policy request, core.String bucket,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/iam';
+
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Policy.fromJson(data));
+  }
+
+  /// Tests a set of permissions on the given bucket to see which, if any, are
+  /// held by the caller.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [permissions] - Permissions to test.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [TestIamPermissionsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<TestIamPermissionsResponse> testIamPermissions(
+      core.String bucket, core.List<core.String> permissions,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (permissions == null || permissions.isEmpty) {
+      throw new core.ArgumentError("Parameter permissions is required.");
+    }
+    _queryParams["permissions"] = permissions;
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/iam/testPermissions';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new TestIamPermissionsResponse.fromJson(data));
+  }
+
+  /// Updates a bucket. Changes to the bucket will be readable immediately after
+  /// writing, but configuration changes may take time to propagate.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [ifMetagenerationMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration matches the
+  /// given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the return of the bucket metadata
+  /// conditional on whether the bucket's current metageneration does not match
+  /// the given value.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Project team owners get OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "private" : Project team owners get OWNER access.
+  /// - "projectPrivate" : Project team members get access according to their
+  /// roles.
+  /// - "publicRead" : Project team owners get OWNER access, and allUsers get
+  /// READER access.
+  /// - "publicReadWrite" : Project team owners get OWNER access, and allUsers
+  /// get WRITER access.
+  ///
+  /// [predefinedDefaultObjectAcl] - Apply a predefined set of default object
+  /// access controls to this bucket.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit owner, acl and defaultObjectAcl properties.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Bucket].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Bucket> update(Bucket request, core.String bucket,
+      {core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String predefinedAcl,
+      core.String predefinedDefaultObjectAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -794,42 +1132,45 @@ class BucketsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Bucket.fromJson(data));
   }
-
 }
-
 
 class ChannelsResourceApi {
   final commons.ApiRequester _requester;
 
-  ChannelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ChannelsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Stop watching resources through this channel
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future stop(Channel request) {
+  /// Stop watching resources through this channel
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future stop(Channel request, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -839,50 +1180,55 @@ class ChannelsResourceApi {
 
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
     _url = 'channels/stop';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
-
 }
-
 
 class DefaultObjectAccessControlsResourceApi {
   final commons.ApiRequester _requester;
 
-  DefaultObjectAccessControlsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  DefaultObjectAccessControlsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * Permanently deletes the default object ACL entry for the specified entity
-   * on the specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String bucket, core.String entity) {
+  /// Permanently deletes the default object ACL entry for the specified entity
+  /// on the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -895,43 +1241,56 @@ class DefaultObjectAccessControlsResourceApi {
     }
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/defaultObjectAcl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Returns the default object ACL entry for the specified entity on the
-   * specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> get(core.String bucket, core.String entity) {
+  /// Returns the default object ACL entry for the specified entity on the
+  /// specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> get(core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -945,37 +1304,51 @@ class DefaultObjectAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/defaultObjectAcl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Creates a new default object ACL entry on the specified bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> insert(ObjectAccessControl request, core.String bucket) {
+  /// Creates a new default object ACL entry on the specified bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> insert(
+      ObjectAccessControl request, core.String bucket,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -989,41 +1362,55 @@ class DefaultObjectAccessControlsResourceApi {
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl';
+    _url =
+        'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Retrieves default object ACL entries on the specified bucket.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [ifMetagenerationMatch] - If present, only return default ACL listing if
-   * the bucket's current metageneration matches this value.
-   *
-   * [ifMetagenerationNotMatch] - If present, only return default ACL listing if
-   * the bucket's current metageneration does not match the given value.
-   *
-   * Completes with a [ObjectAccessControls].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControls> list(core.String bucket, {core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch}) {
+  /// Retrieves default object ACL entries on the specified bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [ifMetagenerationMatch] - If present, only return default ACL listing if
+  /// the bucket's current metageneration matches this value.
+  ///
+  /// [ifMetagenerationNotMatch] - If present, only return default ACL listing
+  /// if the bucket's current metageneration does not match the given value.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControls].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControls> list(core.String bucket,
+      {core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1040,42 +1427,54 @@ class DefaultObjectAccessControlsResourceApi {
     if (ifMetagenerationNotMatch != null) {
       _queryParams["ifMetagenerationNotMatch"] = [ifMetagenerationNotMatch];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl';
+    _url =
+        'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControls.fromJson(data));
   }
 
-  /**
-   * Updates a default object ACL entry on the specified bucket. This method
-   * supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> patch(ObjectAccessControl request, core.String bucket, core.String entity) {
+  /// Updates a default object ACL entry on the specified bucket. This method
+  /// supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> patch(
+      ObjectAccessControl request, core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1092,41 +1491,55 @@ class DefaultObjectAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/defaultObjectAcl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Updates a default object ACL entry on the specified bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> update(ObjectAccessControl request, core.String bucket, core.String entity) {
+  /// Updates a default object ACL entry on the specified bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> update(
+      ObjectAccessControl request, core.String bucket, core.String entity,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1143,53 +1556,54 @@ class DefaultObjectAccessControlsResourceApi {
     if (entity == null) {
       throw new core.ArgumentError("Parameter entity is required.");
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/defaultObjectAcl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/defaultObjectAcl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
-
 }
 
-
-class ObjectAccessControlsResourceApi {
+class NotificationsResourceApi {
   final commons.ApiRequester _requester;
 
-  ObjectAccessControlsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  NotificationsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Permanently deletes the ACL entry for the specified entity on the specified
-   * object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String bucket, core.String object, core.String entity, {core.String generation}) {
+  /// Permanently deletes a notification subscription.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - The parent bucket of the notification.
+  ///
+  /// [notification] - ID of the notification to delete.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String bucket, core.String notification,
+      {core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1200,56 +1614,234 @@ class ObjectAccessControlsResourceApi {
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
     }
-    if (object == null) {
-      throw new core.ArgumentError("Parameter object is required.");
+    if (notification == null) {
+      throw new core.ArgumentError("Parameter notification is required.");
     }
-    if (entity == null) {
-      throw new core.ArgumentError("Parameter entity is required.");
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
     }
-    if (generation != null) {
-      _queryParams["generation"] = [generation];
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/notificationConfigs/' +
+        commons.Escaper.ecapeVariable('$notification');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Returns the ACL entry for the specified entity on the specified object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> get(core.String bucket, core.String object, core.String entity, {core.String generation}) {
+  /// View a notification configuration.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - The parent bucket of the notification.
+  ///
+  /// [notification] - Notification ID
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Notification].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Notification> get(core.String bucket, core.String notification,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (notification == null) {
+      throw new core.ArgumentError("Parameter notification is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/notificationConfigs/' +
+        commons.Escaper.ecapeVariable('$notification');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Notification.fromJson(data));
+  }
+
+  /// Creates a notification subscription for a given bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - The parent bucket of the notification.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Notification].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Notification> insert(Notification request, core.String bucket,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/notificationConfigs';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Notification.fromJson(data));
+  }
+
+  /// Retrieves a list of notification subscriptions for a given bucket.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a Google Cloud Storage bucket.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Notifications].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Notifications> list(core.String bucket,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/notificationConfigs';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Notifications.fromJson(data));
+  }
+}
+
+class ObjectAccessControlsResourceApi {
+  final commons.ApiRequester _requester;
+
+  ObjectAccessControlsResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Permanently deletes the ACL entry for the specified entity on the
+  /// specified object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(
+      core.String bucket, core.String object, core.String entity,
+      {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1269,43 +1861,135 @@ class ObjectAccessControlsResourceApi {
     if (generation != null) {
       _queryParams["generation"] = [generation];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _downloadOptions = null;
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
+
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// Returns the ACL entry for the specified entity on the specified object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> get(
+      core.String bucket, core.String object, core.String entity,
+      {core.String generation, core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (object == null) {
+      throw new core.ArgumentError("Parameter object is required.");
+    }
+    if (entity == null) {
+      throw new core.ArgumentError("Parameter entity is required.");
+    }
+    if (generation != null) {
+      _queryParams["generation"] = [generation];
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Creates a new ACL entry on the specified object.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> insert(ObjectAccessControl request, core.String bucket, core.String object, {core.String generation}) {
+  /// Creates a new ACL entry on the specified object.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> insert(
+      ObjectAccessControl request, core.String bucket, core.String object,
+      {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1325,41 +2009,56 @@ class ObjectAccessControlsResourceApi {
     if (generation != null) {
       _queryParams["generation"] = [generation];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl';
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Retrieves ACL entries on the specified object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [ObjectAccessControls].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControls> list(core.String bucket, core.String object, {core.String generation}) {
+  /// Retrieves ACL entries on the specified object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControls].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControls> list(
+      core.String bucket, core.String object,
+      {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1376,48 +2075,63 @@ class ObjectAccessControlsResourceApi {
     if (generation != null) {
       _queryParams["generation"] = [generation];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl';
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControls.fromJson(data));
   }
 
-  /**
-   * Updates an ACL entry on the specified object. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> patch(ObjectAccessControl request, core.String bucket, core.String object, core.String entity, {core.String generation}) {
+  /// Updates an ACL entry on the specified object. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> patch(ObjectAccessControl request,
+      core.String bucket, core.String object, core.String entity,
+      {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1440,47 +2154,63 @@ class ObjectAccessControlsResourceApi {
     if (generation != null) {
       _queryParams["generation"] = [generation];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
 
-  /**
-   * Updates an ACL entry on the specified object.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of a bucket.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [entity] - The entity holding the permission. Can be user-userId,
-   * user-emailAddress, group-groupId, group-emailAddress, allUsers, or
-   * allAuthenticatedUsers.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * Completes with a [ObjectAccessControl].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ObjectAccessControl> update(ObjectAccessControl request, core.String bucket, core.String object, core.String entity, {core.String generation}) {
+  /// Updates an ACL entry on the specified object.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of a bucket.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [entity] - The entity holding the permission. Can be user-userId,
+  /// user-emailAddress, group-groupId, group-emailAddress, allUsers, or
+  /// allAuthenticatedUsers.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ObjectAccessControl].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ObjectAccessControl> update(ObjectAccessControl request,
+      core.String bucket, core.String object, core.String entity,
+      {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1503,79 +2233,105 @@ class ObjectAccessControlsResourceApi {
     if (generation != null) {
       _queryParams["generation"] = [generation];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object') + '/acl/' + commons.Escaper.ecapeVariable('$entity');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/acl/' +
+        commons.Escaper.ecapeVariable('$entity');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ObjectAccessControl.fromJson(data));
   }
-
 }
-
 
 class ObjectsResourceApi {
   final commons.ApiRequester _requester;
 
-  ObjectsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ObjectsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Concatenates a list of existing objects into a new object in the same
-   * bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [destinationBucket] - Name of the bucket in which to store the new object.
-   *
-   * [destinationObject] - Name of the new object. For information about how to
-   * URL encode object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [destinationPredefinedAcl] - Apply a predefined set of access controls to
-   * the destination object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's current generation matches the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Object] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future compose(ComposeRequest request, core.String destinationBucket, core.String destinationObject, {core.String destinationPredefinedAcl, core.String ifGenerationMatch, core.String ifMetagenerationMatch, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Concatenates a list of existing objects into a new object in the same
+  /// bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [destinationBucket] - Name of the bucket in which to store the new object.
+  ///
+  /// [destinationObject] - Name of the new object. For information about how to
+  /// URL encode object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [destinationPredefinedAcl] - Apply a predefined set of access controls to
+  /// the destination object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [kmsKeyName] - Resource name of the Cloud KMS key, of the form
+  /// projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key,
+  /// that will be used to encrypt the object. Overrides the object metadata's
+  /// kms_key_name value, if any.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Object] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future compose(ComposeRequest request, core.String destinationBucket,
+      core.String destinationObject,
+      {core.String destinationPredefinedAcl,
+      core.String ifGenerationMatch,
+      core.String ifMetagenerationMatch,
+      core.String kmsKeyName,
+      core.String userProject,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1601,18 +2357,30 @@ class ObjectsResourceApi {
     if (ifMetagenerationMatch != null) {
       _queryParams["ifMetagenerationMatch"] = [ifMetagenerationMatch];
     }
+    if (kmsKeyName != null) {
+      _queryParams["kmsKeyName"] = [kmsKeyName];
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$destinationBucket') + '/o/' + commons.Escaper.ecapeVariable('$destinationObject') + '/compose';
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$destinationBucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$destinationObject') +
+        '/compose';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Object.fromJson(data));
@@ -1621,94 +2389,123 @@ class ObjectsResourceApi {
     }
   }
 
-  /**
-   * Copies a source object to a destination object. Optionally overrides
-   * metadata.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [sourceBucket] - Name of the bucket in which to find the source object.
-   *
-   * [sourceObject] - Name of the source object. For information about how to
-   * URL encode object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [destinationBucket] - Name of the bucket in which to store the new object.
-   * Overrides the provided object metadata's bucket value, if any.For
-   * information about how to URL encode object names to be path safe, see
-   * Encoding URI Path Parts.
-   *
-   * [destinationObject] - Name of the new object. Required when the object
-   * metadata is not otherwise provided. Overrides the object metadata's name
-   * value, if any.
-   *
-   * [destinationPredefinedAcl] - Apply a predefined set of access controls to
-   * the destination object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * destination object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * destination object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * destination object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * destination object's current metageneration does not match the given value.
-   *
-   * [ifSourceGenerationMatch] - Makes the operation conditional on whether the
-   * source object's generation matches the given value.
-   *
-   * [ifSourceGenerationNotMatch] - Makes the operation conditional on whether
-   * the source object's generation does not match the given value.
-   *
-   * [ifSourceMetagenerationMatch] - Makes the operation conditional on whether
-   * the source object's current metageneration matches the given value.
-   *
-   * [ifSourceMetagenerationNotMatch] - Makes the operation conditional on
-   * whether the source object's current metageneration does not match the given
-   * value.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl, unless the
-   * object resource specifies the acl property, when it defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [sourceGeneration] - If present, selects a specific revision of the source
-   * object (as opposed to the latest version, the default).
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Object] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future copy(Object request, core.String sourceBucket, core.String sourceObject, core.String destinationBucket, core.String destinationObject, {core.String destinationPredefinedAcl, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String ifSourceGenerationMatch, core.String ifSourceGenerationNotMatch, core.String ifSourceMetagenerationMatch, core.String ifSourceMetagenerationNotMatch, core.String projection, core.String sourceGeneration, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Copies a source object to a destination object. Optionally overrides
+  /// metadata.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [sourceBucket] - Name of the bucket in which to find the source object.
+  ///
+  /// [sourceObject] - Name of the source object. For information about how to
+  /// URL encode object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [destinationBucket] - Name of the bucket in which to store the new object.
+  /// Overrides the provided object metadata's bucket value, if any.For
+  /// information about how to URL encode object names to be path safe, see
+  /// Encoding URI Path Parts.
+  ///
+  /// [destinationObject] - Name of the new object. Required when the object
+  /// metadata is not otherwise provided. Overrides the object metadata's name
+  /// value, if any.
+  ///
+  /// [destinationPredefinedAcl] - Apply a predefined set of access controls to
+  /// the destination object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// destination object's current generation matches the given value. Setting
+  /// to 0 makes the operation succeed only if there are no live versions of the
+  /// object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// destination object's current generation does not match the given value. If
+  /// no live object exists, the precondition fails. Setting to 0 makes the
+  /// operation succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// destination object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the destination object's current metageneration does not match the given
+  /// value.
+  ///
+  /// [ifSourceGenerationMatch] - Makes the operation conditional on whether the
+  /// source object's current generation matches the given value.
+  ///
+  /// [ifSourceGenerationNotMatch] - Makes the operation conditional on whether
+  /// the source object's current generation does not match the given value.
+  ///
+  /// [ifSourceMetagenerationMatch] - Makes the operation conditional on whether
+  /// the source object's current metageneration matches the given value.
+  ///
+  /// [ifSourceMetagenerationNotMatch] - Makes the operation conditional on
+  /// whether the source object's current metageneration does not match the
+  /// given value.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl, unless the
+  /// object resource specifies the acl property, when it defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [sourceGeneration] - If present, selects a specific revision of the source
+  /// object (as opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Object] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future copy(
+      Object request,
+      core.String sourceBucket,
+      core.String sourceObject,
+      core.String destinationBucket,
+      core.String destinationObject,
+      {core.String destinationPredefinedAcl,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String ifSourceGenerationMatch,
+      core.String ifSourceGenerationNotMatch,
+      core.String ifSourceMetagenerationMatch,
+      core.String ifSourceMetagenerationNotMatch,
+      core.String projection,
+      core.String sourceGeneration,
+      core.String userProject,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1753,10 +2550,14 @@ class ObjectsResourceApi {
       _queryParams["ifSourceGenerationNotMatch"] = [ifSourceGenerationNotMatch];
     }
     if (ifSourceMetagenerationMatch != null) {
-      _queryParams["ifSourceMetagenerationMatch"] = [ifSourceMetagenerationMatch];
+      _queryParams["ifSourceMetagenerationMatch"] = [
+        ifSourceMetagenerationMatch
+      ];
     }
     if (ifSourceMetagenerationNotMatch != null) {
-      _queryParams["ifSourceMetagenerationNotMatch"] = [ifSourceMetagenerationNotMatch];
+      _queryParams["ifSourceMetagenerationNotMatch"] = [
+        ifSourceMetagenerationNotMatch
+      ];
     }
     if (projection != null) {
       _queryParams["projection"] = [projection];
@@ -1764,18 +2565,30 @@ class ObjectsResourceApi {
     if (sourceGeneration != null) {
       _queryParams["sourceGeneration"] = [sourceGeneration];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$sourceBucket') + '/o/' + commons.Escaper.ecapeVariable('$sourceObject') + '/copyTo/b/' + commons.Escaper.ecapeVariable('$destinationBucket') + '/o/' + commons.Escaper.ecapeVariable('$destinationObject');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$sourceBucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$sourceObject') +
+        '/copyTo/b/' +
+        commons.Escaper.ecapeVariable('$destinationBucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$destinationObject');
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Object.fromJson(data));
@@ -1784,39 +2597,53 @@ class ObjectsResourceApi {
     }
   }
 
-  /**
-   * Deletes an object and its metadata. Deletions are permanent if versioning
-   * is not enabled for the bucket, or if the generation parameter is used.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which the object resides.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, permanently deletes a specific revision of this
-   * object (as opposed to the latest version, the default).
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current metageneration does not match the given value.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String bucket, core.String object, {core.String generation, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch}) {
+  /// Deletes an object and its metadata. Deletions are permanent if versioning
+  /// is not enabled for the bucket, or if the generation parameter is used.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, permanently deletes a specific revision of this
+  /// object (as opposed to the latest version, the default).
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the object's current metageneration does not match the given value.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String bucket, core.String object,
+      {core.String generation,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1845,68 +2672,93 @@ class ObjectsResourceApi {
     if (ifMetagenerationNotMatch != null) {
       _queryParams["ifMetagenerationNotMatch"] = [ifMetagenerationNotMatch];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = null;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves an object or its metadata.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which the object resides.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * object's generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current metageneration does not match the given value.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Object] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future get(core.String bucket, core.String object, {core.String generation, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String projection, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Retrieves an object or its metadata.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the object's current metageneration does not match the given value.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Object] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future get(core.String bucket, core.String object,
+      {core.String generation,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String projection,
+      core.String userProject,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1938,18 +2790,26 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Object.fromJson(data));
@@ -1958,81 +2818,175 @@ class ObjectsResourceApi {
     }
   }
 
-  /**
-   * Stores a new object and metadata.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which to store the new object. Overrides
-   * the provided object metadata's bucket value, if any.
-   *
-   * [contentEncoding] - If set, sets the contentEncoding property of the final
-   * object to this value. Setting this parameter is equivalent to setting the
-   * contentEncoding metadata property. This can be useful when uploading an
-   * object with uploadType=media to indicate the encoding of the content being
-   * uploaded.
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current metageneration does not match the given value.
-   *
-   * [name] - Name of the object. Required when the object metadata is not
-   * otherwise provided. Overrides the object metadata's name value, if any. For
-   * information about how to URL encode object names to be path safe, see
-   * Encoding URI Path Parts.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl, unless the
-   * object resource specifies the acl property, when it defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [uploadMedia] - The media to upload.
-   *
-   * [uploadOptions] - Options for the media upload. Streaming Media without the
-   * length being known ahead of time is only supported via resumable uploads.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Object] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future insert(Object request, core.String bucket, {core.String contentEncoding, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String name, core.String predefinedAcl, core.String projection, commons.UploadOptions uploadOptions : commons.UploadOptions.Default, commons.Media uploadMedia, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Returns an IAM policy for the specified object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Policy].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Policy> getIamPolicy(core.String bucket, core.String object,
+      {core.String generation, core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (object == null) {
+      throw new core.ArgumentError("Parameter object is required.");
+    }
+    if (generation != null) {
+      _queryParams["generation"] = [generation];
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/iam';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Policy.fromJson(data));
+  }
+
+  /// Stores a new object and metadata.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which to store the new object. Overrides
+  /// the provided object metadata's bucket value, if any.
+  ///
+  /// [contentEncoding] - If set, sets the contentEncoding property of the final
+  /// object to this value. Setting this parameter is equivalent to setting the
+  /// contentEncoding metadata property. This can be useful when uploading an
+  /// object with uploadType=media to indicate the encoding of the content being
+  /// uploaded.
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the object's current metageneration does not match the given value.
+  ///
+  /// [kmsKeyName] - Resource name of the Cloud KMS key, of the form
+  /// projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key,
+  /// that will be used to encrypt the object. Overrides the object metadata's
+  /// kms_key_name value, if any.
+  ///
+  /// [name] - Name of the object. Required when the object metadata is not
+  /// otherwise provided. Overrides the object metadata's name value, if any.
+  /// For information about how to URL encode object names to be path safe, see
+  /// Encoding URI Path Parts.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl, unless the
+  /// object resource specifies the acl property, when it defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [uploadMedia] - The media to upload.
+  ///
+  /// [uploadOptions] - Options for the media upload. Streaming Media without
+  /// the length being known ahead of time is only supported via resumable
+  /// uploads.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Object] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future insert(Object request, core.String bucket,
+      {core.String contentEncoding,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String kmsKeyName,
+      core.String name,
+      core.String predefinedAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields,
+      commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
+      commons.Media uploadMedia,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2061,6 +3015,9 @@ class ObjectsResourceApi {
     if (ifMetagenerationNotMatch != null) {
       _queryParams["ifMetagenerationNotMatch"] = [ifMetagenerationNotMatch];
     }
+    if (kmsKeyName != null) {
+      _queryParams["kmsKeyName"] = [kmsKeyName];
+    }
     if (name != null) {
       _queryParams["name"] = [name];
     }
@@ -2070,28 +3027,35 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-
-    _uploadMedia =  uploadMedia;
-    _uploadOptions =  uploadOptions;
+    _uploadMedia = uploadMedia;
+    _uploadOptions = uploadOptions;
     _downloadOptions = downloadOptions;
 
     if (_uploadMedia == null) {
       _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o';
     } else if (_uploadOptions is commons.ResumableUploadOptions) {
-      _url = '/resumable/upload/storage/v1/b/' + commons.Escaper.ecapeVariable('$bucket') + '/o';
+      _url = '/resumable/upload/storage/v1/b/' +
+          commons.Escaper.ecapeVariable('$bucket') +
+          '/o';
     } else {
-      _url = '/upload/storage/v1/b/' + commons.Escaper.ecapeVariable('$bucket') + '/o';
+      _url = '/upload/storage/v1/b/' +
+          commons.Escaper.ecapeVariable('$bucket') +
+          '/o';
     }
 
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Object.fromJson(data));
@@ -2100,45 +3064,58 @@ class ObjectsResourceApi {
     }
   }
 
-  /**
-   * Retrieves a list of objects matching the criteria.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which to look for objects.
-   *
-   * [delimiter] - Returns results in a directory-like mode. items will contain
-   * only objects whose names, aside from the prefix, do not contain delimiter.
-   * Objects whose names, aside from the prefix, contain delimiter will have
-   * their name, truncated after the delimiter, returned in prefixes. Duplicate
-   * prefixes are omitted.
-   *
-   * [maxResults] - Maximum number of items plus prefixes to return. As
-   * duplicate prefixes are omitted, fewer total results may be returned than
-   * requested. The default value of this parameter is 1,000 items.
-   *
-   * [pageToken] - A previously-returned page token representing part of the
-   * larger set of results to view.
-   *
-   * [prefix] - Filter results to objects whose names begin with this prefix.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [versions] - If true, lists all versions of an object as distinct results.
-   * The default is false. For more information, see Object Versioning.
-   *
-   * Completes with a [Objects].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Objects> list(core.String bucket, {core.String delimiter, core.int maxResults, core.String pageToken, core.String prefix, core.String projection, core.bool versions}) {
+  /// Retrieves a list of objects matching the criteria.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which to look for objects.
+  ///
+  /// [delimiter] - Returns results in a directory-like mode. items will contain
+  /// only objects whose names, aside from the prefix, do not contain delimiter.
+  /// Objects whose names, aside from the prefix, contain delimiter will have
+  /// their name, truncated after the delimiter, returned in prefixes. Duplicate
+  /// prefixes are omitted.
+  ///
+  /// [maxResults] - Maximum number of items plus prefixes to return in a single
+  /// page of responses. As duplicate prefixes are omitted, fewer total results
+  /// may be returned than requested. The service will use this parameter or
+  /// 1,000 items, whichever is smaller.
+  ///
+  /// [pageToken] - A previously-returned page token representing part of the
+  /// larger set of results to view.
+  ///
+  /// [prefix] - Filter results to objects whose names begin with this prefix.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [versions] - If true, lists all versions of an object as distinct results.
+  /// The default is false. For more information, see Object Versioning.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Objects].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Objects> list(core.String bucket,
+      {core.String delimiter,
+      core.int maxResults,
+      core.String pageToken,
+      core.String prefix,
+      core.String projection,
+      core.String userProject,
+      core.bool versions,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2164,77 +3141,100 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
     if (versions != null) {
       _queryParams["versions"] = ["${versions}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Objects.fromJson(data));
   }
 
-  /**
-   * Updates an object's metadata. This method supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which the object resides.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current metageneration does not match the given value.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * Completes with a [Object].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Object> patch(Object request, core.String bucket, core.String object, {core.String generation, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String predefinedAcl, core.String projection}) {
+  /// Updates an object's metadata. This method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the object's current metageneration does not match the given value.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Object].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Object> patch(
+      Object request, core.String bucket, core.String object,
+      {core.String generation,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String predefinedAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2272,112 +3272,154 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Object.fromJson(data));
   }
 
-  /**
-   * Rewrites a source object to a destination object. Optionally overrides
-   * metadata.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [sourceBucket] - Name of the bucket in which to find the source object.
-   *
-   * [sourceObject] - Name of the source object. For information about how to
-   * URL encode object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [destinationBucket] - Name of the bucket in which to store the new object.
-   * Overrides the provided object metadata's bucket value, if any.
-   *
-   * [destinationObject] - Name of the new object. Required when the object
-   * metadata is not otherwise provided. Overrides the object metadata's name
-   * value, if any. For information about how to URL encode object names to be
-   * path safe, see Encoding URI Path Parts.
-   *
-   * [destinationPredefinedAcl] - Apply a predefined set of access controls to
-   * the destination object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * destination object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * destination object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * destination object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * destination object's current metageneration does not match the given value.
-   *
-   * [ifSourceGenerationMatch] - Makes the operation conditional on whether the
-   * source object's generation matches the given value.
-   *
-   * [ifSourceGenerationNotMatch] - Makes the operation conditional on whether
-   * the source object's generation does not match the given value.
-   *
-   * [ifSourceMetagenerationMatch] - Makes the operation conditional on whether
-   * the source object's current metageneration matches the given value.
-   *
-   * [ifSourceMetagenerationNotMatch] - Makes the operation conditional on
-   * whether the source object's current metageneration does not match the given
-   * value.
-   *
-   * [maxBytesRewrittenPerCall] - The maximum number of bytes that will be
-   * rewritten per rewrite request. Most callers shouldn't need to specify this
-   * parameter - it is primarily in place to support testing. If specified the
-   * value must be an integral multiple of 1 MiB (1048576). Also, this only
-   * applies to requests where the source and destination span locations and/or
-   * storage classes. Finally, this value must not change across rewrite calls
-   * else you'll get an error that the rewriteToken is invalid.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl, unless the
-   * object resource specifies the acl property, when it defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [rewriteToken] - Include this field (from the previous rewrite response) on
-   * each rewrite request after the first one, until the rewrite response 'done'
-   * flag is true. Calls that provide a rewriteToken can omit all other request
-   * fields, but if included those fields must match the values provided in the
-   * first rewrite request.
-   *
-   * [sourceGeneration] - If present, selects a specific revision of the source
-   * object (as opposed to the latest version, the default).
-   *
-   * Completes with a [RewriteResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<RewriteResponse> rewrite(Object request, core.String sourceBucket, core.String sourceObject, core.String destinationBucket, core.String destinationObject, {core.String destinationPredefinedAcl, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String ifSourceGenerationMatch, core.String ifSourceGenerationNotMatch, core.String ifSourceMetagenerationMatch, core.String ifSourceMetagenerationNotMatch, core.String maxBytesRewrittenPerCall, core.String projection, core.String rewriteToken, core.String sourceGeneration}) {
+  /// Rewrites a source object to a destination object. Optionally overrides
+  /// metadata.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [sourceBucket] - Name of the bucket in which to find the source object.
+  ///
+  /// [sourceObject] - Name of the source object. For information about how to
+  /// URL encode object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [destinationBucket] - Name of the bucket in which to store the new object.
+  /// Overrides the provided object metadata's bucket value, if any.
+  ///
+  /// [destinationObject] - Name of the new object. Required when the object
+  /// metadata is not otherwise provided. Overrides the object metadata's name
+  /// value, if any. For information about how to URL encode object names to be
+  /// path safe, see Encoding URI Path Parts.
+  ///
+  /// [destinationKmsKeyName] - Resource name of the Cloud KMS key, of the form
+  /// projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key,
+  /// that will be used to encrypt the object. Overrides the object metadata's
+  /// kms_key_name value, if any.
+  ///
+  /// [destinationPredefinedAcl] - Apply a predefined set of access controls to
+  /// the destination object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// destination object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the destination object's current metageneration does not match the given
+  /// value.
+  ///
+  /// [ifSourceGenerationMatch] - Makes the operation conditional on whether the
+  /// source object's current generation matches the given value.
+  ///
+  /// [ifSourceGenerationNotMatch] - Makes the operation conditional on whether
+  /// the source object's current generation does not match the given value.
+  ///
+  /// [ifSourceMetagenerationMatch] - Makes the operation conditional on whether
+  /// the source object's current metageneration matches the given value.
+  ///
+  /// [ifSourceMetagenerationNotMatch] - Makes the operation conditional on
+  /// whether the source object's current metageneration does not match the
+  /// given value.
+  ///
+  /// [maxBytesRewrittenPerCall] - The maximum number of bytes that will be
+  /// rewritten per rewrite request. Most callers shouldn't need to specify this
+  /// parameter - it is primarily in place to support testing. If specified the
+  /// value must be an integral multiple of 1 MiB (1048576). Also, this only
+  /// applies to requests where the source and destination span locations and/or
+  /// storage classes. Finally, this value must not change across rewrite calls
+  /// else you'll get an error that the rewriteToken is invalid.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl, unless the
+  /// object resource specifies the acl property, when it defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [rewriteToken] - Include this field (from the previous rewrite response)
+  /// on each rewrite request after the first one, until the rewrite response
+  /// 'done' flag is true. Calls that provide a rewriteToken can omit all other
+  /// request fields, but if included those fields must match the values
+  /// provided in the first rewrite request.
+  ///
+  /// [sourceGeneration] - If present, selects a specific revision of the source
+  /// object (as opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [RewriteResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<RewriteResponse> rewrite(
+      Object request,
+      core.String sourceBucket,
+      core.String sourceObject,
+      core.String destinationBucket,
+      core.String destinationObject,
+      {core.String destinationKmsKeyName,
+      core.String destinationPredefinedAcl,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String ifSourceGenerationMatch,
+      core.String ifSourceGenerationNotMatch,
+      core.String ifSourceMetagenerationMatch,
+      core.String ifSourceMetagenerationNotMatch,
+      core.String maxBytesRewrittenPerCall,
+      core.String projection,
+      core.String rewriteToken,
+      core.String sourceGeneration,
+      core.String userProject,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2399,6 +3441,9 @@ class ObjectsResourceApi {
     }
     if (destinationObject == null) {
       throw new core.ArgumentError("Parameter destinationObject is required.");
+    }
+    if (destinationKmsKeyName != null) {
+      _queryParams["destinationKmsKeyName"] = [destinationKmsKeyName];
     }
     if (destinationPredefinedAcl != null) {
       _queryParams["destinationPredefinedAcl"] = [destinationPredefinedAcl];
@@ -2422,10 +3467,14 @@ class ObjectsResourceApi {
       _queryParams["ifSourceGenerationNotMatch"] = [ifSourceGenerationNotMatch];
     }
     if (ifSourceMetagenerationMatch != null) {
-      _queryParams["ifSourceMetagenerationMatch"] = [ifSourceMetagenerationMatch];
+      _queryParams["ifSourceMetagenerationMatch"] = [
+        ifSourceMetagenerationMatch
+      ];
     }
     if (ifSourceMetagenerationNotMatch != null) {
-      _queryParams["ifSourceMetagenerationNotMatch"] = [ifSourceMetagenerationNotMatch];
+      _queryParams["ifSourceMetagenerationNotMatch"] = [
+        ifSourceMetagenerationNotMatch
+      ];
     }
     if (maxBytesRewrittenPerCall != null) {
       _queryParams["maxBytesRewrittenPerCall"] = [maxBytesRewrittenPerCall];
@@ -2439,82 +3488,262 @@ class ObjectsResourceApi {
     if (sourceGeneration != null) {
       _queryParams["sourceGeneration"] = [sourceGeneration];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$sourceBucket') + '/o/' + commons.Escaper.ecapeVariable('$sourceObject') + '/rewriteTo/b/' + commons.Escaper.ecapeVariable('$destinationBucket') + '/o/' + commons.Escaper.ecapeVariable('$destinationObject');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$sourceBucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$sourceObject') +
+        '/rewriteTo/b/' +
+        commons.Escaper.ecapeVariable('$destinationBucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$destinationObject');
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new RewriteResponse.fromJson(data));
   }
 
-  /**
-   * Updates an object's metadata.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which the object resides.
-   *
-   * [object] - Name of the object. For information about how to URL encode
-   * object names to be path safe, see Encoding URI Path Parts.
-   *
-   * [generation] - If present, selects a specific revision of this object (as
-   * opposed to the latest version, the default).
-   *
-   * [ifGenerationMatch] - Makes the operation conditional on whether the
-   * object's current generation matches the given value.
-   *
-   * [ifGenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current generation does not match the given value.
-   *
-   * [ifMetagenerationMatch] - Makes the operation conditional on whether the
-   * object's current metageneration matches the given value.
-   *
-   * [ifMetagenerationNotMatch] - Makes the operation conditional on whether the
-   * object's current metageneration does not match the given value.
-   *
-   * [predefinedAcl] - Apply a predefined set of access controls to this object.
-   * Possible string values are:
-   * - "authenticatedRead" : Object owner gets OWNER access, and
-   * allAuthenticatedUsers get READER access.
-   * - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
-   * team owners get OWNER access.
-   * - "bucketOwnerRead" : Object owner gets OWNER access, and project team
-   * owners get READER access.
-   * - "private" : Object owner gets OWNER access.
-   * - "projectPrivate" : Object owner gets OWNER access, and project team
-   * members get access according to their roles.
-   * - "publicRead" : Object owner gets OWNER access, and allUsers get READER
-   * access.
-   *
-   * [projection] - Set of properties to return. Defaults to full.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Object] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future update(Object request, core.String bucket, core.String object, {core.String generation, core.String ifGenerationMatch, core.String ifGenerationNotMatch, core.String ifMetagenerationMatch, core.String ifMetagenerationNotMatch, core.String predefinedAcl, core.String projection, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Updates an IAM policy for the specified object.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Policy].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Policy> setIamPolicy(
+      Policy request, core.String bucket, core.String object,
+      {core.String generation, core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (object == null) {
+      throw new core.ArgumentError("Parameter object is required.");
+    }
+    if (generation != null) {
+      _queryParams["generation"] = [generation];
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/iam';
+
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Policy.fromJson(data));
+  }
+
+  /// Tests a set of permissions on the given object to see which, if any, are
+  /// held by the caller.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [permissions] - Permissions to test.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [TestIamPermissionsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<TestIamPermissionsResponse> testIamPermissions(
+      core.String bucket,
+      core.String object,
+      core.List<core.String> permissions,
+      {core.String generation,
+      core.String userProject,
+      core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (bucket == null) {
+      throw new core.ArgumentError("Parameter bucket is required.");
+    }
+    if (object == null) {
+      throw new core.ArgumentError("Parameter object is required.");
+    }
+    if (permissions == null || permissions.isEmpty) {
+      throw new core.ArgumentError("Parameter permissions is required.");
+    }
+    _queryParams["permissions"] = permissions;
+    if (generation != null) {
+      _queryParams["generation"] = [generation];
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object') +
+        '/iam/testPermissions';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new TestIamPermissionsResponse.fromJson(data));
+  }
+
+  /// Updates an object's metadata.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which the object resides.
+  ///
+  /// [object] - Name of the object. For information about how to URL encode
+  /// object names to be path safe, see Encoding URI Path Parts.
+  ///
+  /// [generation] - If present, selects a specific revision of this object (as
+  /// opposed to the latest version, the default).
+  ///
+  /// [ifGenerationMatch] - Makes the operation conditional on whether the
+  /// object's current generation matches the given value. Setting to 0 makes
+  /// the operation succeed only if there are no live versions of the object.
+  ///
+  /// [ifGenerationNotMatch] - Makes the operation conditional on whether the
+  /// object's current generation does not match the given value. If no live
+  /// object exists, the precondition fails. Setting to 0 makes the operation
+  /// succeed only if there is a live version of the object.
+  ///
+  /// [ifMetagenerationMatch] - Makes the operation conditional on whether the
+  /// object's current metageneration matches the given value.
+  ///
+  /// [ifMetagenerationNotMatch] - Makes the operation conditional on whether
+  /// the object's current metageneration does not match the given value.
+  ///
+  /// [predefinedAcl] - Apply a predefined set of access controls to this
+  /// object.
+  /// Possible string values are:
+  /// - "authenticatedRead" : Object owner gets OWNER access, and
+  /// allAuthenticatedUsers get READER access.
+  /// - "bucketOwnerFullControl" : Object owner gets OWNER access, and project
+  /// team owners get OWNER access.
+  /// - "bucketOwnerRead" : Object owner gets OWNER access, and project team
+  /// owners get READER access.
+  /// - "private" : Object owner gets OWNER access.
+  /// - "projectPrivate" : Object owner gets OWNER access, and project team
+  /// members get access according to their roles.
+  /// - "publicRead" : Object owner gets OWNER access, and allUsers get READER
+  /// access.
+  ///
+  /// [projection] - Set of properties to return. Defaults to full.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Object] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future update(Object request, core.String bucket, core.String object,
+      {core.String generation,
+      core.String ifGenerationMatch,
+      core.String ifGenerationNotMatch,
+      core.String ifMetagenerationMatch,
+      core.String ifMetagenerationNotMatch,
+      core.String predefinedAcl,
+      core.String projection,
+      core.String userProject,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2552,18 +3781,26 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
-    _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/' + commons.Escaper.ecapeVariable('$object');
+    _url = 'b/' +
+        commons.Escaper.ecapeVariable('$bucket') +
+        '/o/' +
+        commons.Escaper.ecapeVariable('$object');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Object.fromJson(data));
@@ -2572,47 +3809,60 @@ class ObjectsResourceApi {
     }
   }
 
-  /**
-   * Watch for changes on all objects in a bucket.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [bucket] - Name of the bucket in which to look for objects.
-   *
-   * [delimiter] - Returns results in a directory-like mode. items will contain
-   * only objects whose names, aside from the prefix, do not contain delimiter.
-   * Objects whose names, aside from the prefix, contain delimiter will have
-   * their name, truncated after the delimiter, returned in prefixes. Duplicate
-   * prefixes are omitted.
-   *
-   * [maxResults] - Maximum number of items plus prefixes to return. As
-   * duplicate prefixes are omitted, fewer total results may be returned than
-   * requested. The default value of this parameter is 1,000 items.
-   *
-   * [pageToken] - A previously-returned page token representing part of the
-   * larger set of results to view.
-   *
-   * [prefix] - Filter results to objects whose names begin with this prefix.
-   *
-   * [projection] - Set of properties to return. Defaults to noAcl.
-   * Possible string values are:
-   * - "full" : Include all properties.
-   * - "noAcl" : Omit the owner, acl property.
-   *
-   * [versions] - If true, lists all versions of an object as distinct results.
-   * The default is false. For more information, see Object Versioning.
-   *
-   * Completes with a [Channel].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Channel> watchAll(Channel request, core.String bucket, {core.String delimiter, core.int maxResults, core.String pageToken, core.String prefix, core.String projection, core.bool versions}) {
+  /// Watch for changes on all objects in a bucket.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [bucket] - Name of the bucket in which to look for objects.
+  ///
+  /// [delimiter] - Returns results in a directory-like mode. items will contain
+  /// only objects whose names, aside from the prefix, do not contain delimiter.
+  /// Objects whose names, aside from the prefix, contain delimiter will have
+  /// their name, truncated after the delimiter, returned in prefixes. Duplicate
+  /// prefixes are omitted.
+  ///
+  /// [maxResults] - Maximum number of items plus prefixes to return in a single
+  /// page of responses. As duplicate prefixes are omitted, fewer total results
+  /// may be returned than requested. The service will use this parameter or
+  /// 1,000 items, whichever is smaller.
+  ///
+  /// [pageToken] - A previously-returned page token representing part of the
+  /// larger set of results to view.
+  ///
+  /// [prefix] - Filter results to objects whose names begin with this prefix.
+  ///
+  /// [projection] - Set of properties to return. Defaults to noAcl.
+  /// Possible string values are:
+  /// - "full" : Include all properties.
+  /// - "noAcl" : Omit the owner, acl property.
+  ///
+  /// [userProject] - The project to be billed for this request. Required for
+  /// Requester Pays buckets.
+  ///
+  /// [versions] - If true, lists all versions of an object as distinct results.
+  /// The default is false. For more information, see Object Versioning.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Channel].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Channel> watchAll(Channel request, core.String bucket,
+      {core.String delimiter,
+      core.int maxResults,
+      core.String pageToken,
+      core.String prefix,
+      core.String projection,
+      core.String userProject,
+      core.bool versions,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2641,47 +3891,134 @@ class ObjectsResourceApi {
     if (projection != null) {
       _queryParams["projection"] = [projection];
     }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
     if (versions != null) {
       _queryParams["versions"] = ["${versions}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'b/' + commons.Escaper.ecapeVariable('$bucket') + '/o/watch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Channel.fromJson(data));
   }
-
 }
 
+class ProjectsResourceApi {
+  final commons.ApiRequester _requester;
 
+  ProjectsServiceAccountResourceApi get serviceAccount =>
+      new ProjectsServiceAccountResourceApi(_requester);
+
+  ProjectsResourceApi(commons.ApiRequester client) : _requester = client;
+}
+
+class ProjectsServiceAccountResourceApi {
+  final commons.ApiRequester _requester;
+
+  ProjectsServiceAccountResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Get the email address of this project's Google Cloud Storage service
+  /// account.
+  ///
+  /// Request parameters:
+  ///
+  /// [projectId] - Project ID
+  ///
+  /// [userProject] - The project to be billed for this request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ServiceAccount].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ServiceAccount> get(core.String projectId,
+      {core.String userProject, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (projectId == null) {
+      throw new core.ArgumentError("Parameter projectId is required.");
+    }
+    if (userProject != null) {
+      _queryParams["userProject"] = [userProject];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'projects/' +
+        commons.Escaper.ecapeVariable('$projectId') +
+        '/serviceAccount';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new ServiceAccount.fromJson(data));
+  }
+}
+
+/// The bucket's billing configuration.
+class BucketBilling {
+  /// When set to true, bucket is requester pays.
+  core.bool requesterPays;
+
+  BucketBilling();
+
+  BucketBilling.fromJson(core.Map _json) {
+    if (_json.containsKey("requesterPays")) {
+      requesterPays = _json["requesterPays"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (requesterPays != null) {
+      _json["requesterPays"] = requesterPays;
+    }
+    return _json;
+  }
+}
 
 class BucketCors {
-  /**
-   * The value, in seconds, to return in the  Access-Control-Max-Age header used
-   * in preflight responses.
-   */
+  /// The value, in seconds, to return in the  Access-Control-Max-Age header
+  /// used in preflight responses.
   core.int maxAgeSeconds;
-  /**
-   * The list of HTTP methods on which to include CORS response headers, (GET,
-   * OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and
-   * means "any method".
-   */
+
+  /// The list of HTTP methods on which to include CORS response headers, (GET,
+  /// OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and
+  /// means "any method".
   core.List<core.String> method;
-  /**
-   * The list of Origins eligible to receive CORS response headers. Note: "*" is
-   * permitted in the list of origins, and means "any Origin".
-   */
+
+  /// The list of Origins eligible to receive CORS response headers. Note: "*"
+  /// is permitted in the list of origins, and means "any Origin".
   core.List<core.String> origin;
-  /**
-   * The list of HTTP headers other than the simple response headers to give
-   * permission for the user-agent to share across domains.
-   */
+
+  /// The list of HTTP headers other than the simple response headers to give
+  /// permission for the user-agent to share across domains.
   core.List<core.String> responseHeader;
 
   BucketCors();
@@ -2701,8 +4038,9 @@ class BucketCors {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (maxAgeSeconds != null) {
       _json["maxAgeSeconds"] = maxAgeSeconds;
     }
@@ -2719,17 +4057,37 @@ class BucketCors {
   }
 }
 
-/** The action to take. */
+/// Encryption configuration used by default for newly inserted objects, when no
+/// encryption config is specified.
+class BucketEncryption {
+  core.String defaultKmsKeyName;
+
+  BucketEncryption();
+
+  BucketEncryption.fromJson(core.Map _json) {
+    if (_json.containsKey("defaultKmsKeyName")) {
+      defaultKmsKeyName = _json["defaultKmsKeyName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (defaultKmsKeyName != null) {
+      _json["defaultKmsKeyName"] = defaultKmsKeyName;
+    }
+    return _json;
+  }
+}
+
+/// The action to take.
 class BucketLifecycleRuleAction {
-  /**
-   * Target storage class. Required iff the type of the action is
-   * SetStorageClass.
-   */
+  /// Target storage class. Required iff the type of the action is
+  /// SetStorageClass.
   core.String storageClass;
-  /**
-   * Type of the action. Currently, only Delete and SetStorageClass are
-   * supported.
-   */
+
+  /// Type of the action. Currently, only Delete and SetStorageClass are
+  /// supported.
   core.String type;
 
   BucketLifecycleRuleAction();
@@ -2743,8 +4101,9 @@ class BucketLifecycleRuleAction {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (storageClass != null) {
       _json["storageClass"] = storageClass;
     }
@@ -2755,35 +4114,29 @@ class BucketLifecycleRuleAction {
   }
 }
 
-/** The condition(s) under which the action will be taken. */
+/// The condition(s) under which the action will be taken.
 class BucketLifecycleRuleCondition {
-  /**
-   * Age of an object (in days). This condition is satisfied when an object
-   * reaches the specified age.
-   */
+  /// Age of an object (in days). This condition is satisfied when an object
+  /// reaches the specified age.
   core.int age;
-  /**
-   * A date in RFC 3339 format with only the date part (for instance,
-   * "2013-01-15"). This condition is satisfied when an object is created before
-   * midnight of the specified date in UTC.
-   */
+
+  /// A date in RFC 3339 format with only the date part (for instance,
+  /// "2013-01-15"). This condition is satisfied when an object is created
+  /// before midnight of the specified date in UTC.
   core.DateTime createdBefore;
-  /**
-   * Relevant only for versioned objects. If the value is true, this condition
-   * matches live objects; if the value is false, it matches archived objects.
-   */
+
+  /// Relevant only for versioned objects. If the value is true, this condition
+  /// matches live objects; if the value is false, it matches archived objects.
   core.bool isLive;
-  /**
-   * Objects having any of the storage classes specified by this condition will
-   * be matched. Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE,
-   * STANDARD, and DURABLE_REDUCED_AVAILABILITY.
-   */
+
+  /// Objects having any of the storage classes specified by this condition will
+  /// be matched. Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE,
+  /// STANDARD, and DURABLE_REDUCED_AVAILABILITY.
   core.List<core.String> matchesStorageClass;
-  /**
-   * Relevant only for versioned objects. If the value is N, this condition is
-   * satisfied when there are at least N versions (including the live version)
-   * newer than this version of the object.
-   */
+
+  /// Relevant only for versioned objects. If the value is N, this condition is
+  /// satisfied when there are at least N versions (including the live version)
+  /// newer than this version of the object.
   core.int numNewerVersions;
 
   BucketLifecycleRuleCondition();
@@ -2806,13 +4159,15 @@ class BucketLifecycleRuleCondition {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (age != null) {
       _json["age"] = age;
     }
     if (createdBefore != null) {
-      _json["createdBefore"] = "${(createdBefore).year.toString().padLeft(4, '0')}-${(createdBefore).month.toString().padLeft(2, '0')}-${(createdBefore).day.toString().padLeft(2, '0')}";
+      _json["createdBefore"] =
+          "${(createdBefore).year.toString().padLeft(4, '0')}-${(createdBefore).month.toString().padLeft(2, '0')}-${(createdBefore).day.toString().padLeft(2, '0')}";
     }
     if (isLive != null) {
       _json["isLive"] = isLive;
@@ -2828,9 +4183,10 @@ class BucketLifecycleRuleCondition {
 }
 
 class BucketLifecycleRule {
-  /** The action to take. */
+  /// The action to take.
   BucketLifecycleRuleAction action;
-  /** The condition(s) under which the action will be taken. */
+
+  /// The condition(s) under which the action will be taken.
   BucketLifecycleRuleCondition condition;
 
   BucketLifecycleRule();
@@ -2844,8 +4200,9 @@ class BucketLifecycleRule {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (action != null) {
       _json["action"] = (action).toJson();
     }
@@ -2856,27 +4213,26 @@ class BucketLifecycleRule {
   }
 }
 
-/**
- * The bucket's lifecycle configuration. See lifecycle management for more
- * information.
- */
+/// The bucket's lifecycle configuration. See lifecycle management for more
+/// information.
 class BucketLifecycle {
-  /**
-   * A lifecycle management rule, which is made of an action to take and the
-   * condition(s) under which the action will be taken.
-   */
+  /// A lifecycle management rule, which is made of an action to take and the
+  /// condition(s) under which the action will be taken.
   core.List<BucketLifecycleRule> rule;
 
   BucketLifecycle();
 
   BucketLifecycle.fromJson(core.Map _json) {
     if (_json.containsKey("rule")) {
-      rule = _json["rule"].map((value) => new BucketLifecycleRule.fromJson(value)).toList();
+      rule = _json["rule"]
+          .map((value) => new BucketLifecycleRule.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (rule != null) {
       _json["rule"] = rule.map((value) => (value).toJson()).toList();
     }
@@ -2884,16 +4240,13 @@ class BucketLifecycle {
   }
 }
 
-/**
- * The bucket's logging configuration, which defines the destination bucket and
- * optional name prefix for the current bucket's logs.
- */
+/// The bucket's logging configuration, which defines the destination bucket and
+/// optional name prefix for the current bucket's logs.
 class BucketLogging {
-  /**
-   * The destination bucket where the current bucket's logs should be placed.
-   */
+  /// The destination bucket where the current bucket's logs should be placed.
   core.String logBucket;
-  /** A prefix for log object names. */
+
+  /// A prefix for log object names.
   core.String logObjectPrefix;
 
   BucketLogging();
@@ -2907,8 +4260,9 @@ class BucketLogging {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (logBucket != null) {
       _json["logBucket"] = logBucket;
     }
@@ -2919,11 +4273,12 @@ class BucketLogging {
   }
 }
 
-/** The owner of the bucket. This is always the project team's owner group. */
+/// The owner of the bucket. This is always the project team's owner group.
 class BucketOwner {
-  /** The entity, in the form project-owner-projectId. */
+  /// The entity, in the form project-owner-projectId.
   core.String entity;
-  /** The ID for the entity. */
+
+  /// The ID for the entity.
   core.String entityId;
 
   BucketOwner();
@@ -2937,8 +4292,9 @@ class BucketOwner {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entity != null) {
       _json["entity"] = entity;
     }
@@ -2949,9 +4305,9 @@ class BucketOwner {
   }
 }
 
-/** The bucket's versioning configuration. */
+/// The bucket's versioning configuration.
 class BucketVersioning {
-  /** While set to true, versioning is fully enabled for this bucket. */
+  /// While set to true, versioning is fully enabled for this bucket.
   core.bool enabled;
 
   BucketVersioning();
@@ -2962,8 +4318,9 @@ class BucketVersioning {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (enabled != null) {
       _json["enabled"] = enabled;
     }
@@ -2971,24 +4328,19 @@ class BucketVersioning {
   }
 }
 
-/**
- * The bucket's website configuration, controlling how the service behaves when
- * accessing bucket contents as a web site. See the Static Website Examples for
- * more information.
- */
+/// The bucket's website configuration, controlling how the service behaves when
+/// accessing bucket contents as a web site. See the Static Website Examples for
+/// more information.
 class BucketWebsite {
-  /**
-   * If the requested object path is missing, the service will ensure the path
-   * has a trailing '/', append this suffix, and attempt to retrieve the
-   * resulting object. This allows the creation of index.html objects to
-   * represent directory pages.
-   */
+  /// If the requested object path is missing, the service will ensure the path
+  /// has a trailing '/', append this suffix, and attempt to retrieve the
+  /// resulting object. This allows the creation of index.html objects to
+  /// represent directory pages.
   core.String mainPageSuffix;
-  /**
-   * If the requested object path is missing, and any mainPageSuffix object is
-   * missing, if applicable, the service will return the named object from this
-   * bucket as the content for a 404 Not Found result.
-   */
+
+  /// If the requested object path is missing, and any mainPageSuffix object is
+  /// missing, if applicable, the service will return the named object from this
+  /// bucket as the content for a 404 Not Found result.
   core.String notFoundPage;
 
   BucketWebsite();
@@ -3002,8 +4354,9 @@ class BucketWebsite {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (mainPageSuffix != null) {
       _json["mainPageSuffix"] = mainPageSuffix;
     }
@@ -3014,84 +4367,110 @@ class BucketWebsite {
   }
 }
 
-/** A bucket. */
+/// A bucket.
 class Bucket {
-  /** Access controls on the bucket. */
+  /// Access controls on the bucket.
   core.List<BucketAccessControl> acl;
-  /** The bucket's Cross-Origin Resource Sharing (CORS) configuration. */
+
+  /// The bucket's billing configuration.
+  BucketBilling billing;
+
+  /// The bucket's Cross-Origin Resource Sharing (CORS) configuration.
   core.List<BucketCors> cors;
-  /**
-   * Default access controls to apply to new objects when no ACL is provided.
-   */
+
+  /// Default access controls to apply to new objects when no ACL is provided.
   core.List<ObjectAccessControl> defaultObjectAcl;
-  /** HTTP 1.1 Entity tag for the bucket. */
+
+  /// Encryption configuration used by default for newly inserted objects, when
+  /// no encryption config is specified.
+  BucketEncryption encryption;
+
+  /// HTTP 1.1 Entity tag for the bucket.
   core.String etag;
-  /** The ID of the bucket. */
+
+  /// The ID of the bucket. For buckets, the id and name properities are the
+  /// same.
   core.String id;
-  /** The kind of item this is. For buckets, this is always storage#bucket. */
+
+  /// The kind of item this is. For buckets, this is always storage#bucket.
   core.String kind;
-  /**
-   * The bucket's lifecycle configuration. See lifecycle management for more
-   * information.
-   */
+
+  /// User-provided labels, in key/value pairs.
+  core.Map<core.String, core.String> labels;
+
+  /// The bucket's lifecycle configuration. See lifecycle management for more
+  /// information.
   BucketLifecycle lifecycle;
-  /**
-   * The location of the bucket. Object data for objects in the bucket resides
-   * in physical storage within this region. Defaults to US. See the developer's
-   * guide for the authoritative list.
-   */
+
+  /// The location of the bucket. Object data for objects in the bucket resides
+  /// in physical storage within this region. Defaults to US. See the
+  /// developer's guide for the authoritative list.
   core.String location;
-  /**
-   * The bucket's logging configuration, which defines the destination bucket
-   * and optional name prefix for the current bucket's logs.
-   */
+
+  /// The bucket's logging configuration, which defines the destination bucket
+  /// and optional name prefix for the current bucket's logs.
   BucketLogging logging;
-  /** The metadata generation of this bucket. */
+
+  /// The metadata generation of this bucket.
   core.String metageneration;
-  /** The name of the bucket. */
+
+  /// The name of the bucket.
   core.String name;
-  /**
-   * The owner of the bucket. This is always the project team's owner group.
-   */
+
+  /// The owner of the bucket. This is always the project team's owner group.
   BucketOwner owner;
-  /** The project number of the project the bucket belongs to. */
+
+  /// The project number of the project the bucket belongs to.
   core.String projectNumber;
-  /** The URI of this bucket. */
+
+  /// The URI of this bucket.
   core.String selfLink;
-  /**
-   * The bucket's default storage class, used whenever no storageClass is
-   * specified for a newly-created object. This defines how objects in the
-   * bucket are stored and determines the SLA and the cost of storage. Values
-   * include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, and
-   * DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the
-   * bucket is created, it will default to STANDARD. For more information, see
-   * storage classes.
-   */
+
+  /// The bucket's default storage class, used whenever no storageClass is
+  /// specified for a newly-created object. This defines how objects in the
+  /// bucket are stored and determines the SLA and the cost of storage. Values
+  /// include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, and
+  /// DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the
+  /// bucket is created, it will default to STANDARD. For more information, see
+  /// storage classes.
   core.String storageClass;
-  /** The creation time of the bucket in RFC 3339 format. */
+
+  /// The creation time of the bucket in RFC 3339 format.
   core.DateTime timeCreated;
-  /** The modification time of the bucket in RFC 3339 format. */
+
+  /// The modification time of the bucket in RFC 3339 format.
   core.DateTime updated;
-  /** The bucket's versioning configuration. */
+
+  /// The bucket's versioning configuration.
   BucketVersioning versioning;
-  /**
-   * The bucket's website configuration, controlling how the service behaves
-   * when accessing bucket contents as a web site. See the Static Website
-   * Examples for more information.
-   */
+
+  /// The bucket's website configuration, controlling how the service behaves
+  /// when accessing bucket contents as a web site. See the Static Website
+  /// Examples for more information.
   BucketWebsite website;
 
   Bucket();
 
   Bucket.fromJson(core.Map _json) {
     if (_json.containsKey("acl")) {
-      acl = _json["acl"].map((value) => new BucketAccessControl.fromJson(value)).toList();
+      acl = _json["acl"]
+          .map((value) => new BucketAccessControl.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("billing")) {
+      billing = new BucketBilling.fromJson(_json["billing"]);
     }
     if (_json.containsKey("cors")) {
-      cors = _json["cors"].map((value) => new BucketCors.fromJson(value)).toList();
+      cors =
+          _json["cors"].map((value) => new BucketCors.fromJson(value)).toList();
     }
     if (_json.containsKey("defaultObjectAcl")) {
-      defaultObjectAcl = _json["defaultObjectAcl"].map((value) => new ObjectAccessControl.fromJson(value)).toList();
+      defaultObjectAcl = _json["defaultObjectAcl"]
+          .map((value) => new ObjectAccessControl.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("encryption")) {
+      encryption = new BucketEncryption.fromJson(_json["encryption"]);
     }
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
@@ -3101,6 +4480,9 @@ class Bucket {
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
+    }
+    if (_json.containsKey("labels")) {
+      labels = _json["labels"];
     }
     if (_json.containsKey("lifecycle")) {
       lifecycle = new BucketLifecycle.fromJson(_json["lifecycle"]);
@@ -3143,16 +4525,24 @@ class Bucket {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (acl != null) {
       _json["acl"] = acl.map((value) => (value).toJson()).toList();
+    }
+    if (billing != null) {
+      _json["billing"] = (billing).toJson();
     }
     if (cors != null) {
       _json["cors"] = cors.map((value) => (value).toJson()).toList();
     }
     if (defaultObjectAcl != null) {
-      _json["defaultObjectAcl"] = defaultObjectAcl.map((value) => (value).toJson()).toList();
+      _json["defaultObjectAcl"] =
+          defaultObjectAcl.map((value) => (value).toJson()).toList();
+    }
+    if (encryption != null) {
+      _json["encryption"] = (encryption).toJson();
     }
     if (etag != null) {
       _json["etag"] = etag;
@@ -3162,6 +4552,9 @@ class Bucket {
     }
     if (kind != null) {
       _json["kind"] = kind;
+    }
+    if (labels != null) {
+      _json["labels"] = labels;
     }
     if (lifecycle != null) {
       _json["lifecycle"] = (lifecycle).toJson();
@@ -3206,11 +4599,12 @@ class Bucket {
   }
 }
 
-/** The project team associated with the entity, if any. */
+/// The project team associated with the entity, if any.
 class BucketAccessControlProjectTeam {
-  /** The project number. */
+  /// The project number.
   core.String projectNumber;
-  /** The team. */
+
+  /// The team.
   core.String team;
 
   BucketAccessControlProjectTeam();
@@ -3224,8 +4618,9 @@ class BucketAccessControlProjectTeam {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (projectNumber != null) {
       _json["projectNumber"] = projectNumber;
     }
@@ -3236,47 +4631,53 @@ class BucketAccessControlProjectTeam {
   }
 }
 
-/** An access-control entry. */
+/// An access-control entry.
 class BucketAccessControl {
-  /** The name of the bucket. */
+  /// The name of the bucket.
   core.String bucket;
-  /** The domain associated with the entity, if any. */
+
+  /// The domain associated with the entity, if any.
   core.String domain;
-  /** The email address associated with the entity, if any. */
+
+  /// The email address associated with the entity, if any.
   core.String email;
-  /**
-   * The entity holding the permission, in one of the following forms:
-   * - user-userId
-   * - user-email
-   * - group-groupId
-   * - group-email
-   * - domain-domain
-   * - project-team-projectId
-   * - allUsers
-   * - allAuthenticatedUsers Examples:
-   * - The user liz@example.com would be user-liz@example.com.
-   * - The group example@googlegroups.com would be
-   * group-example@googlegroups.com.
-   * - To refer to all members of the Google Apps for Business domain
-   * example.com, the entity would be domain-example.com.
-   */
+
+  /// The entity holding the permission, in one of the following forms:
+  /// - user-userId
+  /// - user-email
+  /// - group-groupId
+  /// - group-email
+  /// - domain-domain
+  /// - project-team-projectId
+  /// - allUsers
+  /// - allAuthenticatedUsers Examples:
+  /// - The user liz@example.com would be user-liz@example.com.
+  /// - The group example@googlegroups.com would be
+  /// group-example@googlegroups.com.
+  /// - To refer to all members of the Google Apps for Business domain
+  /// example.com, the entity would be domain-example.com.
   core.String entity;
-  /** The ID for the entity, if any. */
+
+  /// The ID for the entity, if any.
   core.String entityId;
-  /** HTTP 1.1 Entity tag for the access-control entry. */
+
+  /// HTTP 1.1 Entity tag for the access-control entry.
   core.String etag;
-  /** The ID of the access-control entry. */
+
+  /// The ID of the access-control entry.
   core.String id;
-  /**
-   * The kind of item this is. For bucket access control entries, this is always
-   * storage#bucketAccessControl.
-   */
+
+  /// The kind of item this is. For bucket access control entries, this is
+  /// always storage#bucketAccessControl.
   core.String kind;
-  /** The project team associated with the entity, if any. */
+
+  /// The project team associated with the entity, if any.
   BucketAccessControlProjectTeam projectTeam;
-  /** The access permission for the entity. */
+
+  /// The access permission for the entity.
   core.String role;
-  /** The link to this access-control entry. */
+
+  /// The link to this access-control entry.
   core.String selfLink;
 
   BucketAccessControl();
@@ -3307,7 +4708,8 @@ class BucketAccessControl {
       kind = _json["kind"];
     }
     if (_json.containsKey("projectTeam")) {
-      projectTeam = new BucketAccessControlProjectTeam.fromJson(_json["projectTeam"]);
+      projectTeam =
+          new BucketAccessControlProjectTeam.fromJson(_json["projectTeam"]);
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -3317,8 +4719,9 @@ class BucketAccessControl {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (bucket != null) {
       _json["bucket"] = bucket;
     }
@@ -3356,29 +4759,31 @@ class BucketAccessControl {
   }
 }
 
-/** An access-control list. */
+/// An access-control list.
 class BucketAccessControls {
-  /** The list of items. */
+  /// The list of items.
   core.List<BucketAccessControl> items;
-  /**
-   * The kind of item this is. For lists of bucket access control entries, this
-   * is always storage#bucketAccessControls.
-   */
+
+  /// The kind of item this is. For lists of bucket access control entries, this
+  /// is always storage#bucketAccessControls.
   core.String kind;
 
   BucketAccessControls();
 
   BucketAccessControls.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new BucketAccessControl.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new BucketAccessControl.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -3389,26 +4794,25 @@ class BucketAccessControls {
   }
 }
 
-/** A list of buckets. */
+/// A list of buckets.
 class Buckets {
-  /** The list of items. */
+  /// The list of items.
   core.List<Bucket> items;
-  /**
-   * The kind of item this is. For lists of buckets, this is always
-   * storage#buckets.
-   */
+
+  /// The kind of item this is. For lists of buckets, this is always
+  /// storage#buckets.
   core.String kind;
-  /**
-   * The continuation token, used to page through large result sets. Provide
-   * this value in a subsequent request to return the next page of results.
-   */
+
+  /// The continuation token, used to page through large result sets. Provide
+  /// this value in a subsequent request to return the next page of results.
   core.String nextPageToken;
 
   Buckets();
 
   Buckets.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Bucket.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Bucket.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3418,8 +4822,9 @@ class Buckets {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -3433,39 +4838,40 @@ class Buckets {
   }
 }
 
-/** An notification channel used to watch for resource changes. */
+/// An notification channel used to watch for resource changes.
 class Channel {
-  /** The address where notifications are delivered for this channel. */
+  /// The address where notifications are delivered for this channel.
   core.String address;
-  /**
-   * Date and time of notification channel expiration, expressed as a Unix
-   * timestamp, in milliseconds. Optional.
-   */
+
+  /// Date and time of notification channel expiration, expressed as a Unix
+  /// timestamp, in milliseconds. Optional.
   core.String expiration;
-  /** A UUID or similar unique string that identifies this channel. */
+
+  /// A UUID or similar unique string that identifies this channel.
   core.String id;
-  /**
-   * Identifies this as a notification channel used to watch for changes to a
-   * resource. Value: the fixed string "api#channel".
-   */
+
+  /// Identifies this as a notification channel used to watch for changes to a
+  /// resource. Value: the fixed string "api#channel".
   core.String kind;
-  /** Additional parameters controlling delivery channel behavior. Optional. */
+
+  /// Additional parameters controlling delivery channel behavior. Optional.
   core.Map<core.String, core.String> params;
-  /** A Boolean value to indicate whether payload is wanted. Optional. */
+
+  /// A Boolean value to indicate whether payload is wanted. Optional.
   core.bool payload;
-  /**
-   * An opaque ID that identifies the resource being watched on this channel.
-   * Stable across different API versions.
-   */
+
+  /// An opaque ID that identifies the resource being watched on this channel.
+  /// Stable across different API versions.
   core.String resourceId;
-  /** A version-specific identifier for the watched resource. */
+
+  /// A version-specific identifier for the watched resource.
   core.String resourceUri;
-  /**
-   * An arbitrary string delivered to the target address with each notification
-   * delivered over this channel. Optional.
-   */
+
+  /// An arbitrary string delivered to the target address with each notification
+  /// delivered over this channel. Optional.
   core.String token;
-  /** The type of delivery mechanism used for this channel. */
+
+  /// The type of delivery mechanism used for this channel.
   core.String type;
 
   Channel();
@@ -3503,8 +4909,9 @@ class Channel {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (address != null) {
       _json["address"] = address;
     }
@@ -3539,13 +4946,11 @@ class Channel {
   }
 }
 
-/** Conditions that must be met for this operation to execute. */
+/// Conditions that must be met for this operation to execute.
 class ComposeRequestSourceObjectsObjectPreconditions {
-  /**
-   * Only perform the composition if the generation of the source object that
-   * would be used matches this value. If this value and a generation are both
-   * specified, they must be the same value or the call will fail.
-   */
+  /// Only perform the composition if the generation of the source object that
+  /// would be used matches this value. If this value and a generation are both
+  /// specified, they must be the same value or the call will fail.
   core.String ifGenerationMatch;
 
   ComposeRequestSourceObjectsObjectPreconditions();
@@ -3556,8 +4961,9 @@ class ComposeRequestSourceObjectsObjectPreconditions {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (ifGenerationMatch != null) {
       _json["ifGenerationMatch"] = ifGenerationMatch;
     }
@@ -3566,14 +4972,14 @@ class ComposeRequestSourceObjectsObjectPreconditions {
 }
 
 class ComposeRequestSourceObjects {
-  /** The generation of this object to use as the source. */
+  /// The generation of this object to use as the source.
   core.String generation;
-  /**
-   * The source object's name. The source object's bucket is implicitly the
-   * destination bucket.
-   */
+
+  /// The source object's name. The source object's bucket is implicitly the
+  /// destination bucket.
   core.String name;
-  /** Conditions that must be met for this operation to execute. */
+
+  /// Conditions that must be met for this operation to execute.
   ComposeRequestSourceObjectsObjectPreconditions objectPreconditions;
 
   ComposeRequestSourceObjects();
@@ -3586,12 +4992,15 @@ class ComposeRequestSourceObjects {
       name = _json["name"];
     }
     if (_json.containsKey("objectPreconditions")) {
-      objectPreconditions = new ComposeRequestSourceObjectsObjectPreconditions.fromJson(_json["objectPreconditions"]);
+      objectPreconditions =
+          new ComposeRequestSourceObjectsObjectPreconditions.fromJson(
+              _json["objectPreconditions"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (generation != null) {
       _json["generation"] = generation;
     }
@@ -3605,15 +5014,15 @@ class ComposeRequestSourceObjects {
   }
 }
 
-/** A Compose request. */
+/// A Compose request.
 class ComposeRequest {
-  /** Properties of the resulting object. */
+  /// Properties of the resulting object.
   Object destination;
-  /** The kind of item this is. */
+
+  /// The kind of item this is.
   core.String kind;
-  /**
-   * The list of source objects that will be concatenated into a single object.
-   */
+
+  /// The list of source objects that will be concatenated into a single object.
   core.List<ComposeRequestSourceObjects> sourceObjects;
 
   ComposeRequest();
@@ -3626,12 +5035,15 @@ class ComposeRequest {
       kind = _json["kind"];
     }
     if (_json.containsKey("sourceObjects")) {
-      sourceObjects = _json["sourceObjects"].map((value) => new ComposeRequestSourceObjects.fromJson(value)).toList();
+      sourceObjects = _json["sourceObjects"]
+          .map((value) => new ComposeRequestSourceObjects.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (destination != null) {
       _json["destination"] = (destination).toJson();
     }
@@ -3639,20 +5051,155 @@ class ComposeRequest {
       _json["kind"] = kind;
     }
     if (sourceObjects != null) {
-      _json["sourceObjects"] = sourceObjects.map((value) => (value).toJson()).toList();
+      _json["sourceObjects"] =
+          sourceObjects.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
-/**
- * Metadata of customer-supplied encryption key, if the object is encrypted by
- * such a key.
- */
+/// A subscription to receive Google PubSub notifications.
+class Notification {
+  /// An optional list of additional attributes to attach to each Cloud PubSub
+  /// message published for this notification subscription.
+  core.Map<core.String, core.String> customAttributes;
+
+  /// HTTP 1.1 Entity tag for this subscription notification.
+  core.String etag;
+
+  /// If present, only send notifications about listed event types. If empty,
+  /// sent notifications for all event types.
+  core.List<core.String> eventTypes;
+
+  /// The ID of the notification.
+  core.String id;
+
+  /// The kind of item this is. For notifications, this is always
+  /// storage#notification.
+  core.String kind;
+
+  /// If present, only apply this notification configuration to object names
+  /// that begin with this prefix.
+  core.String objectNamePrefix;
+
+  /// The desired content of the Payload.
+  core.String payloadFormat;
+
+  /// The canonical URL of this notification.
+  core.String selfLink;
+
+  /// The Cloud PubSub topic to which this subscription publishes. Formatted as:
+  /// '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+  core.String topic;
+
+  Notification();
+
+  Notification.fromJson(core.Map _json) {
+    if (_json.containsKey("custom_attributes")) {
+      customAttributes = _json["custom_attributes"];
+    }
+    if (_json.containsKey("etag")) {
+      etag = _json["etag"];
+    }
+    if (_json.containsKey("event_types")) {
+      eventTypes = _json["event_types"];
+    }
+    if (_json.containsKey("id")) {
+      id = _json["id"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("object_name_prefix")) {
+      objectNamePrefix = _json["object_name_prefix"];
+    }
+    if (_json.containsKey("payload_format")) {
+      payloadFormat = _json["payload_format"];
+    }
+    if (_json.containsKey("selfLink")) {
+      selfLink = _json["selfLink"];
+    }
+    if (_json.containsKey("topic")) {
+      topic = _json["topic"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (customAttributes != null) {
+      _json["custom_attributes"] = customAttributes;
+    }
+    if (etag != null) {
+      _json["etag"] = etag;
+    }
+    if (eventTypes != null) {
+      _json["event_types"] = eventTypes;
+    }
+    if (id != null) {
+      _json["id"] = id;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (objectNamePrefix != null) {
+      _json["object_name_prefix"] = objectNamePrefix;
+    }
+    if (payloadFormat != null) {
+      _json["payload_format"] = payloadFormat;
+    }
+    if (selfLink != null) {
+      _json["selfLink"] = selfLink;
+    }
+    if (topic != null) {
+      _json["topic"] = topic;
+    }
+    return _json;
+  }
+}
+
+/// A list of notification subscriptions.
+class Notifications {
+  /// The list of items.
+  core.List<Notification> items;
+
+  /// The kind of item this is. For lists of notifications, this is always
+  /// storage#notifications.
+  core.String kind;
+
+  Notifications();
+
+  Notifications.fromJson(core.Map _json) {
+    if (_json.containsKey("items")) {
+      items = _json["items"]
+          .map((value) => new Notification.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (items != null) {
+      _json["items"] = items.map((value) => (value).toJson()).toList();
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    return _json;
+  }
+}
+
+/// Metadata of customer-supplied encryption key, if the object is encrypted by
+/// such a key.
 class ObjectCustomerEncryption {
-  /** The encryption algorithm. */
+  /// The encryption algorithm.
   core.String encryptionAlgorithm;
-  /** SHA256 hash value of the encryption key. */
+
+  /// SHA256 hash value of the encryption key.
   core.String keySha256;
 
   ObjectCustomerEncryption();
@@ -3666,8 +5213,9 @@ class ObjectCustomerEncryption {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (encryptionAlgorithm != null) {
       _json["encryptionAlgorithm"] = encryptionAlgorithm;
     }
@@ -3678,11 +5226,12 @@ class ObjectCustomerEncryption {
   }
 }
 
-/** The owner of the object. This will always be the uploader of the object. */
+/// The owner of the object. This will always be the uploader of the object.
 class ObjectOwner {
-  /** The entity, in the form user-userId. */
+  /// The entity, in the form user-userId.
   core.String entity;
-  /** The ID for the entity. */
+
+  /// The ID for the entity.
   core.String entityId;
 
   ObjectOwner();
@@ -3696,8 +5245,9 @@ class ObjectOwner {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entity != null) {
       _json["entity"] = entity;
     }
@@ -3708,96 +5258,114 @@ class ObjectOwner {
   }
 }
 
-/** An object. */
+/// An object.
 class Object {
-  /** Access controls on the object. */
+  /// Access controls on the object.
   core.List<ObjectAccessControl> acl;
-  /** The name of the bucket containing this object. */
+
+  /// The name of the bucket containing this object.
   core.String bucket;
-  /**
-   * Cache-Control directive for the object data. If omitted, and the object is
-   * accessible to all anonymous users, the default will be public,
-   * max-age=3600.
-   */
+
+  /// Cache-Control directive for the object data. If omitted, and the object is
+  /// accessible to all anonymous users, the default will be public,
+  /// max-age=3600.
   core.String cacheControl;
-  /**
-   * Number of underlying components that make up this object. Components are
-   * accumulated by compose operations.
-   */
+
+  /// Number of underlying components that make up this object. Components are
+  /// accumulated by compose operations.
   core.int componentCount;
-  /** Content-Disposition of the object data. */
+
+  /// Content-Disposition of the object data.
   core.String contentDisposition;
-  /** Content-Encoding of the object data. */
+
+  /// Content-Encoding of the object data.
   core.String contentEncoding;
-  /** Content-Language of the object data. */
+
+  /// Content-Language of the object data.
   core.String contentLanguage;
-  /**
-   * Content-Type of the object data. If contentType is not specified, object
-   * downloads will be served as application/octet-stream.
-   */
+
+  /// Content-Type of the object data. If an object is stored without a
+  /// Content-Type, it is served as application/octet-stream.
   core.String contentType;
-  /**
-   * CRC32c checksum, as described in RFC 4960, Appendix B; encoded using base64
-   * in big-endian byte order. For more information about using the CRC32c
-   * checksum, see Hashes and ETags: Best Practices.
-   */
+
+  /// CRC32c checksum, as described in RFC 4960, Appendix B; encoded using
+  /// base64 in big-endian byte order. For more information about using the
+  /// CRC32c checksum, see Hashes and ETags: Best Practices.
   core.String crc32c;
-  /**
-   * Metadata of customer-supplied encryption key, if the object is encrypted by
-   * such a key.
-   */
+
+  /// Metadata of customer-supplied encryption key, if the object is encrypted
+  /// by such a key.
   ObjectCustomerEncryption customerEncryption;
-  /** HTTP 1.1 Entity tag for the object. */
+
+  /// HTTP 1.1 Entity tag for the object.
   core.String etag;
-  /** The content generation of this object. Used for object versioning. */
+
+  /// The content generation of this object. Used for object versioning.
   core.String generation;
-  /** The ID of the object. */
+
+  /// The ID of the object, including the bucket name, object name, and
+  /// generation number.
   core.String id;
-  /** The kind of item this is. For objects, this is always storage#object. */
+
+  /// The kind of item this is. For objects, this is always storage#object.
   core.String kind;
-  /**
-   * MD5 hash of the data; encoded using base64. For more information about
-   * using the MD5 hash, see Hashes and ETags: Best Practices.
-   */
+
+  /// Cloud KMS Key used to encrypt this object, if the object is encrypted by
+  /// such a key.
+  core.String kmsKeyName;
+
+  /// MD5 hash of the data; encoded using base64. For more information about
+  /// using the MD5 hash, see Hashes and ETags: Best Practices.
   core.String md5Hash;
-  /** Media download link. */
+
+  /// Media download link.
   core.String mediaLink;
-  /** User-provided metadata, in key/value pairs. */
+
+  /// User-provided metadata, in key/value pairs.
   core.Map<core.String, core.String> metadata;
-  /**
-   * The version of the metadata for this object at this generation. Used for
-   * preconditions and for detecting changes in metadata. A metageneration
-   * number is only meaningful in the context of a particular generation of a
-   * particular object.
-   */
+
+  /// The version of the metadata for this object at this generation. Used for
+  /// preconditions and for detecting changes in metadata. A metageneration
+  /// number is only meaningful in the context of a particular generation of a
+  /// particular object.
   core.String metageneration;
-  /** The name of this object. Required if not specified by URL parameter. */
+
+  /// The name of the object. Required if not specified by URL parameter.
   core.String name;
-  /**
-   * The owner of the object. This will always be the uploader of the object.
-   */
+
+  /// The owner of the object. This will always be the uploader of the object.
   ObjectOwner owner;
-  /** The link to this object. */
+
+  /// The link to this object.
   core.String selfLink;
-  /** Content-Length of the data in bytes. */
+
+  /// Content-Length of the data in bytes.
   core.String size;
-  /** Storage class of the object. */
+
+  /// Storage class of the object.
   core.String storageClass;
-  /** The creation time of the object in RFC 3339 format. */
+
+  /// The creation time of the object in RFC 3339 format.
   core.DateTime timeCreated;
-  /**
-   * The deletion time of the object in RFC 3339 format. Will be returned if and
-   * only if this version of the object has been deleted.
-   */
+
+  /// The deletion time of the object in RFC 3339 format. Will be returned if
+  /// and only if this version of the object has been deleted.
   core.DateTime timeDeleted;
-  /** The modification time of the object metadata in RFC 3339 format. */
+
+  /// The time at which the object's storage class was last changed. When the
+  /// object is initially created, it will be set to timeCreated.
+  core.DateTime timeStorageClassUpdated;
+
+  /// The modification time of the object metadata in RFC 3339 format.
   core.DateTime updated;
 
   Object();
 
   Object.fromJson(core.Map _json) {
     if (_json.containsKey("acl")) {
-      acl = _json["acl"].map((value) => new ObjectAccessControl.fromJson(value)).toList();
+      acl = _json["acl"]
+          .map((value) => new ObjectAccessControl.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("bucket")) {
       bucket = _json["bucket"];
@@ -3824,7 +5392,8 @@ class Object {
       crc32c = _json["crc32c"];
     }
     if (_json.containsKey("customerEncryption")) {
-      customerEncryption = new ObjectCustomerEncryption.fromJson(_json["customerEncryption"]);
+      customerEncryption =
+          new ObjectCustomerEncryption.fromJson(_json["customerEncryption"]);
     }
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
@@ -3837,6 +5406,9 @@ class Object {
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
+    }
+    if (_json.containsKey("kmsKeyName")) {
+      kmsKeyName = _json["kmsKeyName"];
     }
     if (_json.containsKey("md5Hash")) {
       md5Hash = _json["md5Hash"];
@@ -3871,13 +5443,18 @@ class Object {
     if (_json.containsKey("timeDeleted")) {
       timeDeleted = core.DateTime.parse(_json["timeDeleted"]);
     }
+    if (_json.containsKey("timeStorageClassUpdated")) {
+      timeStorageClassUpdated =
+          core.DateTime.parse(_json["timeStorageClassUpdated"]);
+    }
     if (_json.containsKey("updated")) {
       updated = core.DateTime.parse(_json["updated"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (acl != null) {
       _json["acl"] = acl.map((value) => (value).toJson()).toList();
     }
@@ -3920,6 +5497,9 @@ class Object {
     if (kind != null) {
       _json["kind"] = kind;
     }
+    if (kmsKeyName != null) {
+      _json["kmsKeyName"] = kmsKeyName;
+    }
     if (md5Hash != null) {
       _json["md5Hash"] = md5Hash;
     }
@@ -3953,6 +5533,10 @@ class Object {
     if (timeDeleted != null) {
       _json["timeDeleted"] = (timeDeleted).toIso8601String();
     }
+    if (timeStorageClassUpdated != null) {
+      _json["timeStorageClassUpdated"] =
+          (timeStorageClassUpdated).toIso8601String();
+    }
     if (updated != null) {
       _json["updated"] = (updated).toIso8601String();
     }
@@ -3960,11 +5544,12 @@ class Object {
   }
 }
 
-/** The project team associated with the entity, if any. */
+/// The project team associated with the entity, if any.
 class ObjectAccessControlProjectTeam {
-  /** The project number. */
+  /// The project number.
   core.String projectNumber;
-  /** The team. */
+
+  /// The team.
   core.String team;
 
   ObjectAccessControlProjectTeam();
@@ -3978,8 +5563,9 @@ class ObjectAccessControlProjectTeam {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (projectNumber != null) {
       _json["projectNumber"] = projectNumber;
     }
@@ -3990,51 +5576,59 @@ class ObjectAccessControlProjectTeam {
   }
 }
 
-/** An access-control entry. */
+/// An access-control entry.
 class ObjectAccessControl {
-  /** The name of the bucket. */
+  /// The name of the bucket.
   core.String bucket;
-  /** The domain associated with the entity, if any. */
+
+  /// The domain associated with the entity, if any.
   core.String domain;
-  /** The email address associated with the entity, if any. */
+
+  /// The email address associated with the entity, if any.
   core.String email;
-  /**
-   * The entity holding the permission, in one of the following forms:
-   * - user-userId
-   * - user-email
-   * - group-groupId
-   * - group-email
-   * - domain-domain
-   * - project-team-projectId
-   * - allUsers
-   * - allAuthenticatedUsers Examples:
-   * - The user liz@example.com would be user-liz@example.com.
-   * - The group example@googlegroups.com would be
-   * group-example@googlegroups.com.
-   * - To refer to all members of the Google Apps for Business domain
-   * example.com, the entity would be domain-example.com.
-   */
+
+  /// The entity holding the permission, in one of the following forms:
+  /// - user-userId
+  /// - user-email
+  /// - group-groupId
+  /// - group-email
+  /// - domain-domain
+  /// - project-team-projectId
+  /// - allUsers
+  /// - allAuthenticatedUsers Examples:
+  /// - The user liz@example.com would be user-liz@example.com.
+  /// - The group example@googlegroups.com would be
+  /// group-example@googlegroups.com.
+  /// - To refer to all members of the Google Apps for Business domain
+  /// example.com, the entity would be domain-example.com.
   core.String entity;
-  /** The ID for the entity, if any. */
+
+  /// The ID for the entity, if any.
   core.String entityId;
-  /** HTTP 1.1 Entity tag for the access-control entry. */
+
+  /// HTTP 1.1 Entity tag for the access-control entry.
   core.String etag;
-  /** The content generation of the object, if applied to an object. */
+
+  /// The content generation of the object, if applied to an object.
   core.String generation;
-  /** The ID of the access-control entry. */
+
+  /// The ID of the access-control entry.
   core.String id;
-  /**
-   * The kind of item this is. For object access control entries, this is always
-   * storage#objectAccessControl.
-   */
+
+  /// The kind of item this is. For object access control entries, this is
+  /// always storage#objectAccessControl.
   core.String kind;
-  /** The name of the object, if applied to an object. */
+
+  /// The name of the object, if applied to an object.
   core.String object;
-  /** The project team associated with the entity, if any. */
+
+  /// The project team associated with the entity, if any.
   ObjectAccessControlProjectTeam projectTeam;
-  /** The access permission for the entity. */
+
+  /// The access permission for the entity.
   core.String role;
-  /** The link to this access-control entry. */
+
+  /// The link to this access-control entry.
   core.String selfLink;
 
   ObjectAccessControl();
@@ -4071,7 +5665,8 @@ class ObjectAccessControl {
       object = _json["object"];
     }
     if (_json.containsKey("projectTeam")) {
-      projectTeam = new ObjectAccessControlProjectTeam.fromJson(_json["projectTeam"]);
+      projectTeam =
+          new ObjectAccessControlProjectTeam.fromJson(_json["projectTeam"]);
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -4081,8 +5676,9 @@ class ObjectAccessControl {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (bucket != null) {
       _json["bucket"] = bucket;
     }
@@ -4126,29 +5722,31 @@ class ObjectAccessControl {
   }
 }
 
-/** An access-control list. */
+/// An access-control list.
 class ObjectAccessControls {
-  /** The list of items. */
+  /// The list of items.
   core.List<ObjectAccessControl> items;
-  /**
-   * The kind of item this is. For lists of object access control entries, this
-   * is always storage#objectAccessControls.
-   */
+
+  /// The kind of item this is. For lists of object access control entries, this
+  /// is always storage#objectAccessControls.
   core.String kind;
 
   ObjectAccessControls();
 
   ObjectAccessControls.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new ObjectAccessControl.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new ObjectAccessControl.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -4159,31 +5757,29 @@ class ObjectAccessControls {
   }
 }
 
-/** A list of objects. */
+/// A list of objects.
 class Objects {
-  /** The list of items. */
+  /// The list of items.
   core.List<Object> items;
-  /**
-   * The kind of item this is. For lists of objects, this is always
-   * storage#objects.
-   */
+
+  /// The kind of item this is. For lists of objects, this is always
+  /// storage#objects.
   core.String kind;
-  /**
-   * The continuation token, used to page through large result sets. Provide
-   * this value in a subsequent request to return the next page of results.
-   */
+
+  /// The continuation token, used to page through large result sets. Provide
+  /// this value in a subsequent request to return the next page of results.
   core.String nextPageToken;
-  /**
-   * The list of prefixes of objects matching-but-not-listed up to and including
-   * the requested delimiter.
-   */
+
+  /// The list of prefixes of objects matching-but-not-listed up to and
+  /// including the requested delimiter.
   core.List<core.String> prefixes;
 
   Objects();
 
   Objects.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Object.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new Object.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -4196,8 +5792,9 @@ class Objects {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -4214,34 +5811,185 @@ class Objects {
   }
 }
 
-/** A rewrite response. */
-class RewriteResponse {
-  /**
-   * true if the copy is finished; otherwise, false if the copy is in progress.
-   * This property is always present in the response.
-   */
-  core.bool done;
-  /** The kind of item this is. */
+class PolicyBindings {
+  ///
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
+  core.Object condition;
+
+  /// A collection of identifiers for members who may assume the provided role.
+  /// Recognized identifiers are as follows:
+  /// - allUsers — A special identifier that represents anyone on the internet;
+  /// with or without a Google account.
+  /// - allAuthenticatedUsers — A special identifier that represents anyone who
+  /// is authenticated with a Google account or a service account.
+  /// - user:emailid — An email address that represents a specific account. For
+  /// example, user:alice@gmail.com or user:joe@example.com.
+  /// - serviceAccount:emailid — An email address that represents a service
+  /// account. For example,
+  /// serviceAccount:my-other-app@appspot.gserviceaccount.com .
+  /// - group:emailid — An email address that represents a Google group. For
+  /// example, group:admins@example.com.
+  /// - domain:domain — A Google Apps domain name that represents all the users
+  /// of that domain. For example, domain:google.com or domain:example.com.
+  /// - projectOwner:projectid — Owners of the given project. For example,
+  /// projectOwner:my-example-project
+  /// - projectEditor:projectid — Editors of the given project. For example,
+  /// projectEditor:my-example-project
+  /// - projectViewer:projectid — Viewers of the given project. For example,
+  /// projectViewer:my-example-project
+  core.List<core.String> members;
+
+  /// The role to which members belong. Two types of roles are supported: new
+  /// IAM roles, which grant permissions that do not map directly to those
+  /// provided by ACLs, and legacy IAM roles, which do map directly to ACL
+  /// permissions. All roles are of the format roles/storage.specificRole.
+  /// The new IAM roles are:
+  /// - roles/storage.admin — Full control of Google Cloud Storage resources.
+  /// - roles/storage.objectViewer — Read-Only access to Google Cloud Storage
+  /// objects.
+  /// - roles/storage.objectCreator — Access to create objects in Google Cloud
+  /// Storage.
+  /// - roles/storage.objectAdmin — Full control of Google Cloud Storage
+  /// objects.   The legacy IAM roles are:
+  /// - roles/storage.legacyObjectReader — Read-only access to objects without
+  /// listing. Equivalent to an ACL entry on an object with the READER role.
+  /// - roles/storage.legacyObjectOwner — Read/write access to existing objects
+  /// without listing. Equivalent to an ACL entry on an object with the OWNER
+  /// role.
+  /// - roles/storage.legacyBucketReader — Read access to buckets with object
+  /// listing. Equivalent to an ACL entry on a bucket with the READER role.
+  /// - roles/storage.legacyBucketWriter — Read access to buckets with object
+  /// listing/creation/deletion. Equivalent to an ACL entry on a bucket with the
+  /// WRITER role.
+  /// - roles/storage.legacyBucketOwner — Read and write access to existing
+  /// buckets with object listing/creation/deletion. Equivalent to an ACL entry
+  /// on a bucket with the OWNER role.
+  core.String role;
+
+  PolicyBindings();
+
+  PolicyBindings.fromJson(core.Map _json) {
+    if (_json.containsKey("condition")) {
+      condition = _json["condition"];
+    }
+    if (_json.containsKey("members")) {
+      members = _json["members"];
+    }
+    if (_json.containsKey("role")) {
+      role = _json["role"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (condition != null) {
+      _json["condition"] = condition;
+    }
+    if (members != null) {
+      _json["members"] = members;
+    }
+    if (role != null) {
+      _json["role"] = role;
+    }
+    return _json;
+  }
+}
+
+/// A bucket/object IAM policy.
+class Policy {
+  /// An association between a role, which comes with a set of permissions, and
+  /// members who may assume that role.
+  core.List<PolicyBindings> bindings;
+
+  /// HTTP 1.1  Entity tag for the policy.
+  core.String etag;
+  core.List<core.int> get etagAsBytes {
+    return convert.BASE64.decode(etag);
+  }
+
+  void set etagAsBytes(core.List<core.int> _bytes) {
+    etag =
+        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+  }
+
+  /// The kind of item this is. For policies, this is always storage#policy.
+  /// This field is ignored on input.
   core.String kind;
-  /**
-   * The total size of the object being copied in bytes. This property is always
-   * present in the response.
-   */
+
+  /// The ID of the resource to which this policy belongs. Will be of the form
+  /// projects/_/buckets/bucket for buckets, and
+  /// projects/_/buckets/bucket/objects/object for objects. A specific
+  /// generation may be specified by appending #generationNumber to the end of
+  /// the object name, e.g. projects/_/buckets/my-bucket/objects/data.txt#17.
+  /// The current generation can be denoted with #0. This field is ignored on
+  /// input.
+  core.String resourceId;
+
+  Policy();
+
+  Policy.fromJson(core.Map _json) {
+    if (_json.containsKey("bindings")) {
+      bindings = _json["bindings"]
+          .map((value) => new PolicyBindings.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("etag")) {
+      etag = _json["etag"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("resourceId")) {
+      resourceId = _json["resourceId"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (bindings != null) {
+      _json["bindings"] = bindings.map((value) => (value).toJson()).toList();
+    }
+    if (etag != null) {
+      _json["etag"] = etag;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (resourceId != null) {
+      _json["resourceId"] = resourceId;
+    }
+    return _json;
+  }
+}
+
+/// A rewrite response.
+class RewriteResponse {
+  /// true if the copy is finished; otherwise, false if the copy is in progress.
+  /// This property is always present in the response.
+  core.bool done;
+
+  /// The kind of item this is.
+  core.String kind;
+
+  /// The total size of the object being copied in bytes. This property is
+  /// always present in the response.
   core.String objectSize;
-  /**
-   * A resource containing the metadata for the copied-to object. This property
-   * is present in the response only when copying completes.
-   */
+
+  /// A resource containing the metadata for the copied-to object. This property
+  /// is present in the response only when copying completes.
   Object resource;
-  /**
-   * A token to use in subsequent requests to continue copying data. This token
-   * is present in the response only when there is more data to copy.
-   */
+
+  /// A token to use in subsequent requests to continue copying data. This token
+  /// is present in the response only when there is more data to copy.
   core.String rewriteToken;
-  /**
-   * The total bytes written so far, which can be used to provide a waiting user
-   * with a progress indicator. This property is always present in the response.
-   */
+
+  /// The total bytes written so far, which can be used to provide a waiting
+  /// user with a progress indicator. This property is always present in the
+  /// response.
   core.String totalBytesRewritten;
 
   RewriteResponse();
@@ -4267,8 +6015,9 @@ class RewriteResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (done != null) {
       _json["done"] = done;
     }
@@ -4286,6 +6035,87 @@ class RewriteResponse {
     }
     if (totalBytesRewritten != null) {
       _json["totalBytesRewritten"] = totalBytesRewritten;
+    }
+    return _json;
+  }
+}
+
+/// A subscription to receive Google PubSub notifications.
+class ServiceAccount {
+  /// The ID of the notification.
+  core.String emailAddress;
+
+  /// The kind of item this is. For notifications, this is always
+  /// storage#notification.
+  core.String kind;
+
+  ServiceAccount();
+
+  ServiceAccount.fromJson(core.Map _json) {
+    if (_json.containsKey("email_address")) {
+      emailAddress = _json["email_address"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (emailAddress != null) {
+      _json["email_address"] = emailAddress;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    return _json;
+  }
+}
+
+/// A storage.(buckets|objects).testIamPermissions response.
+class TestIamPermissionsResponse {
+  /// The kind of item this is.
+  core.String kind;
+
+  /// The permissions held by the caller. Permissions are always of the format
+  /// storage.resource.capability, where resource is one of buckets or objects.
+  /// The supported permissions are as follows:
+  /// - storage.buckets.delete — Delete bucket.
+  /// - storage.buckets.get — Read bucket metadata.
+  /// - storage.buckets.getIamPolicy — Read bucket IAM policy.
+  /// - storage.buckets.create — Create bucket.
+  /// - storage.buckets.list — List buckets.
+  /// - storage.buckets.setIamPolicy — Update bucket IAM policy.
+  /// - storage.buckets.update — Update bucket metadata.
+  /// - storage.objects.delete — Delete object.
+  /// - storage.objects.get — Read object data and metadata.
+  /// - storage.objects.getIamPolicy — Read object IAM policy.
+  /// - storage.objects.create — Create object.
+  /// - storage.objects.list — List objects.
+  /// - storage.objects.setIamPolicy — Update object IAM policy.
+  /// - storage.objects.update — Update object metadata.
+  core.List<core.String> permissions;
+
+  TestIamPermissionsResponse();
+
+  TestIamPermissionsResponse.fromJson(core.Map _json) {
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("permissions")) {
+      permissions = _json["permissions"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (permissions != null) {
+      _json["permissions"] = permissions;
     }
     return _json;
   }

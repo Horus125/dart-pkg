@@ -9,59 +9,61 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
 
 const core.String USER_AGENT = 'dart-api-client content/v2';
 
-/**
- * Manages product items, inventory, and Merchant Center accounts for Google
- * Shopping.
- */
+/// Manages product items, inventory, and Merchant Center accounts for Google
+/// Shopping.
 class ContentApi {
-  /** Manage your product listings and accounts for Google Shopping */
+  /// Manage your product listings and accounts for Google Shopping
   static const ContentScope = "https://www.googleapis.com/auth/content";
-
 
   final commons.ApiRequester _requester;
 
   AccountsResourceApi get accounts => new AccountsResourceApi(_requester);
-  AccountshippingResourceApi get accountshipping => new AccountshippingResourceApi(_requester);
-  AccountstatusesResourceApi get accountstatuses => new AccountstatusesResourceApi(_requester);
+  AccountstatusesResourceApi get accountstatuses =>
+      new AccountstatusesResourceApi(_requester);
   AccounttaxResourceApi get accounttax => new AccounttaxResourceApi(_requester);
   DatafeedsResourceApi get datafeeds => new DatafeedsResourceApi(_requester);
-  DatafeedstatusesResourceApi get datafeedstatuses => new DatafeedstatusesResourceApi(_requester);
+  DatafeedstatusesResourceApi get datafeedstatuses =>
+      new DatafeedstatusesResourceApi(_requester);
   InventoryResourceApi get inventory => new InventoryResourceApi(_requester);
   OrdersResourceApi get orders => new OrdersResourceApi(_requester);
   ProductsResourceApi get products => new ProductsResourceApi(_requester);
-  ProductstatusesResourceApi get productstatuses => new ProductstatusesResourceApi(_requester);
-  ShippingsettingsResourceApi get shippingsettings => new ShippingsettingsResourceApi(_requester);
+  ProductstatusesResourceApi get productstatuses =>
+      new ProductstatusesResourceApi(_requester);
+  ShippingsettingsResourceApi get shippingsettings =>
+      new ShippingsettingsResourceApi(_requester);
 
-  ContentApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "content/v2/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  ContentApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "content/v2/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class AccountsResourceApi {
   final commons.ApiRequester _requester;
 
-  AccountsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AccountsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Returns information about the authenticated user.
-   *
-   * Request parameters:
-   *
-   * Completes with a [AccountsAuthInfoResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountsAuthInfoResponse> authinfo() {
+  /// Returns information about the authenticated user.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountsAuthInfoResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountsAuthInfoResponse> authinfo({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -69,38 +71,108 @@ class AccountsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'accounts/authinfo';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountsAuthInfoResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccountsAuthInfoResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves, inserts, updates, and deletes multiple Merchant Center
-   * (sub-)accounts in a single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountsCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountsCustomBatchResponse> custombatch(AccountsCustomBatchRequest request, {core.bool dryRun}) {
+  /// Claims the website of a Merchant Center sub-account. This method can only
+  /// be called for accounts to which the managing account has access: either
+  /// the managing account itself for any Merchant Center account, or any
+  /// sub-account when the managing account is a multi-client account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account whose website is claimed.
+  ///
+  /// [overwrite] - Only available to selected merchants. When set to True, this
+  /// flag removes any existing claim on the requested website by another
+  /// account and replaces it with a claim from this account.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountsClaimWebsiteResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountsClaimWebsiteResponse> claimwebsite(
+      core.String merchantId, core.String accountId,
+      {core.bool overwrite, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (merchantId == null) {
+      throw new core.ArgumentError("Parameter merchantId is required.");
+    }
+    if (accountId == null) {
+      throw new core.ArgumentError("Parameter accountId is required.");
+    }
+    if (overwrite != null) {
+      _queryParams["overwrite"] = ["${overwrite}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounts/' +
+        commons.Escaper.ecapeVariable('$accountId') +
+        '/claimwebsite';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccountsClaimWebsiteResponse.fromJson(data));
+  }
+
+  /// Retrieves, inserts, updates, and deletes multiple Merchant Center
+  /// (sub-)accounts in a single request.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountsCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountsCustomBatchResponse> custombatch(
+      AccountsCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -113,38 +185,47 @@ class AccountsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'accounts/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountsCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccountsCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Deletes a Merchant Center sub-account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Deletes a Merchant Center sub-account. This method can only be called for
+  /// multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [force] - Flag to delete sub-accounts with products. The default value is
+  /// false.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.bool force, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -160,40 +241,52 @@ class AccountsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if (force != null) {
+      _queryParams["force"] = ["${force}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounts/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account.
-   *
-   * Completes with a [Account].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Account> get(core.String merchantId, core.String accountId) {
+  /// Retrieves a Merchant Center account. This method can only be called for
+  /// accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Account].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Account> get(core.String merchantId, core.String accountId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -207,39 +300,46 @@ class AccountsResourceApi {
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounts/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Account.fromJson(data));
   }
 
-  /**
-   * Creates a Merchant Center sub-account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Account].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Account> insert(Account request, core.String merchantId, {core.bool dryRun}) {
+  /// Creates a Merchant Center sub-account. This method can only be called for
+  /// multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Account].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Account> insert(Account request, core.String merchantId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -256,40 +356,45 @@ class AccountsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Account.fromJson(data));
   }
 
-  /**
-   * Lists the sub-accounts in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of accounts to return in the response,
-   * used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [AccountsListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountsListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the sub-accounts in your Merchant Center account. This method can
+  /// only be called for multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of accounts to return in the response,
+  /// used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountsListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountsListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -306,41 +411,50 @@ class AccountsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccountsListResponse.fromJson(data));
   }
 
-  /**
-   * Updates a Merchant Center account. This method supports patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Account].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Account> patch(Account request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates a Merchant Center account. This method can only be called for
+  /// accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Account].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Account> patch(
+      Account request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -360,41 +474,51 @@ class AccountsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounts/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Account.fromJson(data));
   }
 
-  /**
-   * Updates a Merchant Center account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Account].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Account> update(Account request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates a Merchant Center account. This method can only be called for
+  /// accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Account].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Account> update(
+      Account request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -414,303 +538,46 @@ class AccountsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounts/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounts/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Account.fromJson(data));
   }
-
 }
-
-
-class AccountshippingResourceApi {
-  final commons.ApiRequester _requester;
-
-  AccountshippingResourceApi(commons.ApiRequester client) : 
-      _requester = client;
-
-  /**
-   * Retrieves and updates the shipping settings of multiple accounts in a
-   * single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountshippingCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountshippingCustomBatchResponse> custombatch(AccountshippingCustomBatchRequest request, {core.bool dryRun}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
-    }
-    if (dryRun != null) {
-      _queryParams["dryRun"] = ["${dryRun}"];
-    }
-
-    _url = 'accountshipping/batch';
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountshippingCustomBatchResponse.fromJson(data));
-  }
-
-  /**
-   * Retrieves the shipping settings of the account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account
-   * shipping settings.
-   *
-   * Completes with a [AccountShipping].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountShipping> get(core.String merchantId, core.String accountId) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (merchantId == null) {
-      throw new core.ArgumentError("Parameter merchantId is required.");
-    }
-    if (accountId == null) {
-      throw new core.ArgumentError("Parameter accountId is required.");
-    }
-
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountshipping/' + commons.Escaper.ecapeVariable('$accountId');
-
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountShipping.fromJson(data));
-  }
-
-  /**
-   * Lists the shipping settings of the sub-accounts in your Merchant Center
-   * account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of shipping settings to return in the
-   * response, used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [AccountshippingListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountshippingListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (merchantId == null) {
-      throw new core.ArgumentError("Parameter merchantId is required.");
-    }
-    if (maxResults != null) {
-      _queryParams["maxResults"] = ["${maxResults}"];
-    }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
-    }
-
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountshipping';
-
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountshippingListResponse.fromJson(data));
-  }
-
-  /**
-   * Updates the shipping settings of the account. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account
-   * shipping settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountShipping].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountShipping> patch(AccountShipping request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
-    }
-    if (merchantId == null) {
-      throw new core.ArgumentError("Parameter merchantId is required.");
-    }
-    if (accountId == null) {
-      throw new core.ArgumentError("Parameter accountId is required.");
-    }
-    if (dryRun != null) {
-      _queryParams["dryRun"] = ["${dryRun}"];
-    }
-
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountshipping/' + commons.Escaper.ecapeVariable('$accountId');
-
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountShipping.fromJson(data));
-  }
-
-  /**
-   * Updates the shipping settings of the account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account
-   * shipping settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountShipping].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountShipping> update(AccountShipping request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
-    }
-    if (merchantId == null) {
-      throw new core.ArgumentError("Parameter merchantId is required.");
-    }
-    if (accountId == null) {
-      throw new core.ArgumentError("Parameter accountId is required.");
-    }
-    if (dryRun != null) {
-      _queryParams["dryRun"] = ["${dryRun}"];
-    }
-
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountshipping/' + commons.Escaper.ecapeVariable('$accountId');
-
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountShipping.fromJson(data));
-  }
-
-}
-
 
 class AccountstatusesResourceApi {
   final commons.ApiRequester _requester;
 
-  AccountstatusesResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AccountstatusesResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [AccountstatusesCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountstatusesCustomBatchResponse> custombatch(AccountstatusesCustomBatchRequest request) {
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountstatusesCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountstatusesCustomBatchResponse> custombatch(
+      AccountstatusesCustomBatchRequest request,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -720,38 +587,46 @@ class AccountstatusesResourceApi {
 
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'accountstatuses/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountstatusesCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccountstatusesCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves the status of a Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account.
-   *
-   * Completes with a [AccountStatus].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountStatus> get(core.String merchantId, core.String accountId) {
+  /// Retrieves the status of a Merchant Center account. This method can only be
+  /// called for accounts to which the managing account has access: either the
+  /// managing account itself for any Merchant Center account, or any
+  /// sub-account when the managing account is a multi-client account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountStatus].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountStatus> get(core.String merchantId, core.String accountId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -765,40 +640,47 @@ class AccountstatusesResourceApi {
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountstatuses/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accountstatuses/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccountStatus.fromJson(data));
   }
 
-  /**
-   * Lists the statuses of the sub-accounts in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of account statuses to return in the
-   * response, used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [AccountstatusesListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountstatusesListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the statuses of the sub-accounts in your Merchant Center account.
+  /// This method can only be called for multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of account statuses to return in the
+  /// response, used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountstatusesListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountstatusesListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -814,48 +696,52 @@ class AccountstatusesResourceApi {
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/accountstatuses';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccountstatusesListResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccountstatusesListResponse.fromJson(data));
   }
-
 }
-
 
 class AccounttaxResourceApi {
   final commons.ApiRequester _requester;
 
-  AccounttaxResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AccounttaxResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Retrieves and updates tax settings of multiple accounts in a single
-   * request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccounttaxCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccounttaxCustomBatchResponse> custombatch(AccounttaxCustomBatchRequest request, {core.bool dryRun}) {
+  /// Retrieves and updates tax settings of multiple accounts in a single
+  /// request.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccounttaxCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccounttaxCustomBatchResponse> custombatch(
+      AccounttaxCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -868,39 +754,47 @@ class AccounttaxResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'accounttax/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new AccounttaxCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new AccounttaxCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves the tax settings of the account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account tax
-   * settings.
-   *
-   * Completes with a [AccountTax].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountTax> get(core.String merchantId, core.String accountId) {
+  /// Retrieves the tax settings of the account. This method can only be called
+  /// for accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update account tax
+  /// settings.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountTax].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountTax> get(core.String merchantId, core.String accountId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -914,40 +808,47 @@ class AccounttaxResourceApi {
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounttax/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounttax/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccountTax.fromJson(data));
   }
 
-  /**
-   * Lists the tax settings of the sub-accounts in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of tax settings to return in the
-   * response, used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [AccounttaxListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccounttaxListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the tax settings of the sub-accounts in your Merchant Center
+  /// account. This method can only be called for multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of tax settings to return in the
+  /// response, used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccounttaxListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccounttaxListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -963,44 +864,52 @@ class AccounttaxResourceApi {
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounttax';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccounttaxListResponse.fromJson(data));
   }
 
-  /**
-   * Updates the tax settings of the account. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account tax
-   * settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountTax].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountTax> patch(AccountTax request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates the tax settings of the account. This method can only be called
+  /// for accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account. This method supports patch
+  /// semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update account tax
+  /// settings.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountTax].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountTax> patch(
+      AccountTax request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1020,42 +929,52 @@ class AccounttaxResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounttax/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounttax/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccountTax.fromJson(data));
   }
 
-  /**
-   * Updates the tax settings of the account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update account tax
-   * settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [AccountTax].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AccountTax> update(AccountTax request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates the tax settings of the account. This method can only be called
+  /// for accounts to which the managing account has access: either the managing
+  /// account itself for any Merchant Center account, or any sub-account when
+  /// the managing account is a multi-client account.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update account tax
+  /// settings.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AccountTax].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AccountTax> update(
+      AccountTax request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1075,44 +994,49 @@ class AccounttaxResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/accounttax/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/accounttax/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AccountTax.fromJson(data));
   }
-
 }
-
 
 class DatafeedsResourceApi {
   final commons.ApiRequester _requester;
 
-  DatafeedsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  DatafeedsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [DatafeedsCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<DatafeedsCustomBatchResponse> custombatch(DatafeedsCustomBatchRequest request, {core.bool dryRun}) {
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [DatafeedsCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<DatafeedsCustomBatchResponse> custombatch(
+      DatafeedsCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1125,38 +1049,44 @@ class DatafeedsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'datafeeds/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new DatafeedsCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new DatafeedsCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Deletes a datafeed from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [datafeedId] - null
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String merchantId, core.String datafeedId, {core.bool dryRun}) {
+  /// Deletes a datafeed configuration from your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [datafeedId] - null
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String merchantId, core.String datafeedId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1172,40 +1102,47 @@ class DatafeedsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds/' + commons.Escaper.ecapeVariable('$datafeedId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/datafeeds/' +
+        commons.Escaper.ecapeVariable('$datafeedId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a datafeed from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [datafeedId] - null
-   *
-   * Completes with a [Datafeed].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Datafeed> get(core.String merchantId, core.String datafeedId) {
+  /// Retrieves a datafeed configuration from your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [datafeedId] - null
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Datafeed].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Datafeed> get(core.String merchantId, core.String datafeedId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1219,39 +1156,46 @@ class DatafeedsResourceApi {
     if (datafeedId == null) {
       throw new core.ArgumentError("Parameter datafeedId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds/' + commons.Escaper.ecapeVariable('$datafeedId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/datafeeds/' +
+        commons.Escaper.ecapeVariable('$datafeedId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Datafeed.fromJson(data));
   }
 
-  /**
-   * Registers a datafeed with your Merchant Center account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Datafeed].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Datafeed> insert(Datafeed request, core.String merchantId, {core.bool dryRun}) {
+  /// Registers a datafeed configuration with your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Datafeed].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Datafeed> insert(Datafeed request, core.String merchantId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1268,40 +1212,45 @@ class DatafeedsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Datafeed.fromJson(data));
   }
 
-  /**
-   * Lists the datafeeds in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of products to return in the response,
-   * used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [DatafeedsListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<DatafeedsListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the datafeeds in your Merchant Center account. This method can only
+  /// be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of products to return in the response,
+  /// used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [DatafeedsListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<DatafeedsListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1318,42 +1267,48 @@ class DatafeedsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new DatafeedsListResponse.fromJson(data));
   }
 
-  /**
-   * Updates a datafeed of your Merchant Center account. This method supports
-   * patch semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [datafeedId] - null
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Datafeed].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Datafeed> patch(Datafeed request, core.String merchantId, core.String datafeedId, {core.bool dryRun}) {
+  /// Updates a datafeed configuration of your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts. This method
+  /// supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [datafeedId] - null
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Datafeed].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Datafeed> patch(
+      Datafeed request, core.String merchantId, core.String datafeedId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1373,41 +1328,49 @@ class DatafeedsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds/' + commons.Escaper.ecapeVariable('$datafeedId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/datafeeds/' +
+        commons.Escaper.ecapeVariable('$datafeedId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Datafeed.fromJson(data));
   }
 
-  /**
-   * Updates a datafeed of your Merchant Center account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [datafeedId] - null
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Datafeed].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Datafeed> update(Datafeed request, core.String merchantId, core.String datafeedId, {core.bool dryRun}) {
+  /// Updates a datafeed configuration of your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [datafeedId] - null
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Datafeed].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Datafeed> update(
+      Datafeed request, core.String merchantId, core.String datafeedId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1427,42 +1390,47 @@ class DatafeedsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeeds/' + commons.Escaper.ecapeVariable('$datafeedId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/datafeeds/' +
+        commons.Escaper.ecapeVariable('$datafeedId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Datafeed.fromJson(data));
   }
-
 }
-
 
 class DatafeedstatusesResourceApi {
   final commons.ApiRequester _requester;
 
-  DatafeedstatusesResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  DatafeedstatusesResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [DatafeedstatusesCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<DatafeedstatusesCustomBatchResponse> custombatch(DatafeedstatusesCustomBatchRequest request) {
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [DatafeedstatusesCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<DatafeedstatusesCustomBatchResponse> custombatch(
+      DatafeedstatusesCustomBatchRequest request,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1473,37 +1441,54 @@ class DatafeedstatusesResourceApi {
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'datafeedstatuses/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new DatafeedstatusesCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new DatafeedstatusesCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves the status of a datafeed from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - null
-   *
-   * [datafeedId] - null
-   *
-   * Completes with a [DatafeedStatus].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<DatafeedStatus> get(core.String merchantId, core.String datafeedId) {
+  /// Retrieves the status of a datafeed from your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - null
+  ///
+  /// [datafeedId] - null
+  ///
+  /// [country] - The country for which to get the datafeed status. If this
+  /// parameter is provided then language must also be provided. Note that this
+  /// parameter is required for feeds targeting multiple countries and
+  /// languages, since a feed may have a different status for each target.
+  ///
+  /// [language] - The language for which to get the datafeed status. If this
+  /// parameter is provided then country must also be provided. Note that this
+  /// parameter is required for feeds targeting multiple countries and
+  /// languages, since a feed may have a different status for each target.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [DatafeedStatus].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<DatafeedStatus> get(
+      core.String merchantId, core.String datafeedId,
+      {core.String country, core.String language, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1517,40 +1502,53 @@ class DatafeedstatusesResourceApi {
     if (datafeedId == null) {
       throw new core.ArgumentError("Parameter datafeedId is required.");
     }
+    if (country != null) {
+      _queryParams["country"] = [country];
+    }
+    if (language != null) {
+      _queryParams["language"] = [language];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeedstatuses/' + commons.Escaper.ecapeVariable('$datafeedId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/datafeedstatuses/' +
+        commons.Escaper.ecapeVariable('$datafeedId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new DatafeedStatus.fromJson(data));
   }
 
-  /**
-   * Lists the statuses of the datafeeds in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of products to return in the response,
-   * used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [DatafeedstatusesListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<DatafeedstatusesListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the statuses of the datafeeds in your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of products to return in the response,
+  /// used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [DatafeedstatusesListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<DatafeedstatusesListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1567,48 +1565,52 @@ class DatafeedstatusesResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/datafeedstatuses';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new DatafeedstatusesListResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new DatafeedstatusesListResponse.fromJson(data));
   }
-
 }
-
 
 class InventoryResourceApi {
   final commons.ApiRequester _requester;
 
-  InventoryResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  InventoryResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Updates price and availability for multiple products or stores in a single
-   * request. This operation does not update the expiration date of the
-   * products.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [InventoryCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<InventoryCustomBatchResponse> custombatch(InventoryCustomBatchRequest request, {core.bool dryRun}) {
+  /// Updates price and availability for multiple products or stores in a single
+  /// request. This operation does not update the expiration date of the
+  /// products. This method can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [InventoryCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<InventoryCustomBatchResponse> custombatch(
+      InventoryCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1622,47 +1624,54 @@ class InventoryResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'inventory/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new InventoryCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new InventoryCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Updates price and availability of a product in your Merchant Center
-   * account. This operation does not update the expiration date of the product.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [storeCode] - The code of the store for which to update price and
-   * availability. Use online to update price and availability of an online
-   * product.
-   *
-   * [productId] - The ID of the product for which to update price and
-   * availability.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [InventorySetResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<InventorySetResponse> set(InventorySetRequest request, core.String merchantId, core.String storeCode, core.String productId, {core.bool dryRun}) {
+  /// Updates price and availability of a product in your Merchant Center
+  /// account. This operation does not update the expiration date of the
+  /// product. This method can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [storeCode] - The code of the store for which to update price and
+  /// availability. Use online to update price and availability of an online
+  /// product.
+  ///
+  /// [productId] - The ID of the product for which to update price and
+  /// availability.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [InventorySetResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<InventorySetResponse> set(InventorySetRequest request,
+      core.String merchantId, core.String storeCode, core.String productId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1685,48 +1694,57 @@ class InventoryResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/inventory/' + commons.Escaper.ecapeVariable('$storeCode') + '/products/' + commons.Escaper.ecapeVariable('$productId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/inventory/' +
+        commons.Escaper.ecapeVariable('$storeCode') +
+        '/products/' +
+        commons.Escaper.ecapeVariable('$productId');
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new InventorySetResponse.fromJson(data));
   }
-
 }
-
 
 class OrdersResourceApi {
   final commons.ApiRequester _requester;
 
-  OrdersResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  OrdersResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Marks an order as acknowledged.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersAcknowledgeResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersAcknowledgeResponse> acknowledge(OrdersAcknowledgeRequest request, core.String merchantId, core.String orderId) {
+  /// Marks an order as acknowledged. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersAcknowledgeResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersAcknowledgeResponse> acknowledge(
+      OrdersAcknowledgeRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1743,38 +1761,48 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/acknowledge';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/acknowledge';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersAcknowledgeResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersAcknowledgeResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Moves a test order from state "inProgress" to state
-   * "pendingShipment".
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the test order to modify.
-   *
-   * Completes with a [OrdersAdvanceTestOrderResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersAdvanceTestOrderResponse> advancetestorder(core.String merchantId, core.String orderId) {
+  /// Sandbox only. Moves a test order from state "inProgress" to state
+  /// "pendingShipment". This method can only be called for non-multi-client
+  /// accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the test order to modify.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersAdvanceTestOrderResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersAdvanceTestOrderResponse> advancetestorder(
+      core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1788,39 +1816,49 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/testorders/' + commons.Escaper.ecapeVariable('$orderId') + '/advance';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/testorders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/advance';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersAdvanceTestOrderResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersAdvanceTestOrderResponse.fromJson(data));
   }
 
-  /**
-   * Cancels all line items in an order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order to cancel.
-   *
-   * Completes with a [OrdersCancelResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCancelResponse> cancel(OrdersCancelRequest request, core.String merchantId, core.String orderId) {
+  /// Cancels all line items in an order, making a full refund. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order to cancel.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCancelResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCancelResponse> cancel(
+      OrdersCancelRequest request, core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1837,39 +1875,50 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/cancel';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/cancel';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersCancelResponse.fromJson(data));
   }
 
-  /**
-   * Cancels a line item.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersCancelLineItemResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCancelLineItemResponse> cancellineitem(OrdersCancelLineItemRequest request, core.String merchantId, core.String orderId) {
+  /// Cancels a line item, making a full refund. This method can only be called
+  /// for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCancelLineItemResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCancelLineItemResponse> cancellineitem(
+      OrdersCancelLineItemRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1886,37 +1935,47 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/cancelLineItem';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/cancelLineItem';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCancelLineItemResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCancelLineItemResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Creates a test order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * Completes with a [OrdersCreateTestOrderResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCreateTestOrderResponse> createtestorder(OrdersCreateTestOrderRequest request, core.String merchantId) {
+  /// Sandbox only. Creates a test order. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCreateTestOrderResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCreateTestOrderResponse> createtestorder(
+      OrdersCreateTestOrderRequest request, core.String merchantId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1929,36 +1988,43 @@ class OrdersResourceApi {
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/testorders';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCreateTestOrderResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCreateTestOrderResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves or modifies multiple orders in a single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [OrdersCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCustomBatchResponse> custombatch(OrdersCustomBatchRequest request) {
+  /// Retrieves or modifies multiple orders in a single request. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCustomBatchResponse> custombatch(
+      OrdersCustomBatchRequest request,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1969,37 +2035,43 @@ class OrdersResourceApi {
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'orders/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves an order from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [Order].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Order> get(core.String merchantId, core.String orderId) {
+  /// Retrieves an order from your Merchant Center account. This method can only
+  /// be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Order].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Order> get(core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2013,37 +2085,45 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Order.fromJson(data));
   }
 
-  /**
-   * Retrieves an order using merchant order id.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [merchantOrderId] - The merchant order id to be looked for.
-   *
-   * Completes with a [OrdersGetByMerchantOrderIdResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersGetByMerchantOrderIdResponse> getbymerchantorderid(core.String merchantId, core.String merchantOrderId) {
+  /// Retrieves an order using merchant order id. This method can only be called
+  /// for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [merchantOrderId] - The merchant order id to be looked for.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersGetByMerchantOrderIdResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersGetByMerchantOrderIdResponse> getbymerchantorderid(
+      core.String merchantId, core.String merchantOrderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2057,43 +2137,52 @@ class OrdersResourceApi {
     if (merchantOrderId == null) {
       throw new core.ArgumentError("Parameter merchantOrderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/ordersbymerchantid/' + commons.Escaper.ecapeVariable('$merchantOrderId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/ordersbymerchantid/' +
+        commons.Escaper.ecapeVariable('$merchantOrderId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersGetByMerchantOrderIdResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersGetByMerchantOrderIdResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Retrieves an order template that can be used to quickly
-   * create a new order in sandbox.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [templateName] - The name of the template to retrieve.
-   * Possible string values are:
-   * - "template1"
-   * - "template1a"
-   * - "template1b"
-   * - "template2"
-   *
-   * Completes with a [OrdersGetTestOrderTemplateResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersGetTestOrderTemplateResponse> gettestordertemplate(core.String merchantId, core.String templateName) {
+  /// Sandbox only. Retrieves an order template that can be used to quickly
+  /// create a new order in sandbox. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [templateName] - The name of the template to retrieve.
+  /// Possible string values are:
+  /// - "template1"
+  /// - "template1a"
+  /// - "template1b"
+  /// - "template2"
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersGetTestOrderTemplateResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersGetTestOrderTemplateResponse> gettestordertemplate(
+      core.String merchantId, core.String templateName,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2107,71 +2196,86 @@ class OrdersResourceApi {
     if (templateName == null) {
       throw new core.ArgumentError("Parameter templateName is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/testordertemplates/' + commons.Escaper.ecapeVariable('$templateName');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/testordertemplates/' +
+        commons.Escaper.ecapeVariable('$templateName');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersGetTestOrderTemplateResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersGetTestOrderTemplateResponse.fromJson(data));
   }
 
-  /**
-   * Lists the orders in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [acknowledged] - Obtains orders that match the acknowledgement status. When
-   * set to true, obtains orders that have been acknowledged. When false,
-   * obtains orders that have not been acknowledged.
-   * We recommend using this filter set to false, in conjunction with the
-   * acknowledge call, such that only un-acknowledged orders are returned.
-   *
-   * [maxResults] - The maximum number of orders to return in the response, used
-   * for paging. The default value is 25 orders per page, and the maximum
-   * allowed value is 250 orders per page.
-   * Known issue: All List calls will return all Orders without limit regardless
-   * of the value of this field.
-   *
-   * [orderBy] - The ordering of the returned list. The only supported value are
-   * placedDate desc and placedDate asc for now, which returns orders sorted by
-   * placement date. "placedDate desc" stands for listing orders by placement
-   * date, from oldest to most recent. "placedDate asc" stands for listing
-   * orders by placement date, from most recent to oldest. In future releases
-   * we'll support other sorting criteria.
-   * Possible string values are:
-   * - "placedDate asc"
-   * - "placedDate desc"
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * [placedDateEnd] - Obtains orders placed before this date (exclusively), in
-   * ISO 8601 format.
-   *
-   * [placedDateStart] - Obtains orders placed after this date (inclusively), in
-   * ISO 8601 format.
-   *
-   * [statuses] - Obtains orders that match any of the specified statuses.
-   * Multiple values can be specified with comma separation. Additionally,
-   * please note that active is a shortcut for pendingShipment and
-   * partiallyShipped, and completed is a shortcut for shipped ,
-   * partiallyDelivered, delivered, partiallyReturned, returned, and canceled.
-   *
-   * Completes with a [OrdersListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersListResponse> list(core.String merchantId, {core.bool acknowledged, core.int maxResults, core.String orderBy, core.String pageToken, core.String placedDateEnd, core.String placedDateStart, core.List<core.String> statuses}) {
+  /// Lists the orders in your Merchant Center account. This method can only be
+  /// called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [acknowledged] - Obtains orders that match the acknowledgement status.
+  /// When set to true, obtains orders that have been acknowledged. When false,
+  /// obtains orders that have not been acknowledged.
+  /// We recommend using this filter set to false, in conjunction with the
+  /// acknowledge call, such that only un-acknowledged orders are returned.
+  ///
+  /// [maxResults] - The maximum number of orders to return in the response,
+  /// used for paging. The default value is 25 orders per page, and the maximum
+  /// allowed value is 250 orders per page.
+  /// Known issue: All List calls will return all Orders without limit
+  /// regardless of the value of this field.
+  ///
+  /// [orderBy] - The ordering of the returned list. The only supported value
+  /// are placedDate desc and placedDate asc for now, which returns orders
+  /// sorted by placement date. "placedDate desc" stands for listing orders by
+  /// placement date, from oldest to most recent. "placedDate asc" stands for
+  /// listing orders by placement date, from most recent to oldest. In future
+  /// releases we'll support other sorting criteria.
+  /// Possible string values are:
+  /// - "placedDate asc"
+  /// - "placedDate desc"
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [placedDateEnd] - Obtains orders placed before this date (exclusively), in
+  /// ISO 8601 format.
+  ///
+  /// [placedDateStart] - Obtains orders placed after this date (inclusively),
+  /// in ISO 8601 format.
+  ///
+  /// [statuses] - Obtains orders that match any of the specified statuses.
+  /// Multiple values can be specified with comma separation. Additionally,
+  /// please note that active is a shortcut for pendingShipment and
+  /// partiallyShipped, and completed is a shortcut for shipped ,
+  /// partiallyDelivered, delivered, partiallyReturned, returned, and canceled.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersListResponse> list(core.String merchantId,
+      {core.bool acknowledged,
+      core.int maxResults,
+      core.String orderBy,
+      core.String pageToken,
+      core.String placedDateEnd,
+      core.String placedDateStart,
+      core.List<core.String> statuses,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2203,39 +2307,45 @@ class OrdersResourceApi {
     if (statuses != null) {
       _queryParams["statuses"] = statuses;
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersListResponse.fromJson(data));
   }
 
-  /**
-   * Refund a portion of the order, up to the full amount paid.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order to refund.
-   *
-   * Completes with a [OrdersRefundResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersRefundResponse> refund(OrdersRefundRequest request, core.String merchantId, core.String orderId) {
+  /// Refund a portion of the order, up to the full amount paid. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order to refund.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersRefundResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersRefundResponse> refund(
+      OrdersRefundRequest request, core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2252,39 +2362,50 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/refund';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/refund';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersRefundResponse.fromJson(data));
   }
 
-  /**
-   * Returns a line item.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersReturnLineItemResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersReturnLineItemResponse> returnlineitem(OrdersReturnLineItemRequest request, core.String merchantId, core.String orderId) {
+  /// Returns a line item. This method can only be called for non-multi-client
+  /// accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersReturnLineItemResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersReturnLineItemResponse> returnlineitem(
+      OrdersReturnLineItemRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2301,39 +2422,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/returnLineItem';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/returnLineItem';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersReturnLineItemResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersReturnLineItemResponse.fromJson(data));
   }
 
-  /**
-   * Marks line item(s) as shipped.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersShipLineItemsResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersShipLineItemsResponse> shiplineitems(OrdersShipLineItemsRequest request, core.String merchantId, core.String orderId) {
+  /// Marks line item(s) as shipped. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersShipLineItemsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersShipLineItemsResponse> shiplineitems(
+      OrdersShipLineItemsRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2350,39 +2483,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/shipLineItems';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/shipLineItems';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersShipLineItemsResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersShipLineItemsResponse.fromJson(data));
   }
 
-  /**
-   * Updates the merchant order ID for a given order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersUpdateMerchantOrderIdResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersUpdateMerchantOrderIdResponse> updatemerchantorderid(OrdersUpdateMerchantOrderIdRequest request, core.String merchantId, core.String orderId) {
+  /// Updates the merchant order ID for a given order. This method can only be
+  /// called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersUpdateMerchantOrderIdResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersUpdateMerchantOrderIdResponse> updatemerchantorderid(
+      OrdersUpdateMerchantOrderIdRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2399,39 +2544,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/updateMerchantOrderId';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/updateMerchantOrderId';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersUpdateMerchantOrderIdResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersUpdateMerchantOrderIdResponse.fromJson(data));
   }
 
-  /**
-   * Updates a shipment's status, carrier, and/or tracking ID.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersUpdateShipmentResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersUpdateShipmentResponse> updateshipment(OrdersUpdateShipmentRequest request, core.String merchantId, core.String orderId) {
+  /// Updates a shipment's status, carrier, and/or tracking ID. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersUpdateShipmentResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersUpdateShipmentResponse> updateshipment(
+      OrdersUpdateShipmentRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2448,46 +2605,54 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/updateShipment';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/updateShipment';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersUpdateShipmentResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersUpdateShipmentResponse.fromJson(data));
   }
-
 }
-
 
 class ProductsResourceApi {
   final commons.ApiRequester _requester;
 
-  ProductsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ProductsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Retrieves, inserts, and deletes multiple products in a single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [ProductsCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ProductsCustomBatchResponse> custombatch(ProductsCustomBatchRequest request, {core.bool dryRun}) {
+  /// Retrieves, inserts, and deletes multiple products in a single request.
+  /// This method can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ProductsCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ProductsCustomBatchResponse> custombatch(
+      ProductsCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2500,38 +2665,44 @@ class ProductsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = 'products/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ProductsCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new ProductsCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Deletes a product from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [productId] - The ID of the product.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future delete(core.String merchantId, core.String productId, {core.bool dryRun}) {
+  /// Deletes a product from your Merchant Center account. This method can only
+  /// be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [productId] - The ID of the product.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String merchantId, core.String productId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2547,40 +2718,47 @@ class ProductsResourceApi {
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _downloadOptions = null;
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/products/' + commons.Escaper.ecapeVariable('$productId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/products/' +
+        commons.Escaper.ecapeVariable('$productId');
 
-    var _response = _requester.request(_url,
-                                       "DELETE",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => null);
   }
 
-  /**
-   * Retrieves a product from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [productId] - The ID of the product.
-   *
-   * Completes with a [Product].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Product> get(core.String merchantId, core.String productId) {
+  /// Retrieves a product from your Merchant Center account. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [productId] - The ID of the product.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Product].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Product> get(core.String merchantId, core.String productId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2594,39 +2772,48 @@ class ProductsResourceApi {
     if (productId == null) {
       throw new core.ArgumentError("Parameter productId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/products/' + commons.Escaper.ecapeVariable('$productId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/products/' +
+        commons.Escaper.ecapeVariable('$productId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Product.fromJson(data));
   }
 
-  /**
-   * Uploads a product to your Merchant Center account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [Product].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Product> insert(Product request, core.String merchantId, {core.bool dryRun}) {
+  /// Uploads a product to your Merchant Center account. If an item with the
+  /// same channel, contentLanguage, offerId, and targetCountry already exists,
+  /// this method updates that entry. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Product].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Product> insert(Product request, core.String merchantId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2643,44 +2830,52 @@ class ProductsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/products';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Product.fromJson(data));
   }
 
-  /**
-   * Lists the products in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [includeInvalidInsertedItems] - Flag to include the invalid inserted items
-   * in the result of the list request. By default the invalid items are not
-   * shown (the default value is false).
-   *
-   * [maxResults] - The maximum number of products to return in the response,
-   * used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [ProductsListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ProductsListResponse> list(core.String merchantId, {core.bool includeInvalidInsertedItems, core.int maxResults, core.String pageToken}) {
+  /// Lists the products in your Merchant Center account. This method can only
+  /// be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [includeInvalidInsertedItems] - Flag to include the invalid inserted items
+  /// in the result of the list request. By default the invalid items are not
+  /// shown (the default value is false).
+  ///
+  /// [maxResults] - The maximum number of products to return in the response,
+  /// used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ProductsListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ProductsListResponse> list(core.String merchantId,
+      {core.bool includeInvalidInsertedItems,
+      core.int maxResults,
+      core.String pageToken,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2692,7 +2887,9 @@ class ProductsResourceApi {
       throw new core.ArgumentError("Parameter merchantId is required.");
     }
     if (includeInvalidInsertedItems != null) {
-      _queryParams["includeInvalidInsertedItems"] = ["${includeInvalidInsertedItems}"];
+      _queryParams["includeInvalidInsertedItems"] = [
+        "${includeInvalidInsertedItems}"
+      ];
     }
     if (maxResults != null) {
       _queryParams["maxResults"] = ["${maxResults}"];
@@ -2700,44 +2897,51 @@ class ProductsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/products';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ProductsListResponse.fromJson(data));
   }
-
 }
-
 
 class ProductstatusesResourceApi {
   final commons.ApiRequester _requester;
 
-  ProductstatusesResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ProductstatusesResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Gets the statuses of multiple products in a single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [ProductstatusesCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ProductstatusesCustomBatchResponse> custombatch(ProductstatusesCustomBatchRequest request) {
+  /// Gets the statuses of multiple products in a single request. This method
+  /// can only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [includeAttributes] - Flag to include full product data in the results of
+  /// this request. The default value is false.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ProductstatusesCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ProductstatusesCustomBatchResponse> custombatch(
+      ProductstatusesCustomBatchRequest request,
+      {core.bool includeAttributes,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2748,37 +2952,49 @@ class ProductstatusesResourceApi {
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
     }
+    if (includeAttributes != null) {
+      _queryParams["includeAttributes"] = ["${includeAttributes}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'productstatuses/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ProductstatusesCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new ProductstatusesCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Gets the status of a product from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [productId] - The ID of the product.
-   *
-   * Completes with a [ProductStatus].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ProductStatus> get(core.String merchantId, core.String productId) {
+  /// Gets the status of a product from your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [productId] - The ID of the product.
+  ///
+  /// [includeAttributes] - Flag to include full product data in the result of
+  /// this get request. The default value is false.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ProductStatus].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ProductStatus> get(core.String merchantId, core.String productId,
+      {core.bool includeAttributes, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2792,44 +3008,61 @@ class ProductstatusesResourceApi {
     if (productId == null) {
       throw new core.ArgumentError("Parameter productId is required.");
     }
+    if (includeAttributes != null) {
+      _queryParams["includeAttributes"] = ["${includeAttributes}"];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/productstatuses/' + commons.Escaper.ecapeVariable('$productId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/productstatuses/' +
+        commons.Escaper.ecapeVariable('$productId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ProductStatus.fromJson(data));
   }
 
-  /**
-   * Lists the statuses of the products in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [includeInvalidInsertedItems] - Flag to include the invalid inserted items
-   * in the result of the list request. By default the invalid items are not
-   * shown (the default value is false).
-   *
-   * [maxResults] - The maximum number of product statuses to return in the
-   * response, used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [ProductstatusesListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ProductstatusesListResponse> list(core.String merchantId, {core.bool includeInvalidInsertedItems, core.int maxResults, core.String pageToken}) {
+  /// Lists the statuses of the products in your Merchant Center account. This
+  /// method can only be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [includeAttributes] - Flag to include full product data in the results of
+  /// the list request. The default value is false.
+  ///
+  /// [includeInvalidInsertedItems] - Flag to include the invalid inserted items
+  /// in the result of the list request. By default the invalid items are not
+  /// shown (the default value is false).
+  ///
+  /// [maxResults] - The maximum number of product statuses to return in the
+  /// response, used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ProductstatusesListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ProductstatusesListResponse> list(core.String merchantId,
+      {core.bool includeAttributes,
+      core.bool includeInvalidInsertedItems,
+      core.int maxResults,
+      core.String pageToken,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2840,56 +3073,66 @@ class ProductstatusesResourceApi {
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
     }
+    if (includeAttributes != null) {
+      _queryParams["includeAttributes"] = ["${includeAttributes}"];
+    }
     if (includeInvalidInsertedItems != null) {
-      _queryParams["includeInvalidInsertedItems"] = ["${includeInvalidInsertedItems}"];
+      _queryParams["includeInvalidInsertedItems"] = [
+        "${includeInvalidInsertedItems}"
+      ];
     }
     if (maxResults != null) {
       _queryParams["maxResults"] = ["${maxResults}"];
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/productstatuses';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ProductstatusesListResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new ProductstatusesListResponse.fromJson(data));
   }
-
 }
-
 
 class ShippingsettingsResourceApi {
   final commons.ApiRequester _requester;
 
-  ShippingsettingsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ShippingsettingsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * Retrieves and updates the shipping settings of multiple accounts in a
-   * single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [ShippingsettingsCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingsettingsCustomBatchResponse> custombatch(ShippingsettingsCustomBatchRequest request, {core.bool dryRun}) {
+  /// Retrieves and updates the shipping settings of multiple accounts in a
+  /// single request.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingsettingsCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingsettingsCustomBatchResponse> custombatch(
+      ShippingsettingsCustomBatchRequest request,
+      {core.bool dryRun,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2903,38 +3146,47 @@ class ShippingsettingsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'shippingsettings/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ShippingsettingsCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new ShippingsettingsCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves the shipping settings of the account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update shipping
-   * settings.
-   *
-   * Completes with a [ShippingSettings].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingSettings> get(core.String merchantId, core.String accountId) {
+  /// Retrieves the shipping settings of the account. This method can only be
+  /// called for accounts to which the managing account has access: either the
+  /// managing account itself for any Merchant Center account, or any
+  /// sub-account when the managing account is a multi-client account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update shipping
+  /// settings.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingSettings].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingSettings> get(
+      core.String merchantId, core.String accountId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2948,36 +3200,42 @@ class ShippingsettingsResourceApi {
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/shippingsettings/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/shippingsettings/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ShippingSettings.fromJson(data));
   }
 
-  /**
-   * Retrieves supported carriers and carrier services for an account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the account for which to retrieve the supported
-   * carriers.
-   *
-   * Completes with a [ShippingsettingsGetSupportedCarriersResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingsettingsGetSupportedCarriersResponse> getsupportedcarriers(core.String merchantId) {
+  /// Retrieves supported carriers and carrier services for an account.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the account for which to retrieve the supported
+  /// carriers.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingsettingsGetSupportedCarriersResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingsettingsGetSupportedCarriersResponse>
+      getsupportedcarriers(core.String merchantId, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2988,41 +3246,46 @@ class ShippingsettingsResourceApi {
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/supportedCarriers';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ShippingsettingsGetSupportedCarriersResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) =>
+        new ShippingsettingsGetSupportedCarriersResponse.fromJson(data));
   }
 
-  /**
-   * Lists the shipping settings of the sub-accounts in your Merchant Center
-   * account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [maxResults] - The maximum number of shipping settings to return in the
-   * response, used for paging.
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * Completes with a [ShippingsettingsListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingsettingsListResponse> list(core.String merchantId, {core.int maxResults, core.String pageToken}) {
+  /// Lists the shipping settings of the sub-accounts in your Merchant Center
+  /// account. This method can only be called for multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [maxResults] - The maximum number of shipping settings to return in the
+  /// response, used for paging.
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingsettingsListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingsettingsListResponse> list(core.String merchantId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -3039,43 +3302,52 @@ class ShippingsettingsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/shippingsettings';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new ShippingsettingsListResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new ShippingsettingsListResponse.fromJson(data));
   }
 
-  /**
-   * Updates the shipping settings of the account. This method supports patch
-   * semantics.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update shipping
-   * settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [ShippingSettings].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingSettings> patch(ShippingSettings request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates the shipping settings of the account. This method can only be
+  /// called for accounts to which the managing account has access: either the
+  /// managing account itself for any Merchant Center account, or any
+  /// sub-account when the managing account is a multi-client account. This
+  /// method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update shipping
+  /// settings.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingSettings].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingSettings> patch(
+      ShippingSettings request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -3095,42 +3367,52 @@ class ShippingsettingsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/shippingsettings/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/shippingsettings/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PATCH",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ShippingSettings.fromJson(data));
   }
 
-  /**
-   * Updates the shipping settings of the account.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [accountId] - The ID of the account for which to get/update shipping
-   * settings.
-   *
-   * [dryRun] - Flag to run the request in dry-run mode.
-   *
-   * Completes with a [ShippingSettings].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<ShippingSettings> update(ShippingSettings request, core.String merchantId, core.String accountId, {core.bool dryRun}) {
+  /// Updates the shipping settings of the account. This method can only be
+  /// called for accounts to which the managing account has access: either the
+  /// managing account itself for any Merchant Center account, or any
+  /// sub-account when the managing account is a multi-client account.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [accountId] - The ID of the account for which to get/update shipping
+  /// settings.
+  ///
+  /// [dryRun] - Flag to run the request in dry-run mode.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [ShippingSettings].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<ShippingSettings> update(
+      ShippingSettings request, core.String merchantId, core.String accountId,
+      {core.bool dryRun, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -3150,57 +3432,65 @@ class ShippingsettingsResourceApi {
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/shippingsettings/' + commons.Escaper.ecapeVariable('$accountId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/shippingsettings/' +
+        commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "PUT",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new ShippingSettings.fromJson(data));
   }
-
 }
 
-
-
-/** Account data. */
+/// Account data.
 class Account {
-  /** Indicates whether the merchant sells adult content. */
+  /// Indicates whether the merchant sells adult content.
   core.bool adultContent;
-  /**
-   * List of linked AdWords accounts, active or pending approval. To create a
-   * new link request, add a new link with status active to the list. It will
-   * remain is state pending until approved or rejected in the AdWords
-   * interface. To delete an active link or to cancel a link request, remove it
-   * from the list.
-   */
+
+  /// List of linked AdWords accounts that are active or pending approval. To
+  /// create a new link request, add a new link with status active to the list.
+  /// It will remain in a pending state until approved or rejected either in the
+  /// AdWords interface or through the  AdWords API. To delete an active link,
+  /// or to cancel a link request, remove it from the list.
   core.List<AccountAdwordsLink> adwordsLinks;
-  /** Merchant Center account ID. */
+
+  /// Merchant Center account ID.
   core.String id;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#account".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#account".
   core.String kind;
-  /** Display name for the account. */
+
+  /// Display name for the account.
   core.String name;
-  /**
-   * URL for individual seller reviews, i.e., reviews for each child account.
-   */
+
+  /// URL for individual seller reviews, i.e., reviews for each child account.
   core.String reviewsUrl;
-  /** Client-specific, locally-unique, internal ID for the child account. */
+
+  /// Client-specific, locally-unique, internal ID for the child account.
   core.String sellerId;
-  /**
-   * Users with access to the account. Every account (except for subaccounts)
-   * must have at least one admin user.
-   */
+
+  /// Users with access to the account. Every account (except for subaccounts)
+  /// must have at least one admin user.
   core.List<AccountUser> users;
-  /** The merchant's website. */
+
+  /// The merchant's website.
   core.String websiteUrl;
+
+  /// List of linked YouTube channels that are active or pending approval. To
+  /// create a new link request, add a new link with status active to the list.
+  /// It will remain in a pending state until approved or rejected in the YT
+  /// Creator Studio interface. To delete an active link, or to cancel a link
+  /// request, remove it from the list.
+  core.List<AccountYouTubeChannelLink> youtubeChannelLinks;
 
   Account();
 
@@ -3209,7 +3499,9 @@ class Account {
       adultContent = _json["adultContent"];
     }
     if (_json.containsKey("adwordsLinks")) {
-      adwordsLinks = _json["adwordsLinks"].map((value) => new AccountAdwordsLink.fromJson(value)).toList();
+      adwordsLinks = _json["adwordsLinks"]
+          .map((value) => new AccountAdwordsLink.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -3227,20 +3519,29 @@ class Account {
       sellerId = _json["sellerId"];
     }
     if (_json.containsKey("users")) {
-      users = _json["users"].map((value) => new AccountUser.fromJson(value)).toList();
+      users = _json["users"]
+          .map((value) => new AccountUser.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("websiteUrl")) {
       websiteUrl = _json["websiteUrl"];
     }
+    if (_json.containsKey("youtubeChannelLinks")) {
+      youtubeChannelLinks = _json["youtubeChannelLinks"]
+          .map((value) => new AccountYouTubeChannelLink.fromJson(value))
+          .toList();
+    }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (adultContent != null) {
       _json["adultContent"] = adultContent;
     }
     if (adwordsLinks != null) {
-      _json["adwordsLinks"] = adwordsLinks.map((value) => (value).toJson()).toList();
+      _json["adwordsLinks"] =
+          adwordsLinks.map((value) => (value).toJson()).toList();
     }
     if (id != null) {
       _json["id"] = id;
@@ -3263,24 +3564,28 @@ class Account {
     if (websiteUrl != null) {
       _json["websiteUrl"] = websiteUrl;
     }
+    if (youtubeChannelLinks != null) {
+      _json["youtubeChannelLinks"] =
+          youtubeChannelLinks.map((value) => (value).toJson()).toList();
+    }
     return _json;
   }
 }
 
 class AccountAdwordsLink {
-  /** Customer ID of the AdWords account. */
+  /// Customer ID of the AdWords account.
   core.String adwordsId;
-  /**
-   * Status of the link between this Merchant Center account and the AdWords
-   * account. Upon retrieval, it represents the actual status of the link and
-   * can be either active if it was approved in Google AdWords or pending if
-   * it's pending approval. Upon insertion, it represents the intended status of
-   * the link. Re-uploading a link with status active when it's still pending or
-   * with status pending when it's already active will have no effect: the
-   * status will remain unchanged. Re-uploading a link with deprecated status
-   * inactive is equivalent to not submitting the link at all and will delete
-   * the link if it was active or cancel the link request if it was pending.
-   */
+
+  /// Status of the link between this Merchant Center account and the AdWords
+  /// account. Upon retrieval, it represents the actual status of the link and
+  /// can be either active if it was approved in Google AdWords or pending if
+  /// it's pending approval. Upon insertion, it represents the intended status
+  /// of the link. Re-uploading a link with status active when it's still
+  /// pending or with status pending when it's already active will have no
+  /// effect: the status will remain unchanged. Re-uploading a link with
+  /// deprecated status inactive is equivalent to not submitting the link at all
+  /// and will delete the link if it was active or cancel the link request if it
+  /// was pending.
   core.String status;
 
   AccountAdwordsLink();
@@ -3294,8 +3599,9 @@ class AccountAdwordsLink {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (adwordsId != null) {
       _json["adwordsId"] = adwordsId;
     }
@@ -3307,12 +3613,11 @@ class AccountAdwordsLink {
 }
 
 class AccountIdentifier {
-  /**
-   * The aggregator ID, set for aggregators and subaccounts (in that case, it
-   * represents the aggregator of the subaccount).
-   */
+  /// The aggregator ID, set for aggregators and subaccounts (in that case, it
+  /// represents the aggregator of the subaccount).
   core.String aggregatorId;
-  /** The merchant account ID, set for individual accounts and subaccounts. */
+
+  /// The merchant account ID, set for individual accounts and subaccounts.
   core.String merchantId;
 
   AccountIdentifier();
@@ -3326,8 +3631,9 @@ class AccountIdentifier {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (aggregatorId != null) {
       _json["aggregatorId"] = aggregatorId;
     }
@@ -3338,626 +3644,24 @@ class AccountIdentifier {
   }
 }
 
-/** The shipping settings of a merchant account. */
-class AccountShipping {
-  /** The ID of the account to which these account shipping settings belong. */
-  core.String accountId;
-  /** Carrier-based shipping calculations. */
-  core.List<AccountShippingCarrierRate> carrierRates;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountShipping".
-   */
-  core.String kind;
-  /** Location groups for shipping. */
-  core.List<AccountShippingLocationGroup> locationGroups;
-  /** Rate tables definitions. */
-  core.List<AccountShippingRateTable> rateTables;
-  /** Shipping services describing shipping fees calculation. */
-  core.List<AccountShippingShippingService> services;
-
-  AccountShipping();
-
-  AccountShipping.fromJson(core.Map _json) {
-    if (_json.containsKey("accountId")) {
-      accountId = _json["accountId"];
-    }
-    if (_json.containsKey("carrierRates")) {
-      carrierRates = _json["carrierRates"].map((value) => new AccountShippingCarrierRate.fromJson(value)).toList();
-    }
-    if (_json.containsKey("kind")) {
-      kind = _json["kind"];
-    }
-    if (_json.containsKey("locationGroups")) {
-      locationGroups = _json["locationGroups"].map((value) => new AccountShippingLocationGroup.fromJson(value)).toList();
-    }
-    if (_json.containsKey("rateTables")) {
-      rateTables = _json["rateTables"].map((value) => new AccountShippingRateTable.fromJson(value)).toList();
-    }
-    if (_json.containsKey("services")) {
-      services = _json["services"].map((value) => new AccountShippingShippingService.fromJson(value)).toList();
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (accountId != null) {
-      _json["accountId"] = accountId;
-    }
-    if (carrierRates != null) {
-      _json["carrierRates"] = carrierRates.map((value) => (value).toJson()).toList();
-    }
-    if (kind != null) {
-      _json["kind"] = kind;
-    }
-    if (locationGroups != null) {
-      _json["locationGroups"] = locationGroups.map((value) => (value).toJson()).toList();
-    }
-    if (rateTables != null) {
-      _json["rateTables"] = rateTables.map((value) => (value).toJson()).toList();
-    }
-    if (services != null) {
-      _json["services"] = services.map((value) => (value).toJson()).toList();
-    }
-    return _json;
-  }
-}
-
-/** A carrier-calculated shipping rate. */
-class AccountShippingCarrierRate {
-  /**
-   * The carrier that is responsible for the shipping, such as "UPS", "FedEx",
-   * or "USPS".
-   */
-  core.String carrier;
-  /** The carrier service, such as "Ground" or "2Day". */
-  core.String carrierService;
-  /** Additive shipping rate modifier. */
-  Price modifierFlatRate;
-  /**
-   * Multiplicative shipping rate modifier in percent. Represented as a floating
-   * point number without the percentage character.
-   */
-  core.String modifierPercent;
-  /** The name of the carrier rate. */
-  core.String name;
-  /**
-   * The sale country for which this carrier rate is valid, represented as a
-   * CLDR territory code.
-   */
-  core.String saleCountry;
-  /** Shipping origin represented as a postal code. */
-  core.String shippingOrigin;
-
-  AccountShippingCarrierRate();
-
-  AccountShippingCarrierRate.fromJson(core.Map _json) {
-    if (_json.containsKey("carrier")) {
-      carrier = _json["carrier"];
-    }
-    if (_json.containsKey("carrierService")) {
-      carrierService = _json["carrierService"];
-    }
-    if (_json.containsKey("modifierFlatRate")) {
-      modifierFlatRate = new Price.fromJson(_json["modifierFlatRate"]);
-    }
-    if (_json.containsKey("modifierPercent")) {
-      modifierPercent = _json["modifierPercent"];
-    }
-    if (_json.containsKey("name")) {
-      name = _json["name"];
-    }
-    if (_json.containsKey("saleCountry")) {
-      saleCountry = _json["saleCountry"];
-    }
-    if (_json.containsKey("shippingOrigin")) {
-      shippingOrigin = _json["shippingOrigin"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (carrier != null) {
-      _json["carrier"] = carrier;
-    }
-    if (carrierService != null) {
-      _json["carrierService"] = carrierService;
-    }
-    if (modifierFlatRate != null) {
-      _json["modifierFlatRate"] = (modifierFlatRate).toJson();
-    }
-    if (modifierPercent != null) {
-      _json["modifierPercent"] = modifierPercent;
-    }
-    if (name != null) {
-      _json["name"] = name;
-    }
-    if (saleCountry != null) {
-      _json["saleCountry"] = saleCountry;
-    }
-    if (shippingOrigin != null) {
-      _json["shippingOrigin"] = shippingOrigin;
-    }
-    return _json;
-  }
-}
-
-class AccountShippingCondition {
-  /**
-   * Delivery location in terms of a location group name. A location group with
-   * this name must be specified among location groups.
-   */
-  core.String deliveryLocationGroup;
-  /**
-   * Delivery location in terms of a location ID. Can be used to represent
-   * administrative areas, smaller country subdivisions, or cities.
-   */
-  core.String deliveryLocationId;
-  /** Delivery location in terms of a postal code. */
-  core.String deliveryPostalCode;
-  /** Delivery location in terms of a postal code range. */
-  AccountShippingPostalCodeRange deliveryPostalCodeRange;
-  /**
-   * Maximum shipping price. Forms an interval between the maximum of smaller
-   * prices (exclusive) and this price (inclusive).
-   */
-  Price priceMax;
-  /**
-   * Shipping label of the product. The products with the label are matched.
-   */
-  core.String shippingLabel;
-  /**
-   * Maximum shipping weight. Forms an interval between the maximum of smaller
-   * weight (exclusive) and this weight (inclusive).
-   */
-  Weight weightMax;
-
-  AccountShippingCondition();
-
-  AccountShippingCondition.fromJson(core.Map _json) {
-    if (_json.containsKey("deliveryLocationGroup")) {
-      deliveryLocationGroup = _json["deliveryLocationGroup"];
-    }
-    if (_json.containsKey("deliveryLocationId")) {
-      deliveryLocationId = _json["deliveryLocationId"];
-    }
-    if (_json.containsKey("deliveryPostalCode")) {
-      deliveryPostalCode = _json["deliveryPostalCode"];
-    }
-    if (_json.containsKey("deliveryPostalCodeRange")) {
-      deliveryPostalCodeRange = new AccountShippingPostalCodeRange.fromJson(_json["deliveryPostalCodeRange"]);
-    }
-    if (_json.containsKey("priceMax")) {
-      priceMax = new Price.fromJson(_json["priceMax"]);
-    }
-    if (_json.containsKey("shippingLabel")) {
-      shippingLabel = _json["shippingLabel"];
-    }
-    if (_json.containsKey("weightMax")) {
-      weightMax = new Weight.fromJson(_json["weightMax"]);
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (deliveryLocationGroup != null) {
-      _json["deliveryLocationGroup"] = deliveryLocationGroup;
-    }
-    if (deliveryLocationId != null) {
-      _json["deliveryLocationId"] = deliveryLocationId;
-    }
-    if (deliveryPostalCode != null) {
-      _json["deliveryPostalCode"] = deliveryPostalCode;
-    }
-    if (deliveryPostalCodeRange != null) {
-      _json["deliveryPostalCodeRange"] = (deliveryPostalCodeRange).toJson();
-    }
-    if (priceMax != null) {
-      _json["priceMax"] = (priceMax).toJson();
-    }
-    if (shippingLabel != null) {
-      _json["shippingLabel"] = shippingLabel;
-    }
-    if (weightMax != null) {
-      _json["weightMax"] = (weightMax).toJson();
-    }
-    return _json;
-  }
-}
-
-/**
- * A user-defined locations group in a given country. All the locations of the
- * group must be of the same type.
- */
-class AccountShippingLocationGroup {
-  /**
-   * The CLDR territory code of the country in which this location group is.
-   */
-  core.String country;
-  /**
-   * A location ID (also called criteria ID) representing administrative areas,
-   * smaller country subdivisions (counties), or cities.
-   */
-  core.List<core.String> locationIds;
-  /** The name of the location group. */
-  core.String name;
-  /** A postal code range representing a city or a set of cities. */
-  core.List<AccountShippingPostalCodeRange> postalCodeRanges;
-  /**
-   * A postal code representing a city or a set of cities.
-   * - A single postal code (e.g., 12345)
-   * - A postal code prefix followed by a star (e.g., 1234*)
-   */
-  core.List<core.String> postalCodes;
-
-  AccountShippingLocationGroup();
-
-  AccountShippingLocationGroup.fromJson(core.Map _json) {
-    if (_json.containsKey("country")) {
-      country = _json["country"];
-    }
-    if (_json.containsKey("locationIds")) {
-      locationIds = _json["locationIds"];
-    }
-    if (_json.containsKey("name")) {
-      name = _json["name"];
-    }
-    if (_json.containsKey("postalCodeRanges")) {
-      postalCodeRanges = _json["postalCodeRanges"].map((value) => new AccountShippingPostalCodeRange.fromJson(value)).toList();
-    }
-    if (_json.containsKey("postalCodes")) {
-      postalCodes = _json["postalCodes"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (country != null) {
-      _json["country"] = country;
-    }
-    if (locationIds != null) {
-      _json["locationIds"] = locationIds;
-    }
-    if (name != null) {
-      _json["name"] = name;
-    }
-    if (postalCodeRanges != null) {
-      _json["postalCodeRanges"] = postalCodeRanges.map((value) => (value).toJson()).toList();
-    }
-    if (postalCodes != null) {
-      _json["postalCodes"] = postalCodes;
-    }
-    return _json;
-  }
-}
-
-/**
- * A postal code range, that can be either:
- * - A range of postal codes (e.g., start=12340, end=12359)
- * - A range of postal codes prefixes (e.g., start=1234* end=1235*). Prefixes
- * must be of the same length (e.g., start=12* end=2* is invalid).
- */
-class AccountShippingPostalCodeRange {
-  /** The last (inclusive) postal code or prefix of the range. */
-  core.String end;
-  /** The first (inclusive) postal code or prefix of the range. */
-  core.String start;
-
-  AccountShippingPostalCodeRange();
-
-  AccountShippingPostalCodeRange.fromJson(core.Map _json) {
-    if (_json.containsKey("end")) {
-      end = _json["end"];
-    }
-    if (_json.containsKey("start")) {
-      start = _json["start"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (end != null) {
-      _json["end"] = end;
-    }
-    if (start != null) {
-      _json["start"] = start;
-    }
-    return _json;
-  }
-}
-
-/**
- * A single or bi-dimensional table of shipping rates. Each dimension is defined
- * in terms of consecutive price/weight ranges, delivery locations, or shipping
- * labels.
- */
-class AccountShippingRateTable {
-  /**
-   * One-dimensional table cells define one condition along the same dimension.
-   * Bi-dimensional table cells use two dimensions with respectively M and N
-   * distinct values and must contain exactly M * N cells with distinct
-   * conditions (for each possible value pairs).
-   */
-  core.List<AccountShippingRateTableCell> content;
-  /** The name of the rate table. */
-  core.String name;
-  /**
-   * The sale country for which this table is valid, represented as a CLDR
-   * territory code.
-   */
-  core.String saleCountry;
-
-  AccountShippingRateTable();
-
-  AccountShippingRateTable.fromJson(core.Map _json) {
-    if (_json.containsKey("content")) {
-      content = _json["content"].map((value) => new AccountShippingRateTableCell.fromJson(value)).toList();
-    }
-    if (_json.containsKey("name")) {
-      name = _json["name"];
-    }
-    if (_json.containsKey("saleCountry")) {
-      saleCountry = _json["saleCountry"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (content != null) {
-      _json["content"] = content.map((value) => (value).toJson()).toList();
-    }
-    if (name != null) {
-      _json["name"] = name;
-    }
-    if (saleCountry != null) {
-      _json["saleCountry"] = saleCountry;
-    }
-    return _json;
-  }
-}
-
-class AccountShippingRateTableCell {
-  /**
-   * Conditions for which the cell is valid. All cells in a table must use the
-   * same dimension or pair of dimensions among price, weight, shipping label or
-   * delivery location. If no condition is specified, the cell acts as a
-   * catch-all and matches all the elements that are not matched by other cells
-   * in this dimension.
-   */
-  AccountShippingCondition condition;
-  /** The rate applicable if the cell conditions are matched. */
-  Price rate;
-
-  AccountShippingRateTableCell();
-
-  AccountShippingRateTableCell.fromJson(core.Map _json) {
-    if (_json.containsKey("condition")) {
-      condition = new AccountShippingCondition.fromJson(_json["condition"]);
-    }
-    if (_json.containsKey("rate")) {
-      rate = new Price.fromJson(_json["rate"]);
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (condition != null) {
-      _json["condition"] = (condition).toJson();
-    }
-    if (rate != null) {
-      _json["rate"] = (rate).toJson();
-    }
-    return _json;
-  }
-}
-
-/** Shipping services provided in a country. */
-class AccountShippingShippingService {
-  /** Whether the shipping service is available. */
-  core.bool active;
-  /** Calculation method for the "simple" case that needs no rules. */
-  AccountShippingShippingServiceCalculationMethod calculationMethod;
-  /** Decision tree for "complicated" shipping cost calculation. */
-  AccountShippingShippingServiceCostRule costRuleTree;
-  /**
-   * The maximum number of days in transit. Must be a value between 0 and 250
-   * included. A value of 0 means same day delivery.
-   */
-  core.String maxDaysInTransit;
-  /**
-   * The minimum number of days in transit. Must be a value between 0 and
-   * maxDaysIntransit included. A value of 0 means same day delivery.
-   */
-  core.String minDaysInTransit;
-  /** The name of this shipping service. */
-  core.String name;
-  /**
-   * The CLDR territory code of the sale country for which this service can be
-   * used.
-   */
-  core.String saleCountry;
-
-  AccountShippingShippingService();
-
-  AccountShippingShippingService.fromJson(core.Map _json) {
-    if (_json.containsKey("active")) {
-      active = _json["active"];
-    }
-    if (_json.containsKey("calculationMethod")) {
-      calculationMethod = new AccountShippingShippingServiceCalculationMethod.fromJson(_json["calculationMethod"]);
-    }
-    if (_json.containsKey("costRuleTree")) {
-      costRuleTree = new AccountShippingShippingServiceCostRule.fromJson(_json["costRuleTree"]);
-    }
-    if (_json.containsKey("maxDaysInTransit")) {
-      maxDaysInTransit = _json["maxDaysInTransit"];
-    }
-    if (_json.containsKey("minDaysInTransit")) {
-      minDaysInTransit = _json["minDaysInTransit"];
-    }
-    if (_json.containsKey("name")) {
-      name = _json["name"];
-    }
-    if (_json.containsKey("saleCountry")) {
-      saleCountry = _json["saleCountry"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (active != null) {
-      _json["active"] = active;
-    }
-    if (calculationMethod != null) {
-      _json["calculationMethod"] = (calculationMethod).toJson();
-    }
-    if (costRuleTree != null) {
-      _json["costRuleTree"] = (costRuleTree).toJson();
-    }
-    if (maxDaysInTransit != null) {
-      _json["maxDaysInTransit"] = maxDaysInTransit;
-    }
-    if (minDaysInTransit != null) {
-      _json["minDaysInTransit"] = minDaysInTransit;
-    }
-    if (name != null) {
-      _json["name"] = name;
-    }
-    if (saleCountry != null) {
-      _json["saleCountry"] = saleCountry;
-    }
-    return _json;
-  }
-}
-
-/** Shipping cost calculation method. Exactly one of the field is set. */
-class AccountShippingShippingServiceCalculationMethod {
-  /** Name of the carrier rate to use for the calculation. */
-  core.String carrierRate;
-  /** Delivery is excluded. Valid only within cost rules tree. */
-  core.bool excluded;
-  /**
-   * Fixed price shipping, represented as a floating point number associated
-   * with a currency.
-   */
-  Price flatRate;
-  /**
-   * Percentage of the price, represented as a floating point number without the
-   * percentage character.
-   */
-  core.String percentageRate;
-  /** Name of the rate table to use for the calculation. */
-  core.String rateTable;
-
-  AccountShippingShippingServiceCalculationMethod();
-
-  AccountShippingShippingServiceCalculationMethod.fromJson(core.Map _json) {
-    if (_json.containsKey("carrierRate")) {
-      carrierRate = _json["carrierRate"];
-    }
-    if (_json.containsKey("excluded")) {
-      excluded = _json["excluded"];
-    }
-    if (_json.containsKey("flatRate")) {
-      flatRate = new Price.fromJson(_json["flatRate"]);
-    }
-    if (_json.containsKey("percentageRate")) {
-      percentageRate = _json["percentageRate"];
-    }
-    if (_json.containsKey("rateTable")) {
-      rateTable = _json["rateTable"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (carrierRate != null) {
-      _json["carrierRate"] = carrierRate;
-    }
-    if (excluded != null) {
-      _json["excluded"] = excluded;
-    }
-    if (flatRate != null) {
-      _json["flatRate"] = (flatRate).toJson();
-    }
-    if (percentageRate != null) {
-      _json["percentageRate"] = percentageRate;
-    }
-    if (rateTable != null) {
-      _json["rateTable"] = rateTable;
-    }
-    return _json;
-  }
-}
-
-/**
- * Building block of the cost calculation decision tree.
- * - The tree root should have no condition and no calculation method.
- * - All the children must have a condition on the same dimension. The first
- * child matching a condition is entered, therefore, price and weight conditions
- * form contiguous intervals.
- * - The last child of an element must have no condition and matches all
- * elements not previously matched.
- * - Children and calculation method are mutually exclusive, and exactly one of
- * them must be defined; the root must only have children.
- */
-class AccountShippingShippingServiceCostRule {
-  /** Final calculation method to be used only in leaf nodes. */
-  AccountShippingShippingServiceCalculationMethod calculationMethod;
-  /**
-   * Subsequent rules to be applied, only for inner nodes. The last child must
-   * not specify a condition and acts as a catch-all.
-   */
-  core.List<AccountShippingShippingServiceCostRule> children;
-  /**
-   * Condition for this rule to be applicable. If no condition is specified, the
-   * rule acts as a catch-all.
-   */
-  AccountShippingCondition condition;
-
-  AccountShippingShippingServiceCostRule();
-
-  AccountShippingShippingServiceCostRule.fromJson(core.Map _json) {
-    if (_json.containsKey("calculationMethod")) {
-      calculationMethod = new AccountShippingShippingServiceCalculationMethod.fromJson(_json["calculationMethod"]);
-    }
-    if (_json.containsKey("children")) {
-      children = _json["children"].map((value) => new AccountShippingShippingServiceCostRule.fromJson(value)).toList();
-    }
-    if (_json.containsKey("condition")) {
-      condition = new AccountShippingCondition.fromJson(_json["condition"]);
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (calculationMethod != null) {
-      _json["calculationMethod"] = (calculationMethod).toJson();
-    }
-    if (children != null) {
-      _json["children"] = children.map((value) => (value).toJson()).toList();
-    }
-    if (condition != null) {
-      _json["condition"] = (condition).toJson();
-    }
-    return _json;
-  }
-}
-
-/**
- * The status of an account, i.e., information about its products, which is
- * computed offline and not returned immediately at insertion time.
- */
+/// The status of an account, i.e., information about its products, which is
+/// computed offline and not returned immediately at insertion time.
 class AccountStatus {
-  /** The ID of the account for which the status is reported. */
+  /// The ID of the account for which the status is reported.
   core.String accountId;
-  /** A list of data quality issues. */
+
+  /// A list of account level issues.
+  core.List<AccountStatusAccountLevelIssue> accountLevelIssues;
+
+  /// A list of data quality issues.
   core.List<AccountStatusDataQualityIssue> dataQualityIssues;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountStatus".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountStatus".
   core.String kind;
+
+  /// Whether the account's website is claimed or not.
+  core.bool websiteClaimed;
 
   AccountStatus();
 
@@ -3965,45 +3669,135 @@ class AccountStatus {
     if (_json.containsKey("accountId")) {
       accountId = _json["accountId"];
     }
+    if (_json.containsKey("accountLevelIssues")) {
+      accountLevelIssues = _json["accountLevelIssues"]
+          .map((value) => new AccountStatusAccountLevelIssue.fromJson(value))
+          .toList();
+    }
     if (_json.containsKey("dataQualityIssues")) {
-      dataQualityIssues = _json["dataQualityIssues"].map((value) => new AccountStatusDataQualityIssue.fromJson(value)).toList();
+      dataQualityIssues = _json["dataQualityIssues"]
+          .map((value) => new AccountStatusDataQualityIssue.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
+    if (_json.containsKey("websiteClaimed")) {
+      websiteClaimed = _json["websiteClaimed"];
+    }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
+    if (accountLevelIssues != null) {
+      _json["accountLevelIssues"] =
+          accountLevelIssues.map((value) => (value).toJson()).toList();
+    }
     if (dataQualityIssues != null) {
-      _json["dataQualityIssues"] = dataQualityIssues.map((value) => (value).toJson()).toList();
+      _json["dataQualityIssues"] =
+          dataQualityIssues.map((value) => (value).toJson()).toList();
     }
     if (kind != null) {
       _json["kind"] = kind;
+    }
+    if (websiteClaimed != null) {
+      _json["websiteClaimed"] = websiteClaimed;
+    }
+    return _json;
+  }
+}
+
+class AccountStatusAccountLevelIssue {
+  /// Country for which this issue is reported.
+  core.String country;
+
+  /// Additional details about the issue.
+  core.String detail;
+
+  /// Issue identifier.
+  core.String id;
+
+  /// Severity of the issue.
+  core.String severity;
+
+  /// Short description of the issue.
+  core.String title;
+
+  AccountStatusAccountLevelIssue();
+
+  AccountStatusAccountLevelIssue.fromJson(core.Map _json) {
+    if (_json.containsKey("country")) {
+      country = _json["country"];
+    }
+    if (_json.containsKey("detail")) {
+      detail = _json["detail"];
+    }
+    if (_json.containsKey("id")) {
+      id = _json["id"];
+    }
+    if (_json.containsKey("severity")) {
+      severity = _json["severity"];
+    }
+    if (_json.containsKey("title")) {
+      title = _json["title"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (country != null) {
+      _json["country"] = country;
+    }
+    if (detail != null) {
+      _json["detail"] = detail;
+    }
+    if (id != null) {
+      _json["id"] = id;
+    }
+    if (severity != null) {
+      _json["severity"] = severity;
+    }
+    if (title != null) {
+      _json["title"] = title;
     }
     return _json;
   }
 }
 
 class AccountStatusDataQualityIssue {
-  /** Country for which this issue is reported. */
+  /// Country for which this issue is reported.
   core.String country;
-  /** Actual value displayed on the landing page. */
+
+  /// A more detailed description of the issue.
+  core.String detail;
+
+  /// Actual value displayed on the landing page.
   core.String displayedValue;
-  /** Example items featuring the issue. */
+
+  /// Example items featuring the issue.
   core.List<AccountStatusExampleItem> exampleItems;
-  /** Issue identifier. */
+
+  /// Issue identifier.
   core.String id;
-  /** Last time the account was checked for this issue. */
+
+  /// Last time the account was checked for this issue.
   core.String lastChecked;
-  /** Number of items in the account found to have the said issue. */
+
+  /// The attribute name that is relevant for the issue.
+  core.String location;
+
+  /// Number of items in the account found to have the said issue.
   core.int numItems;
-  /** Severity of the problem. */
+
+  /// Severity of the problem.
   core.String severity;
-  /** Submitted value that causes the issue. */
+
+  /// Submitted value that causes the issue.
   core.String submittedValue;
 
   AccountStatusDataQualityIssue();
@@ -4012,17 +3806,25 @@ class AccountStatusDataQualityIssue {
     if (_json.containsKey("country")) {
       country = _json["country"];
     }
+    if (_json.containsKey("detail")) {
+      detail = _json["detail"];
+    }
     if (_json.containsKey("displayedValue")) {
       displayedValue = _json["displayedValue"];
     }
     if (_json.containsKey("exampleItems")) {
-      exampleItems = _json["exampleItems"].map((value) => new AccountStatusExampleItem.fromJson(value)).toList();
+      exampleItems = _json["exampleItems"]
+          .map((value) => new AccountStatusExampleItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
     }
     if (_json.containsKey("lastChecked")) {
       lastChecked = _json["lastChecked"];
+    }
+    if (_json.containsKey("location")) {
+      location = _json["location"];
     }
     if (_json.containsKey("numItems")) {
       numItems = _json["numItems"];
@@ -4035,22 +3837,30 @@ class AccountStatusDataQualityIssue {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
+    }
+    if (detail != null) {
+      _json["detail"] = detail;
     }
     if (displayedValue != null) {
       _json["displayedValue"] = displayedValue;
     }
     if (exampleItems != null) {
-      _json["exampleItems"] = exampleItems.map((value) => (value).toJson()).toList();
+      _json["exampleItems"] =
+          exampleItems.map((value) => (value).toJson()).toList();
     }
     if (id != null) {
       _json["id"] = id;
     }
     if (lastChecked != null) {
       _json["lastChecked"] = lastChecked;
+    }
+    if (location != null) {
+      _json["location"] = location;
     }
     if (numItems != null) {
       _json["numItems"] = numItems;
@@ -4065,20 +3875,22 @@ class AccountStatusDataQualityIssue {
   }
 }
 
-/**
- * An example of an item that has poor data quality. An item value on the
- * landing page differs from what is submitted, or conflicts with a policy.
- */
+/// An example of an item that has poor data quality. An item value on the
+/// landing page differs from what is submitted, or conflicts with a policy.
 class AccountStatusExampleItem {
-  /** Unique item ID as specified in the uploaded product data. */
+  /// Unique item ID as specified in the uploaded product data.
   core.String itemId;
-  /** Landing page of the item. */
+
+  /// Landing page of the item.
   core.String link;
-  /** The item value that was submitted. */
+
+  /// The item value that was submitted.
   core.String submittedValue;
-  /** Title of the item. */
+
+  /// Title of the item.
   core.String title;
-  /** The actual value on the landing page. */
+
+  /// The actual value on the landing page.
   core.String valueOnLandingPage;
 
   AccountStatusExampleItem();
@@ -4101,8 +3913,9 @@ class AccountStatusExampleItem {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (itemId != null) {
       _json["itemId"] = itemId;
     }
@@ -4122,19 +3935,17 @@ class AccountStatusExampleItem {
   }
 }
 
-/** The tax settings of a merchant account. */
+/// The tax settings of a merchant account.
 class AccountTax {
-  /** The ID of the account to which these account tax settings belong. */
+  /// The ID of the account to which these account tax settings belong.
   core.String accountId;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountTax".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountTax".
   core.String kind;
-  /**
-   * Tax rules. Updating the tax rules will enable US taxes (not reversible).
-   * Defining no rules is equivalent to not charging tax at all.
-   */
+
+  /// Tax rules. Updating the tax rules will enable US taxes (not reversible).
+  /// Defining no rules is equivalent to not charging tax at all.
   core.List<AccountTaxTaxRule> rules;
 
   AccountTax();
@@ -4147,12 +3958,15 @@ class AccountTax {
       kind = _json["kind"];
     }
     if (_json.containsKey("rules")) {
-      rules = _json["rules"].map((value) => new AccountTaxTaxRule.fromJson(value)).toList();
+      rules = _json["rules"]
+          .map((value) => new AccountTaxTaxRule.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
@@ -4166,26 +3980,24 @@ class AccountTax {
   }
 }
 
-/** Tax calculation rule to apply in a state or province (USA only). */
+/// Tax calculation rule to apply in a state or province (USA only).
 class AccountTaxTaxRule {
-  /** Country code in which tax is applicable. */
+  /// Country code in which tax is applicable.
   core.String country;
-  /**
-   * State (or province) is which the tax is applicable, described by its
-   * location id (also called criteria id).
-   */
+
+  /// State (or province) is which the tax is applicable, described by its
+  /// location id (also called criteria id).
   core.String locationId;
-  /**
-   * Explicit tax rate in percent, represented as a floating point number
-   * without the percentage character. Must not be negative.
-   */
+
+  /// Explicit tax rate in percent, represented as a floating point number
+  /// without the percentage character. Must not be negative.
   core.String ratePercent;
-  /** If true, shipping charges are also taxed. */
+
+  /// If true, shipping charges are also taxed.
   core.bool shippingTaxed;
-  /**
-   * Whether the tax rate is taken from a global tax table or specified
-   * explicitly.
-   */
+
+  /// Whether the tax rate is taken from a global tax table or specified
+  /// explicitly.
   core.bool useGlobalRate;
 
   AccountTaxTaxRule();
@@ -4208,8 +4020,9 @@ class AccountTaxTaxRule {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -4230,9 +4043,10 @@ class AccountTaxTaxRule {
 }
 
 class AccountUser {
-  /** Whether user is an admin. */
+  /// Whether user is an admin.
   core.bool admin;
-  /** User's email address. */
+
+  /// User's email address.
   core.String emailAddress;
 
   AccountUser();
@@ -4246,8 +4060,9 @@ class AccountUser {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (admin != null) {
       _json["admin"] = admin;
     }
@@ -4258,36 +4073,77 @@ class AccountUser {
   }
 }
 
+class AccountYouTubeChannelLink {
+  /// Channel ID.
+  core.String channelId;
+
+  /// Status of the link between this Merchant Center account and the YouTube
+  /// channel. Upon retrieval, it represents the actual status of the link and
+  /// can be either active if it was approved in YT Creator Studio or pending if
+  /// it's pending approval. Upon insertion, it represents the intended status
+  /// of the link. Re-uploading a link with status active when it's still
+  /// pending or with status pending when it's already active will have no
+  /// effect: the status will remain unchanged. Re-uploading a link with
+  /// deprecated status inactive is equivalent to not submitting the link at all
+  /// and will delete the link if it was active or cancel the link request if it
+  /// was pending.
+  core.String status;
+
+  AccountYouTubeChannelLink();
+
+  AccountYouTubeChannelLink.fromJson(core.Map _json) {
+    if (_json.containsKey("channelId")) {
+      channelId = _json["channelId"];
+    }
+    if (_json.containsKey("status")) {
+      status = _json["status"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (channelId != null) {
+      _json["channelId"] = channelId;
+    }
+    if (status != null) {
+      _json["status"] = status;
+    }
+    return _json;
+  }
+}
+
 class AccountsAuthInfoResponse {
-  /**
-   * The account identifiers corresponding to the authenticated user.
-   * - For an individual account: only the merchant ID is defined
-   * - For an aggregator: only the aggregator ID is defined
-   * - For a subaccount of an MCA: both the merchant ID and the aggregator ID
-   * are defined.
-   */
+  /// The account identifiers corresponding to the authenticated user.
+  /// - For an individual account: only the merchant ID is defined
+  /// - For an aggregator: only the aggregator ID is defined
+  /// - For a subaccount of an MCA: both the merchant ID and the aggregator ID
+  /// are defined.
   core.List<AccountIdentifier> accountIdentifiers;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountsAuthInfoResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountsAuthInfoResponse".
   core.String kind;
 
   AccountsAuthInfoResponse();
 
   AccountsAuthInfoResponse.fromJson(core.Map _json) {
     if (_json.containsKey("accountIdentifiers")) {
-      accountIdentifiers = _json["accountIdentifiers"].map((value) => new AccountIdentifier.fromJson(value)).toList();
+      accountIdentifiers = _json["accountIdentifiers"]
+          .map((value) => new AccountIdentifier.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountIdentifiers != null) {
-      _json["accountIdentifiers"] = accountIdentifiers.map((value) => (value).toJson()).toList();
+      _json["accountIdentifiers"] =
+          accountIdentifiers.map((value) => (value).toJson()).toList();
     }
     if (kind != null) {
       _json["kind"] = kind;
@@ -4296,20 +4152,46 @@ class AccountsAuthInfoResponse {
   }
 }
 
+class AccountsClaimWebsiteResponse {
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountsClaimWebsiteResponse".
+  core.String kind;
+
+  AccountsClaimWebsiteResponse();
+
+  AccountsClaimWebsiteResponse.fromJson(core.Map _json) {
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    return _json;
+  }
+}
+
 class AccountsCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<AccountsCustomBatchRequestEntry> entries;
 
   AccountsCustomBatchRequest();
 
   AccountsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountsCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new AccountsCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4317,23 +4199,30 @@ class AccountsCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch accounts request. */
+/// A batch entry encoding a single non-batch accounts request.
 class AccountsCustomBatchRequestEntry {
-  /**
-   * The account to create or update. Only defined if the method is insert or
-   * update.
-   */
+  /// The account to create or update. Only defined if the method is insert or
+  /// update.
   Account account;
-  /**
-   * The ID of the account to get or delete. Only defined if the method is get
-   * or delete.
-   */
+
+  /// The ID of the targeted account. Only defined if the method is get, delete
+  /// or claimwebsite.
   core.String accountId;
-  /** An entry ID, unique within the batch request. */
+
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+
+  /// Whether the account should be deleted if the account has offers. Only
+  /// applicable if the method is delete.
+  core.bool force;
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
+
+  /// Only applicable if the method is claimwebsite. Indicates whether or not to
+  /// take the claim from another account in case there is a conflict.
+  core.bool overwrite;
 
   AccountsCustomBatchRequestEntry();
 
@@ -4347,16 +4236,23 @@ class AccountsCustomBatchRequestEntry {
     if (_json.containsKey("batchId")) {
       batchId = _json["batchId"];
     }
+    if (_json.containsKey("force")) {
+      force = _json["force"];
+    }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
     }
     if (_json.containsKey("method")) {
       method = _json["method"];
     }
+    if (_json.containsKey("overwrite")) {
+      overwrite = _json["overwrite"];
+    }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (account != null) {
       _json["account"] = (account).toJson();
     }
@@ -4366,38 +4262,46 @@ class AccountsCustomBatchRequestEntry {
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
+    if (force != null) {
+      _json["force"] = force;
+    }
     if (merchantId != null) {
       _json["merchantId"] = merchantId;
     }
     if (method != null) {
       _json["method"] = method;
     }
+    if (overwrite != null) {
+      _json["overwrite"] = overwrite;
+    }
     return _json;
   }
 }
 
 class AccountsCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<AccountsCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountsCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountsCustomBatchResponse".
   core.String kind;
 
   AccountsCustomBatchResponse();
 
   AccountsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountsCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new AccountsCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4408,21 +4312,20 @@ class AccountsCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch accounts response. */
+/// A batch entry encoding a single non-batch accounts response.
 class AccountsCustomBatchResponseEntry {
-  /**
-   * The retrieved, created, or updated account. Not defined if the method was
-   * delete.
-   */
+  /// The retrieved, created, or updated account. Not defined if the method was
+  /// delete or claimwebsite.
   Account account;
-  /** The ID of the request entry this entry responds to. */
+
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountsCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountsCustomBatchResponseEntry".
   core.String kind;
 
   AccountsCustomBatchResponseEntry();
@@ -4442,8 +4345,9 @@ class AccountsCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (account != null) {
       _json["account"] = (account).toJson();
     }
@@ -4461,12 +4365,11 @@ class AccountsCustomBatchResponseEntry {
 }
 
 class AccountsListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountsListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountsListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of accounts. */
+
+  /// The token for the retrieval of the next page of accounts.
   core.String nextPageToken;
   core.List<Account> resources;
 
@@ -4480,213 +4383,15 @@ class AccountsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new Account.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new Account.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (kind != null) {
-      _json["kind"] = kind;
-    }
-    if (nextPageToken != null) {
-      _json["nextPageToken"] = nextPageToken;
-    }
-    if (resources != null) {
-      _json["resources"] = resources.map((value) => (value).toJson()).toList();
-    }
-    return _json;
-  }
-}
-
-class AccountshippingCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
-  core.List<AccountshippingCustomBatchRequestEntry> entries;
-
-  AccountshippingCustomBatchRequest();
-
-  AccountshippingCustomBatchRequest.fromJson(core.Map _json) {
-    if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountshippingCustomBatchRequestEntry.fromJson(value)).toList();
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (entries != null) {
-      _json["entries"] = entries.map((value) => (value).toJson()).toList();
-    }
-    return _json;
-  }
-}
-
-/** A batch entry encoding a single non-batch accountshipping request. */
-class AccountshippingCustomBatchRequestEntry {
-  /**
-   * The ID of the account for which to get/update account shipping settings.
-   */
-  core.String accountId;
-  /**
-   * The account shipping settings to update. Only defined if the method is
-   * update.
-   */
-  AccountShipping accountShipping;
-  /** An entry ID, unique within the batch request. */
-  core.int batchId;
-  /** The ID of the managing account. */
-  core.String merchantId;
-  core.String method;
-
-  AccountshippingCustomBatchRequestEntry();
-
-  AccountshippingCustomBatchRequestEntry.fromJson(core.Map _json) {
-    if (_json.containsKey("accountId")) {
-      accountId = _json["accountId"];
-    }
-    if (_json.containsKey("accountShipping")) {
-      accountShipping = new AccountShipping.fromJson(_json["accountShipping"]);
-    }
-    if (_json.containsKey("batchId")) {
-      batchId = _json["batchId"];
-    }
-    if (_json.containsKey("merchantId")) {
-      merchantId = _json["merchantId"];
-    }
-    if (_json.containsKey("method")) {
-      method = _json["method"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (accountId != null) {
-      _json["accountId"] = accountId;
-    }
-    if (accountShipping != null) {
-      _json["accountShipping"] = (accountShipping).toJson();
-    }
-    if (batchId != null) {
-      _json["batchId"] = batchId;
-    }
-    if (merchantId != null) {
-      _json["merchantId"] = merchantId;
-    }
-    if (method != null) {
-      _json["method"] = method;
-    }
-    return _json;
-  }
-}
-
-class AccountshippingCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
-  core.List<AccountshippingCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountshippingCustomBatchResponse".
-   */
-  core.String kind;
-
-  AccountshippingCustomBatchResponse();
-
-  AccountshippingCustomBatchResponse.fromJson(core.Map _json) {
-    if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountshippingCustomBatchResponseEntry.fromJson(value)).toList();
-    }
-    if (_json.containsKey("kind")) {
-      kind = _json["kind"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (entries != null) {
-      _json["entries"] = entries.map((value) => (value).toJson()).toList();
-    }
-    if (kind != null) {
-      _json["kind"] = kind;
-    }
-    return _json;
-  }
-}
-
-/** A batch entry encoding a single non-batch accountshipping response. */
-class AccountshippingCustomBatchResponseEntry {
-  /** The retrieved or updated account shipping settings. */
-  AccountShipping accountShipping;
-  /** The ID of the request entry this entry responds to. */
-  core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
-  Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountshippingCustomBatchResponseEntry".
-   */
-  core.String kind;
-
-  AccountshippingCustomBatchResponseEntry();
-
-  AccountshippingCustomBatchResponseEntry.fromJson(core.Map _json) {
-    if (_json.containsKey("accountShipping")) {
-      accountShipping = new AccountShipping.fromJson(_json["accountShipping"]);
-    }
-    if (_json.containsKey("batchId")) {
-      batchId = _json["batchId"];
-    }
-    if (_json.containsKey("errors")) {
-      errors = new Errors.fromJson(_json["errors"]);
-    }
-    if (_json.containsKey("kind")) {
-      kind = _json["kind"];
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
-    if (accountShipping != null) {
-      _json["accountShipping"] = (accountShipping).toJson();
-    }
-    if (batchId != null) {
-      _json["batchId"] = batchId;
-    }
-    if (errors != null) {
-      _json["errors"] = (errors).toJson();
-    }
-    if (kind != null) {
-      _json["kind"] = kind;
-    }
-    return _json;
-  }
-}
-
-class AccountshippingListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountshippingListResponse".
-   */
-  core.String kind;
-  /**
-   * The token for the retrieval of the next page of account shipping settings.
-   */
-  core.String nextPageToken;
-  core.List<AccountShipping> resources;
-
-  AccountshippingListResponse();
-
-  AccountshippingListResponse.fromJson(core.Map _json) {
-    if (_json.containsKey("kind")) {
-      kind = _json["kind"];
-    }
-    if (_json.containsKey("nextPageToken")) {
-      nextPageToken = _json["nextPageToken"];
-    }
-    if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new AccountShipping.fromJson(value)).toList();
-    }
-  }
-
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -4701,19 +4406,23 @@ class AccountshippingListResponse {
 }
 
 class AccountstatusesCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<AccountstatusesCustomBatchRequestEntry> entries;
 
   AccountstatusesCustomBatchRequest();
 
   AccountstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountstatusesCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new AccountstatusesCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4721,15 +4430,18 @@ class AccountstatusesCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch accountstatuses request. */
+/// A batch entry encoding a single non-batch accountstatuses request.
 class AccountstatusesCustomBatchRequestEntry {
-  /** The ID of the (sub-)account whose status to get. */
+  /// The ID of the (sub-)account whose status to get.
   core.String accountId;
-  /** An entry ID, unique within the batch request. */
+
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
-  /** The method (get). */
+
+  /// The method (get).
   core.String method;
 
   AccountstatusesCustomBatchRequestEntry();
@@ -4749,8 +4461,9 @@ class AccountstatusesCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
@@ -4768,27 +4481,30 @@ class AccountstatusesCustomBatchRequestEntry {
 }
 
 class AccountstatusesCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<AccountstatusesCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountstatusesCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountstatusesCustomBatchResponse".
   core.String kind;
 
   AccountstatusesCustomBatchResponse();
 
   AccountstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccountstatusesCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new AccountstatusesCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4799,16 +4515,16 @@ class AccountstatusesCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch accountstatuses response. */
+/// A batch entry encoding a single non-batch accountstatuses response.
 class AccountstatusesCustomBatchResponseEntry {
-  /**
-   * The requested account status. Defined if and only if the request was
-   * successful.
-   */
+  /// The requested account status. Defined if and only if the request was
+  /// successful.
   AccountStatus accountStatus;
-  /** The ID of the request entry this entry responds to. */
+
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
 
   AccountstatusesCustomBatchResponseEntry();
@@ -4825,8 +4541,9 @@ class AccountstatusesCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountStatus != null) {
       _json["accountStatus"] = (accountStatus).toJson();
     }
@@ -4841,12 +4558,11 @@ class AccountstatusesCustomBatchResponseEntry {
 }
 
 class AccountstatusesListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accountstatusesListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accountstatusesListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of account statuses. */
+
+  /// The token for the retrieval of the next page of account statuses.
   core.String nextPageToken;
   core.List<AccountStatus> resources;
 
@@ -4860,12 +4576,15 @@ class AccountstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new AccountStatus.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new AccountStatus.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -4880,19 +4599,22 @@ class AccountstatusesListResponse {
 }
 
 class AccounttaxCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<AccounttaxCustomBatchRequestEntry> entries;
 
   AccounttaxCustomBatchRequest();
 
   AccounttaxCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccounttaxCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new AccounttaxCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4900,17 +4622,18 @@ class AccounttaxCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch accounttax request. */
+/// A batch entry encoding a single non-batch accounttax request.
 class AccounttaxCustomBatchRequestEntry {
-  /** The ID of the account for which to get/update account tax settings. */
+  /// The ID of the account for which to get/update account tax settings.
   core.String accountId;
-  /**
-   * The account tax settings to update. Only defined if the method is update.
-   */
+
+  /// The account tax settings to update. Only defined if the method is update.
   AccountTax accountTax;
-  /** An entry ID, unique within the batch request. */
+
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
 
@@ -4934,8 +4657,9 @@ class AccounttaxCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
@@ -4956,27 +4680,30 @@ class AccounttaxCustomBatchRequestEntry {
 }
 
 class AccounttaxCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<AccounttaxCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accounttaxCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accounttaxCustomBatchResponse".
   core.String kind;
 
   AccounttaxCustomBatchResponse();
 
   AccounttaxCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new AccounttaxCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map(
+              (value) => new AccounttaxCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -4987,18 +4714,19 @@ class AccounttaxCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch accounttax response. */
+/// A batch entry encoding a single non-batch accounttax response.
 class AccounttaxCustomBatchResponseEntry {
-  /** The retrieved or updated account tax settings. */
+  /// The retrieved or updated account tax settings.
   AccountTax accountTax;
-  /** The ID of the request entry this entry responds to. */
+
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accounttaxCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accounttaxCustomBatchResponseEntry".
   core.String kind;
 
   AccounttaxCustomBatchResponseEntry();
@@ -5018,8 +4746,9 @@ class AccounttaxCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountTax != null) {
       _json["accountTax"] = (accountTax).toJson();
     }
@@ -5037,12 +4766,11 @@ class AccounttaxCustomBatchResponseEntry {
 }
 
 class AccounttaxListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#accounttaxListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#accounttaxListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of account tax settings. */
+
+  /// The token for the retrieval of the next page of account tax settings.
   core.String nextPageToken;
   core.List<AccountTax> resources;
 
@@ -5056,12 +4784,15 @@ class AccounttaxListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new AccountTax.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new AccountTax.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -5076,32 +4807,29 @@ class AccounttaxListResponse {
 }
 
 class CarrierRate {
-  /**
-   * Carrier service, such as "UPS" or "Fedex". The list of supported carriers
-   * can be retrieved via the getSupportedCarriers method. Required.
-   */
+  /// Carrier service, such as "UPS" or "Fedex". The list of supported carriers
+  /// can be retrieved via the getSupportedCarriers method. Required.
   core.String carrierName;
-  /**
-   * Carrier service, such as "ground" or "2 days". The list of supported
-   * services for a carrier can be retrieved via the getSupportedCarriers
-   * method. Required.
-   */
+
+  /// Carrier service, such as "ground" or "2 days". The list of supported
+  /// services for a carrier can be retrieved via the getSupportedCarriers
+  /// method. Required.
   core.String carrierService;
-  /**
-   * Additive shipping rate modifier. Can be negative. For example { "value":
-   * "1", "currency" : "USD" } adds $1 to the rate, { "value": "-3", "currency"
-   * : "USD" } removes $3 from the rate. Optional.
-   */
+
+  /// Additive shipping rate modifier. Can be negative. For example { "value":
+  /// "1", "currency" : "USD" } adds $1 to the rate, { "value": "-3", "currency"
+  /// : "USD" } removes $3 from the rate. Optional.
   Price flatAdjustment;
-  /** Name of the carrier rate. Must be unique per rate group. Required. */
+
+  /// Name of the carrier rate. Must be unique per rate group. Required.
   core.String name;
-  /** Shipping origin for this carrier rate. Required. */
+
+  /// Shipping origin for this carrier rate. Required.
   core.String originPostalCode;
-  /**
-   * Multiplicative shipping rate modifier as a number in decimal notation. Can
-   * be negative. For example "5.4" increases the rate by 5.4%, "-3" decreases
-   * the rate by 3%. Optional.
-   */
+
+  /// Multiplicative shipping rate modifier as a number in decimal notation. Can
+  /// be negative. For example "5.4" increases the rate by 5.4%, "-3" decreases
+  /// the rate by 3%. Optional.
   core.String percentageAdjustment;
 
   CarrierRate();
@@ -5127,8 +4855,9 @@ class CarrierRate {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrierName != null) {
       _json["carrierName"] = carrierName;
     }
@@ -5152,14 +4881,14 @@ class CarrierRate {
 }
 
 class CarriersCarrier {
-  /** The CLDR country code of the carrier (e.g., "US"). Always present. */
+  /// The CLDR country code of the carrier (e.g., "US"). Always present.
   core.String country;
-  /** The name of the carrier (e.g., "UPS"). Always present. */
+
+  /// The name of the carrier (e.g., "UPS"). Always present.
   core.String name;
-  /**
-   * A list of supported services (e.g., "ground") for that carrier. Contains at
-   * least one service.
-   */
+
+  /// A list of supported services (e.g., "ground") for that carrier. Contains
+  /// at least one service.
   core.List<core.String> services;
 
   CarriersCarrier();
@@ -5176,8 +4905,9 @@ class CarriersCarrier {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -5191,45 +4921,52 @@ class CarriersCarrier {
   }
 }
 
-/** Datafeed data. */
+/// Datafeed configuration data.
 class Datafeed {
-  /**
-   * The two-letter ISO 639-1 language in which the attributes are defined in
-   * the data feed.
-   */
+  /// The two-letter ISO 639-1 language in which the attributes are defined in
+  /// the data feed.
   core.String attributeLanguage;
-  /**
-   * The two-letter ISO 639-1 language of the items in the feed. Must be a valid
-   * language for targetCountry.
-   */
+
+  /// [DEPRECATED] Please use targets[].language instead. The two-letter ISO
+  /// 639-1 language of the items in the feed. Must be a valid language for
+  /// targetCountry.
   core.String contentLanguage;
-  /** The type of data feed. */
+
+  /// The type of data feed. For product inventory feeds, only feeds for local
+  /// stores, not online stores, are supported.
   core.String contentType;
-  /** Fetch schedule for the feed file. */
+
+  /// Fetch schedule for the feed file.
   DatafeedFetchSchedule fetchSchedule;
-  /** The filename of the feed. All feeds must have a unique file name. */
+
+  /// The filename of the feed. All feeds must have a unique file name.
   core.String fileName;
-  /** Format of the feed file. */
+
+  /// Format of the feed file.
   DatafeedFormat format;
-  /** The ID of the data feed. */
+
+  /// The ID of the data feed.
   core.String id;
-  /**
-   * The list of intended destinations (corresponds to checked check boxes in
-   * Merchant Center).
-   */
+
+  /// [DEPRECATED] Please use targets[].includedDestinations instead. The list
+  /// of intended destinations (corresponds to checked check boxes in Merchant
+  /// Center).
   core.List<core.String> intendedDestinations;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeed".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeed".
   core.String kind;
-  /** A descriptive name of the data feed. */
+
+  /// A descriptive name of the data feed.
   core.String name;
-  /**
-   * The country where the items in the feed will be included in the search
-   * index, represented as a CLDR territory code.
-   */
+
+  /// [DEPRECATED] Please use targets[].country instead. The country where the
+  /// items in the feed will be included in the search index, represented as a
+  /// CLDR territory code.
   core.String targetCountry;
+
+  /// The targets this feed should apply to (country, language, destinations).
+  core.List<DatafeedTarget> targets;
 
   Datafeed();
 
@@ -5244,7 +4981,8 @@ class Datafeed {
       contentType = _json["contentType"];
     }
     if (_json.containsKey("fetchSchedule")) {
-      fetchSchedule = new DatafeedFetchSchedule.fromJson(_json["fetchSchedule"]);
+      fetchSchedule =
+          new DatafeedFetchSchedule.fromJson(_json["fetchSchedule"]);
     }
     if (_json.containsKey("fileName")) {
       fileName = _json["fileName"];
@@ -5267,10 +5005,16 @@ class Datafeed {
     if (_json.containsKey("targetCountry")) {
       targetCountry = _json["targetCountry"];
     }
+    if (_json.containsKey("targets")) {
+      targets = _json["targets"]
+          .map((value) => new DatafeedTarget.fromJson(value))
+          .toList();
+    }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (attributeLanguage != null) {
       _json["attributeLanguage"] = attributeLanguage;
     }
@@ -5304,41 +5048,46 @@ class Datafeed {
     if (targetCountry != null) {
       _json["targetCountry"] = targetCountry;
     }
+    if (targets != null) {
+      _json["targets"] = targets.map((value) => (value).toJson()).toList();
+    }
     return _json;
   }
 }
 
-/**
- * The required fields vary based on the frequency of fetching. For a monthly
- * fetch schedule, day_of_month and hour are required. For a weekly fetch
- * schedule, weekday and hour are required. For a daily fetch schedule, only
- * hour is required.
- */
+/// The required fields vary based on the frequency of fetching. For a monthly
+/// fetch schedule, day_of_month and hour are required. For a weekly fetch
+/// schedule, weekday and hour are required. For a daily fetch schedule, only
+/// hour is required.
 class DatafeedFetchSchedule {
-  /** The day of the month the feed file should be fetched (1-31). */
+  /// The day of the month the feed file should be fetched (1-31).
   core.int dayOfMonth;
-  /**
-   * The URL where the feed file can be fetched. Google Merchant Center will
-   * support automatic scheduled uploads using the HTTP, HTTPS, FTP, or SFTP
-   * protocols, so the value will need to be a valid link using one of those
-   * four protocols.
-   */
+
+  /// The URL where the feed file can be fetched. Google Merchant Center will
+  /// support automatic scheduled uploads using the HTTP, HTTPS, FTP, or SFTP
+  /// protocols, so the value will need to be a valid link using one of those
+  /// four protocols.
   core.String fetchUrl;
-  /** The hour of the day the feed file should be fetched (0-23). */
+
+  /// The hour of the day the feed file should be fetched (0-23).
   core.int hour;
-  /**
-   * The minute of the hour the feed file should be fetched (0-59). Read-only.
-   */
+
+  /// The minute of the hour the feed file should be fetched (0-59). Read-only.
   core.int minuteOfHour;
-  /** An optional password for fetch_url. */
+
+  /// An optional password for fetch_url.
   core.String password;
-  /**
-   * Time zone used for schedule. UTC by default. E.g., "America/Los_Angeles".
-   */
+
+  /// Whether the scheduled fetch is paused or not.
+  core.bool paused;
+
+  /// Time zone used for schedule. UTC by default. E.g., "America/Los_Angeles".
   core.String timeZone;
-  /** An optional user name for fetch_url. */
+
+  /// An optional user name for fetch_url.
   core.String username;
-  /** The day of the week the feed file should be fetched. */
+
+  /// The day of the week the feed file should be fetched.
   core.String weekday;
 
   DatafeedFetchSchedule();
@@ -5359,6 +5108,9 @@ class DatafeedFetchSchedule {
     if (_json.containsKey("password")) {
       password = _json["password"];
     }
+    if (_json.containsKey("paused")) {
+      paused = _json["paused"];
+    }
     if (_json.containsKey("timeZone")) {
       timeZone = _json["timeZone"];
     }
@@ -5370,8 +5122,9 @@ class DatafeedFetchSchedule {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (dayOfMonth != null) {
       _json["dayOfMonth"] = dayOfMonth;
     }
@@ -5387,6 +5140,9 @@ class DatafeedFetchSchedule {
     if (password != null) {
       _json["password"] = password;
     }
+    if (paused != null) {
+      _json["paused"] = paused;
+    }
     if (timeZone != null) {
       _json["timeZone"] = timeZone;
     }
@@ -5401,21 +5157,17 @@ class DatafeedFetchSchedule {
 }
 
 class DatafeedFormat {
-  /**
-   * Delimiter for the separation of values in a delimiter-separated values
-   * feed. If not specified, the delimiter will be auto-detected. Ignored for
-   * non-DSV data feeds.
-   */
+  /// Delimiter for the separation of values in a delimiter-separated values
+  /// feed. If not specified, the delimiter will be auto-detected. Ignored for
+  /// non-DSV data feeds.
   core.String columnDelimiter;
-  /**
-   * Character encoding scheme of the data feed. If not specified, the encoding
-   * will be auto-detected.
-   */
+
+  /// Character encoding scheme of the data feed. If not specified, the encoding
+  /// will be auto-detected.
   core.String fileEncoding;
-  /**
-   * Specifies how double quotes are interpreted. If not specified, the mode
-   * will be auto-detected. Ignored for non-DSV data feeds.
-   */
+
+  /// Specifies how double quotes are interpreted. If not specified, the mode
+  /// will be auto-detected. Ignored for non-DSV data feeds.
   core.String quotingMode;
 
   DatafeedFormat();
@@ -5432,8 +5184,9 @@ class DatafeedFormat {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (columnDelimiter != null) {
       _json["columnDelimiter"] = columnDelimiter;
     }
@@ -5447,39 +5200,54 @@ class DatafeedFormat {
   }
 }
 
-/**
- * The status of a datafeed, i.e., the result of the last retrieval of the
- * datafeed computed asynchronously when the feed processing is finished.
- */
+/// The status of a datafeed, i.e., the result of the last retrieval of the
+/// datafeed computed asynchronously when the feed processing is finished.
 class DatafeedStatus {
-  /** The ID of the feed for which the status is reported. */
+  /// The country for which the status is reported, represented as a  CLDR
+  /// territory code.
+  core.String country;
+
+  /// The ID of the feed for which the status is reported.
   core.String datafeedId;
-  /** The list of errors occurring in the feed. */
+
+  /// The list of errors occurring in the feed.
   core.List<DatafeedStatusError> errors;
-  /** The number of items in the feed that were processed. */
+
+  /// The number of items in the feed that were processed.
   core.String itemsTotal;
-  /** The number of items in the feed that were valid. */
+
+  /// The number of items in the feed that were valid.
   core.String itemsValid;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeedStatus".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeedStatus".
   core.String kind;
-  /** The last date at which the feed was uploaded. */
+
+  /// The two-letter ISO 639-1 language for which the status is reported.
+  core.String language;
+
+  /// The last date at which the feed was uploaded.
   core.String lastUploadDate;
-  /** The processing status of the feed. */
+
+  /// The processing status of the feed.
   core.String processingStatus;
-  /** The list of errors occurring in the feed. */
+
+  /// The list of errors occurring in the feed.
   core.List<DatafeedStatusError> warnings;
 
   DatafeedStatus();
 
   DatafeedStatus.fromJson(core.Map _json) {
+    if (_json.containsKey("country")) {
+      country = _json["country"];
+    }
     if (_json.containsKey("datafeedId")) {
       datafeedId = _json["datafeedId"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"].map((value) => new DatafeedStatusError.fromJson(value)).toList();
+      errors = _json["errors"]
+          .map((value) => new DatafeedStatusError.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsTotal")) {
       itemsTotal = _json["itemsTotal"];
@@ -5490,6 +5258,9 @@ class DatafeedStatus {
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
+    if (_json.containsKey("language")) {
+      language = _json["language"];
+    }
     if (_json.containsKey("lastUploadDate")) {
       lastUploadDate = _json["lastUploadDate"];
     }
@@ -5497,12 +5268,18 @@ class DatafeedStatus {
       processingStatus = _json["processingStatus"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"].map((value) => new DatafeedStatusError.fromJson(value)).toList();
+      warnings = _json["warnings"]
+          .map((value) => new DatafeedStatusError.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (country != null) {
+      _json["country"] = country;
+    }
     if (datafeedId != null) {
       _json["datafeedId"] = datafeedId;
     }
@@ -5518,6 +5295,9 @@ class DatafeedStatus {
     if (kind != null) {
       _json["kind"] = kind;
     }
+    if (language != null) {
+      _json["language"] = language;
+    }
     if (lastUploadDate != null) {
       _json["lastUploadDate"] = lastUploadDate;
     }
@@ -5531,15 +5311,18 @@ class DatafeedStatus {
   }
 }
 
-/** An error occurring in the feed, like "invalid price". */
+/// An error occurring in the feed, like "invalid price".
 class DatafeedStatusError {
-  /** The code of the error, e.g., "validation/invalid_value". */
+  /// The code of the error, e.g., "validation/invalid_value".
   core.String code;
-  /** The number of occurrences of the error in the feed. */
+
+  /// The number of occurrences of the error in the feed.
   core.String count;
-  /** A list of example occurrences of the error, grouped by product. */
+
+  /// A list of example occurrences of the error, grouped by product.
   core.List<DatafeedStatusExample> examples;
-  /** The error message, e.g., "Invalid price". */
+
+  /// The error message, e.g., "Invalid price".
   core.String message;
 
   DatafeedStatusError();
@@ -5552,15 +5335,18 @@ class DatafeedStatusError {
       count = _json["count"];
     }
     if (_json.containsKey("examples")) {
-      examples = _json["examples"].map((value) => new DatafeedStatusExample.fromJson(value)).toList();
+      examples = _json["examples"]
+          .map((value) => new DatafeedStatusExample.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (code != null) {
       _json["code"] = code;
     }
@@ -5577,13 +5363,15 @@ class DatafeedStatusError {
   }
 }
 
-/** An example occurrence for a particular error. */
+/// An example occurrence for a particular error.
 class DatafeedStatusExample {
-  /** The ID of the example item. */
+  /// The ID of the example item.
   core.String itemId;
-  /** Line number in the data feed where the example is found. */
+
+  /// Line number in the data feed where the example is found.
   core.String lineNumber;
-  /** The problematic value. */
+
+  /// The problematic value.
   core.String value;
 
   DatafeedStatusExample();
@@ -5600,8 +5388,9 @@ class DatafeedStatusExample {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (itemId != null) {
       _json["itemId"] = itemId;
     }
@@ -5615,20 +5404,77 @@ class DatafeedStatusExample {
   }
 }
 
+class DatafeedTarget {
+  /// The country where the items in the feed will be included in the search
+  /// index, represented as a  CLDR territory code.
+  core.String country;
+
+  /// The list of destinations to exclude for this target (corresponds to
+  /// unchecked check boxes in Merchant Center).
+  core.List<core.String> excludedDestinations;
+
+  /// The list of destinations to include for this target (corresponds to
+  /// checked check boxes in Merchant Center). Default destinations are always
+  /// included unless provided in the excluded_destination field.
+  core.List<core.String> includedDestinations;
+
+  /// The two-letter ISO 639-1 language of the items in the feed. Must be a
+  /// valid language for targets[].country.
+  core.String language;
+
+  DatafeedTarget();
+
+  DatafeedTarget.fromJson(core.Map _json) {
+    if (_json.containsKey("country")) {
+      country = _json["country"];
+    }
+    if (_json.containsKey("excludedDestinations")) {
+      excludedDestinations = _json["excludedDestinations"];
+    }
+    if (_json.containsKey("includedDestinations")) {
+      includedDestinations = _json["includedDestinations"];
+    }
+    if (_json.containsKey("language")) {
+      language = _json["language"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (country != null) {
+      _json["country"] = country;
+    }
+    if (excludedDestinations != null) {
+      _json["excludedDestinations"] = excludedDestinations;
+    }
+    if (includedDestinations != null) {
+      _json["includedDestinations"] = includedDestinations;
+    }
+    if (language != null) {
+      _json["language"] = language;
+    }
+    return _json;
+  }
+}
+
 class DatafeedsCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<DatafeedsCustomBatchRequestEntry> entries;
 
   DatafeedsCustomBatchRequest();
 
   DatafeedsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new DatafeedsCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new DatafeedsCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -5636,15 +5482,18 @@ class DatafeedsCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch datafeeds request. */
+/// A batch entry encoding a single non-batch datafeeds request.
 class DatafeedsCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The data feed to insert. */
+
+  /// The data feed to insert.
   Datafeed datafeed;
-  /** The ID of the data feed to get or delete. */
+
+  /// The ID of the data feed to get or delete.
   core.String datafeedId;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
 
@@ -5668,8 +5517,9 @@ class DatafeedsCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -5690,27 +5540,29 @@ class DatafeedsCustomBatchRequestEntry {
 }
 
 class DatafeedsCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<DatafeedsCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeedsCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeedsCustomBatchResponse".
   core.String kind;
 
   DatafeedsCustomBatchResponse();
 
   DatafeedsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new DatafeedsCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new DatafeedsCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -5721,15 +5573,16 @@ class DatafeedsCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch datafeeds response. */
+/// A batch entry encoding a single non-batch datafeeds response.
 class DatafeedsCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /**
-   * The requested data feed. Defined if and only if the request was successful.
-   */
+
+  /// The requested data feed. Defined if and only if the request was
+  /// successful.
   Datafeed datafeed;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
 
   DatafeedsCustomBatchResponseEntry();
@@ -5746,8 +5599,9 @@ class DatafeedsCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -5762,12 +5616,11 @@ class DatafeedsCustomBatchResponseEntry {
 }
 
 class DatafeedsListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeedsListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeedsListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of datafeeds. */
+
+  /// The token for the retrieval of the next page of datafeeds.
   core.String nextPageToken;
   core.List<Datafeed> resources;
 
@@ -5781,12 +5634,15 @@ class DatafeedsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new Datafeed.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new Datafeed.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -5801,19 +5657,23 @@ class DatafeedsListResponse {
 }
 
 class DatafeedstatusesCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<DatafeedstatusesCustomBatchRequestEntry> entries;
 
   DatafeedstatusesCustomBatchRequest();
 
   DatafeedstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new DatafeedstatusesCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new DatafeedstatusesCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -5821,13 +5681,25 @@ class DatafeedstatusesCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch datafeedstatuses request. */
+/// A batch entry encoding a single non-batch datafeedstatuses request.
 class DatafeedstatusesCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the data feed to get or delete. */
+
+  /// The country for which to get the datafeed status. If this parameter is
+  /// provided then language must also be provided. Note that for multi-target
+  /// datafeeds this parameter is required.
+  core.String country;
+
+  /// The ID of the data feed to get.
   core.String datafeedId;
-  /** The ID of the managing account. */
+
+  /// The language for which to get the datafeed status. If this parameter is
+  /// provided then country must also be provided. Note that for multi-target
+  /// datafeeds this parameter is required.
+  core.String language;
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
 
@@ -5837,8 +5709,14 @@ class DatafeedstatusesCustomBatchRequestEntry {
     if (_json.containsKey("batchId")) {
       batchId = _json["batchId"];
     }
+    if (_json.containsKey("country")) {
+      country = _json["country"];
+    }
     if (_json.containsKey("datafeedId")) {
       datafeedId = _json["datafeedId"];
+    }
+    if (_json.containsKey("language")) {
+      language = _json["language"];
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -5848,13 +5726,20 @@ class DatafeedstatusesCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
+    if (country != null) {
+      _json["country"] = country;
+    }
     if (datafeedId != null) {
       _json["datafeedId"] = datafeedId;
+    }
+    if (language != null) {
+      _json["language"] = language;
     }
     if (merchantId != null) {
       _json["merchantId"] = merchantId;
@@ -5867,27 +5752,30 @@ class DatafeedstatusesCustomBatchRequestEntry {
 }
 
 class DatafeedstatusesCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<DatafeedstatusesCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeedstatusesCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeedstatusesCustomBatchResponse".
   core.String kind;
 
   DatafeedstatusesCustomBatchResponse();
 
   DatafeedstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new DatafeedstatusesCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new DatafeedstatusesCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -5898,16 +5786,16 @@ class DatafeedstatusesCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch datafeedstatuses response. */
+/// A batch entry encoding a single non-batch datafeedstatuses response.
 class DatafeedstatusesCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /**
-   * The requested data feed status. Defined if and only if the request was
-   * successful.
-   */
+
+  /// The requested data feed status. Defined if and only if the request was
+  /// successful.
   DatafeedStatus datafeedStatus;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
 
   DatafeedstatusesCustomBatchResponseEntry();
@@ -5924,8 +5812,9 @@ class DatafeedstatusesCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -5940,12 +5829,11 @@ class DatafeedstatusesCustomBatchResponseEntry {
 }
 
 class DatafeedstatusesListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#datafeedstatusesListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#datafeedstatusesListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of datafeed statuses. */
+
+  /// The token for the retrieval of the next page of datafeed statuses.
   core.String nextPageToken;
   core.List<DatafeedStatus> resources;
 
@@ -5959,12 +5847,15 @@ class DatafeedstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new DatafeedStatus.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new DatafeedStatus.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -5979,16 +5870,13 @@ class DatafeedstatusesListResponse {
 }
 
 class DeliveryTime {
-  /**
-   * Maximum number of business days that is spent in transit. 0 means same day
-   * delivery, 1 means next day delivery. Must be greater than or equal to
-   * minTransitTimeInDays. Required.
-   */
+  /// Maximum number of business days that is spent in transit. 0 means same day
+  /// delivery, 1 means next day delivery. Must be greater than or equal to
+  /// minTransitTimeInDays. Required.
   core.int maxTransitTimeInDays;
-  /**
-   * Minimum number of business days that is spent in transit. 0 means same day
-   * delivery, 1 means next day delivery. Required.
-   */
+
+  /// Minimum number of business days that is spent in transit. 0 means same day
+  /// delivery, 1 means next day delivery. Required.
   core.int minTransitTimeInDays;
 
   DeliveryTime();
@@ -6002,8 +5890,9 @@ class DeliveryTime {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (maxTransitTimeInDays != null) {
       _json["maxTransitTimeInDays"] = maxTransitTimeInDays;
     }
@@ -6014,13 +5903,15 @@ class DeliveryTime {
   }
 }
 
-/** An error returned by the API. */
+/// An error returned by the API.
 class Error {
-  /** The domain of the error. */
+  /// The domain of the error.
   core.String domain;
-  /** A description of the error. */
+
+  /// A description of the error.
   core.String message;
-  /** The error code. */
+
+  /// The error code.
   core.String reason;
 
   Error();
@@ -6037,8 +5928,9 @@ class Error {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (domain != null) {
       _json["domain"] = domain;
     }
@@ -6052,13 +5944,15 @@ class Error {
   }
 }
 
-/** A list of errors returned by a failed batch entry. */
+/// A list of errors returned by a failed batch entry.
 class Errors {
-  /** The HTTP status of the first error in errors. */
+  /// The HTTP status of the first error in errors.
   core.int code;
-  /** A list of errors. */
+
+  /// A list of errors.
   core.List<Error> errors;
-  /** The message of the first error in errors. */
+
+  /// The message of the first error in errors.
   core.String message;
 
   Errors();
@@ -6068,15 +5962,17 @@ class Errors {
       code = _json["code"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"].map((value) => new Error.fromJson(value)).toList();
+      errors =
+          _json["errors"].map((value) => new Error.fromJson(value)).toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (code != null) {
       _json["code"] = code;
     }
@@ -6090,51 +5986,47 @@ class Errors {
   }
 }
 
-/**
- * A non-empty list of row or column headers for a table. Exactly one of prices,
- * weights, numItems, postalCodeGroupNames, or locations must be set.
- */
+/// A non-empty list of row or column headers for a table. Exactly one of
+/// prices, weights, numItems, postalCodeGroupNames, or locations must be set.
 class Headers {
-  /**
-   * A list of location ID sets. Must be non-empty. Can only be set if all other
-   * fields are not set.
-   */
+  /// A list of location ID sets. Must be non-empty. Can only be set if all
+  /// other fields are not set.
   core.List<LocationIdSet> locations;
-  /**
-   * A list of inclusive number of items upper bounds. The last value can be
-   * "infinity". For example ["10", "50", "infinity"] represents the headers "<=
-   * 10 items", " 50 items". Must be non-empty. Can only be set if all other
-   * fields are not set.
-   */
+
+  /// A list of inclusive number of items upper bounds. The last value can be
+  /// "infinity". For example ["10", "50", "infinity"] represents the headers
+  /// "<= 10 items", " 50 items". Must be non-empty. Can only be set if all
+  /// other fields are not set.
   core.List<core.String> numberOfItems;
-  /**
-   * A list of postal group names. The last value can be "all other locations".
-   * Example: ["zone 1", "zone 2", "all other locations"]. The referred postal
-   * code groups must match the delivery country of the service. Must be
-   * non-empty. Can only be set if all other fields are not set.
-   */
+
+  /// A list of postal group names. The last value can be "all other locations".
+  /// Example: ["zone 1", "zone 2", "all other locations"]. The referred postal
+  /// code groups must match the delivery country of the service. Must be
+  /// non-empty. Can only be set if all other fields are not set.
   core.List<core.String> postalCodeGroupNames;
-  /**
-   * be "infinity". For example [{"value": "10", "currency": "USD"}, {"value":
-   * "500", "currency": "USD"}, {"value": "infinity", "currency": "USD"}]
-   * represents the headers "<= $10", " $500". All prices within a service must
-   * have the same currency. Must be non-empty. Can only be set if all other
-   * fields are not set.
-   */
+
+  /// A list of inclusive order price upper bounds. The last price's value can
+  /// be "infinity". For example [{"value": "10", "currency": "USD"}, {"value":
+  /// "500", "currency": "USD"}, {"value": "infinity", "currency": "USD"}]
+  /// represents the headers "<= $10", " $500". All prices within a service must
+  /// have the same currency. Must be non-empty. Can only be set if all other
+  /// fields are not set.
   core.List<Price> prices;
-  /**
-   * be "infinity". For example [{"value": "10", "unit": "kg"}, {"value": "50",
-   * "unit": "kg"}, {"value": "infinity", "unit": "kg"}] represents the headers
-   * "<= 10kg", " 50kg". All weights within a service must have the same unit.
-   * Must be non-empty. Can only be set if all other fields are not set.
-   */
+
+  /// A list of inclusive order weight upper bounds. The last weight's value can
+  /// be "infinity". For example [{"value": "10", "unit": "kg"}, {"value": "50",
+  /// "unit": "kg"}, {"value": "infinity", "unit": "kg"}] represents the headers
+  /// "<= 10kg", " 50kg". All weights within a service must have the same unit.
+  /// Must be non-empty. Can only be set if all other fields are not set.
   core.List<Weight> weights;
 
   Headers();
 
   Headers.fromJson(core.Map _json) {
     if (_json.containsKey("locations")) {
-      locations = _json["locations"].map((value) => new LocationIdSet.fromJson(value)).toList();
+      locations = _json["locations"]
+          .map((value) => new LocationIdSet.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("numberOfItems")) {
       numberOfItems = _json["numberOfItems"];
@@ -6143,15 +6035,18 @@ class Headers {
       postalCodeGroupNames = _json["postalCodeGroupNames"];
     }
     if (_json.containsKey("prices")) {
-      prices = _json["prices"].map((value) => new Price.fromJson(value)).toList();
+      prices =
+          _json["prices"].map((value) => new Price.fromJson(value)).toList();
     }
     if (_json.containsKey("weights")) {
-      weights = _json["weights"].map((value) => new Weight.fromJson(value)).toList();
+      weights =
+          _json["weights"].map((value) => new Weight.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (locations != null) {
       _json["locations"] = locations.map((value) => (value).toJson()).toList();
     }
@@ -6172,9 +6067,10 @@ class Headers {
 }
 
 class Installment {
-  /** The amount the buyer has to pay per month. */
+  /// The amount the buyer has to pay per month.
   Price amount;
-  /** The number of installments the buyer has to pay. */
+
+  /// The number of installments the buyer has to pay.
   core.String months;
 
   Installment();
@@ -6188,8 +6084,9 @@ class Installment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -6201,47 +6098,42 @@ class Installment {
 }
 
 class Inventory {
-  /** The availability of the product. */
+  /// The availability of the product.
   core.String availability;
-  /** Number and amount of installments to pay for an item. Brazil only. */
+
+  /// Number and amount of installments to pay for an item. Brazil only.
   Installment installment;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#inventory".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#inventory".
   core.String kind;
-  /**
-   * Loyalty points that users receive after purchasing the item. Japan only.
-   */
+
+  /// Loyalty points that users receive after purchasing the item. Japan only.
   LoyaltyPoints loyaltyPoints;
-  /**
-   * Store pickup information. Only supported for local inventory. Not setting
-   * pickup means "don't update" while setting it to the empty value ({} in
-   * JSON) means "delete". Otherwise, pickupMethod and pickupSla must be set
-   * together, unless pickupMethod is "not supported".
-   */
+
+  /// Store pickup information. Only supported for local inventory. Not setting
+  /// pickup means "don't update" while setting it to the empty value ({} in
+  /// JSON) means "delete". Otherwise, pickupMethod and pickupSla must be set
+  /// together, unless pickupMethod is "not supported".
   InventoryPickup pickup;
-  /** The price of the product. */
+
+  /// The price of the product.
   Price price;
-  /**
-   * The quantity of the product. Must be equal to or greater than zero.
-   * Supported only for local products.
-   */
+
+  /// The quantity of the product. Must be equal to or greater than zero.
+  /// Supported only for local products.
   core.int quantity;
-  /**
-   * The sale price of the product. Mandatory if sale_price_effective_date is
-   * defined.
-   */
+
+  /// The sale price of the product. Mandatory if sale_price_effective_date is
+  /// defined.
   Price salePrice;
-  /**
-   * A date range represented by a pair of ISO 8601 dates separated by a space,
-   * comma, or slash. Both dates might be specified as 'null' if undecided.
-   */
+
+  /// A date range represented by a pair of ISO 8601 dates separated by a space,
+  /// comma, or slash. Both dates might be specified as 'null' if undecided.
   core.String salePriceEffectiveDate;
-  /**
-   * The quantity of the product that is reserved for sell-on-google ads.
-   * Supported only for online products.
-   */
+
+  /// The quantity of the product that is reserved for sell-on-google ads.
+  /// Supported only for online products.
   core.int sellOnGoogleQuantity;
 
   Inventory();
@@ -6279,8 +6171,9 @@ class Inventory {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (availability != null) {
       _json["availability"] = availability;
     }
@@ -6316,19 +6209,22 @@ class Inventory {
 }
 
 class InventoryCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<InventoryCustomBatchRequestEntry> entries;
 
   InventoryCustomBatchRequest();
 
   InventoryCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new InventoryCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new InventoryCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -6336,20 +6232,22 @@ class InventoryCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch inventory request. */
+/// A batch entry encoding a single non-batch inventory request.
 class InventoryCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** Price and availability of the product. */
+
+  /// Price and availability of the product.
   Inventory inventory;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
-  /** The ID of the product for which to update price and availability. */
+
+  /// The ID of the product for which to update price and availability.
   core.String productId;
-  /**
-   * The code of the store for which to update price and availability. Use
-   * online to update price and availability of an online product.
-   */
+
+  /// The code of the store for which to update price and availability. Use
+  /// online to update price and availability of an online product.
   core.String storeCode;
 
   InventoryCustomBatchRequestEntry();
@@ -6372,8 +6270,9 @@ class InventoryCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -6394,27 +6293,29 @@ class InventoryCustomBatchRequestEntry {
 }
 
 class InventoryCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<InventoryCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#inventoryCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#inventoryCustomBatchResponse".
   core.String kind;
 
   InventoryCustomBatchResponse();
 
   InventoryCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new InventoryCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new InventoryCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -6425,16 +6326,16 @@ class InventoryCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch inventory response. */
+/// A batch entry encoding a single non-batch inventory response.
 class InventoryCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#inventoryCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#inventoryCustomBatchResponseEntry".
   core.String kind;
 
   InventoryCustomBatchResponseEntry();
@@ -6451,8 +6352,9 @@ class InventoryCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -6467,18 +6369,15 @@ class InventoryCustomBatchResponseEntry {
 }
 
 class InventoryPickup {
-  /**
-   * Whether store pickup is available for this offer and whether the pickup
-   * option should be shown as buy, reserve, or not supported. Only supported
-   * for local inventory. Unless the value is "not supported", must be submitted
-   * together with pickupSla.
-   */
+  /// Whether store pickup is available for this offer and whether the pickup
+  /// option should be shown as buy, reserve, or not supported. Only supported
+  /// for local inventory. Unless the value is "not supported", must be
+  /// submitted together with pickupSla.
   core.String pickupMethod;
-  /**
-   * The expected date that an order will be ready for pickup, relative to when
-   * the order is placed. Only supported for local inventory. Must be submitted
-   * together with pickupMethod.
-   */
+
+  /// The expected date that an order will be ready for pickup, relative to when
+  /// the order is placed. Only supported for local inventory. Must be submitted
+  /// together with pickupMethod.
   core.String pickupSla;
 
   InventoryPickup();
@@ -6492,8 +6391,9 @@ class InventoryPickup {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (pickupMethod != null) {
       _json["pickupMethod"] = pickupMethod;
     }
@@ -6505,42 +6405,38 @@ class InventoryPickup {
 }
 
 class InventorySetRequest {
-  /** The availability of the product. */
+  /// The availability of the product.
   core.String availability;
-  /** Number and amount of installments to pay for an item. Brazil only. */
+
+  /// Number and amount of installments to pay for an item. Brazil only.
   Installment installment;
-  /**
-   * Loyalty points that users receive after purchasing the item. Japan only.
-   */
+
+  /// Loyalty points that users receive after purchasing the item. Japan only.
   LoyaltyPoints loyaltyPoints;
-  /**
-   * Store pickup information. Only supported for local inventory. Not setting
-   * pickup means "don't update" while setting it to the empty value ({} in
-   * JSON) means "delete". Otherwise, pickupMethod and pickupSla must be set
-   * together, unless pickupMethod is "not supported".
-   */
+
+  /// Store pickup information. Only supported for local inventory. Not setting
+  /// pickup means "don't update" while setting it to the empty value ({} in
+  /// JSON) means "delete". Otherwise, pickupMethod and pickupSla must be set
+  /// together, unless pickupMethod is "not supported".
   InventoryPickup pickup;
-  /** The price of the product. */
+
+  /// The price of the product.
   Price price;
-  /**
-   * The quantity of the product. Must be equal to or greater than zero.
-   * Supported only for local products.
-   */
+
+  /// The quantity of the product. Must be equal to or greater than zero.
+  /// Supported only for local products.
   core.int quantity;
-  /**
-   * The sale price of the product. Mandatory if sale_price_effective_date is
-   * defined.
-   */
+
+  /// The sale price of the product. Mandatory if sale_price_effective_date is
+  /// defined.
   Price salePrice;
-  /**
-   * A date range represented by a pair of ISO 8601 dates separated by a space,
-   * comma, or slash. Both dates might be specified as 'null' if undecided.
-   */
+
+  /// A date range represented by a pair of ISO 8601 dates separated by a space,
+  /// comma, or slash. Both dates might be specified as 'null' if undecided.
   core.String salePriceEffectiveDate;
-  /**
-   * The quantity of the product that is reserved for sell-on-google ads.
-   * Supported only for online products.
-   */
+
+  /// The quantity of the product that is reserved for sell-on-google ads.
+  /// Supported only for online products.
   core.int sellOnGoogleQuantity;
 
   InventorySetRequest();
@@ -6575,8 +6471,9 @@ class InventorySetRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (availability != null) {
       _json["availability"] = availability;
     }
@@ -6609,10 +6506,8 @@ class InventorySetRequest {
 }
 
 class InventorySetResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#inventorySetResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#inventorySetResponse".
   core.String kind;
 
   InventorySetResponse();
@@ -6623,8 +6518,9 @@ class InventorySetResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -6633,10 +6529,8 @@ class InventorySetResponse {
 }
 
 class LocationIdSet {
-  /**
-   * A non-empty list of location IDs. They must all be of the same location
-   * type (e.g., state).
-   */
+  /// A non-empty list of location IDs. They must all be of the same location
+  /// type (e.g., state).
   core.List<core.String> locationIds;
 
   LocationIdSet();
@@ -6647,8 +6541,9 @@ class LocationIdSet {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (locationIds != null) {
       _json["locationIds"] = locationIds;
     }
@@ -6657,18 +6552,16 @@ class LocationIdSet {
 }
 
 class LoyaltyPoints {
-  /**
-   * Name of loyalty points program. It is recommended to limit the name to 12
-   * full-width characters or 24 Roman characters.
-   */
+  /// Name of loyalty points program. It is recommended to limit the name to 12
+  /// full-width characters or 24 Roman characters.
   core.String name;
-  /** The retailer's loyalty points in absolute value. */
+
+  /// The retailer's loyalty points in absolute value.
   core.String pointsValue;
-  /**
-   * The ratio of a point when converted to currency. Google assumes currency
-   * based on Merchant Center settings. If ratio is left out, it defaults to
-   * 1.0.
-   */
+
+  /// The ratio of a point when converted to currency. Google assumes currency
+  /// based on Merchant Center settings. If ratio is left out, it defaults to
+  /// 1.0.
   core.double ratio;
 
   LoyaltyPoints();
@@ -6685,8 +6578,9 @@ class LoyaltyPoints {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (name != null) {
       _json["name"] = name;
     }
@@ -6701,54 +6595,66 @@ class LoyaltyPoints {
 }
 
 class Order {
-  /** Whether the order was acknowledged. */
+  /// Whether the order was acknowledged.
   core.bool acknowledged;
-  /** The channel type of the order: "purchaseOnGoogle" or "googleExpress". */
+
+  /// The channel type of the order: "purchaseOnGoogle" or "googleExpress".
   core.String channelType;
-  /** The details of the customer who placed the order. */
+
+  /// The details of the customer who placed the order.
   OrderCustomer customer;
-  /** The details for the delivery. */
+
+  /// The details for the delivery.
   OrderDeliveryDetails deliveryDetails;
-  /** The REST id of the order. Globally unique. */
+
+  /// The REST id of the order. Globally unique.
   core.String id;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#order".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#order".
   core.String kind;
-  /** Line items that are ordered. */
+
+  /// Line items that are ordered.
   core.List<OrderLineItem> lineItems;
   core.String merchantId;
-  /** Merchant-provided id of the order. */
+
+  /// Merchant-provided id of the order.
   core.String merchantOrderId;
-  /**
-   * The net amount for the order. For example, if an order was originally for a
-   * grand total of $100 and a refund was issued for $20, the net amount will be
-   * $80.
-   */
+
+  /// The net amount for the order. For example, if an order was originally for
+  /// a grand total of $100 and a refund was issued for $20, the net amount will
+  /// be $80.
   Price netAmount;
-  /** The details of the payment method. */
+
+  /// The details of the payment method.
   OrderPaymentMethod paymentMethod;
-  /** The status of the payment. */
+
+  /// The status of the payment.
   core.String paymentStatus;
-  /** The date when the order was placed, in ISO 8601 format. */
+
+  /// The date when the order was placed, in ISO 8601 format.
   core.String placedDate;
-  /**
-   * The details of the merchant provided promotions applied to the order. More
-   * details about the program are  here.
-   */
+
+  /// The details of the merchant provided promotions applied to the order. More
+  /// details about the program are here.
   core.List<OrderPromotion> promotions;
-  /** Refunds for the order. */
+
+  /// Refunds for the order.
   core.List<OrderRefund> refunds;
-  /** Shipments of the order. */
+
+  /// Shipments of the order.
   core.List<OrderShipment> shipments;
-  /** The total cost of shipping for all items. */
+
+  /// The total cost of shipping for all items.
   Price shippingCost;
-  /** The tax for the total shipping cost. */
+
+  /// The tax for the total shipping cost.
   Price shippingCostTax;
-  /** The requested shipping option. */
+
+  /// The requested shipping option.
   core.String shippingOption;
-  /** The status of the order. */
+
+  /// The status of the order.
   core.String status;
 
   Order();
@@ -6764,7 +6670,8 @@ class Order {
       customer = new OrderCustomer.fromJson(_json["customer"]);
     }
     if (_json.containsKey("deliveryDetails")) {
-      deliveryDetails = new OrderDeliveryDetails.fromJson(_json["deliveryDetails"]);
+      deliveryDetails =
+          new OrderDeliveryDetails.fromJson(_json["deliveryDetails"]);
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -6773,7 +6680,9 @@ class Order {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderLineItem.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderLineItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -6794,13 +6703,19 @@ class Order {
       placedDate = _json["placedDate"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"].map((value) => new OrderPromotion.fromJson(value)).toList();
+      promotions = _json["promotions"]
+          .map((value) => new OrderPromotion.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("refunds")) {
-      refunds = _json["refunds"].map((value) => new OrderRefund.fromJson(value)).toList();
+      refunds = _json["refunds"]
+          .map((value) => new OrderRefund.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shipments")) {
-      shipments = _json["shipments"].map((value) => new OrderShipment.fromJson(value)).toList();
+      shipments = _json["shipments"]
+          .map((value) => new OrderShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingCost")) {
       shippingCost = new Price.fromJson(_json["shippingCost"]);
@@ -6816,8 +6731,9 @@ class Order {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (acknowledged != null) {
       _json["acknowledged"] = acknowledged;
     }
@@ -6858,7 +6774,8 @@ class Order {
       _json["placedDate"] = placedDate;
     }
     if (promotions != null) {
-      _json["promotions"] = promotions.map((value) => (value).toJson()).toList();
+      _json["promotions"] =
+          promotions.map((value) => (value).toJson()).toList();
     }
     if (refunds != null) {
       _json["refunds"] = refunds.map((value) => (value).toJson()).toList();
@@ -6883,31 +6800,34 @@ class Order {
 }
 
 class OrderAddress {
-  /** CLDR country code (e.g. "US"). */
+  /// CLDR country code (e.g. "US").
   core.String country;
-  /**
-   * Strings representing the lines of the printed label for mailing the order,
-   * for example:
-   * John Smith
-   * 1600 Amphitheatre Parkway
-   * Mountain View, CA, 94043
-   * United States
-   */
+
+  /// Strings representing the lines of the printed label for mailing the order,
+  /// for example:
+  /// John Smith
+  /// 1600 Amphitheatre Parkway
+  /// Mountain View, CA, 94043
+  /// United States
   core.List<core.String> fullAddress;
-  /** Whether the address is a post office box. */
+
+  /// Whether the address is a post office box.
   core.bool isPostOfficeBox;
-  /**
-   * City, town or commune. May also include dependent localities or
-   * sublocalities (e.g. neighborhoods or suburbs).
-   */
+
+  /// City, town or commune. May also include dependent localities or
+  /// sublocalities (e.g. neighborhoods or suburbs).
   core.String locality;
-  /** Postal Code or ZIP (e.g. "94043"). */
+
+  /// Postal Code or ZIP (e.g. "94043").
   core.String postalCode;
-  /** Name of the recipient. */
+
+  /// Name of the recipient.
   core.String recipientName;
-  /** Top-level administrative subdivision of the country (e.g. "CA"). */
+
+  /// Top-level administrative subdivision of the country (e.g. "CA").
   core.String region;
-  /** Street-level part of the address. */
+
+  /// Street-level part of the address.
   core.List<core.String> streetAddress;
 
   OrderAddress();
@@ -6939,8 +6859,9 @@ class OrderAddress {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -6970,19 +6891,22 @@ class OrderAddress {
 }
 
 class OrderCancellation {
-  /** The actor that created the cancellation. */
+  /// The actor that created the cancellation.
   core.String actor;
-  /** Date on which the cancellation has been created, in ISO 8601 format. */
+
+  /// Date on which the cancellation has been created, in ISO 8601 format.
   core.String creationDate;
-  /** The quantity that was canceled. */
+
+  /// The quantity that was canceled.
   core.int quantity;
-  /**
-   * The reason for the cancellation. Orders that are cancelled with a
-   * noInventory reason will lead to the removal of the product from POG until
-   * you make an update to that product. This will not affect your Shopping ads.
-   */
+
+  /// The reason for the cancellation. Orders that are cancelled with a
+  /// noInventory reason will lead to the removal of the product from POG until
+  /// you make an update to that product. This will not affect your Shopping
+  /// ads.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderCancellation();
@@ -7005,8 +6929,9 @@ class OrderCancellation {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -7027,17 +6952,16 @@ class OrderCancellation {
 }
 
 class OrderCustomer {
-  /** Email address of the customer. */
+  /// Email address of the customer.
   core.String email;
-  /**
-   * If set, this indicates the user explicitly chose to opt in or out of
-   * providing marketing rights to the merchant. If unset, this indicates the
-   * user has already made this choice in a previous purchase, and was thus not
-   * shown the marketing right opt in/out checkbox during the Purchases on
-   * Google checkout flow.
-   */
+
+  /// If set, this indicates the user explicitly chose to opt in or out of
+  /// providing marketing rights to the merchant. If unset, this indicates the
+  /// user has already made this choice in a previous purchase, and was thus not
+  /// shown the marketing right opt in/out checkbox during the checkout flow.
   core.bool explicitMarketingPreference;
-  /** Full name of the customer. */
+
+  /// Full name of the customer.
   core.String fullName;
 
   OrderCustomer();
@@ -7054,8 +6978,9 @@ class OrderCustomer {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (email != null) {
       _json["email"] = email;
     }
@@ -7070,9 +6995,10 @@ class OrderCustomer {
 }
 
 class OrderDeliveryDetails {
-  /** The delivery address */
+  /// The delivery address
   OrderAddress address;
-  /** The phone number of the person receiving the delivery. */
+
+  /// The phone number of the person receiving the delivery.
   core.String phoneNumber;
 
   OrderDeliveryDetails();
@@ -7086,8 +7012,9 @@ class OrderDeliveryDetails {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (address != null) {
       _json["address"] = (address).toJson();
     }
@@ -7099,46 +7026,64 @@ class OrderDeliveryDetails {
 }
 
 class OrderLineItem {
-  /** Cancellations of the line item. */
+  /// Cancellations of the line item.
   core.List<OrderCancellation> cancellations;
-  /** The id of the line item. */
+
+  /// The channel type of the order: "purchaseOnGoogle" or "googleExpress".
+  core.String channelType;
+
+  /// The id of the line item.
   core.String id;
-  /**
-   * Total price for the line item. For example, if two items for $10 are
-   * purchased, the total price will be $20.
-   */
+
+  /// Total price for the line item. For example, if two items for $10 are
+  /// purchased, the total price will be $20.
   Price price;
-  /** Product data from the time of the order placement. */
+
+  /// Product data from the time of the order placement.
   OrderLineItemProduct product;
-  /** Number of items canceled. */
+
+  /// Number of items canceled.
   core.int quantityCanceled;
-  /** Number of items delivered. */
+
+  /// Number of items delivered.
   core.int quantityDelivered;
-  /** Number of items ordered. */
+
+  /// Number of items ordered.
   core.int quantityOrdered;
-  /** Number of items pending. */
+
+  /// Number of items pending.
   core.int quantityPending;
-  /** Number of items returned. */
+
+  /// Number of items returned.
   core.int quantityReturned;
-  /** Number of items shipped. */
+
+  /// Number of items shipped.
   core.int quantityShipped;
-  /** Details of the return policy for the line item. */
+
+  /// Details of the return policy for the line item.
   OrderLineItemReturnInfo returnInfo;
-  /** Returns of the line item. */
+
+  /// Returns of the line item.
   core.List<OrderReturn> returns;
-  /** Details of the requested shipping for the line item. */
+
+  /// Details of the requested shipping for the line item.
   OrderLineItemShippingDetails shippingDetails;
-  /**
-   * Total tax amount for the line item. For example, if two items are
-   * purchased, and each have a cost tax of $2, the total tax amount will be $4.
-   */
+
+  /// Total tax amount for the line item. For example, if two items are
+  /// purchased, and each have a cost tax of $2, the total tax amount will be
+  /// $4.
   Price tax;
 
   OrderLineItem();
 
   OrderLineItem.fromJson(core.Map _json) {
     if (_json.containsKey("cancellations")) {
-      cancellations = _json["cancellations"].map((value) => new OrderCancellation.fromJson(value)).toList();
+      cancellations = _json["cancellations"]
+          .map((value) => new OrderCancellation.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("channelType")) {
+      channelType = _json["channelType"];
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -7171,20 +7116,28 @@ class OrderLineItem {
       returnInfo = new OrderLineItemReturnInfo.fromJson(_json["returnInfo"]);
     }
     if (_json.containsKey("returns")) {
-      returns = _json["returns"].map((value) => new OrderReturn.fromJson(value)).toList();
+      returns = _json["returns"]
+          .map((value) => new OrderReturn.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingDetails")) {
-      shippingDetails = new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
+      shippingDetails =
+          new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
     }
     if (_json.containsKey("tax")) {
       tax = new Price.fromJson(_json["tax"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (cancellations != null) {
-      _json["cancellations"] = cancellations.map((value) => (value).toJson()).toList();
+      _json["cancellations"] =
+          cancellations.map((value) => (value).toJson()).toList();
+    }
+    if (channelType != null) {
+      _json["channelType"] = channelType;
     }
     if (id != null) {
       _json["id"] = id;
@@ -7230,39 +7183,51 @@ class OrderLineItem {
 }
 
 class OrderLineItemProduct {
-  /** Brand of the item. */
+  /// Brand of the item.
   core.String brand;
-  /** The item's channel (online or local). */
+
+  /// The item's channel (online or local).
   core.String channel;
-  /** Condition or state of the item. */
+
+  /// Condition or state of the item.
   core.String condition;
-  /** The two-letter ISO 639-1 language code for the item. */
+
+  /// The two-letter ISO 639-1 language code for the item.
   core.String contentLanguage;
-  /** Global Trade Item Number (GTIN) of the item. */
+
+  /// Global Trade Item Number (GTIN) of the item.
   core.String gtin;
-  /** The REST id of the product. */
+
+  /// The REST id of the product.
   core.String id;
-  /** URL of an image of the item. */
+
+  /// URL of an image of the item.
   core.String imageLink;
-  /** Shared identifier for all variants of the same product. */
+
+  /// Shared identifier for all variants of the same product.
   core.String itemGroupId;
-  /** Manufacturer Part Number (MPN) of the item. */
+
+  /// Manufacturer Part Number (MPN) of the item.
   core.String mpn;
-  /** An identifier of the item. */
+
+  /// An identifier of the item.
   core.String offerId;
-  /** Price of the item. */
+
+  /// Price of the item.
   Price price;
-  /** URL to the cached image shown to the user when order was placed. */
+
+  /// URL to the cached image shown to the user when order was placed.
   core.String shownImage;
-  /** The CLDR territory code of the target country of the product. */
+
+  /// The CLDR territory code of the target country of the product.
   core.String targetCountry;
-  /** The title of the product. */
+
+  /// The title of the product.
   core.String title;
-  /**
-   * Variant attributes for the item. These are dimensions of the product, such
-   * as color, gender, material, pattern, and size. You can find a comprehensive
-   * list of variant attributes here.
-   */
+
+  /// Variant attributes for the item. These are dimensions of the product, such
+  /// as color, gender, material, pattern, and size. You can find a
+  /// comprehensive list of variant attributes here.
   core.List<OrderLineItemProductVariantAttribute> variantAttributes;
 
   OrderLineItemProduct();
@@ -7311,12 +7276,16 @@ class OrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"].map((value) => new OrderLineItemProductVariantAttribute.fromJson(value)).toList();
+      variantAttributes = _json["variantAttributes"]
+          .map((value) =>
+              new OrderLineItemProductVariantAttribute.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (brand != null) {
       _json["brand"] = brand;
     }
@@ -7360,16 +7329,18 @@ class OrderLineItemProduct {
       _json["title"] = title;
     }
     if (variantAttributes != null) {
-      _json["variantAttributes"] = variantAttributes.map((value) => (value).toJson()).toList();
+      _json["variantAttributes"] =
+          variantAttributes.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
 class OrderLineItemProductVariantAttribute {
-  /** The dimension of the variant. */
+  /// The dimension of the variant.
   core.String dimension;
-  /** The value for the dimension. */
+
+  /// The value for the dimension.
   core.String value;
 
   OrderLineItemProductVariantAttribute();
@@ -7383,8 +7354,9 @@ class OrderLineItemProductVariantAttribute {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (dimension != null) {
       _json["dimension"] = dimension;
     }
@@ -7396,11 +7368,13 @@ class OrderLineItemProductVariantAttribute {
 }
 
 class OrderLineItemReturnInfo {
-  /** How many days later the item can be returned. */
+  /// How many days later the item can be returned.
   core.int daysToReturn;
-  /** Whether the item is returnable. */
+
+  /// Whether the item is returnable.
   core.bool isReturnable;
-  /** URL of the item return policy. */
+
+  /// URL of the item return policy.
   core.String policyUrl;
 
   OrderLineItemReturnInfo();
@@ -7417,8 +7391,9 @@ class OrderLineItemReturnInfo {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (daysToReturn != null) {
       _json["daysToReturn"] = daysToReturn;
     }
@@ -7433,11 +7408,13 @@ class OrderLineItemReturnInfo {
 }
 
 class OrderLineItemShippingDetails {
-  /** The delivery by date, in ISO 8601 format. */
+  /// The delivery by date, in ISO 8601 format.
   core.String deliverByDate;
-  /** Details of the shipping method. */
+
+  /// Details of the shipping method.
   OrderLineItemShippingDetailsMethod method;
-  /** The ship by date, in ISO 8601 format. */
+
+  /// The ship by date, in ISO 8601 format.
   core.String shipByDate;
 
   OrderLineItemShippingDetails();
@@ -7454,8 +7431,9 @@ class OrderLineItemShippingDetails {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (deliverByDate != null) {
       _json["deliverByDate"] = deliverByDate;
     }
@@ -7470,13 +7448,17 @@ class OrderLineItemShippingDetails {
 }
 
 class OrderLineItemShippingDetailsMethod {
-  /** The carrier for the shipping. Optional. */
+  /// The carrier for the shipping. Optional. See shipments[].carrier for a list
+  /// of acceptable values.
   core.String carrier;
-  /** Maximum transit time. */
+
+  /// Maximum transit time.
   core.int maxDaysInTransit;
-  /** The name of the shipping method. */
+
+  /// The name of the shipping method.
   core.String methodName;
-  /** Minimum transit time. */
+
+  /// Minimum transit time.
   core.int minDaysInTransit;
 
   OrderLineItemShippingDetailsMethod();
@@ -7496,8 +7478,9 @@ class OrderLineItemShippingDetailsMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -7515,17 +7498,31 @@ class OrderLineItemShippingDetailsMethod {
 }
 
 class OrderPaymentMethod {
-  /** The billing address. */
+  /// The billing address.
   OrderAddress billingAddress;
-  /** The card expiration month (January = 1, February = 2 etc.). */
+
+  /// The card expiration month (January = 1, February = 2 etc.).
   core.int expirationMonth;
-  /** The card expiration year (4-digit, e.g. 2015). */
+
+  /// The card expiration year (4-digit, e.g. 2015).
   core.int expirationYear;
-  /** The last four digits of the card number. */
+
+  /// The last four digits of the card number.
   core.String lastFourDigits;
-  /** The billing phone number. */
+
+  /// The billing phone number.
   core.String phoneNumber;
-  /** The type of instrument (VISA, Mastercard, etc). */
+
+  /// The type of instrument.
+  ///
+  /// Acceptable values are:
+  /// - "AMEX"
+  /// - "DISCOVER"
+  /// - "JCB"
+  /// - "MASTERCARD"
+  /// - "UNIONPAY"
+  /// - "VISA"
+  /// - ""
   core.String type;
 
   OrderPaymentMethod();
@@ -7551,8 +7548,9 @@ class OrderPaymentMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (billingAddress != null) {
       _json["billingAddress"] = (billingAddress).toJson();
     }
@@ -7577,39 +7575,41 @@ class OrderPaymentMethod {
 
 class OrderPromotion {
   core.List<OrderPromotionBenefit> benefits;
-  /**
-   * The date and time frame when the promotion is active and ready for
-   * validation review. Note that the promotion live time may be delayed for a
-   * few hours due to the validation review.
-   * Start date and end date are separated by a forward slash (/). The start
-   * date is specified by the format (YYYY-MM-DD), followed by the letter ?T?,
-   * the time of the day when the sale starts (in Greenwich Mean Time, GMT),
-   * followed by an expression of the time zone for the sale. The end date is in
-   * the same format.
-   */
+
+  /// The date and time frame when the promotion is active and ready for
+  /// validation review. Note that the promotion live time may be delayed for a
+  /// few hours due to the validation review.
+  /// Start date and end date are separated by a forward slash (/). The start
+  /// date is specified by the format (YYYY-MM-DD), followed by the letter ?T?,
+  /// the time of the day when the sale starts (in Greenwich Mean Time, GMT),
+  /// followed by an expression of the time zone for the sale. The end date is
+  /// in the same format.
   core.String effectiveDates;
-  /**
-   * Optional. The text code that corresponds to the promotion when applied on
-   * the retailer?s website.
-   */
+
+  /// Optional. The text code that corresponds to the promotion when applied on
+  /// the retailer?s website.
   core.String genericRedemptionCode;
-  /** The unique ID of the promotion. */
+
+  /// The unique ID of the promotion.
   core.String id;
-  /** The full title of the promotion. */
+
+  /// The full title of the promotion.
   core.String longTitle;
-  /**
-   * Whether the promotion is applicable to all products or only specific
-   * products.
-   */
+
+  /// Whether the promotion is applicable to all products or only specific
+  /// products.
   core.String productApplicability;
-  /** Indicates that the promotion is valid online. */
+
+  /// Indicates that the promotion is valid online.
   core.String redemptionChannel;
 
   OrderPromotion();
 
   OrderPromotion.fromJson(core.Map _json) {
     if (_json.containsKey("benefits")) {
-      benefits = _json["benefits"].map((value) => new OrderPromotionBenefit.fromJson(value)).toList();
+      benefits = _json["benefits"]
+          .map((value) => new OrderPromotionBenefit.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("effectiveDates")) {
       effectiveDates = _json["effectiveDates"];
@@ -7631,8 +7631,9 @@ class OrderPromotion {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (benefits != null) {
       _json["benefits"] = benefits.map((value) => (value).toJson()).toList();
     }
@@ -7659,24 +7660,22 @@ class OrderPromotion {
 }
 
 class OrderPromotionBenefit {
-  /** The discount in the order price when the promotion is applied. */
+  /// The discount in the order price when the promotion is applied.
   Price discount;
-  /**
-   * The OfferId(s) that were purchased in this order and map to this specific
-   * benefit of the promotion.
-   */
+
+  /// The OfferId(s) that were purchased in this order and map to this specific
+  /// benefit of the promotion.
   core.List<core.String> offerIds;
-  /**
-   * Further describes the benefit of the promotion. Note that we will expand on
-   * this enumeration as we support new promotion sub-types.
-   */
+
+  /// Further describes the benefit of the promotion. Note that we will expand
+  /// on this enumeration as we support new promotion sub-types.
   core.String subType;
-  /** The impact on tax when the promotion is applied. */
+
+  /// The impact on tax when the promotion is applied.
   Price taxImpact;
-  /**
-   * Describes whether the promotion applies to products (e.g. 20% off) or to
-   * shipping (e.g. Free Shipping).
-   */
+
+  /// Describes whether the promotion applies to products (e.g. 20% off) or to
+  /// shipping (e.g. Free Shipping).
   core.String type;
 
   OrderPromotionBenefit();
@@ -7699,8 +7698,9 @@ class OrderPromotionBenefit {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (discount != null) {
       _json["discount"] = (discount).toJson();
     }
@@ -7721,15 +7721,19 @@ class OrderPromotionBenefit {
 }
 
 class OrderRefund {
-  /** The actor that created the refund. */
+  /// The actor that created the refund.
   core.String actor;
-  /** The amount that is refunded. */
+
+  /// The amount that is refunded.
   Price amount;
-  /** Date on which the item has been created, in ISO 8601 format. */
+
+  /// Date on which the item has been created, in ISO 8601 format.
   core.String creationDate;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderRefund();
@@ -7752,8 +7756,9 @@ class OrderRefund {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -7774,15 +7779,19 @@ class OrderRefund {
 }
 
 class OrderReturn {
-  /** The actor that created the refund. */
+  /// The actor that created the refund.
   core.String actor;
-  /** Date on which the item has been created, in ISO 8601 format. */
+
+  /// Date on which the item has been created, in ISO 8601 format.
   core.String creationDate;
-  /** Quantity that is returned. */
+
+  /// Quantity that is returned.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderReturn();
@@ -7805,8 +7814,9 @@ class OrderReturn {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -7827,22 +7837,50 @@ class OrderReturn {
 }
 
 class OrderShipment {
-  /** The carrier handling the shipment. */
+  /// The carrier handling the shipment.
+  ///
+  /// Acceptable values are:
+  /// - "gsx"
+  /// - "ups"
+  /// - "united parcel service"
+  /// - "usps"
+  /// - "united states postal service"
+  /// - "fedex"
+  /// - "dhl"
+  /// - "ecourier"
+  /// - "cxt"
+  /// - "google"
+  /// - "on trac"
+  /// - "ontrac"
+  /// - "on-trac"
+  /// - "on_trac"
+  /// - "delvic"
+  /// - "dynamex"
+  /// - "lasership"
+  /// - "smartpost"
+  /// - "fedex smartpost"
+  /// - "mpx"
+  /// - "uds"
+  /// - "united delivery service"
   core.String carrier;
-  /** Date on which the shipment has been created, in ISO 8601 format. */
+
+  /// Date on which the shipment has been created, in ISO 8601 format.
   core.String creationDate;
-  /**
-   * Date on which the shipment has been delivered, in ISO 8601 format. Present
-   * only if status is delievered
-   */
+
+  /// Date on which the shipment has been delivered, in ISO 8601 format. Present
+  /// only if status is delievered
   core.String deliveryDate;
-  /** The id of the shipment. */
+
+  /// The id of the shipment.
   core.String id;
-  /** The line items that are shipped. */
+
+  /// The line items that are shipped.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /** The status of the shipment. */
+
+  /// The status of the shipment.
   core.String status;
-  /** The tracking id for the shipment. */
+
+  /// The tracking id for the shipment.
   core.String trackingId;
 
   OrderShipment();
@@ -7861,7 +7899,9 @@ class OrderShipment {
       id = _json["id"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("status")) {
       status = _json["status"];
@@ -7871,8 +7911,9 @@ class OrderShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -7899,9 +7940,10 @@ class OrderShipment {
 }
 
 class OrderShipmentLineItemShipment {
-  /** The id of the line item that is shipped. */
+  /// The id of the line item that is shipped.
   core.String lineItemId;
-  /** The quantity that is shipped. */
+
+  /// The quantity that is shipped.
   core.int quantity;
 
   OrderShipmentLineItemShipment();
@@ -7915,8 +7957,9 @@ class OrderShipmentLineItemShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -7928,9 +7971,7 @@ class OrderShipmentLineItemShipment {
 }
 
 class OrdersAcknowledgeRequest {
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
 
   OrdersAcknowledgeRequest();
@@ -7941,8 +7982,9 @@ class OrdersAcknowledgeRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (operationId != null) {
       _json["operationId"] = operationId;
     }
@@ -7951,12 +7993,11 @@ class OrdersAcknowledgeRequest {
 }
 
 class OrdersAcknowledgeResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersAcknowledgeResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersAcknowledgeResponse".
   core.String kind;
 
   OrdersAcknowledgeResponse();
@@ -7970,8 +8011,9 @@ class OrdersAcknowledgeResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -7983,10 +8025,8 @@ class OrdersAcknowledgeResponse {
 }
 
 class OrdersAdvanceTestOrderResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersAdvanceTestOrderResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersAdvanceTestOrderResponse".
   core.String kind;
 
   OrdersAdvanceTestOrderResponse();
@@ -7997,8 +8037,9 @@ class OrdersAdvanceTestOrderResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -8007,23 +8048,24 @@ class OrdersAdvanceTestOrderResponse {
 }
 
 class OrdersCancelLineItemRequest {
-  /**
-   * Amount to refund for the cancelation. Optional. If not set, Google will
-   * calculate the default based on the price and tax of the items involved. The
-   * amount must not be larger than the net amount left on the order.
-   */
+  /// Amount to refund for the cancelation. Optional. If not set, Google will
+  /// calculate the default based on the price and tax of the items involved.
+  /// The amount must not be larger than the net amount left on the order.
   Price amount;
-  /** The ID of the line item to cancel. */
+
+  /// The ID of the line item to cancel.
   core.String lineItemId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The quantity to cancel. */
+
+  /// The quantity to cancel.
   core.int quantity;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCancelLineItemRequest();
@@ -8049,8 +8091,9 @@ class OrdersCancelLineItemRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -8074,12 +8117,11 @@ class OrdersCancelLineItemRequest {
 }
 
 class OrdersCancelLineItemResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCancelLineItemResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCancelLineItemResponse".
   core.String kind;
 
   OrdersCancelLineItemResponse();
@@ -8093,8 +8135,9 @@ class OrdersCancelLineItemResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -8106,13 +8149,13 @@ class OrdersCancelLineItemResponse {
 }
 
 class OrdersCancelRequest {
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCancelRequest();
@@ -8129,8 +8172,9 @@ class OrdersCancelRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (operationId != null) {
       _json["operationId"] = operationId;
     }
@@ -8145,12 +8189,11 @@ class OrdersCancelRequest {
 }
 
 class OrdersCancelResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCancelResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCancelResponse".
   core.String kind;
 
   OrdersCancelResponse();
@@ -8164,8 +8207,9 @@ class OrdersCancelResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -8177,13 +8221,12 @@ class OrdersCancelResponse {
 }
 
 class OrdersCreateTestOrderRequest {
-  /**
-   * The test order template to use. Specify as an alternative to testOrder as a
-   * shortcut for retrieving a template and then creating an order using that
-   * template.
-   */
+  /// The test order template to use. Specify as an alternative to testOrder as
+  /// a shortcut for retrieving a template and then creating an order using that
+  /// template.
   core.String templateName;
-  /** The test order to create. */
+
+  /// The test order to create.
   TestOrder testOrder;
 
   OrdersCreateTestOrderRequest();
@@ -8197,8 +8240,9 @@ class OrdersCreateTestOrderRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (templateName != null) {
       _json["templateName"] = templateName;
     }
@@ -8210,12 +8254,11 @@ class OrdersCreateTestOrderRequest {
 }
 
 class OrdersCreateTestOrderResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCreateTestOrderResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCreateTestOrderResponse".
   core.String kind;
-  /** The ID of the newly created test order. */
+
+  /// The ID of the newly created test order.
   core.String orderId;
 
   OrdersCreateTestOrderResponse();
@@ -8229,8 +8272,9 @@ class OrdersCreateTestOrderResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -8242,19 +8286,22 @@ class OrdersCreateTestOrderResponse {
 }
 
 class OrdersCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<OrdersCustomBatchRequestEntry> entries;
 
   OrdersCustomBatchRequest();
 
   OrdersCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new OrdersCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new OrdersCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -8263,37 +8310,42 @@ class OrdersCustomBatchRequest {
 }
 
 class OrdersCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** Required for cancel method. */
+
+  /// Required for cancel method.
   OrdersCustomBatchRequestEntryCancel cancel;
-  /** Required for cancelLineItem method. */
+
+  /// Required for cancelLineItem method.
   OrdersCustomBatchRequestEntryCancelLineItem cancelLineItem;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
-  /**
-   * The merchant order id. Required for updateMerchantOrderId and
-   * getByMerchantOrderId methods.
-   */
+
+  /// The merchant order id. Required for updateMerchantOrderId and
+  /// getByMerchantOrderId methods.
   core.String merchantOrderId;
-  /** The method to apply. */
+
+  /// The method to apply.
   core.String method;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   * Required for all methods beside get and getByMerchantOrderId.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
+  /// Required for all methods beside get and getByMerchantOrderId.
   core.String operationId;
-  /**
-   * The ID of the order. Required for all methods beside getByMerchantOrderId.
-   */
+
+  /// The ID of the order. Required for all methods beside getByMerchantOrderId.
   core.String orderId;
-  /** Required for refund method. */
+
+  /// Required for refund method.
   OrdersCustomBatchRequestEntryRefund refund;
-  /** Required for returnLineItem method. */
+
+  /// Required for returnLineItem method.
   OrdersCustomBatchRequestEntryReturnLineItem returnLineItem;
-  /** Required for shipLineItems method. */
+
+  /// Required for shipLineItems method.
   OrdersCustomBatchRequestEntryShipLineItems shipLineItems;
-  /** Required for updateShipment method. */
+
+  /// Required for updateShipment method.
   OrdersCustomBatchRequestEntryUpdateShipment updateShipment;
 
   OrdersCustomBatchRequestEntry();
@@ -8303,10 +8355,12 @@ class OrdersCustomBatchRequestEntry {
       batchId = _json["batchId"];
     }
     if (_json.containsKey("cancel")) {
-      cancel = new OrdersCustomBatchRequestEntryCancel.fromJson(_json["cancel"]);
+      cancel =
+          new OrdersCustomBatchRequestEntryCancel.fromJson(_json["cancel"]);
     }
     if (_json.containsKey("cancelLineItem")) {
-      cancelLineItem = new OrdersCustomBatchRequestEntryCancelLineItem.fromJson(_json["cancelLineItem"]);
+      cancelLineItem = new OrdersCustomBatchRequestEntryCancelLineItem.fromJson(
+          _json["cancelLineItem"]);
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -8324,21 +8378,26 @@ class OrdersCustomBatchRequestEntry {
       orderId = _json["orderId"];
     }
     if (_json.containsKey("refund")) {
-      refund = new OrdersCustomBatchRequestEntryRefund.fromJson(_json["refund"]);
+      refund =
+          new OrdersCustomBatchRequestEntryRefund.fromJson(_json["refund"]);
     }
     if (_json.containsKey("returnLineItem")) {
-      returnLineItem = new OrdersCustomBatchRequestEntryReturnLineItem.fromJson(_json["returnLineItem"]);
+      returnLineItem = new OrdersCustomBatchRequestEntryReturnLineItem.fromJson(
+          _json["returnLineItem"]);
     }
     if (_json.containsKey("shipLineItems")) {
-      shipLineItems = new OrdersCustomBatchRequestEntryShipLineItems.fromJson(_json["shipLineItems"]);
+      shipLineItems = new OrdersCustomBatchRequestEntryShipLineItems.fromJson(
+          _json["shipLineItems"]);
     }
     if (_json.containsKey("updateShipment")) {
-      updateShipment = new OrdersCustomBatchRequestEntryUpdateShipment.fromJson(_json["updateShipment"]);
+      updateShipment = new OrdersCustomBatchRequestEntryUpdateShipment.fromJson(
+          _json["updateShipment"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -8380,9 +8439,10 @@ class OrdersCustomBatchRequestEntry {
 }
 
 class OrdersCustomBatchRequestEntryCancel {
-  /** The reason for the cancellation. */
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryCancel();
@@ -8396,8 +8456,9 @@ class OrdersCustomBatchRequestEntryCancel {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (reason != null) {
       _json["reason"] = reason;
     }
@@ -8409,19 +8470,21 @@ class OrdersCustomBatchRequestEntryCancel {
 }
 
 class OrdersCustomBatchRequestEntryCancelLineItem {
-  /**
-   * Amount to refund for the cancelation. Optional. If not set, Google will
-   * calculate the default based on the price and tax of the items involved. The
-   * amount must not be larger than the net amount left on the order.
-   */
+  /// Amount to refund for the cancelation. Optional. If not set, Google will
+  /// calculate the default based on the price and tax of the items involved.
+  /// The amount must not be larger than the net amount left on the order.
   Price amount;
-  /** The ID of the line item to cancel. */
+
+  /// The ID of the line item to cancel.
   core.String lineItemId;
-  /** The quantity to cancel. */
+
+  /// The quantity to cancel.
   core.int quantity;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryCancelLineItem();
@@ -8444,8 +8507,9 @@ class OrdersCustomBatchRequestEntryCancelLineItem {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -8466,11 +8530,13 @@ class OrdersCustomBatchRequestEntryCancelLineItem {
 }
 
 class OrdersCustomBatchRequestEntryRefund {
-  /** The amount that is refunded. */
+  /// The amount that is refunded.
   Price amount;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryRefund();
@@ -8487,8 +8553,9 @@ class OrdersCustomBatchRequestEntryRefund {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -8503,13 +8570,16 @@ class OrdersCustomBatchRequestEntryRefund {
 }
 
 class OrdersCustomBatchRequestEntryReturnLineItem {
-  /** The ID of the line item to return. */
+  /// The ID of the line item to return.
   core.String lineItemId;
-  /** The quantity to return. */
+
+  /// The quantity to return.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryReturnLineItem();
@@ -8529,8 +8599,9 @@ class OrdersCustomBatchRequestEntryReturnLineItem {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -8548,13 +8619,24 @@ class OrdersCustomBatchRequestEntryReturnLineItem {
 }
 
 class OrdersCustomBatchRequestEntryShipLineItems {
-  /** The carrier handling the shipment. */
+  /// Deprecated. Please use shipmentInfo instead. The carrier handling the
+  /// shipment. See shipments[].carrier in the  Orders resource representation
+  /// for a list of acceptable values.
   core.String carrier;
-  /** Line items to ship. */
+
+  /// Line items to ship.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /** The ID of the shipment. */
+
+  /// Deprecated. Please use shipmentInfo instead. The ID of the shipment.
   core.String shipmentId;
-  /** The tracking id for the shipment. */
+
+  /// Shipment information. This field is repeated because a single line item
+  /// can be shipped in several packages (and have several tracking IDs).
+  core.List<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>
+      shipmentInfos;
+
+  /// Deprecated. Please use shipmentInfo instead. The tracking id for the
+  /// shipment.
   core.String trackingId;
 
   OrdersCustomBatchRequestEntryShipLineItems();
@@ -8564,7 +8646,65 @@ class OrdersCustomBatchRequestEntryShipLineItems {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("shipmentId")) {
+      shipmentId = _json["shipmentId"];
+    }
+    if (_json.containsKey("shipmentInfos")) {
+      shipmentInfos = _json["shipmentInfos"]
+          .map((value) =>
+              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                  .fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("trackingId")) {
+      trackingId = _json["trackingId"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (carrier != null) {
+      _json["carrier"] = carrier;
+    }
+    if (lineItems != null) {
+      _json["lineItems"] = lineItems.map((value) => (value).toJson()).toList();
+    }
+    if (shipmentId != null) {
+      _json["shipmentId"] = shipmentId;
+    }
+    if (shipmentInfos != null) {
+      _json["shipmentInfos"] =
+          shipmentInfos.map((value) => (value).toJson()).toList();
+    }
+    if (trackingId != null) {
+      _json["trackingId"] = trackingId;
+    }
+    return _json;
+  }
+}
+
+class OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo {
+  /// The carrier handling the shipment. See shipments[].carrier in the  Orders
+  /// resource representation for a list of acceptable values.
+  core.String carrier;
+
+  /// The ID of the shipment.
+  core.String shipmentId;
+
+  /// The tracking id for the shipment.
+  core.String trackingId;
+
+  OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo();
+
+  OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo.fromJson(
+      core.Map _json) {
+    if (_json.containsKey("carrier")) {
+      carrier = _json["carrier"];
     }
     if (_json.containsKey("shipmentId")) {
       shipmentId = _json["shipmentId"];
@@ -8574,13 +8714,11 @@ class OrdersCustomBatchRequestEntryShipLineItems {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
-    }
-    if (lineItems != null) {
-      _json["lineItems"] = lineItems.map((value) => (value).toJson()).toList();
     }
     if (shipmentId != null) {
       _json["shipmentId"] = shipmentId;
@@ -8593,13 +8731,18 @@ class OrdersCustomBatchRequestEntryShipLineItems {
 }
 
 class OrdersCustomBatchRequestEntryUpdateShipment {
-  /** The carrier handling the shipment. Not updated if missing. */
+  /// The carrier handling the shipment. Not updated if missing. See
+  /// shipments[].carrier in the  Orders resource representation for a list of
+  /// acceptable values.
   core.String carrier;
-  /** The ID of the shipment. */
+
+  /// The ID of the shipment.
   core.String shipmentId;
-  /** New status for the shipment. Not updated if missing. */
+
+  /// New status for the shipment. Not updated if missing.
   core.String status;
-  /** The tracking id for the shipment. Not updated if missing. */
+
+  /// The tracking id for the shipment. Not updated if missing.
   core.String trackingId;
 
   OrdersCustomBatchRequestEntryUpdateShipment();
@@ -8619,8 +8762,9 @@ class OrdersCustomBatchRequestEntryUpdateShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -8638,27 +8782,29 @@ class OrdersCustomBatchRequestEntryUpdateShipment {
 }
 
 class OrdersCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<OrdersCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCustomBatchResponse".
   core.String kind;
 
   OrdersCustomBatchResponse();
 
   OrdersCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new OrdersCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new OrdersCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -8670,24 +8816,22 @@ class OrdersCustomBatchResponse {
 }
 
 class OrdersCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * The status of the execution. Only defined if the method is not get or
-   * getByMerchantOrderId and if the request was successful.
-   */
+
+  /// The status of the execution. Only defined if the method is not get or
+  /// getByMerchantOrderId and if the request was successful.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCustomBatchResponseEntry".
   core.String kind;
-  /**
-   * The retrieved order. Only defined if the method is get and if the request
-   * was successful.
-   */
+
+  /// The retrieved order. Only defined if the method is get and if the request
+  /// was successful.
   Order order;
 
   OrdersCustomBatchResponseEntry();
@@ -8710,8 +8854,9 @@ class OrdersCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -8732,12 +8877,11 @@ class OrdersCustomBatchResponseEntry {
 }
 
 class OrdersGetByMerchantOrderIdResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersGetByMerchantOrderIdResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersGetByMerchantOrderIdResponse".
   core.String kind;
-  /** The requested order. */
+
+  /// The requested order.
   Order order;
 
   OrdersGetByMerchantOrderIdResponse();
@@ -8751,8 +8895,9 @@ class OrdersGetByMerchantOrderIdResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -8764,12 +8909,11 @@ class OrdersGetByMerchantOrderIdResponse {
 }
 
 class OrdersGetTestOrderTemplateResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersGetTestOrderTemplateResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersGetTestOrderTemplateResponse".
   core.String kind;
-  /** The requested test order template. */
+
+  /// The requested test order template.
   TestOrder template;
 
   OrdersGetTestOrderTemplateResponse();
@@ -8783,8 +8927,9 @@ class OrdersGetTestOrderTemplateResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -8796,12 +8941,11 @@ class OrdersGetTestOrderTemplateResponse {
 }
 
 class OrdersListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of orders. */
+
+  /// The token for the retrieval of the next page of orders.
   core.String nextPageToken;
   core.List<Order> resources;
 
@@ -8815,12 +8959,14 @@ class OrdersListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new Order.fromJson(value)).toList();
+      resources =
+          _json["resources"].map((value) => new Order.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -8835,15 +8981,16 @@ class OrdersListResponse {
 }
 
 class OrdersRefundRequest {
-  /** The amount that is refunded. */
+  /// The amount that is refunded.
   Price amount;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersRefundRequest();
@@ -8863,8 +9010,9 @@ class OrdersRefundRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -8882,12 +9030,11 @@ class OrdersRefundRequest {
 }
 
 class OrdersRefundResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersRefundResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersRefundResponse".
   core.String kind;
 
   OrdersRefundResponse();
@@ -8901,8 +9048,9 @@ class OrdersRefundResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -8914,17 +9062,19 @@ class OrdersRefundResponse {
 }
 
 class OrdersReturnLineItemRequest {
-  /** The ID of the line item to return. */
+  /// The ID of the line item to return.
   core.String lineItemId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The quantity to return. */
+
+  /// The quantity to return.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersReturnLineItemRequest();
@@ -8947,8 +9097,9 @@ class OrdersReturnLineItemRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -8969,12 +9120,11 @@ class OrdersReturnLineItemRequest {
 }
 
 class OrdersReturnLineItemResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersReturnLineItemResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersReturnLineItemResponse".
   core.String kind;
 
   OrdersReturnLineItemResponse();
@@ -8988,8 +9138,9 @@ class OrdersReturnLineItemResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -9001,17 +9152,27 @@ class OrdersReturnLineItemResponse {
 }
 
 class OrdersShipLineItemsRequest {
-  /** The carrier handling the shipment. */
+  /// Deprecated. Please use shipmentInfo instead. The carrier handling the
+  /// shipment. See shipments[].carrier in the  Orders resource representation
+  /// for a list of acceptable values.
   core.String carrier;
-  /** Line items to ship. */
+
+  /// Line items to ship.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The ID of the shipment. */
+
+  /// Deprecated. Please use shipmentInfo instead. The ID of the shipment.
   core.String shipmentId;
-  /** The tracking id for the shipment. */
+
+  /// Shipment information. This field is repeated because a single line item
+  /// can be shipped in several packages (and have several tracking IDs).
+  core.List<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>
+      shipmentInfos;
+
+  /// Deprecated. Please use shipmentInfo instead. The tracking id for the
+  /// shipment.
   core.String trackingId;
 
   OrdersShipLineItemsRequest();
@@ -9021,7 +9182,9 @@ class OrdersShipLineItemsRequest {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("operationId")) {
       operationId = _json["operationId"];
@@ -9029,13 +9192,21 @@ class OrdersShipLineItemsRequest {
     if (_json.containsKey("shipmentId")) {
       shipmentId = _json["shipmentId"];
     }
+    if (_json.containsKey("shipmentInfos")) {
+      shipmentInfos = _json["shipmentInfos"]
+          .map((value) =>
+              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                  .fromJson(value))
+          .toList();
+    }
     if (_json.containsKey("trackingId")) {
       trackingId = _json["trackingId"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -9048,6 +9219,10 @@ class OrdersShipLineItemsRequest {
     if (shipmentId != null) {
       _json["shipmentId"] = shipmentId;
     }
+    if (shipmentInfos != null) {
+      _json["shipmentInfos"] =
+          shipmentInfos.map((value) => (value).toJson()).toList();
+    }
     if (trackingId != null) {
       _json["trackingId"] = trackingId;
     }
@@ -9056,12 +9231,11 @@ class OrdersShipLineItemsRequest {
 }
 
 class OrdersShipLineItemsResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersShipLineItemsResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersShipLineItemsResponse".
   core.String kind;
 
   OrdersShipLineItemsResponse();
@@ -9075,8 +9249,9 @@ class OrdersShipLineItemsResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -9088,14 +9263,11 @@ class OrdersShipLineItemsResponse {
 }
 
 class OrdersUpdateMerchantOrderIdRequest {
-  /**
-   * The merchant order id to be assigned to the order. Must be unique per
-   * merchant.
-   */
+  /// The merchant order id to be assigned to the order. Must be unique per
+  /// merchant.
   core.String merchantOrderId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
 
   OrdersUpdateMerchantOrderIdRequest();
@@ -9109,8 +9281,9 @@ class OrdersUpdateMerchantOrderIdRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (merchantOrderId != null) {
       _json["merchantOrderId"] = merchantOrderId;
     }
@@ -9122,12 +9295,11 @@ class OrdersUpdateMerchantOrderIdRequest {
 }
 
 class OrdersUpdateMerchantOrderIdResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersUpdateMerchantOrderIdResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersUpdateMerchantOrderIdResponse".
   core.String kind;
 
   OrdersUpdateMerchantOrderIdResponse();
@@ -9141,8 +9313,9 @@ class OrdersUpdateMerchantOrderIdResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -9154,17 +9327,21 @@ class OrdersUpdateMerchantOrderIdResponse {
 }
 
 class OrdersUpdateShipmentRequest {
-  /** The carrier handling the shipment. Not updated if missing. */
+  /// The carrier handling the shipment. Not updated if missing. See
+  /// shipments[].carrier in the  Orders resource representation for a list of
+  /// acceptable values.
   core.String carrier;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The ID of the shipment. */
+
+  /// The ID of the shipment.
   core.String shipmentId;
-  /** New status for the shipment. Not updated if missing. */
+
+  /// New status for the shipment. Not updated if missing.
   core.String status;
-  /** The tracking id for the shipment. Not updated if missing. */
+
+  /// The tracking id for the shipment. Not updated if missing.
   core.String trackingId;
 
   OrdersUpdateShipmentRequest();
@@ -9187,8 +9364,9 @@ class OrdersUpdateShipmentRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -9209,12 +9387,11 @@ class OrdersUpdateShipmentRequest {
 }
 
 class OrdersUpdateShipmentResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersUpdateShipmentResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersUpdateShipmentResponse".
   core.String kind;
 
   OrdersUpdateShipmentResponse();
@@ -9228,8 +9405,9 @@ class OrdersUpdateShipmentResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -9241,14 +9419,14 @@ class OrdersUpdateShipmentResponse {
 }
 
 class PostalCodeGroup {
-  /**
-   * The CLDR territory code of the country the postal code group applies to.
-   * Required.
-   */
+  /// The CLDR territory code of the country the postal code group applies to.
+  /// Required.
   core.String country;
-  /** The name of the postal code group, referred to in headers. Required. */
+
+  /// The name of the postal code group, referred to in headers. Required.
   core.String name;
-  /** A range of postal codes. Required. */
+
+  /// A range of postal codes. Required.
   core.List<PostalCodeRange> postalCodeRanges;
 
   PostalCodeGroup();
@@ -9261,12 +9439,15 @@ class PostalCodeGroup {
       name = _json["name"];
     }
     if (_json.containsKey("postalCodeRanges")) {
-      postalCodeRanges = _json["postalCodeRanges"].map((value) => new PostalCodeRange.fromJson(value)).toList();
+      postalCodeRanges = _json["postalCodeRanges"]
+          .map((value) => new PostalCodeRange.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -9274,28 +9455,26 @@ class PostalCodeGroup {
       _json["name"] = name;
     }
     if (postalCodeRanges != null) {
-      _json["postalCodeRanges"] = postalCodeRanges.map((value) => (value).toJson()).toList();
+      _json["postalCodeRanges"] =
+          postalCodeRanges.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
 class PostalCodeRange {
-  /**
-   * A postal code or a pattern of the form prefix* denoting the inclusive lower
-   * bound of the range defining the area. Examples values: "94108", "9410*",
-   * "9*". Required.
-   */
+  /// A postal code or a pattern of the form prefix* denoting the inclusive
+  /// lower bound of the range defining the area. Examples values: "94108",
+  /// "9410*", "9*". Required.
   core.String postalCodeRangeBegin;
-  /**
-   * A postal code or a pattern of the form prefix* denoting the inclusive upper
-   * bound of the range defining the area. It must have the same length as
-   * postalCodeRangeBegin: if postalCodeRangeBegin is a postal code then
-   * postalCodeRangeEnd must be a postal code too; if postalCodeRangeBegin is a
-   * pattern then postalCodeRangeEnd must be a pattern with the same prefix
-   * length. Optional: if not set, then the area is defined as being all the
-   * postal codes matching postalCodeRangeBegin.
-   */
+
+  /// A postal code or a pattern of the form prefix* denoting the inclusive
+  /// upper bound of the range defining the area. It must have the same length
+  /// as postalCodeRangeBegin: if postalCodeRangeBegin is a postal code then
+  /// postalCodeRangeEnd must be a postal code too; if postalCodeRangeBegin is a
+  /// pattern then postalCodeRangeEnd must be a pattern with the same prefix
+  /// length. Optional: if not set, then the area is defined as being all the
+  /// postal codes matching postalCodeRangeBegin.
   core.String postalCodeRangeEnd;
 
   PostalCodeRange();
@@ -9309,8 +9488,9 @@ class PostalCodeRange {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (postalCodeRangeBegin != null) {
       _json["postalCodeRangeBegin"] = postalCodeRangeBegin;
     }
@@ -9322,9 +9502,10 @@ class PostalCodeRange {
 }
 
 class Price {
-  /** The currency of the price. */
+  /// The currency of the price.
   core.String currency;
-  /** The price represented as a number. */
+
+  /// The price represented as a number.
   core.String value;
 
   Price();
@@ -9338,8 +9519,9 @@ class Price {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (currency != null) {
       _json["currency"] = currency;
     }
@@ -9350,200 +9532,249 @@ class Price {
   }
 }
 
-/** Product data. */
+/// Product data.
 class Product {
-  /** Additional URLs of images of the item. */
+  /// Additional URLs of images of the item.
   core.List<core.String> additionalImageLinks;
-  /**
-   * Additional categories of the item (formatted as in products feed
-   * specification).
-   */
+
+  /// Additional categories of the item (formatted as in products feed
+  /// specification).
   core.List<core.String> additionalProductTypes;
-  /** Set to true if the item is targeted towards adults. */
+
+  /// Set to true if the item is targeted towards adults.
   core.bool adult;
-  /**
-   * Used to group items in an arbitrary way. Only for CPA%, discouraged
-   * otherwise.
-   */
+
+  /// Used to group items in an arbitrary way. Only for CPA%, discouraged
+  /// otherwise.
   core.String adwordsGrouping;
-  /** Similar to adwords_grouping, but only works on CPC. */
+
+  /// Similar to adwords_grouping, but only works on CPC.
   core.List<core.String> adwordsLabels;
-  /**
-   * Allows advertisers to override the item URL when the product is shown
-   * within the context of Product Ads.
-   */
+
+  /// Allows advertisers to override the item URL when the product is shown
+  /// within the context of Product Ads.
   core.String adwordsRedirect;
-  /** Target age group of the item. */
+
+  /// Target age group of the item.
   core.String ageGroup;
-  /** Specifies the intended aspects for the product. */
+
+  /// Specifies the intended aspects for the product.
   core.List<ProductAspect> aspects;
-  /** Availability status of the item. */
+
+  /// Availability status of the item.
   core.String availability;
-  /**
-   * The day a pre-ordered product becomes available for delivery, in ISO 8601
-   * format.
-   */
+
+  /// The day a pre-ordered product becomes available for delivery, in ISO 8601
+  /// format.
   core.String availabilityDate;
-  /** Brand of the item. */
+
+  /// Brand of the item.
   core.String brand;
-  /** The item's channel (online or local). */
+
+  /// The item's channel (online or local).
   core.String channel;
-  /** Color of the item. */
+
+  /// Color of the item.
   core.String color;
-  /** Condition or state of the item. */
+
+  /// Condition or state of the item.
   core.String condition;
-  /** The two-letter ISO 639-1 language code for the item. */
+
+  /// The two-letter ISO 639-1 language code for the item.
   core.String contentLanguage;
-  /**
-   * A list of custom (merchant-provided) attributes. It can also be used for
-   * submitting any attribute of the feed specification in its generic form
-   * (e.g., { "name": "size type", "type": "text", "value": "regular" }). This
-   * is useful for submitting attributes not explicitly exposed by the API.
-   */
+
+  /// A list of custom (merchant-provided) attributes. It can also be used for
+  /// submitting any attribute of the feed specification in its generic form
+  /// (e.g., { "name": "size type", "type": "text", "value": "regular" }). This
+  /// is useful for submitting attributes not explicitly exposed by the API.
   core.List<ProductCustomAttribute> customAttributes;
-  /** A list of custom (merchant-provided) custom attribute groups. */
+
+  /// A list of custom (merchant-provided) custom attribute groups.
   core.List<ProductCustomGroup> customGroups;
-  /** Custom label 0 for custom grouping of items in a Shopping campaign. */
+
+  /// Custom label 0 for custom grouping of items in a Shopping campaign.
   core.String customLabel0;
-  /** Custom label 1 for custom grouping of items in a Shopping campaign. */
+
+  /// Custom label 1 for custom grouping of items in a Shopping campaign.
   core.String customLabel1;
-  /** Custom label 2 for custom grouping of items in a Shopping campaign. */
+
+  /// Custom label 2 for custom grouping of items in a Shopping campaign.
   core.String customLabel2;
-  /** Custom label 3 for custom grouping of items in a Shopping campaign. */
+
+  /// Custom label 3 for custom grouping of items in a Shopping campaign.
   core.String customLabel3;
-  /** Custom label 4 for custom grouping of items in a Shopping campaign. */
+
+  /// Custom label 4 for custom grouping of items in a Shopping campaign.
   core.String customLabel4;
-  /** Description of the item. */
+
+  /// Description of the item.
   core.String description;
-  /** Specifies the intended destinations for the product. */
+
+  /// Specifies the intended destinations for the product.
   core.List<ProductDestination> destinations;
-  /** An identifier for an item for dynamic remarketing campaigns. */
+
+  /// An identifier for an item for dynamic remarketing campaigns.
   core.String displayAdsId;
-  /**
-   * URL directly to your item's landing page for dynamic remarketing campaigns.
-   */
+
+  /// URL directly to your item's landing page for dynamic remarketing
+  /// campaigns.
   core.String displayAdsLink;
-  /** Advertiser-specified recommendations. */
+
+  /// Advertiser-specified recommendations.
   core.List<core.String> displayAdsSimilarIds;
-  /** Title of an item for dynamic remarketing campaigns. */
+
+  /// Title of an item for dynamic remarketing campaigns.
   core.String displayAdsTitle;
-  /** Offer margin for dynamic remarketing campaigns. */
+
+  /// Offer margin for dynamic remarketing campaigns.
   core.double displayAdsValue;
-  /** The energy efficiency class as defined in EU directive 2010/30/EU. */
+
+  /// The energy efficiency class as defined in EU directive 2010/30/EU.
   core.String energyEfficiencyClass;
-  /**
-   * Date on which the item should expire, as specified upon insertion, in ISO
-   * 8601 format. The actual expiration date in Google Shopping is exposed in
-   * productstatuses as googleExpirationDate and might be earlier if
-   * expirationDate is too far in the future.
-   */
+
+  /// Date on which the item should expire, as specified upon insertion, in ISO
+  /// 8601 format. The actual expiration date in Google Shopping is exposed in
+  /// productstatuses as googleExpirationDate and might be earlier if
+  /// expirationDate is too far in the future.
   core.String expirationDate;
-  /** Target gender of the item. */
+
+  /// Target gender of the item.
   core.String gender;
-  /** Google's category of the item (see Google product taxonomy). */
+
+  /// Google's category of the item (see Google product taxonomy).
   core.String googleProductCategory;
-  /** Global Trade Item Number (GTIN) of the item. */
+
+  /// Global Trade Item Number (GTIN) of the item.
   core.String gtin;
-  /** The REST id of the product. */
+
+  /// The REST id of the product.
   core.String id;
-  /**
-   * False when the item does not have unique product identifiers appropriate to
-   * its category, such as GTIN, MPN, and brand. Required according to the
-   * Unique Product Identifier Rules for all target countries except for Canada.
-   */
+
+  /// False when the item does not have unique product identifiers appropriate
+  /// to its category, such as GTIN, MPN, and brand. Required according to the
+  /// Unique Product Identifier Rules for all target countries except for
+  /// Canada.
   core.bool identifierExists;
-  /** URL of an image of the item. */
+
+  /// URL of an image of the item.
   core.String imageLink;
-  /** Number and amount of installments to pay for an item. Brazil only. */
+
+  /// Number and amount of installments to pay for an item. Brazil only.
   Installment installment;
-  /**
-   * Whether the item is a merchant-defined bundle. A bundle is a custom
-   * grouping of different products sold by a merchant for a single price.
-   */
+
+  /// Whether the item is a merchant-defined bundle. A bundle is a custom
+  /// grouping of different products sold by a merchant for a single price.
   core.bool isBundle;
-  /** Shared identifier for all variants of the same product. */
+
+  /// Shared identifier for all variants of the same product.
   core.String itemGroupId;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#product".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#product".
   core.String kind;
-  /** URL directly linking to your item's page on your website. */
+
+  /// URL directly linking to your item's page on your website.
   core.String link;
-  /**
-   * Loyalty points that users receive after purchasing the item. Japan only.
-   */
+
+  /// Loyalty points that users receive after purchasing the item. Japan only.
   LoyaltyPoints loyaltyPoints;
-  /** The material of which the item is made. */
+
+  /// The material of which the item is made.
   core.String material;
-  /** Link to a mobile-optimized version of the landing page. */
+
+  /// Maximal product handling time (in business days).
+  core.String maxHandlingTime;
+
+  /// Minimal product handling time (in business days).
+  core.String minHandlingTime;
+
+  /// Link to a mobile-optimized version of the landing page.
   core.String mobileLink;
-  /** Manufacturer Part Number (MPN) of the item. */
+
+  /// Manufacturer Part Number (MPN) of the item.
   core.String mpn;
-  /** The number of identical products in a merchant-defined multipack. */
+
+  /// The number of identical products in a merchant-defined multipack.
   core.String multipack;
-  /**
-   * An identifier of the item. Leading and trailing whitespaces are stripped
-   * and multiple whitespaces are replaced by a single whitespace upon
-   * submission. Only valid unicode characters are accepted. See the products
-   * feed specification for details.
-   */
+
+  /// An identifier of the item. Leading and trailing whitespaces are stripped
+  /// and multiple whitespaces are replaced by a single whitespace upon
+  /// submission. Only valid unicode characters are accepted. See the products
+  /// feed specification for details.
   core.String offerId;
-  /** Whether an item is available for purchase only online. */
+
+  /// Whether an item is available for purchase only online.
   core.bool onlineOnly;
-  /** The item's pattern (e.g. polka dots). */
+
+  /// The item's pattern (e.g. polka dots).
   core.String pattern;
-  /** Price of the item. */
+
+  /// Price of the item.
   Price price;
-  /**
-   * Your category of the item (formatted as in products feed specification).
-   */
+
+  /// Your category of the item (formatted as in products feed specification).
   core.String productType;
-  /** The unique ID of a promotion. */
+
+  /// The unique ID of a promotion.
   core.List<core.String> promotionIds;
-  /** Advertised sale price of the item. */
+
+  /// Advertised sale price of the item.
   Price salePrice;
-  /**
-   * Date range during which the item is on sale (see products feed
-   * specification).
-   */
+
+  /// Date range during which the item is on sale (see products feed
+  /// specification).
   core.String salePriceEffectiveDate;
-  /** The quantity of the product that is reserved for sell-on-google ads. */
+
+  /// The quantity of the product that is reserved for sell-on-google ads.
   core.String sellOnGoogleQuantity;
-  /** Shipping rules. */
+
+  /// Shipping rules.
   core.List<ProductShipping> shipping;
-  /** Height of the item for shipping. */
+
+  /// Height of the item for shipping.
   ProductShippingDimension shippingHeight;
-  /**
-   * The shipping label of the product, used to group product in account-level
-   * shipping rules.
-   */
+
+  /// The shipping label of the product, used to group product in account-level
+  /// shipping rules.
   core.String shippingLabel;
-  /** Length of the item for shipping. */
+
+  /// Length of the item for shipping.
   ProductShippingDimension shippingLength;
-  /** Weight of the item for shipping. */
+
+  /// Weight of the item for shipping.
   ProductShippingWeight shippingWeight;
-  /** Width of the item for shipping. */
+
+  /// Width of the item for shipping.
   ProductShippingDimension shippingWidth;
-  /** System in which the size is specified. Recommended for apparel items. */
+
+  /// System in which the size is specified. Recommended for apparel items.
   core.String sizeSystem;
-  /** The cut of the item. Recommended for apparel items. */
+
+  /// The cut of the item. Recommended for apparel items.
   core.String sizeType;
-  /** Size of the item. */
+
+  /// Size of the item.
   core.List<core.String> sizes;
-  /** The CLDR territory code for the item. */
+
+  /// The CLDR territory code for the item.
   core.String targetCountry;
-  /** Tax information. */
+
+  /// Tax information.
   core.List<ProductTax> taxes;
-  /** Title of the item. */
+
+  /// Title of the item.
   core.String title;
-  /** The preference of the denominator of the unit price. */
+
+  /// The preference of the denominator of the unit price.
   ProductUnitPricingBaseMeasure unitPricingBaseMeasure;
-  /** The measure and dimension of an item. */
+
+  /// The measure and dimension of an item.
   ProductUnitPricingMeasure unitPricingMeasure;
-  /** The read-only list of intended destinations which passed validation. */
+
+  /// The read-only list of intended destinations which passed validation.
   core.List<core.String> validatedDestinations;
-  /** Read-only warnings. */
+
+  /// Read-only warnings.
   core.List<Error> warnings;
 
   Product();
@@ -9571,7 +9802,9 @@ class Product {
       ageGroup = _json["ageGroup"];
     }
     if (_json.containsKey("aspects")) {
-      aspects = _json["aspects"].map((value) => new ProductAspect.fromJson(value)).toList();
+      aspects = _json["aspects"]
+          .map((value) => new ProductAspect.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("availability")) {
       availability = _json["availability"];
@@ -9595,10 +9828,14 @@ class Product {
       contentLanguage = _json["contentLanguage"];
     }
     if (_json.containsKey("customAttributes")) {
-      customAttributes = _json["customAttributes"].map((value) => new ProductCustomAttribute.fromJson(value)).toList();
+      customAttributes = _json["customAttributes"]
+          .map((value) => new ProductCustomAttribute.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("customGroups")) {
-      customGroups = _json["customGroups"].map((value) => new ProductCustomGroup.fromJson(value)).toList();
+      customGroups = _json["customGroups"]
+          .map((value) => new ProductCustomGroup.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("customLabel0")) {
       customLabel0 = _json["customLabel0"];
@@ -9619,7 +9856,9 @@ class Product {
       description = _json["description"];
     }
     if (_json.containsKey("destinations")) {
-      destinations = _json["destinations"].map((value) => new ProductDestination.fromJson(value)).toList();
+      destinations = _json["destinations"]
+          .map((value) => new ProductDestination.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("displayAdsId")) {
       displayAdsId = _json["displayAdsId"];
@@ -9681,6 +9920,12 @@ class Product {
     if (_json.containsKey("material")) {
       material = _json["material"];
     }
+    if (_json.containsKey("maxHandlingTime")) {
+      maxHandlingTime = _json["maxHandlingTime"];
+    }
+    if (_json.containsKey("minHandlingTime")) {
+      minHandlingTime = _json["minHandlingTime"];
+    }
     if (_json.containsKey("mobileLink")) {
       mobileLink = _json["mobileLink"];
     }
@@ -9718,22 +9963,28 @@ class Product {
       sellOnGoogleQuantity = _json["sellOnGoogleQuantity"];
     }
     if (_json.containsKey("shipping")) {
-      shipping = _json["shipping"].map((value) => new ProductShipping.fromJson(value)).toList();
+      shipping = _json["shipping"]
+          .map((value) => new ProductShipping.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingHeight")) {
-      shippingHeight = new ProductShippingDimension.fromJson(_json["shippingHeight"]);
+      shippingHeight =
+          new ProductShippingDimension.fromJson(_json["shippingHeight"]);
     }
     if (_json.containsKey("shippingLabel")) {
       shippingLabel = _json["shippingLabel"];
     }
     if (_json.containsKey("shippingLength")) {
-      shippingLength = new ProductShippingDimension.fromJson(_json["shippingLength"]);
+      shippingLength =
+          new ProductShippingDimension.fromJson(_json["shippingLength"]);
     }
     if (_json.containsKey("shippingWeight")) {
-      shippingWeight = new ProductShippingWeight.fromJson(_json["shippingWeight"]);
+      shippingWeight =
+          new ProductShippingWeight.fromJson(_json["shippingWeight"]);
     }
     if (_json.containsKey("shippingWidth")) {
-      shippingWidth = new ProductShippingDimension.fromJson(_json["shippingWidth"]);
+      shippingWidth =
+          new ProductShippingDimension.fromJson(_json["shippingWidth"]);
     }
     if (_json.containsKey("sizeSystem")) {
       sizeSystem = _json["sizeSystem"];
@@ -9748,27 +9999,33 @@ class Product {
       targetCountry = _json["targetCountry"];
     }
     if (_json.containsKey("taxes")) {
-      taxes = _json["taxes"].map((value) => new ProductTax.fromJson(value)).toList();
+      taxes = _json["taxes"]
+          .map((value) => new ProductTax.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("title")) {
       title = _json["title"];
     }
     if (_json.containsKey("unitPricingBaseMeasure")) {
-      unitPricingBaseMeasure = new ProductUnitPricingBaseMeasure.fromJson(_json["unitPricingBaseMeasure"]);
+      unitPricingBaseMeasure = new ProductUnitPricingBaseMeasure.fromJson(
+          _json["unitPricingBaseMeasure"]);
     }
     if (_json.containsKey("unitPricingMeasure")) {
-      unitPricingMeasure = new ProductUnitPricingMeasure.fromJson(_json["unitPricingMeasure"]);
+      unitPricingMeasure =
+          new ProductUnitPricingMeasure.fromJson(_json["unitPricingMeasure"]);
     }
     if (_json.containsKey("validatedDestinations")) {
       validatedDestinations = _json["validatedDestinations"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"].map((value) => new Error.fromJson(value)).toList();
+      warnings =
+          _json["warnings"].map((value) => new Error.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (additionalImageLinks != null) {
       _json["additionalImageLinks"] = additionalImageLinks;
     }
@@ -9815,10 +10072,12 @@ class Product {
       _json["contentLanguage"] = contentLanguage;
     }
     if (customAttributes != null) {
-      _json["customAttributes"] = customAttributes.map((value) => (value).toJson()).toList();
+      _json["customAttributes"] =
+          customAttributes.map((value) => (value).toJson()).toList();
     }
     if (customGroups != null) {
-      _json["customGroups"] = customGroups.map((value) => (value).toJson()).toList();
+      _json["customGroups"] =
+          customGroups.map((value) => (value).toJson()).toList();
     }
     if (customLabel0 != null) {
       _json["customLabel0"] = customLabel0;
@@ -9839,7 +10098,8 @@ class Product {
       _json["description"] = description;
     }
     if (destinations != null) {
-      _json["destinations"] = destinations.map((value) => (value).toJson()).toList();
+      _json["destinations"] =
+          destinations.map((value) => (value).toJson()).toList();
     }
     if (displayAdsId != null) {
       _json["displayAdsId"] = displayAdsId;
@@ -9900,6 +10160,12 @@ class Product {
     }
     if (material != null) {
       _json["material"] = material;
+    }
+    if (maxHandlingTime != null) {
+      _json["maxHandlingTime"] = maxHandlingTime;
+    }
+    if (minHandlingTime != null) {
+      _json["minHandlingTime"] = minHandlingTime;
     }
     if (mobileLink != null) {
       _json["mobileLink"] = mobileLink;
@@ -9990,11 +10256,13 @@ class Product {
 }
 
 class ProductAspect {
-  /** The name of the aspect. */
+  /// The name of the aspect.
   core.String aspectName;
-  /** The name of the destination. Leave out to apply to all destinations. */
+
+  /// The name of the destination. Leave out to apply to all destinations.
   core.String destinationName;
-  /** Whether the aspect is required, excluded or should be validated. */
+
+  /// Whether the aspect is required, excluded or should be validated.
   core.String intention;
 
   ProductAspect();
@@ -10011,8 +10279,9 @@ class ProductAspect {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (aspectName != null) {
       _json["aspectName"] = aspectName;
     }
@@ -10027,19 +10296,18 @@ class ProductAspect {
 }
 
 class ProductCustomAttribute {
-  /**
-   * The name of the attribute. Underscores will be replaced by spaces upon
-   * insertion.
-   */
+  /// The name of the attribute. Underscores will be replaced by spaces upon
+  /// insertion.
   core.String name;
-  /** The type of the attribute. */
+
+  /// The type of the attribute.
   core.String type;
-  /**
-   * Free-form unit of the attribute. Unit can only be used for values of type
-   * INT or FLOAT.
-   */
+
+  /// Free-form unit of the attribute. Unit can only be used for values of type
+  /// INT or FLOAT.
   core.String unit;
-  /** The value of the attribute. */
+
+  /// The value of the attribute.
   core.String value;
 
   ProductCustomAttribute();
@@ -10059,8 +10327,9 @@ class ProductCustomAttribute {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (name != null) {
       _json["name"] = name;
     }
@@ -10078,29 +10347,32 @@ class ProductCustomAttribute {
 }
 
 class ProductCustomGroup {
-  /** The sub-attributes. */
+  /// The sub-attributes.
   core.List<ProductCustomAttribute> attributes;
-  /**
-   * The name of the group. Underscores will be replaced by spaces upon
-   * insertion.
-   */
+
+  /// The name of the group. Underscores will be replaced by spaces upon
+  /// insertion.
   core.String name;
 
   ProductCustomGroup();
 
   ProductCustomGroup.fromJson(core.Map _json) {
     if (_json.containsKey("attributes")) {
-      attributes = _json["attributes"].map((value) => new ProductCustomAttribute.fromJson(value)).toList();
+      attributes = _json["attributes"]
+          .map((value) => new ProductCustomAttribute.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (attributes != null) {
-      _json["attributes"] = attributes.map((value) => (value).toJson()).toList();
+      _json["attributes"] =
+          attributes.map((value) => (value).toJson()).toList();
     }
     if (name != null) {
       _json["name"] = name;
@@ -10110,9 +10382,10 @@ class ProductCustomGroup {
 }
 
 class ProductDestination {
-  /** The name of the destination. */
+  /// The name of the destination.
   core.String destinationName;
-  /** Whether the destination is required, excluded or should be validated. */
+
+  /// Whether the destination is required, excluded or should be validated.
   core.String intention;
 
   ProductDestination();
@@ -10126,8 +10399,9 @@ class ProductDestination {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (destinationName != null) {
       _json["destinationName"] = destinationName;
     }
@@ -10139,31 +10413,29 @@ class ProductDestination {
 }
 
 class ProductShipping {
-  /** The CLDR territory code of the country to which an item will ship. */
+  /// The CLDR territory code of the country to which an item will ship.
   core.String country;
-  /**
-   * The location where the shipping is applicable, represented by a location
-   * group name.
-   */
+
+  /// The location where the shipping is applicable, represented by a location
+  /// group name.
   core.String locationGroupName;
-  /**
-   * The numeric id of a location that the shipping rate applies to as defined
-   * in the AdWords API.
-   */
+
+  /// The numeric id of a location that the shipping rate applies to as defined
+  /// in the AdWords API.
   core.String locationId;
-  /**
-   * The postal code range that the shipping rate applies to, represented by a
-   * postal code, a postal code prefix followed by a * wildcard, a range between
-   * two postal codes or two postal code prefixes of equal length.
-   */
+
+  /// The postal code range that the shipping rate applies to, represented by a
+  /// postal code, a postal code prefix followed by a * wildcard, a range
+  /// between two postal codes or two postal code prefixes of equal length.
   core.String postalCode;
-  /** Fixed shipping price, represented as a number. */
+
+  /// Fixed shipping price, represented as a number.
   Price price;
-  /**
-   * The geographic region to which a shipping rate applies (e.g. zip code).
-   */
+
+  /// The geographic region to which a shipping rate applies.
   core.String region;
-  /** A free-form description of the service class or delivery speed. */
+
+  /// A free-form description of the service class or delivery speed.
   core.String service;
 
   ProductShipping();
@@ -10192,8 +10464,9 @@ class ProductShipping {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -10220,18 +10493,15 @@ class ProductShipping {
 }
 
 class ProductShippingDimension {
-  /**
-   * The unit of value.
-   *
-   * Acceptable values are:
-   * - "cm"
-   * - "in"
-   */
+  /// The unit of value.
+  ///
+  /// Acceptable values are:
+  /// - "cm"
+  /// - "in"
   core.String unit;
-  /**
-   * The dimension of the product used to calculate the shipping cost of the
-   * item.
-   */
+
+  /// The dimension of the product used to calculate the shipping cost of the
+  /// item.
   core.double value;
 
   ProductShippingDimension();
@@ -10245,8 +10515,9 @@ class ProductShippingDimension {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (unit != null) {
       _json["unit"] = unit;
     }
@@ -10258,11 +10529,10 @@ class ProductShippingDimension {
 }
 
 class ProductShippingWeight {
-  /** The unit of value. */
+  /// The unit of value.
   core.String unit;
-  /**
-   * The weight of the product used to calculate the shipping cost of the item.
-   */
+
+  /// The weight of the product used to calculate the shipping cost of the item.
   core.double value;
 
   ProductShippingWeight();
@@ -10276,8 +10546,9 @@ class ProductShippingWeight {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (unit != null) {
       _json["unit"] = unit;
     }
@@ -10288,31 +10559,38 @@ class ProductShippingWeight {
   }
 }
 
-/**
- * The status of a product, i.e., information about a product computed
- * asynchronously by the data quality analysis.
- */
+/// The status of a product, i.e., information about a product computed
+/// asynchronously by the data quality analysis.
 class ProductStatus {
-  /** Date on which the item has been created, in ISO 8601 format. */
+  /// Date on which the item has been created, in ISO 8601 format.
   core.String creationDate;
-  /** A list of data quality issues associated with the product. */
+
+  /// A list of data quality issues associated with the product.
   core.List<ProductStatusDataQualityIssue> dataQualityIssues;
-  /** The intended destinations for the product. */
+
+  /// The intended destinations for the product.
   core.List<ProductStatusDestinationStatus> destinationStatuses;
-  /** Date on which the item expires in Google Shopping, in ISO 8601 format. */
+
+  /// Date on which the item expires in Google Shopping, in ISO 8601 format.
   core.String googleExpirationDate;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productStatus".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productStatus".
   core.String kind;
-  /** Date on which the item has been last updated, in ISO 8601 format. */
+
+  /// Date on which the item has been last updated, in ISO 8601 format.
   core.String lastUpdateDate;
-  /** The link to the product. */
+
+  /// The link to the product.
   core.String link;
-  /** The id of the product for which status is reported. */
+
+  /// Product data after applying all the join inputs.
+  Product product;
+
+  /// The id of the product for which status is reported.
   core.String productId;
-  /** The title of the product. */
+
+  /// The title of the product.
   core.String title;
 
   ProductStatus();
@@ -10322,10 +10600,14 @@ class ProductStatus {
       creationDate = _json["creationDate"];
     }
     if (_json.containsKey("dataQualityIssues")) {
-      dataQualityIssues = _json["dataQualityIssues"].map((value) => new ProductStatusDataQualityIssue.fromJson(value)).toList();
+      dataQualityIssues = _json["dataQualityIssues"]
+          .map((value) => new ProductStatusDataQualityIssue.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("destinationStatuses")) {
-      destinationStatuses = _json["destinationStatuses"].map((value) => new ProductStatusDestinationStatus.fromJson(value)).toList();
+      destinationStatuses = _json["destinationStatuses"]
+          .map((value) => new ProductStatusDestinationStatus.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("googleExpirationDate")) {
       googleExpirationDate = _json["googleExpirationDate"];
@@ -10339,6 +10621,9 @@ class ProductStatus {
     if (_json.containsKey("link")) {
       link = _json["link"];
     }
+    if (_json.containsKey("product")) {
+      product = new Product.fromJson(_json["product"]);
+    }
     if (_json.containsKey("productId")) {
       productId = _json["productId"];
     }
@@ -10347,16 +10632,19 @@ class ProductStatus {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (creationDate != null) {
       _json["creationDate"] = creationDate;
     }
     if (dataQualityIssues != null) {
-      _json["dataQualityIssues"] = dataQualityIssues.map((value) => (value).toJson()).toList();
+      _json["dataQualityIssues"] =
+          dataQualityIssues.map((value) => (value).toJson()).toList();
     }
     if (destinationStatuses != null) {
-      _json["destinationStatuses"] = destinationStatuses.map((value) => (value).toJson()).toList();
+      _json["destinationStatuses"] =
+          destinationStatuses.map((value) => (value).toJson()).toList();
     }
     if (googleExpirationDate != null) {
       _json["googleExpirationDate"] = googleExpirationDate;
@@ -10370,6 +10658,9 @@ class ProductStatus {
     if (link != null) {
       _json["link"] = link;
     }
+    if (product != null) {
+      _json["product"] = (product).toJson();
+    }
     if (productId != null) {
       _json["productId"] = productId;
     }
@@ -10381,21 +10672,28 @@ class ProductStatus {
 }
 
 class ProductStatusDataQualityIssue {
-  /** A more detailed error string. */
+  /// A more detailed error string.
   core.String detail;
-  /** The fetch status for landing_page_errors. */
+
+  /// The fetch status for landing_page_errors.
   core.String fetchStatus;
-  /** The id of the data quality issue. */
+
+  /// The id of the data quality issue.
   core.String id;
-  /** The attribute name that is relevant for the issue. */
+
+  /// The attribute name that is relevant for the issue.
   core.String location;
-  /** The severity of the data quality issue. */
+
+  /// The severity of the data quality issue.
   core.String severity;
-  /** The time stamp of the data quality issue. */
+
+  /// The time stamp of the data quality issue.
   core.String timestamp;
-  /** The value of that attribute that was found on the landing page */
+
+  /// The value of that attribute that was found on the landing page
   core.String valueOnLandingPage;
-  /** The value the attribute had at time of evaluation. */
+
+  /// The value the attribute had at time of evaluation.
   core.String valueProvided;
 
   ProductStatusDataQualityIssue();
@@ -10427,8 +10725,9 @@ class ProductStatusDataQualityIssue {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (detail != null) {
       _json["detail"] = detail;
     }
@@ -10458,14 +10757,14 @@ class ProductStatusDataQualityIssue {
 }
 
 class ProductStatusDestinationStatus {
-  /** The destination's approval status. */
+  /// The destination's approval status.
   core.String approvalStatus;
-  /** The name of the destination */
+
+  /// The name of the destination
   core.String destination;
-  /**
-   * Whether the destination is required, excluded, selected by default or
-   * should be validated.
-   */
+
+  /// Whether the destination is required, excluded, selected by default or
+  /// should be validated.
   core.String intention;
 
   ProductStatusDestinationStatus();
@@ -10482,8 +10781,9 @@ class ProductStatusDestinationStatus {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (approvalStatus != null) {
       _json["approvalStatus"] = approvalStatus;
     }
@@ -10498,28 +10798,27 @@ class ProductStatusDestinationStatus {
 }
 
 class ProductTax {
-  /**
-   * The country within which the item is taxed, specified as a CLDR territory
-   * code.
-   */
+  /// The country within which the item is taxed, specified as a CLDR territory
+  /// code.
   core.String country;
-  /**
-   * The numeric id of a location that the tax rate applies to as defined in the
-   * AdWords API.
-   */
+
+  /// The numeric id of a location that the tax rate applies to as defined in
+  /// the AdWords API.
   core.String locationId;
-  /**
-   * The postal code range that the tax rate applies to, represented by a ZIP
-   * code, a ZIP code prefix using * wildcard, a range between two ZIP codes or
-   * two ZIP code prefixes of equal length. Examples: 94114, 94*, 94002-95460,
-   * 94*-95*.
-   */
+
+  /// The postal code range that the tax rate applies to, represented by a ZIP
+  /// code, a ZIP code prefix using * wildcard, a range between two ZIP codes or
+  /// two ZIP code prefixes of equal length. Examples: 94114, 94*, 94002-95460,
+  /// 94*-95*.
   core.String postalCode;
-  /** The percentage of tax rate that applies to the item price. */
+
+  /// The percentage of tax rate that applies to the item price.
   core.double rate;
-  /** The geographic region to which the tax rate applies. */
+
+  /// The geographic region to which the tax rate applies.
   core.String region;
-  /** Set to true if tax is charged on shipping. */
+
+  /// Set to true if tax is charged on shipping.
   core.bool taxShip;
 
   ProductTax();
@@ -10545,8 +10844,9 @@ class ProductTax {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -10570,9 +10870,10 @@ class ProductTax {
 }
 
 class ProductUnitPricingBaseMeasure {
-  /** The unit of the denominator. */
+  /// The unit of the denominator.
   core.String unit;
-  /** The denominator of the unit price. */
+
+  /// The denominator of the unit price.
   core.String value;
 
   ProductUnitPricingBaseMeasure();
@@ -10586,8 +10887,9 @@ class ProductUnitPricingBaseMeasure {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (unit != null) {
       _json["unit"] = unit;
     }
@@ -10599,9 +10901,10 @@ class ProductUnitPricingBaseMeasure {
 }
 
 class ProductUnitPricingMeasure {
-  /** The unit of the measure. */
+  /// The unit of the measure.
   core.String unit;
-  /** The measure of an item. */
+
+  /// The measure of an item.
   core.double value;
 
   ProductUnitPricingMeasure();
@@ -10615,8 +10918,9 @@ class ProductUnitPricingMeasure {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (unit != null) {
       _json["unit"] = unit;
     }
@@ -10628,19 +10932,22 @@ class ProductUnitPricingMeasure {
 }
 
 class ProductsCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<ProductsCustomBatchRequestEntry> entries;
 
   ProductsCustomBatchRequest();
 
   ProductsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ProductsCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new ProductsCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -10648,19 +10955,20 @@ class ProductsCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch products request. */
+/// A batch entry encoding a single non-batch products request.
 class ProductsCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
-  /** The product to insert. Only required if the method is insert. */
+
+  /// The product to insert. Only required if the method is insert.
   Product product;
-  /**
-   * The ID of the product to get or delete. Only defined if the method is get
-   * or delete.
-   */
+
+  /// The ID of the product to get or delete. Only defined if the method is get
+  /// or delete.
   core.String productId;
 
   ProductsCustomBatchRequestEntry();
@@ -10683,8 +10991,9 @@ class ProductsCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -10705,27 +11014,29 @@ class ProductsCustomBatchRequestEntry {
 }
 
 class ProductsCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<ProductsCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productsCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productsCustomBatchResponse".
   core.String kind;
 
   ProductsCustomBatchResponse();
 
   ProductsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ProductsCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new ProductsCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -10736,21 +11047,20 @@ class ProductsCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch products response. */
+/// A batch entry encoding a single non-batch products response.
 class ProductsCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productsCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productsCustomBatchResponseEntry".
   core.String kind;
-  /**
-   * The inserted product. Only defined if the method is insert and if the
-   * request was successful.
-   */
+
+  /// The inserted product. Only defined if the method is insert and if the
+  /// request was successful.
   Product product;
 
   ProductsCustomBatchResponseEntry();
@@ -10770,8 +11080,9 @@ class ProductsCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -10789,12 +11100,11 @@ class ProductsCustomBatchResponseEntry {
 }
 
 class ProductsListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productsListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productsListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of products. */
+
+  /// The token for the retrieval of the next page of products.
   core.String nextPageToken;
   core.List<Product> resources;
 
@@ -10808,12 +11118,15 @@ class ProductsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new Product.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new Product.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -10828,19 +11141,23 @@ class ProductsListResponse {
 }
 
 class ProductstatusesCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<ProductstatusesCustomBatchRequestEntry> entries;
 
   ProductstatusesCustomBatchRequest();
 
   ProductstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ProductstatusesCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new ProductstatusesCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -10848,14 +11165,17 @@ class ProductstatusesCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch productstatuses request. */
+/// A batch entry encoding a single non-batch productstatuses request.
 class ProductstatusesCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+  core.bool includeAttributes;
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
-  /** The ID of the product whose status to get. */
+
+  /// The ID of the product whose status to get.
   core.String productId;
 
   ProductstatusesCustomBatchRequestEntry();
@@ -10863,6 +11183,9 @@ class ProductstatusesCustomBatchRequestEntry {
   ProductstatusesCustomBatchRequestEntry.fromJson(core.Map _json) {
     if (_json.containsKey("batchId")) {
       batchId = _json["batchId"];
+    }
+    if (_json.containsKey("includeAttributes")) {
+      includeAttributes = _json["includeAttributes"];
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -10875,10 +11198,14 @@ class ProductstatusesCustomBatchRequestEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
+    }
+    if (includeAttributes != null) {
+      _json["includeAttributes"] = includeAttributes;
     }
     if (merchantId != null) {
       _json["merchantId"] = merchantId;
@@ -10894,27 +11221,30 @@ class ProductstatusesCustomBatchRequestEntry {
 }
 
 class ProductstatusesCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<ProductstatusesCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productstatusesCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productstatusesCustomBatchResponse".
   core.String kind;
 
   ProductstatusesCustomBatchResponse();
 
   ProductstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ProductstatusesCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new ProductstatusesCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -10925,20 +11255,19 @@ class ProductstatusesCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch productstatuses response. */
+/// A batch entry encoding a single non-batch productstatuses response.
 class ProductstatusesCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors, if the request failed. */
+
+  /// A list of errors, if the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productstatusesCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productstatusesCustomBatchResponseEntry".
   core.String kind;
-  /**
-   * The requested product status. Only defined if the request was successful.
-   */
+
+  /// The requested product status. Only defined if the request was successful.
   ProductStatus productStatus;
 
   ProductstatusesCustomBatchResponseEntry();
@@ -10958,8 +11287,9 @@ class ProductstatusesCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -10977,12 +11307,11 @@ class ProductstatusesCustomBatchResponseEntry {
 }
 
 class ProductstatusesListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#productstatusesListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#productstatusesListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of products statuses. */
+
+  /// The token for the retrieval of the next page of products statuses.
   core.String nextPageToken;
   core.List<ProductStatus> resources;
 
@@ -10996,12 +11325,15 @@ class ProductstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new ProductStatus.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new ProductStatus.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -11016,32 +11348,26 @@ class ProductstatusesListResponse {
 }
 
 class RateGroup {
-  /**
-   * A list of shipping labels defining the products to which this rate group
-   * applies to. This is a disjunction: only one of the labels has to match for
-   * the rate group to apply. May only be empty for the last rate group of a
-   * service. Required.
-   */
+  /// A list of shipping labels defining the products to which this rate group
+  /// applies to. This is a disjunction: only one of the labels has to match for
+  /// the rate group to apply. May only be empty for the last rate group of a
+  /// service. Required.
   core.List<core.String> applicableShippingLabels;
-  /**
-   * A list of carrier rates that can be referred to by mainTable or
-   * singleValue.
-   */
+
+  /// A list of carrier rates that can be referred to by mainTable or
+  /// singleValue.
   core.List<CarrierRate> carrierRates;
-  /**
-   * A table defining the rate group, when singleValue is not expressive enough.
-   * Can only be set if singleValue is not set.
-   */
+
+  /// A table defining the rate group, when singleValue is not expressive
+  /// enough. Can only be set if singleValue is not set.
   Table mainTable;
-  /**
-   * The value of the rate group (e.g. flat rate $10). Can only be set if
-   * mainTable and subtables are not set.
-   */
+
+  /// The value of the rate group (e.g. flat rate $10). Can only be set if
+  /// mainTable and subtables are not set.
   Value singleValue;
-  /**
-   * A list of subtables referred to by mainTable. Can only be set if mainTable
-   * is set.
-   */
+
+  /// A list of subtables referred to by mainTable. Can only be set if mainTable
+  /// is set.
   core.List<Table> subtables;
 
   RateGroup();
@@ -11051,7 +11377,9 @@ class RateGroup {
       applicableShippingLabels = _json["applicableShippingLabels"];
     }
     if (_json.containsKey("carrierRates")) {
-      carrierRates = _json["carrierRates"].map((value) => new CarrierRate.fromJson(value)).toList();
+      carrierRates = _json["carrierRates"]
+          .map((value) => new CarrierRate.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("mainTable")) {
       mainTable = new Table.fromJson(_json["mainTable"]);
@@ -11060,17 +11388,20 @@ class RateGroup {
       singleValue = new Value.fromJson(_json["singleValue"]);
     }
     if (_json.containsKey("subtables")) {
-      subtables = _json["subtables"].map((value) => new Table.fromJson(value)).toList();
+      subtables =
+          _json["subtables"].map((value) => new Table.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (applicableShippingLabels != null) {
       _json["applicableShippingLabels"] = applicableShippingLabels;
     }
     if (carrierRates != null) {
-      _json["carrierRates"] = carrierRates.map((value) => (value).toJson()).toList();
+      _json["carrierRates"] =
+          carrierRates.map((value) => (value).toJson()).toList();
     }
     if (mainTable != null) {
       _json["mainTable"] = (mainTable).toJson();
@@ -11086,11 +11417,9 @@ class RateGroup {
 }
 
 class Row {
-  /**
-   * The list of cells that constitute the row. Must have the same length as
-   * columnHeaders for two-dimensional tables, a length of 1 for one-dimensional
-   * tables. Required.
-   */
+  /// The list of cells that constitute the row. Must have the same length as
+  /// columnHeaders for two-dimensional tables, a length of 1 for
+  /// one-dimensional tables. Required.
   core.List<Value> cells;
 
   Row();
@@ -11101,8 +11430,9 @@ class Row {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (cells != null) {
       _json["cells"] = cells.map((value) => (value).toJson()).toList();
     }
@@ -11111,35 +11441,33 @@ class Row {
 }
 
 class Service {
-  /**
-   * A boolean exposing the active status of the shipping service. Required.
-   */
+  /// A boolean exposing the active status of the shipping service. Required.
   core.bool active;
-  /**
-   * The CLDR code of the currency to which this service applies. Must match
-   * that of the prices in rate groups.
-   */
+
+  /// The CLDR code of the currency to which this service applies. Must match
+  /// that of the prices in rate groups.
   core.String currency;
-  /**
-   * The CLDR territory code of the country to which the service applies.
-   * Required.
-   */
+
+  /// The CLDR territory code of the country to which the service applies.
+  /// Required.
   core.String deliveryCountry;
-  /**
-   * Time spent in various aspects from order to the delivery of the product.
-   * Required.
-   */
+
+  /// Time spent in various aspects from order to the delivery of the product.
+  /// Required.
   DeliveryTime deliveryTime;
-  /**
-   * Free-form name of the service. Must be unique within target account.
-   * Required.
-   */
+
+  /// Minimum order value for this service. If set, indicates that customers
+  /// will have to spend at least this amount. All prices within a service must
+  /// have the same currency.
+  Price minimumOrderValue;
+
+  /// Free-form name of the service. Must be unique within target account.
+  /// Required.
   core.String name;
-  /**
-   * Shipping rate group definitions. Only the last one is allowed to have an
-   * empty applicableShippingLabels, which means "everything else". The other
-   * applicableShippingLabels must not overlap.
-   */
+
+  /// Shipping rate group definitions. Only the last one is allowed to have an
+  /// empty applicableShippingLabels, which means "everything else". The other
+  /// applicableShippingLabels must not overlap.
   core.List<RateGroup> rateGroups;
 
   Service();
@@ -11157,16 +11485,22 @@ class Service {
     if (_json.containsKey("deliveryTime")) {
       deliveryTime = new DeliveryTime.fromJson(_json["deliveryTime"]);
     }
+    if (_json.containsKey("minimumOrderValue")) {
+      minimumOrderValue = new Price.fromJson(_json["minimumOrderValue"]);
+    }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("rateGroups")) {
-      rateGroups = _json["rateGroups"].map((value) => new RateGroup.fromJson(value)).toList();
+      rateGroups = _json["rateGroups"]
+          .map((value) => new RateGroup.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (active != null) {
       _json["active"] = active;
     }
@@ -11179,28 +11513,31 @@ class Service {
     if (deliveryTime != null) {
       _json["deliveryTime"] = (deliveryTime).toJson();
     }
+    if (minimumOrderValue != null) {
+      _json["minimumOrderValue"] = (minimumOrderValue).toJson();
+    }
     if (name != null) {
       _json["name"] = name;
     }
     if (rateGroups != null) {
-      _json["rateGroups"] = rateGroups.map((value) => (value).toJson()).toList();
+      _json["rateGroups"] =
+          rateGroups.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
-/** The merchant account's shipping settings. */
+/// The merchant account's shipping settings.
 class ShippingSettings {
-  /**
-   * The ID of the account to which these account shipping settings belong.
-   * Ignored upon update, always present in get request responses.
-   */
+  /// The ID of the account to which these account shipping settings belong.
+  /// Ignored upon update, always present in get request responses.
   core.String accountId;
-  /**
-   * A list of postal code groups that can be referred to in services. Optional.
-   */
+
+  /// A list of postal code groups that can be referred to in services.
+  /// Optional.
   core.List<PostalCodeGroup> postalCodeGroups;
-  /** The target account's list of services. Optional. */
+
+  /// The target account's list of services. Optional.
   core.List<Service> services;
 
   ShippingSettings();
@@ -11210,20 +11547,26 @@ class ShippingSettings {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("postalCodeGroups")) {
-      postalCodeGroups = _json["postalCodeGroups"].map((value) => new PostalCodeGroup.fromJson(value)).toList();
+      postalCodeGroups = _json["postalCodeGroups"]
+          .map((value) => new PostalCodeGroup.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("services")) {
-      services = _json["services"].map((value) => new Service.fromJson(value)).toList();
+      services = _json["services"]
+          .map((value) => new Service.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
     if (postalCodeGroups != null) {
-      _json["postalCodeGroups"] = postalCodeGroups.map((value) => (value).toJson()).toList();
+      _json["postalCodeGroups"] =
+          postalCodeGroups.map((value) => (value).toJson()).toList();
     }
     if (services != null) {
       _json["services"] = services.map((value) => (value).toJson()).toList();
@@ -11233,19 +11576,23 @@ class ShippingSettings {
 }
 
 class ShippingsettingsCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<ShippingsettingsCustomBatchRequestEntry> entries;
 
   ShippingsettingsCustomBatchRequest();
 
   ShippingsettingsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ShippingsettingsCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new ShippingsettingsCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -11253,21 +11600,20 @@ class ShippingsettingsCustomBatchRequest {
   }
 }
 
-/** A batch entry encoding a single non-batch accountshipping request. */
+/// A batch entry encoding a single non-batch shippingsettings request.
 class ShippingsettingsCustomBatchRequestEntry {
-  /**
-   * The ID of the account for which to get/update account shipping settings.
-   */
+  /// The ID of the account for which to get/update account shipping settings.
   core.String accountId;
-  /** An entry ID, unique within the batch request. */
+
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
   core.String method;
-  /**
-   * The account shipping settings to update. Only defined if the method is
-   * update.
-   */
+
+  /// The account shipping settings to update. Only defined if the method is
+  /// update.
   ShippingSettings shippingSettings;
 
   ShippingsettingsCustomBatchRequestEntry();
@@ -11286,12 +11632,14 @@ class ShippingsettingsCustomBatchRequestEntry {
       method = _json["method"];
     }
     if (_json.containsKey("shippingSettings")) {
-      shippingSettings = new ShippingSettings.fromJson(_json["shippingSettings"]);
+      shippingSettings =
+          new ShippingSettings.fromJson(_json["shippingSettings"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (accountId != null) {
       _json["accountId"] = accountId;
     }
@@ -11312,27 +11660,30 @@ class ShippingsettingsCustomBatchRequestEntry {
 }
 
 class ShippingsettingsCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<ShippingsettingsCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#shippingsettingsCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#shippingsettingsCustomBatchResponse".
   core.String kind;
 
   ShippingsettingsCustomBatchResponse();
 
   ShippingsettingsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new ShippingsettingsCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) =>
+              new ShippingsettingsCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -11343,18 +11694,19 @@ class ShippingsettingsCustomBatchResponse {
   }
 }
 
-/** A batch entry encoding a single non-batch shipping settings response. */
+/// A batch entry encoding a single non-batch shipping settings response.
 class ShippingsettingsCustomBatchResponseEntry {
-  /** The ID of the request entry to which this entry responds. */
+  /// The ID of the request entry to which this entry responds.
   core.int batchId;
-  /** A list of errors defined if, and only if, the request failed. */
+
+  /// A list of errors defined if, and only if, the request failed.
   Errors errors;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#shippingsettingsCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#shippingsettingsCustomBatchResponseEntry".
   core.String kind;
-  /** The retrieved or updated account shipping settings. */
+
+  /// The retrieved or updated account shipping settings.
   ShippingSettings shippingSettings;
 
   ShippingsettingsCustomBatchResponseEntry();
@@ -11370,12 +11722,14 @@ class ShippingsettingsCustomBatchResponseEntry {
       kind = _json["kind"];
     }
     if (_json.containsKey("shippingSettings")) {
-      shippingSettings = new ShippingSettings.fromJson(_json["shippingSettings"]);
+      shippingSettings =
+          new ShippingSettings.fromJson(_json["shippingSettings"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -11393,27 +11747,29 @@ class ShippingsettingsCustomBatchResponseEntry {
 }
 
 class ShippingsettingsGetSupportedCarriersResponse {
-  /** A list of supported carriers. May be empty. */
+  /// A list of supported carriers. May be empty.
   core.List<CarriersCarrier> carriers;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#shippingsettingsGetSupportedCarriersResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#shippingsettingsGetSupportedCarriersResponse".
   core.String kind;
 
   ShippingsettingsGetSupportedCarriersResponse();
 
   ShippingsettingsGetSupportedCarriersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("carriers")) {
-      carriers = _json["carriers"].map((value) => new CarriersCarrier.fromJson(value)).toList();
+      carriers = _json["carriers"]
+          .map((value) => new CarriersCarrier.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carriers != null) {
       _json["carriers"] = carriers.map((value) => (value).toJson()).toList();
     }
@@ -11425,12 +11781,11 @@ class ShippingsettingsGetSupportedCarriersResponse {
 }
 
 class ShippingsettingsListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#shippingsettingsListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#shippingsettingsListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of shipping settings. */
+
+  /// The token for the retrieval of the next page of shipping settings.
   core.String nextPageToken;
   core.List<ShippingSettings> resources;
 
@@ -11444,12 +11799,15 @@ class ShippingsettingsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new ShippingSettings.fromJson(value)).toList();
+      resources = _json["resources"]
+          .map((value) => new ShippingSettings.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -11464,19 +11822,18 @@ class ShippingsettingsListResponse {
 }
 
 class Table {
-  /**
-   * Headers of the table's columns. Optional: if not set then the table has
-   * only one dimension.
-   */
+  /// Headers of the table's columns. Optional: if not set then the table has
+  /// only one dimension.
   Headers columnHeaders;
-  /** Name of the table. Required for subtables, ignored for the main table. */
+
+  /// Name of the table. Required for subtables, ignored for the main table.
   core.String name;
-  /** Headers of the table's rows. Required. */
+
+  /// Headers of the table's rows. Required.
   Headers rowHeaders;
-  /**
-   * The list of rows that constitute the table. Must have the same length as
-   * rowHeaders. Required.
-   */
+
+  /// The list of rows that constitute the table. Must have the same length as
+  /// rowHeaders. Required.
   core.List<Row> rows;
 
   Table();
@@ -11496,8 +11853,9 @@ class Table {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (columnHeaders != null) {
       _json["columnHeaders"] = (columnHeaders).toJson();
     }
@@ -11515,31 +11873,33 @@ class Table {
 }
 
 class TestOrder {
-  /** The details of the customer who placed the order. */
+  /// The details of the customer who placed the order.
   TestOrderCustomer customer;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#testOrder".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#testOrder".
   core.String kind;
-  /** Line items that are ordered. At least one line item must be provided. */
+
+  /// Line items that are ordered. At least one line item must be provided.
   core.List<TestOrderLineItem> lineItems;
-  /** The details of the payment method. */
+
+  /// The details of the payment method.
   TestOrderPaymentMethod paymentMethod;
-  /**
-   * Identifier of one of the predefined delivery addresses for the delivery.
-   */
+
+  /// Identifier of one of the predefined delivery addresses for the delivery.
   core.String predefinedDeliveryAddress;
-  /**
-   * The details of the merchant provided promotions applied to the order. More
-   * details about the program are  here.
-   */
+
+  /// The details of the merchant provided promotions applied to the order. More
+  /// details about the program are here.
   core.List<OrderPromotion> promotions;
-  /** The total cost of shipping for all items. */
+
+  /// The total cost of shipping for all items.
   Price shippingCost;
-  /** The tax for the total shipping cost. */
+
+  /// The tax for the total shipping cost.
   Price shippingCostTax;
-  /** The requested shipping option. */
+
+  /// The requested shipping option.
   core.String shippingOption;
 
   TestOrder();
@@ -11552,16 +11912,21 @@ class TestOrder {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new TestOrderLineItem.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new TestOrderLineItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("paymentMethod")) {
-      paymentMethod = new TestOrderPaymentMethod.fromJson(_json["paymentMethod"]);
+      paymentMethod =
+          new TestOrderPaymentMethod.fromJson(_json["paymentMethod"]);
     }
     if (_json.containsKey("predefinedDeliveryAddress")) {
       predefinedDeliveryAddress = _json["predefinedDeliveryAddress"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"].map((value) => new OrderPromotion.fromJson(value)).toList();
+      promotions = _json["promotions"]
+          .map((value) => new OrderPromotion.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingCost")) {
       shippingCost = new Price.fromJson(_json["shippingCost"]);
@@ -11574,8 +11939,9 @@ class TestOrder {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (customer != null) {
       _json["customer"] = (customer).toJson();
     }
@@ -11592,7 +11958,8 @@ class TestOrder {
       _json["predefinedDeliveryAddress"] = predefinedDeliveryAddress;
     }
     if (promotions != null) {
-      _json["promotions"] = promotions.map((value) => (value).toJson()).toList();
+      _json["promotions"] =
+          promotions.map((value) => (value).toJson()).toList();
     }
     if (shippingCost != null) {
       _json["shippingCost"] = (shippingCost).toJson();
@@ -11608,17 +11975,17 @@ class TestOrder {
 }
 
 class TestOrderCustomer {
-  /** Email address of the customer. */
+  /// Email address of the customer.
   core.String email;
-  /**
-   * If set, this indicates the user explicitly chose to opt in or out of
-   * providing marketing rights to the merchant. If unset, this indicates the
-   * user has already made this choice in a previous purchase, and was thus not
-   * shown the marketing right opt in/out checkbox during the Purchases on
-   * Google checkout flow. Optional.
-   */
+
+  /// If set, this indicates the user explicitly chose to opt in or out of
+  /// providing marketing rights to the merchant. If unset, this indicates the
+  /// user has already made this choice in a previous purchase, and was thus not
+  /// shown the marketing right opt in/out checkbox during the checkout flow.
+  /// Optional.
   core.bool explicitMarketingPreference;
-  /** Full name of the customer. */
+
+  /// Full name of the customer.
   core.String fullName;
 
   TestOrderCustomer();
@@ -11635,8 +12002,9 @@ class TestOrderCustomer {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (email != null) {
       _json["email"] = email;
     }
@@ -11651,15 +12019,19 @@ class TestOrderCustomer {
 }
 
 class TestOrderLineItem {
-  /** Product data from the time of the order placement. */
+  /// Product data from the time of the order placement.
   TestOrderLineItemProduct product;
-  /** Number of items ordered. */
+
+  /// Number of items ordered.
   core.int quantityOrdered;
-  /** Details of the return policy for the line item. */
+
+  /// Details of the return policy for the line item.
   OrderLineItemReturnInfo returnInfo;
-  /** Details of the requested shipping for the line item. */
+
+  /// Details of the requested shipping for the line item.
   OrderLineItemShippingDetails shippingDetails;
-  /** Unit tax for the line item. */
+
+  /// Unit tax for the line item.
   Price unitTax;
 
   TestOrderLineItem();
@@ -11675,15 +12047,17 @@ class TestOrderLineItem {
       returnInfo = new OrderLineItemReturnInfo.fromJson(_json["returnInfo"]);
     }
     if (_json.containsKey("shippingDetails")) {
-      shippingDetails = new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
+      shippingDetails =
+          new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
     }
     if (_json.containsKey("unitTax")) {
       unitTax = new Price.fromJson(_json["unitTax"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (product != null) {
       _json["product"] = (product).toJson();
     }
@@ -11704,31 +12078,43 @@ class TestOrderLineItem {
 }
 
 class TestOrderLineItemProduct {
-  /** Brand of the item. */
+  /// Brand of the item.
   core.String brand;
-  /** The item's channel. */
+
+  /// The item's channel.
   core.String channel;
-  /** Condition or state of the item. */
+
+  /// Condition or state of the item.
   core.String condition;
-  /** The two-letter ISO 639-1 language code for the item. */
+
+  /// The two-letter ISO 639-1 language code for the item.
   core.String contentLanguage;
-  /** Global Trade Item Number (GTIN) of the item. Optional. */
+
+  /// Global Trade Item Number (GTIN) of the item. Optional.
   core.String gtin;
-  /** URL of an image of the item. */
+
+  /// URL of an image of the item.
   core.String imageLink;
-  /** Shared identifier for all variants of the same product. Optional. */
+
+  /// Shared identifier for all variants of the same product. Optional.
   core.String itemGroupId;
-  /** Manufacturer Part Number (MPN) of the item. Optional. */
+
+  /// Manufacturer Part Number (MPN) of the item. Optional.
   core.String mpn;
-  /** An identifier of the item. */
+
+  /// An identifier of the item.
   core.String offerId;
-  /** The price for the product. */
+
+  /// The price for the product.
   Price price;
-  /** The CLDR territory code of the target country of the product. */
+
+  /// The CLDR territory code of the target country of the product.
   core.String targetCountry;
-  /** The title of the product. */
+
+  /// The title of the product.
   core.String title;
-  /** Variant attributes for the item. Optional. */
+
+  /// Variant attributes for the item. Optional.
   core.List<OrderLineItemProductVariantAttribute> variantAttributes;
 
   TestOrderLineItemProduct();
@@ -11771,12 +12157,16 @@ class TestOrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"].map((value) => new OrderLineItemProductVariantAttribute.fromJson(value)).toList();
+      variantAttributes = _json["variantAttributes"]
+          .map((value) =>
+              new OrderLineItemProductVariantAttribute.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (brand != null) {
       _json["brand"] = brand;
     }
@@ -11814,25 +12204,28 @@ class TestOrderLineItemProduct {
       _json["title"] = title;
     }
     if (variantAttributes != null) {
-      _json["variantAttributes"] = variantAttributes.map((value) => (value).toJson()).toList();
+      _json["variantAttributes"] =
+          variantAttributes.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
 class TestOrderPaymentMethod {
-  /** The card expiration month (January = 1, February = 2 etc.). */
+  /// The card expiration month (January = 1, February = 2 etc.).
   core.int expirationMonth;
-  /** The card expiration year (4-digit, e.g. 2015). */
+
+  /// The card expiration year (4-digit, e.g. 2015).
   core.int expirationYear;
-  /** The last four digits of the card number. */
+
+  /// The last four digits of the card number.
   core.String lastFourDigits;
-  /** The billing address. */
+
+  /// The billing address.
   core.String predefinedBillingAddress;
-  /**
-   * The type of instrument. Note that real orders might have different values
-   * than the four values accepted by createTestOrder.
-   */
+
+  /// The type of instrument. Note that real orders might have different values
+  /// than the four values accepted by createTestOrder.
   core.String type;
 
   TestOrderPaymentMethod();
@@ -11855,8 +12248,9 @@ class TestOrderPaymentMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (expirationMonth != null) {
       _json["expirationMonth"] = expirationMonth;
     }
@@ -11876,33 +12270,27 @@ class TestOrderPaymentMethod {
   }
 }
 
-/**
- * The single value of a rate group or the value of a rate group table's cell.
- * Exactly one of noShipping, flatRate, pricePercentage, carrierRateName,
- * subtableName must be set.
- */
+/// The single value of a rate group or the value of a rate group table's cell.
+/// Exactly one of noShipping, flatRate, pricePercentage, carrierRateName,
+/// subtableName must be set.
 class Value {
-  /**
-   * The name of a carrier rate referring to a carrier rate defined in the same
-   * rate group. Can only be set if all other fields are not set.
-   */
+  /// The name of a carrier rate referring to a carrier rate defined in the same
+  /// rate group. Can only be set if all other fields are not set.
   core.String carrierRateName;
-  /** A flat rate. Can only be set if all other fields are not set. */
+
+  /// A flat rate. Can only be set if all other fields are not set.
   Price flatRate;
-  /**
-   * If true, then the product can't ship. Must be true when set, can only be
-   * set if all other fields are not set.
-   */
+
+  /// If true, then the product can't ship. Must be true when set, can only be
+  /// set if all other fields are not set.
   core.bool noShipping;
-  /**
-   * A percentage of the price represented as a number in decimal notation
-   * (e.g., "5.4"). Can only be set if all other fields are not set.
-   */
+
+  /// A percentage of the price represented as a number in decimal notation
+  /// (e.g., "5.4"). Can only be set if all other fields are not set.
   core.String pricePercentage;
-  /**
-   * The name of a subtable. Can only be set in table cells (i.e., not for
-   * single values), and only if all other fields are not set.
-   */
+
+  /// The name of a subtable. Can only be set in table cells (i.e., not for
+  /// single values), and only if all other fields are not set.
   core.String subtableName;
 
   Value();
@@ -11925,8 +12313,9 @@ class Value {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrierRateName != null) {
       _json["carrierRateName"] = carrierRateName;
     }
@@ -11947,9 +12336,10 @@ class Value {
 }
 
 class Weight {
-  /** The weight unit. */
+  /// The weight unit.
   core.String unit;
-  /** The weight represented as a number. */
+
+  /// The weight represented as a number.
   core.String value;
 
   Weight();
@@ -11963,8 +12353,9 @@ class Weight {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (unit != null) {
       _json["unit"] = unit;
     }

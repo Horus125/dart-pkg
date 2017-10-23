@@ -9,55 +9,67 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError, Media, UploadOptions,
-    ResumableUploadOptions, DownloadOptions, PartialDownloadOptions,
-    ByteRange;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show
+        ApiRequestError,
+        DetailedApiRequestError,
+        Media,
+        UploadOptions,
+        ResumableUploadOptions,
+        DownloadOptions,
+        PartialDownloadOptions,
+        ByteRange;
 
 const core.String USER_AGENT = 'dart-api-client groupsmigration/v1';
 
-/** Groups Migration Api. */
+/// Groups Migration Api.
 class GroupsmigrationApi {
-  /** Manage messages in groups on your domain */
-  static const AppsGroupsMigrationScope = "https://www.googleapis.com/auth/apps.groups.migration";
-
+  /// Manage messages in groups on your domain
+  static const AppsGroupsMigrationScope =
+      "https://www.googleapis.com/auth/apps.groups.migration";
 
   final commons.ApiRequester _requester;
 
   ArchiveResourceApi get archive => new ArchiveResourceApi(_requester);
 
-  GroupsmigrationApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "groups/v1/groups/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  GroupsmigrationApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "groups/v1/groups/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class ArchiveResourceApi {
   final commons.ApiRequester _requester;
 
-  ArchiveResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ArchiveResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Inserts a new mail into the archive of the Google group.
-   *
-   * Request parameters:
-   *
-   * [groupId] - The group ID
-   *
-   * [uploadMedia] - The media to upload.
-   *
-   * [uploadOptions] - Options for the media upload. Streaming Media without the
-   * length being known ahead of time is only supported via resumable uploads.
-   *
-   * Completes with a [Groups].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Groups> insert(core.String groupId, {commons.UploadOptions uploadOptions : commons.UploadOptions.Default, commons.Media uploadMedia}) {
+  /// Inserts a new mail into the archive of the Google group.
+  ///
+  /// Request parameters:
+  ///
+  /// [groupId] - The group ID
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [uploadMedia] - The media to upload.
+  ///
+  /// [uploadOptions] - Options for the media upload. Streaming Media without
+  /// the length being known ahead of time is only supported via resumable
+  /// uploads.
+  ///
+  /// Completes with a [Groups].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Groups> insert(core.String groupId,
+      {core.String $fields,
+      commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
+      commons.Media uploadMedia}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -68,38 +80,41 @@ class ArchiveResourceApi {
     if (groupId == null) {
       throw new core.ArgumentError("Parameter groupId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _uploadMedia =  uploadMedia;
-    _uploadOptions =  uploadOptions;
+    _uploadMedia = uploadMedia;
+    _uploadOptions = uploadOptions;
 
     if (_uploadMedia == null) {
       _url = commons.Escaper.ecapeVariable('$groupId') + '/archive';
     } else if (_uploadOptions is commons.ResumableUploadOptions) {
-      _url = '/resumable/upload/groups/v1/groups/' + commons.Escaper.ecapeVariable('$groupId') + '/archive';
+      _url = '/resumable/upload/groups/v1/groups/' +
+          commons.Escaper.ecapeVariable('$groupId') +
+          '/archive';
     } else {
-      _url = '/upload/groups/v1/groups/' + commons.Escaper.ecapeVariable('$groupId') + '/archive';
+      _url = '/upload/groups/v1/groups/' +
+          commons.Escaper.ecapeVariable('$groupId') +
+          '/archive';
     }
 
-
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Groups.fromJson(data));
   }
-
 }
 
-
-
-/** JSON response template for groups migration API. */
+/// JSON response template for groups migration API.
 class Groups {
-  /** The kind of insert resource this is. */
+  /// The kind of insert resource this is.
   core.String kind;
-  /** The status of the insert request. */
+
+  /// The status of the insert request.
   core.String responseCode;
 
   Groups();
@@ -113,8 +128,9 @@ class Groups {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }

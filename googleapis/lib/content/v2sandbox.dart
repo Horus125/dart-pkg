@@ -9,55 +9,59 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
 
 const core.String USER_AGENT = 'dart-api-client content/v2sandbox';
 
-/**
- * Manages product items, inventory, and Merchant Center accounts for Google
- * Shopping.
- */
+/// Manages product items, inventory, and Merchant Center accounts for Google
+/// Shopping.
 class ContentApi {
-  /** Manage your product listings and accounts for Google Shopping */
+  /// Manage your product listings and accounts for Google Shopping
   static const ContentScope = "https://www.googleapis.com/auth/content";
-
 
   final commons.ApiRequester _requester;
 
   OrdersResourceApi get orders => new OrdersResourceApi(_requester);
 
-  ContentApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "content/v2sandbox/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  ContentApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "content/v2sandbox/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class OrdersResourceApi {
   final commons.ApiRequester _requester;
 
-  OrdersResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  OrdersResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Marks an order as acknowledged.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersAcknowledgeResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersAcknowledgeResponse> acknowledge(OrdersAcknowledgeRequest request, core.String merchantId, core.String orderId) {
+  /// Marks an order as acknowledged. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersAcknowledgeResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersAcknowledgeResponse> acknowledge(
+      OrdersAcknowledgeRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -74,38 +78,48 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/acknowledge';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/acknowledge';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersAcknowledgeResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersAcknowledgeResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Moves a test order from state "inProgress" to state
-   * "pendingShipment".
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the test order to modify.
-   *
-   * Completes with a [OrdersAdvanceTestOrderResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersAdvanceTestOrderResponse> advancetestorder(core.String merchantId, core.String orderId) {
+  /// Sandbox only. Moves a test order from state "inProgress" to state
+  /// "pendingShipment". This method can only be called for non-multi-client
+  /// accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the test order to modify.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersAdvanceTestOrderResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersAdvanceTestOrderResponse> advancetestorder(
+      core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -119,39 +133,49 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/testorders/' + commons.Escaper.ecapeVariable('$orderId') + '/advance';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/testorders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/advance';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersAdvanceTestOrderResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersAdvanceTestOrderResponse.fromJson(data));
   }
 
-  /**
-   * Cancels all line items in an order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order to cancel.
-   *
-   * Completes with a [OrdersCancelResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCancelResponse> cancel(OrdersCancelRequest request, core.String merchantId, core.String orderId) {
+  /// Cancels all line items in an order, making a full refund. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order to cancel.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCancelResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCancelResponse> cancel(
+      OrdersCancelRequest request, core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -168,39 +192,50 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/cancel';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/cancel';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersCancelResponse.fromJson(data));
   }
 
-  /**
-   * Cancels a line item.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersCancelLineItemResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCancelLineItemResponse> cancellineitem(OrdersCancelLineItemRequest request, core.String merchantId, core.String orderId) {
+  /// Cancels a line item, making a full refund. This method can only be called
+  /// for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCancelLineItemResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCancelLineItemResponse> cancellineitem(
+      OrdersCancelLineItemRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -217,37 +252,47 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/cancelLineItem';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/cancelLineItem';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCancelLineItemResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCancelLineItemResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Creates a test order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * Completes with a [OrdersCreateTestOrderResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCreateTestOrderResponse> createtestorder(OrdersCreateTestOrderRequest request, core.String merchantId) {
+  /// Sandbox only. Creates a test order. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCreateTestOrderResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCreateTestOrderResponse> createtestorder(
+      OrdersCreateTestOrderRequest request, core.String merchantId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -260,36 +305,43 @@ class OrdersResourceApi {
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
     }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/testorders';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCreateTestOrderResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCreateTestOrderResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves or modifies multiple orders in a single request.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * Completes with a [OrdersCustomBatchResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersCustomBatchResponse> custombatch(OrdersCustomBatchRequest request) {
+  /// Retrieves or modifies multiple orders in a single request. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersCustomBatchResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersCustomBatchResponse> custombatch(
+      OrdersCustomBatchRequest request,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -300,37 +352,43 @@ class OrdersResourceApi {
     if (request != null) {
       _body = convert.JSON.encode((request).toJson());
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'orders/batch';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersCustomBatchResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersCustomBatchResponse.fromJson(data));
   }
 
-  /**
-   * Retrieves an order from your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [Order].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Order> get(core.String merchantId, core.String orderId) {
+  /// Retrieves an order from your Merchant Center account. This method can only
+  /// be called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Order].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Order> get(core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -344,37 +402,45 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Order.fromJson(data));
   }
 
-  /**
-   * Retrieves an order using merchant order id.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [merchantOrderId] - The merchant order id to be looked for.
-   *
-   * Completes with a [OrdersGetByMerchantOrderIdResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersGetByMerchantOrderIdResponse> getbymerchantorderid(core.String merchantId, core.String merchantOrderId) {
+  /// Retrieves an order using merchant order id. This method can only be called
+  /// for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [merchantOrderId] - The merchant order id to be looked for.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersGetByMerchantOrderIdResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersGetByMerchantOrderIdResponse> getbymerchantorderid(
+      core.String merchantId, core.String merchantOrderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -388,43 +454,52 @@ class OrdersResourceApi {
     if (merchantOrderId == null) {
       throw new core.ArgumentError("Parameter merchantOrderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/ordersbymerchantid/' + commons.Escaper.ecapeVariable('$merchantOrderId');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/ordersbymerchantid/' +
+        commons.Escaper.ecapeVariable('$merchantOrderId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersGetByMerchantOrderIdResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersGetByMerchantOrderIdResponse.fromJson(data));
   }
 
-  /**
-   * Sandbox only. Retrieves an order template that can be used to quickly
-   * create a new order in sandbox.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [templateName] - The name of the template to retrieve.
-   * Possible string values are:
-   * - "template1"
-   * - "template1a"
-   * - "template1b"
-   * - "template2"
-   *
-   * Completes with a [OrdersGetTestOrderTemplateResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersGetTestOrderTemplateResponse> gettestordertemplate(core.String merchantId, core.String templateName) {
+  /// Sandbox only. Retrieves an order template that can be used to quickly
+  /// create a new order in sandbox. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [templateName] - The name of the template to retrieve.
+  /// Possible string values are:
+  /// - "template1"
+  /// - "template1a"
+  /// - "template1b"
+  /// - "template2"
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersGetTestOrderTemplateResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersGetTestOrderTemplateResponse> gettestordertemplate(
+      core.String merchantId, core.String templateName,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -438,71 +513,86 @@ class OrdersResourceApi {
     if (templateName == null) {
       throw new core.ArgumentError("Parameter templateName is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/testordertemplates/' + commons.Escaper.ecapeVariable('$templateName');
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/testordertemplates/' +
+        commons.Escaper.ecapeVariable('$templateName');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersGetTestOrderTemplateResponse.fromJson(data));
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersGetTestOrderTemplateResponse.fromJson(data));
   }
 
-  /**
-   * Lists the orders in your Merchant Center account.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [acknowledged] - Obtains orders that match the acknowledgement status. When
-   * set to true, obtains orders that have been acknowledged. When false,
-   * obtains orders that have not been acknowledged.
-   * We recommend using this filter set to false, in conjunction with the
-   * acknowledge call, such that only un-acknowledged orders are returned.
-   *
-   * [maxResults] - The maximum number of orders to return in the response, used
-   * for paging. The default value is 25 orders per page, and the maximum
-   * allowed value is 250 orders per page.
-   * Known issue: All List calls will return all Orders without limit regardless
-   * of the value of this field.
-   *
-   * [orderBy] - The ordering of the returned list. The only supported value are
-   * placedDate desc and placedDate asc for now, which returns orders sorted by
-   * placement date. "placedDate desc" stands for listing orders by placement
-   * date, from oldest to most recent. "placedDate asc" stands for listing
-   * orders by placement date, from most recent to oldest. In future releases
-   * we'll support other sorting criteria.
-   * Possible string values are:
-   * - "placedDate asc"
-   * - "placedDate desc"
-   *
-   * [pageToken] - The token returned by the previous request.
-   *
-   * [placedDateEnd] - Obtains orders placed before this date (exclusively), in
-   * ISO 8601 format.
-   *
-   * [placedDateStart] - Obtains orders placed after this date (inclusively), in
-   * ISO 8601 format.
-   *
-   * [statuses] - Obtains orders that match any of the specified statuses.
-   * Multiple values can be specified with comma separation. Additionally,
-   * please note that active is a shortcut for pendingShipment and
-   * partiallyShipped, and completed is a shortcut for shipped ,
-   * partiallyDelivered, delivered, partiallyReturned, returned, and canceled.
-   *
-   * Completes with a [OrdersListResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersListResponse> list(core.String merchantId, {core.bool acknowledged, core.int maxResults, core.String orderBy, core.String pageToken, core.String placedDateEnd, core.String placedDateStart, core.List<core.String> statuses}) {
+  /// Lists the orders in your Merchant Center account. This method can only be
+  /// called for non-multi-client accounts.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [acknowledged] - Obtains orders that match the acknowledgement status.
+  /// When set to true, obtains orders that have been acknowledged. When false,
+  /// obtains orders that have not been acknowledged.
+  /// We recommend using this filter set to false, in conjunction with the
+  /// acknowledge call, such that only un-acknowledged orders are returned.
+  ///
+  /// [maxResults] - The maximum number of orders to return in the response,
+  /// used for paging. The default value is 25 orders per page, and the maximum
+  /// allowed value is 250 orders per page.
+  /// Known issue: All List calls will return all Orders without limit
+  /// regardless of the value of this field.
+  ///
+  /// [orderBy] - The ordering of the returned list. The only supported value
+  /// are placedDate desc and placedDate asc for now, which returns orders
+  /// sorted by placement date. "placedDate desc" stands for listing orders by
+  /// placement date, from oldest to most recent. "placedDate asc" stands for
+  /// listing orders by placement date, from most recent to oldest. In future
+  /// releases we'll support other sorting criteria.
+  /// Possible string values are:
+  /// - "placedDate asc"
+  /// - "placedDate desc"
+  ///
+  /// [pageToken] - The token returned by the previous request.
+  ///
+  /// [placedDateEnd] - Obtains orders placed before this date (exclusively), in
+  /// ISO 8601 format.
+  ///
+  /// [placedDateStart] - Obtains orders placed after this date (inclusively),
+  /// in ISO 8601 format.
+  ///
+  /// [statuses] - Obtains orders that match any of the specified statuses.
+  /// Multiple values can be specified with comma separation. Additionally,
+  /// please note that active is a shortcut for pendingShipment and
+  /// partiallyShipped, and completed is a shortcut for shipped ,
+  /// partiallyDelivered, delivered, partiallyReturned, returned, and canceled.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersListResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersListResponse> list(core.String merchantId,
+      {core.bool acknowledged,
+      core.int maxResults,
+      core.String orderBy,
+      core.String pageToken,
+      core.String placedDateEnd,
+      core.String placedDateStart,
+      core.List<core.String> statuses,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -534,39 +624,45 @@ class OrdersResourceApi {
     if (statuses != null) {
       _queryParams["statuses"] = statuses;
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersListResponse.fromJson(data));
   }
 
-  /**
-   * Refund a portion of the order, up to the full amount paid.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order to refund.
-   *
-   * Completes with a [OrdersRefundResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersRefundResponse> refund(OrdersRefundRequest request, core.String merchantId, core.String orderId) {
+  /// Refund a portion of the order, up to the full amount paid. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order to refund.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersRefundResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersRefundResponse> refund(
+      OrdersRefundRequest request, core.String merchantId, core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -583,39 +679,50 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/refund';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/refund';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new OrdersRefundResponse.fromJson(data));
   }
 
-  /**
-   * Returns a line item.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersReturnLineItemResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersReturnLineItemResponse> returnlineitem(OrdersReturnLineItemRequest request, core.String merchantId, core.String orderId) {
+  /// Returns a line item. This method can only be called for non-multi-client
+  /// accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersReturnLineItemResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersReturnLineItemResponse> returnlineitem(
+      OrdersReturnLineItemRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -632,39 +739,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/returnLineItem';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/returnLineItem';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersReturnLineItemResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersReturnLineItemResponse.fromJson(data));
   }
 
-  /**
-   * Marks line item(s) as shipped.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersShipLineItemsResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersShipLineItemsResponse> shiplineitems(OrdersShipLineItemsRequest request, core.String merchantId, core.String orderId) {
+  /// Marks line item(s) as shipped. This method can only be called for
+  /// non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersShipLineItemsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersShipLineItemsResponse> shiplineitems(
+      OrdersShipLineItemsRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -681,39 +800,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/shipLineItems';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/shipLineItems';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersShipLineItemsResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersShipLineItemsResponse.fromJson(data));
   }
 
-  /**
-   * Updates the merchant order ID for a given order.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersUpdateMerchantOrderIdResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersUpdateMerchantOrderIdResponse> updatemerchantorderid(OrdersUpdateMerchantOrderIdRequest request, core.String merchantId, core.String orderId) {
+  /// Updates the merchant order ID for a given order. This method can only be
+  /// called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersUpdateMerchantOrderIdResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersUpdateMerchantOrderIdResponse> updatemerchantorderid(
+      OrdersUpdateMerchantOrderIdRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -730,39 +861,51 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/updateMerchantOrderId';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/updateMerchantOrderId';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersUpdateMerchantOrderIdResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersUpdateMerchantOrderIdResponse.fromJson(data));
   }
 
-  /**
-   * Updates a shipment's status, carrier, and/or tracking ID.
-   *
-   * [request] - The metadata request object.
-   *
-   * Request parameters:
-   *
-   * [merchantId] - The ID of the managing account.
-   *
-   * [orderId] - The ID of the order.
-   *
-   * Completes with a [OrdersUpdateShipmentResponse].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<OrdersUpdateShipmentResponse> updateshipment(OrdersUpdateShipmentRequest request, core.String merchantId, core.String orderId) {
+  /// Updates a shipment's status, carrier, and/or tracking ID. This method can
+  /// only be called for non-multi-client accounts.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [merchantId] - The ID of the managing account.
+  ///
+  /// [orderId] - The ID of the order.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [OrdersUpdateShipmentResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<OrdersUpdateShipmentResponse> updateshipment(
+      OrdersUpdateShipmentRequest request,
+      core.String merchantId,
+      core.String orderId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -779,30 +922,35 @@ class OrdersResourceApi {
     if (orderId == null) {
       throw new core.ArgumentError("Parameter orderId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = commons.Escaper.ecapeVariable('$merchantId') + '/orders/' + commons.Escaper.ecapeVariable('$orderId') + '/updateShipment';
+    _url = commons.Escaper.ecapeVariable('$merchantId') +
+        '/orders/' +
+        commons.Escaper.ecapeVariable('$orderId') +
+        '/updateShipment';
 
-    var _response = _requester.request(_url,
-                                       "POST",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
-    return _response.then((data) => new OrdersUpdateShipmentResponse.fromJson(data));
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new OrdersUpdateShipmentResponse.fromJson(data));
   }
-
 }
 
-
-
-/** An error returned by the API. */
+/// An error returned by the API.
 class Error {
-  /** The domain of the error. */
+  /// The domain of the error.
   core.String domain;
-  /** A description of the error. */
+
+  /// A description of the error.
   core.String message;
-  /** The error code. */
+
+  /// The error code.
   core.String reason;
 
   Error();
@@ -819,8 +967,9 @@ class Error {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (domain != null) {
       _json["domain"] = domain;
     }
@@ -834,13 +983,15 @@ class Error {
   }
 }
 
-/** A list of errors returned by a failed batch entry. */
+/// A list of errors returned by a failed batch entry.
 class Errors {
-  /** The HTTP status of the first error in errors. */
+  /// The HTTP status of the first error in errors.
   core.int code;
-  /** A list of errors. */
+
+  /// A list of errors.
   core.List<Error> errors;
-  /** The message of the first error in errors. */
+
+  /// The message of the first error in errors.
   core.String message;
 
   Errors();
@@ -850,15 +1001,17 @@ class Errors {
       code = _json["code"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"].map((value) => new Error.fromJson(value)).toList();
+      errors =
+          _json["errors"].map((value) => new Error.fromJson(value)).toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (code != null) {
       _json["code"] = code;
     }
@@ -873,54 +1026,66 @@ class Errors {
 }
 
 class Order {
-  /** Whether the order was acknowledged. */
+  /// Whether the order was acknowledged.
   core.bool acknowledged;
-  /** The channel type of the order: "purchaseOnGoogle" or "googleExpress". */
+
+  /// The channel type of the order: "purchaseOnGoogle" or "googleExpress".
   core.String channelType;
-  /** The details of the customer who placed the order. */
+
+  /// The details of the customer who placed the order.
   OrderCustomer customer;
-  /** The details for the delivery. */
+
+  /// The details for the delivery.
   OrderDeliveryDetails deliveryDetails;
-  /** The REST id of the order. Globally unique. */
+
+  /// The REST id of the order. Globally unique.
   core.String id;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#order".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#order".
   core.String kind;
-  /** Line items that are ordered. */
+
+  /// Line items that are ordered.
   core.List<OrderLineItem> lineItems;
   core.String merchantId;
-  /** Merchant-provided id of the order. */
+
+  /// Merchant-provided id of the order.
   core.String merchantOrderId;
-  /**
-   * The net amount for the order. For example, if an order was originally for a
-   * grand total of $100 and a refund was issued for $20, the net amount will be
-   * $80.
-   */
+
+  /// The net amount for the order. For example, if an order was originally for
+  /// a grand total of $100 and a refund was issued for $20, the net amount will
+  /// be $80.
   Price netAmount;
-  /** The details of the payment method. */
+
+  /// The details of the payment method.
   OrderPaymentMethod paymentMethod;
-  /** The status of the payment. */
+
+  /// The status of the payment.
   core.String paymentStatus;
-  /** The date when the order was placed, in ISO 8601 format. */
+
+  /// The date when the order was placed, in ISO 8601 format.
   core.String placedDate;
-  /**
-   * The details of the merchant provided promotions applied to the order. More
-   * details about the program are  here.
-   */
+
+  /// The details of the merchant provided promotions applied to the order. More
+  /// details about the program are here.
   core.List<OrderPromotion> promotions;
-  /** Refunds for the order. */
+
+  /// Refunds for the order.
   core.List<OrderRefund> refunds;
-  /** Shipments of the order. */
+
+  /// Shipments of the order.
   core.List<OrderShipment> shipments;
-  /** The total cost of shipping for all items. */
+
+  /// The total cost of shipping for all items.
   Price shippingCost;
-  /** The tax for the total shipping cost. */
+
+  /// The tax for the total shipping cost.
   Price shippingCostTax;
-  /** The requested shipping option. */
+
+  /// The requested shipping option.
   core.String shippingOption;
-  /** The status of the order. */
+
+  /// The status of the order.
   core.String status;
 
   Order();
@@ -936,7 +1101,8 @@ class Order {
       customer = new OrderCustomer.fromJson(_json["customer"]);
     }
     if (_json.containsKey("deliveryDetails")) {
-      deliveryDetails = new OrderDeliveryDetails.fromJson(_json["deliveryDetails"]);
+      deliveryDetails =
+          new OrderDeliveryDetails.fromJson(_json["deliveryDetails"]);
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -945,7 +1111,9 @@ class Order {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderLineItem.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderLineItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -966,13 +1134,19 @@ class Order {
       placedDate = _json["placedDate"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"].map((value) => new OrderPromotion.fromJson(value)).toList();
+      promotions = _json["promotions"]
+          .map((value) => new OrderPromotion.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("refunds")) {
-      refunds = _json["refunds"].map((value) => new OrderRefund.fromJson(value)).toList();
+      refunds = _json["refunds"]
+          .map((value) => new OrderRefund.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shipments")) {
-      shipments = _json["shipments"].map((value) => new OrderShipment.fromJson(value)).toList();
+      shipments = _json["shipments"]
+          .map((value) => new OrderShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingCost")) {
       shippingCost = new Price.fromJson(_json["shippingCost"]);
@@ -988,8 +1162,9 @@ class Order {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (acknowledged != null) {
       _json["acknowledged"] = acknowledged;
     }
@@ -1030,7 +1205,8 @@ class Order {
       _json["placedDate"] = placedDate;
     }
     if (promotions != null) {
-      _json["promotions"] = promotions.map((value) => (value).toJson()).toList();
+      _json["promotions"] =
+          promotions.map((value) => (value).toJson()).toList();
     }
     if (refunds != null) {
       _json["refunds"] = refunds.map((value) => (value).toJson()).toList();
@@ -1055,31 +1231,34 @@ class Order {
 }
 
 class OrderAddress {
-  /** CLDR country code (e.g. "US"). */
+  /// CLDR country code (e.g. "US").
   core.String country;
-  /**
-   * Strings representing the lines of the printed label for mailing the order,
-   * for example:
-   * John Smith
-   * 1600 Amphitheatre Parkway
-   * Mountain View, CA, 94043
-   * United States
-   */
+
+  /// Strings representing the lines of the printed label for mailing the order,
+  /// for example:
+  /// John Smith
+  /// 1600 Amphitheatre Parkway
+  /// Mountain View, CA, 94043
+  /// United States
   core.List<core.String> fullAddress;
-  /** Whether the address is a post office box. */
+
+  /// Whether the address is a post office box.
   core.bool isPostOfficeBox;
-  /**
-   * City, town or commune. May also include dependent localities or
-   * sublocalities (e.g. neighborhoods or suburbs).
-   */
+
+  /// City, town or commune. May also include dependent localities or
+  /// sublocalities (e.g. neighborhoods or suburbs).
   core.String locality;
-  /** Postal Code or ZIP (e.g. "94043"). */
+
+  /// Postal Code or ZIP (e.g. "94043").
   core.String postalCode;
-  /** Name of the recipient. */
+
+  /// Name of the recipient.
   core.String recipientName;
-  /** Top-level administrative subdivision of the country (e.g. "CA"). */
+
+  /// Top-level administrative subdivision of the country (e.g. "CA").
   core.String region;
-  /** Street-level part of the address. */
+
+  /// Street-level part of the address.
   core.List<core.String> streetAddress;
 
   OrderAddress();
@@ -1111,8 +1290,9 @@ class OrderAddress {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (country != null) {
       _json["country"] = country;
     }
@@ -1142,19 +1322,22 @@ class OrderAddress {
 }
 
 class OrderCancellation {
-  /** The actor that created the cancellation. */
+  /// The actor that created the cancellation.
   core.String actor;
-  /** Date on which the cancellation has been created, in ISO 8601 format. */
+
+  /// Date on which the cancellation has been created, in ISO 8601 format.
   core.String creationDate;
-  /** The quantity that was canceled. */
+
+  /// The quantity that was canceled.
   core.int quantity;
-  /**
-   * The reason for the cancellation. Orders that are cancelled with a
-   * noInventory reason will lead to the removal of the product from POG until
-   * you make an update to that product. This will not affect your Shopping ads.
-   */
+
+  /// The reason for the cancellation. Orders that are cancelled with a
+  /// noInventory reason will lead to the removal of the product from POG until
+  /// you make an update to that product. This will not affect your Shopping
+  /// ads.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderCancellation();
@@ -1177,8 +1360,9 @@ class OrderCancellation {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -1199,17 +1383,16 @@ class OrderCancellation {
 }
 
 class OrderCustomer {
-  /** Email address of the customer. */
+  /// Email address of the customer.
   core.String email;
-  /**
-   * If set, this indicates the user explicitly chose to opt in or out of
-   * providing marketing rights to the merchant. If unset, this indicates the
-   * user has already made this choice in a previous purchase, and was thus not
-   * shown the marketing right opt in/out checkbox during the Purchases on
-   * Google checkout flow.
-   */
+
+  /// If set, this indicates the user explicitly chose to opt in or out of
+  /// providing marketing rights to the merchant. If unset, this indicates the
+  /// user has already made this choice in a previous purchase, and was thus not
+  /// shown the marketing right opt in/out checkbox during the checkout flow.
   core.bool explicitMarketingPreference;
-  /** Full name of the customer. */
+
+  /// Full name of the customer.
   core.String fullName;
 
   OrderCustomer();
@@ -1226,8 +1409,9 @@ class OrderCustomer {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (email != null) {
       _json["email"] = email;
     }
@@ -1242,9 +1426,10 @@ class OrderCustomer {
 }
 
 class OrderDeliveryDetails {
-  /** The delivery address */
+  /// The delivery address
   OrderAddress address;
-  /** The phone number of the person receiving the delivery. */
+
+  /// The phone number of the person receiving the delivery.
   core.String phoneNumber;
 
   OrderDeliveryDetails();
@@ -1258,8 +1443,9 @@ class OrderDeliveryDetails {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (address != null) {
       _json["address"] = (address).toJson();
     }
@@ -1271,46 +1457,64 @@ class OrderDeliveryDetails {
 }
 
 class OrderLineItem {
-  /** Cancellations of the line item. */
+  /// Cancellations of the line item.
   core.List<OrderCancellation> cancellations;
-  /** The id of the line item. */
+
+  /// The channel type of the order: "purchaseOnGoogle" or "googleExpress".
+  core.String channelType;
+
+  /// The id of the line item.
   core.String id;
-  /**
-   * Total price for the line item. For example, if two items for $10 are
-   * purchased, the total price will be $20.
-   */
+
+  /// Total price for the line item. For example, if two items for $10 are
+  /// purchased, the total price will be $20.
   Price price;
-  /** Product data from the time of the order placement. */
+
+  /// Product data from the time of the order placement.
   OrderLineItemProduct product;
-  /** Number of items canceled. */
+
+  /// Number of items canceled.
   core.int quantityCanceled;
-  /** Number of items delivered. */
+
+  /// Number of items delivered.
   core.int quantityDelivered;
-  /** Number of items ordered. */
+
+  /// Number of items ordered.
   core.int quantityOrdered;
-  /** Number of items pending. */
+
+  /// Number of items pending.
   core.int quantityPending;
-  /** Number of items returned. */
+
+  /// Number of items returned.
   core.int quantityReturned;
-  /** Number of items shipped. */
+
+  /// Number of items shipped.
   core.int quantityShipped;
-  /** Details of the return policy for the line item. */
+
+  /// Details of the return policy for the line item.
   OrderLineItemReturnInfo returnInfo;
-  /** Returns of the line item. */
+
+  /// Returns of the line item.
   core.List<OrderReturn> returns;
-  /** Details of the requested shipping for the line item. */
+
+  /// Details of the requested shipping for the line item.
   OrderLineItemShippingDetails shippingDetails;
-  /**
-   * Total tax amount for the line item. For example, if two items are
-   * purchased, and each have a cost tax of $2, the total tax amount will be $4.
-   */
+
+  /// Total tax amount for the line item. For example, if two items are
+  /// purchased, and each have a cost tax of $2, the total tax amount will be
+  /// $4.
   Price tax;
 
   OrderLineItem();
 
   OrderLineItem.fromJson(core.Map _json) {
     if (_json.containsKey("cancellations")) {
-      cancellations = _json["cancellations"].map((value) => new OrderCancellation.fromJson(value)).toList();
+      cancellations = _json["cancellations"]
+          .map((value) => new OrderCancellation.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("channelType")) {
+      channelType = _json["channelType"];
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -1343,20 +1547,28 @@ class OrderLineItem {
       returnInfo = new OrderLineItemReturnInfo.fromJson(_json["returnInfo"]);
     }
     if (_json.containsKey("returns")) {
-      returns = _json["returns"].map((value) => new OrderReturn.fromJson(value)).toList();
+      returns = _json["returns"]
+          .map((value) => new OrderReturn.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingDetails")) {
-      shippingDetails = new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
+      shippingDetails =
+          new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
     }
     if (_json.containsKey("tax")) {
       tax = new Price.fromJson(_json["tax"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (cancellations != null) {
-      _json["cancellations"] = cancellations.map((value) => (value).toJson()).toList();
+      _json["cancellations"] =
+          cancellations.map((value) => (value).toJson()).toList();
+    }
+    if (channelType != null) {
+      _json["channelType"] = channelType;
     }
     if (id != null) {
       _json["id"] = id;
@@ -1402,39 +1614,51 @@ class OrderLineItem {
 }
 
 class OrderLineItemProduct {
-  /** Brand of the item. */
+  /// Brand of the item.
   core.String brand;
-  /** The item's channel (online or local). */
+
+  /// The item's channel (online or local).
   core.String channel;
-  /** Condition or state of the item. */
+
+  /// Condition or state of the item.
   core.String condition;
-  /** The two-letter ISO 639-1 language code for the item. */
+
+  /// The two-letter ISO 639-1 language code for the item.
   core.String contentLanguage;
-  /** Global Trade Item Number (GTIN) of the item. */
+
+  /// Global Trade Item Number (GTIN) of the item.
   core.String gtin;
-  /** The REST id of the product. */
+
+  /// The REST id of the product.
   core.String id;
-  /** URL of an image of the item. */
+
+  /// URL of an image of the item.
   core.String imageLink;
-  /** Shared identifier for all variants of the same product. */
+
+  /// Shared identifier for all variants of the same product.
   core.String itemGroupId;
-  /** Manufacturer Part Number (MPN) of the item. */
+
+  /// Manufacturer Part Number (MPN) of the item.
   core.String mpn;
-  /** An identifier of the item. */
+
+  /// An identifier of the item.
   core.String offerId;
-  /** Price of the item. */
+
+  /// Price of the item.
   Price price;
-  /** URL to the cached image shown to the user when order was placed. */
+
+  /// URL to the cached image shown to the user when order was placed.
   core.String shownImage;
-  /** The CLDR territory code of the target country of the product. */
+
+  /// The CLDR territory code of the target country of the product.
   core.String targetCountry;
-  /** The title of the product. */
+
+  /// The title of the product.
   core.String title;
-  /**
-   * Variant attributes for the item. These are dimensions of the product, such
-   * as color, gender, material, pattern, and size. You can find a comprehensive
-   * list of variant attributes here.
-   */
+
+  /// Variant attributes for the item. These are dimensions of the product, such
+  /// as color, gender, material, pattern, and size. You can find a
+  /// comprehensive list of variant attributes here.
   core.List<OrderLineItemProductVariantAttribute> variantAttributes;
 
   OrderLineItemProduct();
@@ -1483,12 +1707,16 @@ class OrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"].map((value) => new OrderLineItemProductVariantAttribute.fromJson(value)).toList();
+      variantAttributes = _json["variantAttributes"]
+          .map((value) =>
+              new OrderLineItemProductVariantAttribute.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (brand != null) {
       _json["brand"] = brand;
     }
@@ -1532,16 +1760,18 @@ class OrderLineItemProduct {
       _json["title"] = title;
     }
     if (variantAttributes != null) {
-      _json["variantAttributes"] = variantAttributes.map((value) => (value).toJson()).toList();
+      _json["variantAttributes"] =
+          variantAttributes.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
 class OrderLineItemProductVariantAttribute {
-  /** The dimension of the variant. */
+  /// The dimension of the variant.
   core.String dimension;
-  /** The value for the dimension. */
+
+  /// The value for the dimension.
   core.String value;
 
   OrderLineItemProductVariantAttribute();
@@ -1555,8 +1785,9 @@ class OrderLineItemProductVariantAttribute {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (dimension != null) {
       _json["dimension"] = dimension;
     }
@@ -1568,11 +1799,13 @@ class OrderLineItemProductVariantAttribute {
 }
 
 class OrderLineItemReturnInfo {
-  /** How many days later the item can be returned. */
+  /// How many days later the item can be returned.
   core.int daysToReturn;
-  /** Whether the item is returnable. */
+
+  /// Whether the item is returnable.
   core.bool isReturnable;
-  /** URL of the item return policy. */
+
+  /// URL of the item return policy.
   core.String policyUrl;
 
   OrderLineItemReturnInfo();
@@ -1589,8 +1822,9 @@ class OrderLineItemReturnInfo {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (daysToReturn != null) {
       _json["daysToReturn"] = daysToReturn;
     }
@@ -1605,11 +1839,13 @@ class OrderLineItemReturnInfo {
 }
 
 class OrderLineItemShippingDetails {
-  /** The delivery by date, in ISO 8601 format. */
+  /// The delivery by date, in ISO 8601 format.
   core.String deliverByDate;
-  /** Details of the shipping method. */
+
+  /// Details of the shipping method.
   OrderLineItemShippingDetailsMethod method;
-  /** The ship by date, in ISO 8601 format. */
+
+  /// The ship by date, in ISO 8601 format.
   core.String shipByDate;
 
   OrderLineItemShippingDetails();
@@ -1626,8 +1862,9 @@ class OrderLineItemShippingDetails {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (deliverByDate != null) {
       _json["deliverByDate"] = deliverByDate;
     }
@@ -1642,13 +1879,17 @@ class OrderLineItemShippingDetails {
 }
 
 class OrderLineItemShippingDetailsMethod {
-  /** The carrier for the shipping. Optional. */
+  /// The carrier for the shipping. Optional. See shipments[].carrier for a list
+  /// of acceptable values.
   core.String carrier;
-  /** Maximum transit time. */
+
+  /// Maximum transit time.
   core.int maxDaysInTransit;
-  /** The name of the shipping method. */
+
+  /// The name of the shipping method.
   core.String methodName;
-  /** Minimum transit time. */
+
+  /// Minimum transit time.
   core.int minDaysInTransit;
 
   OrderLineItemShippingDetailsMethod();
@@ -1668,8 +1909,9 @@ class OrderLineItemShippingDetailsMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -1687,17 +1929,31 @@ class OrderLineItemShippingDetailsMethod {
 }
 
 class OrderPaymentMethod {
-  /** The billing address. */
+  /// The billing address.
   OrderAddress billingAddress;
-  /** The card expiration month (January = 1, February = 2 etc.). */
+
+  /// The card expiration month (January = 1, February = 2 etc.).
   core.int expirationMonth;
-  /** The card expiration year (4-digit, e.g. 2015). */
+
+  /// The card expiration year (4-digit, e.g. 2015).
   core.int expirationYear;
-  /** The last four digits of the card number. */
+
+  /// The last four digits of the card number.
   core.String lastFourDigits;
-  /** The billing phone number. */
+
+  /// The billing phone number.
   core.String phoneNumber;
-  /** The type of instrument (VISA, Mastercard, etc). */
+
+  /// The type of instrument.
+  ///
+  /// Acceptable values are:
+  /// - "AMEX"
+  /// - "DISCOVER"
+  /// - "JCB"
+  /// - "MASTERCARD"
+  /// - "UNIONPAY"
+  /// - "VISA"
+  /// - ""
   core.String type;
 
   OrderPaymentMethod();
@@ -1723,8 +1979,9 @@ class OrderPaymentMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (billingAddress != null) {
       _json["billingAddress"] = (billingAddress).toJson();
     }
@@ -1749,39 +2006,41 @@ class OrderPaymentMethod {
 
 class OrderPromotion {
   core.List<OrderPromotionBenefit> benefits;
-  /**
-   * The date and time frame when the promotion is active and ready for
-   * validation review. Note that the promotion live time may be delayed for a
-   * few hours due to the validation review.
-   * Start date and end date are separated by a forward slash (/). The start
-   * date is specified by the format (YYYY-MM-DD), followed by the letter ?T?,
-   * the time of the day when the sale starts (in Greenwich Mean Time, GMT),
-   * followed by an expression of the time zone for the sale. The end date is in
-   * the same format.
-   */
+
+  /// The date and time frame when the promotion is active and ready for
+  /// validation review. Note that the promotion live time may be delayed for a
+  /// few hours due to the validation review.
+  /// Start date and end date are separated by a forward slash (/). The start
+  /// date is specified by the format (YYYY-MM-DD), followed by the letter ?T?,
+  /// the time of the day when the sale starts (in Greenwich Mean Time, GMT),
+  /// followed by an expression of the time zone for the sale. The end date is
+  /// in the same format.
   core.String effectiveDates;
-  /**
-   * Optional. The text code that corresponds to the promotion when applied on
-   * the retailer?s website.
-   */
+
+  /// Optional. The text code that corresponds to the promotion when applied on
+  /// the retailer?s website.
   core.String genericRedemptionCode;
-  /** The unique ID of the promotion. */
+
+  /// The unique ID of the promotion.
   core.String id;
-  /** The full title of the promotion. */
+
+  /// The full title of the promotion.
   core.String longTitle;
-  /**
-   * Whether the promotion is applicable to all products or only specific
-   * products.
-   */
+
+  /// Whether the promotion is applicable to all products or only specific
+  /// products.
   core.String productApplicability;
-  /** Indicates that the promotion is valid online. */
+
+  /// Indicates that the promotion is valid online.
   core.String redemptionChannel;
 
   OrderPromotion();
 
   OrderPromotion.fromJson(core.Map _json) {
     if (_json.containsKey("benefits")) {
-      benefits = _json["benefits"].map((value) => new OrderPromotionBenefit.fromJson(value)).toList();
+      benefits = _json["benefits"]
+          .map((value) => new OrderPromotionBenefit.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("effectiveDates")) {
       effectiveDates = _json["effectiveDates"];
@@ -1803,8 +2062,9 @@ class OrderPromotion {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (benefits != null) {
       _json["benefits"] = benefits.map((value) => (value).toJson()).toList();
     }
@@ -1831,24 +2091,22 @@ class OrderPromotion {
 }
 
 class OrderPromotionBenefit {
-  /** The discount in the order price when the promotion is applied. */
+  /// The discount in the order price when the promotion is applied.
   Price discount;
-  /**
-   * The OfferId(s) that were purchased in this order and map to this specific
-   * benefit of the promotion.
-   */
+
+  /// The OfferId(s) that were purchased in this order and map to this specific
+  /// benefit of the promotion.
   core.List<core.String> offerIds;
-  /**
-   * Further describes the benefit of the promotion. Note that we will expand on
-   * this enumeration as we support new promotion sub-types.
-   */
+
+  /// Further describes the benefit of the promotion. Note that we will expand
+  /// on this enumeration as we support new promotion sub-types.
   core.String subType;
-  /** The impact on tax when the promotion is applied. */
+
+  /// The impact on tax when the promotion is applied.
   Price taxImpact;
-  /**
-   * Describes whether the promotion applies to products (e.g. 20% off) or to
-   * shipping (e.g. Free Shipping).
-   */
+
+  /// Describes whether the promotion applies to products (e.g. 20% off) or to
+  /// shipping (e.g. Free Shipping).
   core.String type;
 
   OrderPromotionBenefit();
@@ -1871,8 +2129,9 @@ class OrderPromotionBenefit {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (discount != null) {
       _json["discount"] = (discount).toJson();
     }
@@ -1893,15 +2152,19 @@ class OrderPromotionBenefit {
 }
 
 class OrderRefund {
-  /** The actor that created the refund. */
+  /// The actor that created the refund.
   core.String actor;
-  /** The amount that is refunded. */
+
+  /// The amount that is refunded.
   Price amount;
-  /** Date on which the item has been created, in ISO 8601 format. */
+
+  /// Date on which the item has been created, in ISO 8601 format.
   core.String creationDate;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderRefund();
@@ -1924,8 +2187,9 @@ class OrderRefund {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -1946,15 +2210,19 @@ class OrderRefund {
 }
 
 class OrderReturn {
-  /** The actor that created the refund. */
+  /// The actor that created the refund.
   core.String actor;
-  /** Date on which the item has been created, in ISO 8601 format. */
+
+  /// Date on which the item has been created, in ISO 8601 format.
   core.String creationDate;
-  /** Quantity that is returned. */
+
+  /// Quantity that is returned.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrderReturn();
@@ -1977,8 +2245,9 @@ class OrderReturn {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (actor != null) {
       _json["actor"] = actor;
     }
@@ -1999,22 +2268,50 @@ class OrderReturn {
 }
 
 class OrderShipment {
-  /** The carrier handling the shipment. */
+  /// The carrier handling the shipment.
+  ///
+  /// Acceptable values are:
+  /// - "gsx"
+  /// - "ups"
+  /// - "united parcel service"
+  /// - "usps"
+  /// - "united states postal service"
+  /// - "fedex"
+  /// - "dhl"
+  /// - "ecourier"
+  /// - "cxt"
+  /// - "google"
+  /// - "on trac"
+  /// - "ontrac"
+  /// - "on-trac"
+  /// - "on_trac"
+  /// - "delvic"
+  /// - "dynamex"
+  /// - "lasership"
+  /// - "smartpost"
+  /// - "fedex smartpost"
+  /// - "mpx"
+  /// - "uds"
+  /// - "united delivery service"
   core.String carrier;
-  /** Date on which the shipment has been created, in ISO 8601 format. */
+
+  /// Date on which the shipment has been created, in ISO 8601 format.
   core.String creationDate;
-  /**
-   * Date on which the shipment has been delivered, in ISO 8601 format. Present
-   * only if status is delievered
-   */
+
+  /// Date on which the shipment has been delivered, in ISO 8601 format. Present
+  /// only if status is delievered
   core.String deliveryDate;
-  /** The id of the shipment. */
+
+  /// The id of the shipment.
   core.String id;
-  /** The line items that are shipped. */
+
+  /// The line items that are shipped.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /** The status of the shipment. */
+
+  /// The status of the shipment.
   core.String status;
-  /** The tracking id for the shipment. */
+
+  /// The tracking id for the shipment.
   core.String trackingId;
 
   OrderShipment();
@@ -2033,7 +2330,9 @@ class OrderShipment {
       id = _json["id"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("status")) {
       status = _json["status"];
@@ -2043,8 +2342,9 @@ class OrderShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -2071,9 +2371,10 @@ class OrderShipment {
 }
 
 class OrderShipmentLineItemShipment {
-  /** The id of the line item that is shipped. */
+  /// The id of the line item that is shipped.
   core.String lineItemId;
-  /** The quantity that is shipped. */
+
+  /// The quantity that is shipped.
   core.int quantity;
 
   OrderShipmentLineItemShipment();
@@ -2087,8 +2388,9 @@ class OrderShipmentLineItemShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -2100,9 +2402,7 @@ class OrderShipmentLineItemShipment {
 }
 
 class OrdersAcknowledgeRequest {
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
 
   OrdersAcknowledgeRequest();
@@ -2113,8 +2413,9 @@ class OrdersAcknowledgeRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (operationId != null) {
       _json["operationId"] = operationId;
     }
@@ -2123,12 +2424,11 @@ class OrdersAcknowledgeRequest {
 }
 
 class OrdersAcknowledgeResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersAcknowledgeResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersAcknowledgeResponse".
   core.String kind;
 
   OrdersAcknowledgeResponse();
@@ -2142,8 +2442,9 @@ class OrdersAcknowledgeResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -2155,10 +2456,8 @@ class OrdersAcknowledgeResponse {
 }
 
 class OrdersAdvanceTestOrderResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersAdvanceTestOrderResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersAdvanceTestOrderResponse".
   core.String kind;
 
   OrdersAdvanceTestOrderResponse();
@@ -2169,8 +2468,9 @@ class OrdersAdvanceTestOrderResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2179,23 +2479,24 @@ class OrdersAdvanceTestOrderResponse {
 }
 
 class OrdersCancelLineItemRequest {
-  /**
-   * Amount to refund for the cancelation. Optional. If not set, Google will
-   * calculate the default based on the price and tax of the items involved. The
-   * amount must not be larger than the net amount left on the order.
-   */
+  /// Amount to refund for the cancelation. Optional. If not set, Google will
+  /// calculate the default based on the price and tax of the items involved.
+  /// The amount must not be larger than the net amount left on the order.
   Price amount;
-  /** The ID of the line item to cancel. */
+
+  /// The ID of the line item to cancel.
   core.String lineItemId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The quantity to cancel. */
+
+  /// The quantity to cancel.
   core.int quantity;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCancelLineItemRequest();
@@ -2221,8 +2522,9 @@ class OrdersCancelLineItemRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -2246,12 +2548,11 @@ class OrdersCancelLineItemRequest {
 }
 
 class OrdersCancelLineItemResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCancelLineItemResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCancelLineItemResponse".
   core.String kind;
 
   OrdersCancelLineItemResponse();
@@ -2265,8 +2566,9 @@ class OrdersCancelLineItemResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -2278,13 +2580,13 @@ class OrdersCancelLineItemResponse {
 }
 
 class OrdersCancelRequest {
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCancelRequest();
@@ -2301,8 +2603,9 @@ class OrdersCancelRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (operationId != null) {
       _json["operationId"] = operationId;
     }
@@ -2317,12 +2620,11 @@ class OrdersCancelRequest {
 }
 
 class OrdersCancelResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCancelResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCancelResponse".
   core.String kind;
 
   OrdersCancelResponse();
@@ -2336,8 +2638,9 @@ class OrdersCancelResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -2349,13 +2652,12 @@ class OrdersCancelResponse {
 }
 
 class OrdersCreateTestOrderRequest {
-  /**
-   * The test order template to use. Specify as an alternative to testOrder as a
-   * shortcut for retrieving a template and then creating an order using that
-   * template.
-   */
+  /// The test order template to use. Specify as an alternative to testOrder as
+  /// a shortcut for retrieving a template and then creating an order using that
+  /// template.
   core.String templateName;
-  /** The test order to create. */
+
+  /// The test order to create.
   TestOrder testOrder;
 
   OrdersCreateTestOrderRequest();
@@ -2369,8 +2671,9 @@ class OrdersCreateTestOrderRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (templateName != null) {
       _json["templateName"] = templateName;
     }
@@ -2382,12 +2685,11 @@ class OrdersCreateTestOrderRequest {
 }
 
 class OrdersCreateTestOrderResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCreateTestOrderResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCreateTestOrderResponse".
   core.String kind;
-  /** The ID of the newly created test order. */
+
+  /// The ID of the newly created test order.
   core.String orderId;
 
   OrdersCreateTestOrderResponse();
@@ -2401,8 +2703,9 @@ class OrdersCreateTestOrderResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2414,19 +2717,22 @@ class OrdersCreateTestOrderResponse {
 }
 
 class OrdersCustomBatchRequest {
-  /** The request entries to be processed in the batch. */
+  /// The request entries to be processed in the batch.
   core.List<OrdersCustomBatchRequestEntry> entries;
 
   OrdersCustomBatchRequest();
 
   OrdersCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new OrdersCustomBatchRequestEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new OrdersCustomBatchRequestEntry.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -2435,37 +2741,42 @@ class OrdersCustomBatchRequest {
 }
 
 class OrdersCustomBatchRequestEntry {
-  /** An entry ID, unique within the batch request. */
+  /// An entry ID, unique within the batch request.
   core.int batchId;
-  /** Required for cancel method. */
+
+  /// Required for cancel method.
   OrdersCustomBatchRequestEntryCancel cancel;
-  /** Required for cancelLineItem method. */
+
+  /// Required for cancelLineItem method.
   OrdersCustomBatchRequestEntryCancelLineItem cancelLineItem;
-  /** The ID of the managing account. */
+
+  /// The ID of the managing account.
   core.String merchantId;
-  /**
-   * The merchant order id. Required for updateMerchantOrderId and
-   * getByMerchantOrderId methods.
-   */
+
+  /// The merchant order id. Required for updateMerchantOrderId and
+  /// getByMerchantOrderId methods.
   core.String merchantOrderId;
-  /** The method to apply. */
+
+  /// The method to apply.
   core.String method;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   * Required for all methods beside get and getByMerchantOrderId.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
+  /// Required for all methods beside get and getByMerchantOrderId.
   core.String operationId;
-  /**
-   * The ID of the order. Required for all methods beside getByMerchantOrderId.
-   */
+
+  /// The ID of the order. Required for all methods beside getByMerchantOrderId.
   core.String orderId;
-  /** Required for refund method. */
+
+  /// Required for refund method.
   OrdersCustomBatchRequestEntryRefund refund;
-  /** Required for returnLineItem method. */
+
+  /// Required for returnLineItem method.
   OrdersCustomBatchRequestEntryReturnLineItem returnLineItem;
-  /** Required for shipLineItems method. */
+
+  /// Required for shipLineItems method.
   OrdersCustomBatchRequestEntryShipLineItems shipLineItems;
-  /** Required for updateShipment method. */
+
+  /// Required for updateShipment method.
   OrdersCustomBatchRequestEntryUpdateShipment updateShipment;
 
   OrdersCustomBatchRequestEntry();
@@ -2475,10 +2786,12 @@ class OrdersCustomBatchRequestEntry {
       batchId = _json["batchId"];
     }
     if (_json.containsKey("cancel")) {
-      cancel = new OrdersCustomBatchRequestEntryCancel.fromJson(_json["cancel"]);
+      cancel =
+          new OrdersCustomBatchRequestEntryCancel.fromJson(_json["cancel"]);
     }
     if (_json.containsKey("cancelLineItem")) {
-      cancelLineItem = new OrdersCustomBatchRequestEntryCancelLineItem.fromJson(_json["cancelLineItem"]);
+      cancelLineItem = new OrdersCustomBatchRequestEntryCancelLineItem.fromJson(
+          _json["cancelLineItem"]);
     }
     if (_json.containsKey("merchantId")) {
       merchantId = _json["merchantId"];
@@ -2496,21 +2809,26 @@ class OrdersCustomBatchRequestEntry {
       orderId = _json["orderId"];
     }
     if (_json.containsKey("refund")) {
-      refund = new OrdersCustomBatchRequestEntryRefund.fromJson(_json["refund"]);
+      refund =
+          new OrdersCustomBatchRequestEntryRefund.fromJson(_json["refund"]);
     }
     if (_json.containsKey("returnLineItem")) {
-      returnLineItem = new OrdersCustomBatchRequestEntryReturnLineItem.fromJson(_json["returnLineItem"]);
+      returnLineItem = new OrdersCustomBatchRequestEntryReturnLineItem.fromJson(
+          _json["returnLineItem"]);
     }
     if (_json.containsKey("shipLineItems")) {
-      shipLineItems = new OrdersCustomBatchRequestEntryShipLineItems.fromJson(_json["shipLineItems"]);
+      shipLineItems = new OrdersCustomBatchRequestEntryShipLineItems.fromJson(
+          _json["shipLineItems"]);
     }
     if (_json.containsKey("updateShipment")) {
-      updateShipment = new OrdersCustomBatchRequestEntryUpdateShipment.fromJson(_json["updateShipment"]);
+      updateShipment = new OrdersCustomBatchRequestEntryUpdateShipment.fromJson(
+          _json["updateShipment"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -2552,9 +2870,10 @@ class OrdersCustomBatchRequestEntry {
 }
 
 class OrdersCustomBatchRequestEntryCancel {
-  /** The reason for the cancellation. */
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryCancel();
@@ -2568,8 +2887,9 @@ class OrdersCustomBatchRequestEntryCancel {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (reason != null) {
       _json["reason"] = reason;
     }
@@ -2581,19 +2901,21 @@ class OrdersCustomBatchRequestEntryCancel {
 }
 
 class OrdersCustomBatchRequestEntryCancelLineItem {
-  /**
-   * Amount to refund for the cancelation. Optional. If not set, Google will
-   * calculate the default based on the price and tax of the items involved. The
-   * amount must not be larger than the net amount left on the order.
-   */
+  /// Amount to refund for the cancelation. Optional. If not set, Google will
+  /// calculate the default based on the price and tax of the items involved.
+  /// The amount must not be larger than the net amount left on the order.
   Price amount;
-  /** The ID of the line item to cancel. */
+
+  /// The ID of the line item to cancel.
   core.String lineItemId;
-  /** The quantity to cancel. */
+
+  /// The quantity to cancel.
   core.int quantity;
-  /** The reason for the cancellation. */
+
+  /// The reason for the cancellation.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryCancelLineItem();
@@ -2616,8 +2938,9 @@ class OrdersCustomBatchRequestEntryCancelLineItem {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -2638,11 +2961,13 @@ class OrdersCustomBatchRequestEntryCancelLineItem {
 }
 
 class OrdersCustomBatchRequestEntryRefund {
-  /** The amount that is refunded. */
+  /// The amount that is refunded.
   Price amount;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryRefund();
@@ -2659,8 +2984,9 @@ class OrdersCustomBatchRequestEntryRefund {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -2675,13 +3001,16 @@ class OrdersCustomBatchRequestEntryRefund {
 }
 
 class OrdersCustomBatchRequestEntryReturnLineItem {
-  /** The ID of the line item to return. */
+  /// The ID of the line item to return.
   core.String lineItemId;
-  /** The quantity to return. */
+
+  /// The quantity to return.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersCustomBatchRequestEntryReturnLineItem();
@@ -2701,8 +3030,9 @@ class OrdersCustomBatchRequestEntryReturnLineItem {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -2720,13 +3050,24 @@ class OrdersCustomBatchRequestEntryReturnLineItem {
 }
 
 class OrdersCustomBatchRequestEntryShipLineItems {
-  /** The carrier handling the shipment. */
+  /// Deprecated. Please use shipmentInfo instead. The carrier handling the
+  /// shipment. See shipments[].carrier in the  Orders resource representation
+  /// for a list of acceptable values.
   core.String carrier;
-  /** Line items to ship. */
+
+  /// Line items to ship.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /** The ID of the shipment. */
+
+  /// Deprecated. Please use shipmentInfo instead. The ID of the shipment.
   core.String shipmentId;
-  /** The tracking id for the shipment. */
+
+  /// Shipment information. This field is repeated because a single line item
+  /// can be shipped in several packages (and have several tracking IDs).
+  core.List<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>
+      shipmentInfos;
+
+  /// Deprecated. Please use shipmentInfo instead. The tracking id for the
+  /// shipment.
   core.String trackingId;
 
   OrdersCustomBatchRequestEntryShipLineItems();
@@ -2736,7 +3077,65 @@ class OrdersCustomBatchRequestEntryShipLineItems {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("shipmentId")) {
+      shipmentId = _json["shipmentId"];
+    }
+    if (_json.containsKey("shipmentInfos")) {
+      shipmentInfos = _json["shipmentInfos"]
+          .map((value) =>
+              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                  .fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("trackingId")) {
+      trackingId = _json["trackingId"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (carrier != null) {
+      _json["carrier"] = carrier;
+    }
+    if (lineItems != null) {
+      _json["lineItems"] = lineItems.map((value) => (value).toJson()).toList();
+    }
+    if (shipmentId != null) {
+      _json["shipmentId"] = shipmentId;
+    }
+    if (shipmentInfos != null) {
+      _json["shipmentInfos"] =
+          shipmentInfos.map((value) => (value).toJson()).toList();
+    }
+    if (trackingId != null) {
+      _json["trackingId"] = trackingId;
+    }
+    return _json;
+  }
+}
+
+class OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo {
+  /// The carrier handling the shipment. See shipments[].carrier in the  Orders
+  /// resource representation for a list of acceptable values.
+  core.String carrier;
+
+  /// The ID of the shipment.
+  core.String shipmentId;
+
+  /// The tracking id for the shipment.
+  core.String trackingId;
+
+  OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo();
+
+  OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo.fromJson(
+      core.Map _json) {
+    if (_json.containsKey("carrier")) {
+      carrier = _json["carrier"];
     }
     if (_json.containsKey("shipmentId")) {
       shipmentId = _json["shipmentId"];
@@ -2746,13 +3145,11 @@ class OrdersCustomBatchRequestEntryShipLineItems {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
-    }
-    if (lineItems != null) {
-      _json["lineItems"] = lineItems.map((value) => (value).toJson()).toList();
     }
     if (shipmentId != null) {
       _json["shipmentId"] = shipmentId;
@@ -2765,13 +3162,18 @@ class OrdersCustomBatchRequestEntryShipLineItems {
 }
 
 class OrdersCustomBatchRequestEntryUpdateShipment {
-  /** The carrier handling the shipment. Not updated if missing. */
+  /// The carrier handling the shipment. Not updated if missing. See
+  /// shipments[].carrier in the  Orders resource representation for a list of
+  /// acceptable values.
   core.String carrier;
-  /** The ID of the shipment. */
+
+  /// The ID of the shipment.
   core.String shipmentId;
-  /** New status for the shipment. Not updated if missing. */
+
+  /// New status for the shipment. Not updated if missing.
   core.String status;
-  /** The tracking id for the shipment. Not updated if missing. */
+
+  /// The tracking id for the shipment. Not updated if missing.
   core.String trackingId;
 
   OrdersCustomBatchRequestEntryUpdateShipment();
@@ -2791,8 +3193,9 @@ class OrdersCustomBatchRequestEntryUpdateShipment {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -2810,27 +3213,29 @@ class OrdersCustomBatchRequestEntryUpdateShipment {
 }
 
 class OrdersCustomBatchResponse {
-  /** The result of the execution of the batch requests. */
+  /// The result of the execution of the batch requests.
   core.List<OrdersCustomBatchResponseEntry> entries;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCustomBatchResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCustomBatchResponse".
   core.String kind;
 
   OrdersCustomBatchResponse();
 
   OrdersCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"].map((value) => new OrdersCustomBatchResponseEntry.fromJson(value)).toList();
+      entries = _json["entries"]
+          .map((value) => new OrdersCustomBatchResponseEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (entries != null) {
       _json["entries"] = entries.map((value) => (value).toJson()).toList();
     }
@@ -2842,24 +3247,22 @@ class OrdersCustomBatchResponse {
 }
 
 class OrdersCustomBatchResponseEntry {
-  /** The ID of the request entry this entry responds to. */
+  /// The ID of the request entry this entry responds to.
   core.int batchId;
-  /** A list of errors defined if and only if the request failed. */
+
+  /// A list of errors defined if and only if the request failed.
   Errors errors;
-  /**
-   * The status of the execution. Only defined if the method is not get or
-   * getByMerchantOrderId and if the request was successful.
-   */
+
+  /// The status of the execution. Only defined if the method is not get or
+  /// getByMerchantOrderId and if the request was successful.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersCustomBatchResponseEntry".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersCustomBatchResponseEntry".
   core.String kind;
-  /**
-   * The retrieved order. Only defined if the method is get and if the request
-   * was successful.
-   */
+
+  /// The retrieved order. Only defined if the method is get and if the request
+  /// was successful.
   Order order;
 
   OrdersCustomBatchResponseEntry();
@@ -2882,8 +3285,9 @@ class OrdersCustomBatchResponseEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (batchId != null) {
       _json["batchId"] = batchId;
     }
@@ -2904,12 +3308,11 @@ class OrdersCustomBatchResponseEntry {
 }
 
 class OrdersGetByMerchantOrderIdResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersGetByMerchantOrderIdResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersGetByMerchantOrderIdResponse".
   core.String kind;
-  /** The requested order. */
+
+  /// The requested order.
   Order order;
 
   OrdersGetByMerchantOrderIdResponse();
@@ -2923,8 +3326,9 @@ class OrdersGetByMerchantOrderIdResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2936,12 +3340,11 @@ class OrdersGetByMerchantOrderIdResponse {
 }
 
 class OrdersGetTestOrderTemplateResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersGetTestOrderTemplateResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersGetTestOrderTemplateResponse".
   core.String kind;
-  /** The requested test order template. */
+
+  /// The requested test order template.
   TestOrder template;
 
   OrdersGetTestOrderTemplateResponse();
@@ -2955,8 +3358,9 @@ class OrdersGetTestOrderTemplateResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -2968,12 +3372,11 @@ class OrdersGetTestOrderTemplateResponse {
 }
 
 class OrdersListResponse {
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersListResponse".
-   */
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersListResponse".
   core.String kind;
-  /** The token for the retrieval of the next page of orders. */
+
+  /// The token for the retrieval of the next page of orders.
   core.String nextPageToken;
   core.List<Order> resources;
 
@@ -2987,12 +3390,14 @@ class OrdersListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"].map((value) => new Order.fromJson(value)).toList();
+      resources =
+          _json["resources"].map((value) => new Order.fromJson(value)).toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (kind != null) {
       _json["kind"] = kind;
     }
@@ -3007,15 +3412,16 @@ class OrdersListResponse {
 }
 
 class OrdersRefundRequest {
-  /** The amount that is refunded. */
+  /// The amount that is refunded.
   Price amount;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The reason for the refund. */
+
+  /// The reason for the refund.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersRefundRequest();
@@ -3035,8 +3441,9 @@ class OrdersRefundRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (amount != null) {
       _json["amount"] = (amount).toJson();
     }
@@ -3054,12 +3461,11 @@ class OrdersRefundRequest {
 }
 
 class OrdersRefundResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersRefundResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersRefundResponse".
   core.String kind;
 
   OrdersRefundResponse();
@@ -3073,8 +3479,9 @@ class OrdersRefundResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -3086,17 +3493,19 @@ class OrdersRefundResponse {
 }
 
 class OrdersReturnLineItemRequest {
-  /** The ID of the line item to return. */
+  /// The ID of the line item to return.
   core.String lineItemId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The quantity to return. */
+
+  /// The quantity to return.
   core.int quantity;
-  /** The reason for the return. */
+
+  /// The reason for the return.
   core.String reason;
-  /** The explanation of the reason. */
+
+  /// The explanation of the reason.
   core.String reasonText;
 
   OrdersReturnLineItemRequest();
@@ -3119,8 +3528,9 @@ class OrdersReturnLineItemRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (lineItemId != null) {
       _json["lineItemId"] = lineItemId;
     }
@@ -3141,12 +3551,11 @@ class OrdersReturnLineItemRequest {
 }
 
 class OrdersReturnLineItemResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersReturnLineItemResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersReturnLineItemResponse".
   core.String kind;
 
   OrdersReturnLineItemResponse();
@@ -3160,8 +3569,9 @@ class OrdersReturnLineItemResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -3173,17 +3583,27 @@ class OrdersReturnLineItemResponse {
 }
 
 class OrdersShipLineItemsRequest {
-  /** The carrier handling the shipment. */
+  /// Deprecated. Please use shipmentInfo instead. The carrier handling the
+  /// shipment. See shipments[].carrier in the  Orders resource representation
+  /// for a list of acceptable values.
   core.String carrier;
-  /** Line items to ship. */
+
+  /// Line items to ship.
   core.List<OrderShipmentLineItemShipment> lineItems;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The ID of the shipment. */
+
+  /// Deprecated. Please use shipmentInfo instead. The ID of the shipment.
   core.String shipmentId;
-  /** The tracking id for the shipment. */
+
+  /// Shipment information. This field is repeated because a single line item
+  /// can be shipped in several packages (and have several tracking IDs).
+  core.List<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>
+      shipmentInfos;
+
+  /// Deprecated. Please use shipmentInfo instead. The tracking id for the
+  /// shipment.
   core.String trackingId;
 
   OrdersShipLineItemsRequest();
@@ -3193,7 +3613,9 @@ class OrdersShipLineItemsRequest {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new OrderShipmentLineItemShipment.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("operationId")) {
       operationId = _json["operationId"];
@@ -3201,13 +3623,21 @@ class OrdersShipLineItemsRequest {
     if (_json.containsKey("shipmentId")) {
       shipmentId = _json["shipmentId"];
     }
+    if (_json.containsKey("shipmentInfos")) {
+      shipmentInfos = _json["shipmentInfos"]
+          .map((value) =>
+              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                  .fromJson(value))
+          .toList();
+    }
     if (_json.containsKey("trackingId")) {
       trackingId = _json["trackingId"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -3220,6 +3650,10 @@ class OrdersShipLineItemsRequest {
     if (shipmentId != null) {
       _json["shipmentId"] = shipmentId;
     }
+    if (shipmentInfos != null) {
+      _json["shipmentInfos"] =
+          shipmentInfos.map((value) => (value).toJson()).toList();
+    }
     if (trackingId != null) {
       _json["trackingId"] = trackingId;
     }
@@ -3228,12 +3662,11 @@ class OrdersShipLineItemsRequest {
 }
 
 class OrdersShipLineItemsResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersShipLineItemsResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersShipLineItemsResponse".
   core.String kind;
 
   OrdersShipLineItemsResponse();
@@ -3247,8 +3680,9 @@ class OrdersShipLineItemsResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -3260,14 +3694,11 @@ class OrdersShipLineItemsResponse {
 }
 
 class OrdersUpdateMerchantOrderIdRequest {
-  /**
-   * The merchant order id to be assigned to the order. Must be unique per
-   * merchant.
-   */
+  /// The merchant order id to be assigned to the order. Must be unique per
+  /// merchant.
   core.String merchantOrderId;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
 
   OrdersUpdateMerchantOrderIdRequest();
@@ -3281,8 +3712,9 @@ class OrdersUpdateMerchantOrderIdRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (merchantOrderId != null) {
       _json["merchantOrderId"] = merchantOrderId;
     }
@@ -3294,12 +3726,11 @@ class OrdersUpdateMerchantOrderIdRequest {
 }
 
 class OrdersUpdateMerchantOrderIdResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersUpdateMerchantOrderIdResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersUpdateMerchantOrderIdResponse".
   core.String kind;
 
   OrdersUpdateMerchantOrderIdResponse();
@@ -3313,8 +3744,9 @@ class OrdersUpdateMerchantOrderIdResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -3326,17 +3758,21 @@ class OrdersUpdateMerchantOrderIdResponse {
 }
 
 class OrdersUpdateShipmentRequest {
-  /** The carrier handling the shipment. Not updated if missing. */
+  /// The carrier handling the shipment. Not updated if missing. See
+  /// shipments[].carrier in the  Orders resource representation for a list of
+  /// acceptable values.
   core.String carrier;
-  /**
-   * The ID of the operation. Unique across all operations for a given order.
-   */
+
+  /// The ID of the operation. Unique across all operations for a given order.
   core.String operationId;
-  /** The ID of the shipment. */
+
+  /// The ID of the shipment.
   core.String shipmentId;
-  /** New status for the shipment. Not updated if missing. */
+
+  /// New status for the shipment. Not updated if missing.
   core.String status;
-  /** The tracking id for the shipment. Not updated if missing. */
+
+  /// The tracking id for the shipment. Not updated if missing.
   core.String trackingId;
 
   OrdersUpdateShipmentRequest();
@@ -3359,8 +3795,9 @@ class OrdersUpdateShipmentRequest {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (carrier != null) {
       _json["carrier"] = carrier;
     }
@@ -3381,12 +3818,11 @@ class OrdersUpdateShipmentRequest {
 }
 
 class OrdersUpdateShipmentResponse {
-  /** The status of the execution. */
+  /// The status of the execution.
   core.String executionStatus;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#ordersUpdateShipmentResponse".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#ordersUpdateShipmentResponse".
   core.String kind;
 
   OrdersUpdateShipmentResponse();
@@ -3400,8 +3836,9 @@ class OrdersUpdateShipmentResponse {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (executionStatus != null) {
       _json["executionStatus"] = executionStatus;
     }
@@ -3413,9 +3850,10 @@ class OrdersUpdateShipmentResponse {
 }
 
 class Price {
-  /** The currency of the price. */
+  /// The currency of the price.
   core.String currency;
-  /** The price represented as a number. */
+
+  /// The price represented as a number.
   core.String value;
 
   Price();
@@ -3429,8 +3867,9 @@ class Price {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (currency != null) {
       _json["currency"] = currency;
     }
@@ -3442,31 +3881,33 @@ class Price {
 }
 
 class TestOrder {
-  /** The details of the customer who placed the order. */
+  /// The details of the customer who placed the order.
   TestOrderCustomer customer;
-  /**
-   * Identifies what kind of resource this is. Value: the fixed string
-   * "content#testOrder".
-   */
+
+  /// Identifies what kind of resource this is. Value: the fixed string
+  /// "content#testOrder".
   core.String kind;
-  /** Line items that are ordered. At least one line item must be provided. */
+
+  /// Line items that are ordered. At least one line item must be provided.
   core.List<TestOrderLineItem> lineItems;
-  /** The details of the payment method. */
+
+  /// The details of the payment method.
   TestOrderPaymentMethod paymentMethod;
-  /**
-   * Identifier of one of the predefined delivery addresses for the delivery.
-   */
+
+  /// Identifier of one of the predefined delivery addresses for the delivery.
   core.String predefinedDeliveryAddress;
-  /**
-   * The details of the merchant provided promotions applied to the order. More
-   * details about the program are  here.
-   */
+
+  /// The details of the merchant provided promotions applied to the order. More
+  /// details about the program are here.
   core.List<OrderPromotion> promotions;
-  /** The total cost of shipping for all items. */
+
+  /// The total cost of shipping for all items.
   Price shippingCost;
-  /** The tax for the total shipping cost. */
+
+  /// The tax for the total shipping cost.
   Price shippingCostTax;
-  /** The requested shipping option. */
+
+  /// The requested shipping option.
   core.String shippingOption;
 
   TestOrder();
@@ -3479,16 +3920,21 @@ class TestOrder {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"].map((value) => new TestOrderLineItem.fromJson(value)).toList();
+      lineItems = _json["lineItems"]
+          .map((value) => new TestOrderLineItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("paymentMethod")) {
-      paymentMethod = new TestOrderPaymentMethod.fromJson(_json["paymentMethod"]);
+      paymentMethod =
+          new TestOrderPaymentMethod.fromJson(_json["paymentMethod"]);
     }
     if (_json.containsKey("predefinedDeliveryAddress")) {
       predefinedDeliveryAddress = _json["predefinedDeliveryAddress"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"].map((value) => new OrderPromotion.fromJson(value)).toList();
+      promotions = _json["promotions"]
+          .map((value) => new OrderPromotion.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("shippingCost")) {
       shippingCost = new Price.fromJson(_json["shippingCost"]);
@@ -3501,8 +3947,9 @@ class TestOrder {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (customer != null) {
       _json["customer"] = (customer).toJson();
     }
@@ -3519,7 +3966,8 @@ class TestOrder {
       _json["predefinedDeliveryAddress"] = predefinedDeliveryAddress;
     }
     if (promotions != null) {
-      _json["promotions"] = promotions.map((value) => (value).toJson()).toList();
+      _json["promotions"] =
+          promotions.map((value) => (value).toJson()).toList();
     }
     if (shippingCost != null) {
       _json["shippingCost"] = (shippingCost).toJson();
@@ -3535,17 +3983,17 @@ class TestOrder {
 }
 
 class TestOrderCustomer {
-  /** Email address of the customer. */
+  /// Email address of the customer.
   core.String email;
-  /**
-   * If set, this indicates the user explicitly chose to opt in or out of
-   * providing marketing rights to the merchant. If unset, this indicates the
-   * user has already made this choice in a previous purchase, and was thus not
-   * shown the marketing right opt in/out checkbox during the Purchases on
-   * Google checkout flow. Optional.
-   */
+
+  /// If set, this indicates the user explicitly chose to opt in or out of
+  /// providing marketing rights to the merchant. If unset, this indicates the
+  /// user has already made this choice in a previous purchase, and was thus not
+  /// shown the marketing right opt in/out checkbox during the checkout flow.
+  /// Optional.
   core.bool explicitMarketingPreference;
-  /** Full name of the customer. */
+
+  /// Full name of the customer.
   core.String fullName;
 
   TestOrderCustomer();
@@ -3562,8 +4010,9 @@ class TestOrderCustomer {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (email != null) {
       _json["email"] = email;
     }
@@ -3578,15 +4027,19 @@ class TestOrderCustomer {
 }
 
 class TestOrderLineItem {
-  /** Product data from the time of the order placement. */
+  /// Product data from the time of the order placement.
   TestOrderLineItemProduct product;
-  /** Number of items ordered. */
+
+  /// Number of items ordered.
   core.int quantityOrdered;
-  /** Details of the return policy for the line item. */
+
+  /// Details of the return policy for the line item.
   OrderLineItemReturnInfo returnInfo;
-  /** Details of the requested shipping for the line item. */
+
+  /// Details of the requested shipping for the line item.
   OrderLineItemShippingDetails shippingDetails;
-  /** Unit tax for the line item. */
+
+  /// Unit tax for the line item.
   Price unitTax;
 
   TestOrderLineItem();
@@ -3602,15 +4055,17 @@ class TestOrderLineItem {
       returnInfo = new OrderLineItemReturnInfo.fromJson(_json["returnInfo"]);
     }
     if (_json.containsKey("shippingDetails")) {
-      shippingDetails = new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
+      shippingDetails =
+          new OrderLineItemShippingDetails.fromJson(_json["shippingDetails"]);
     }
     if (_json.containsKey("unitTax")) {
       unitTax = new Price.fromJson(_json["unitTax"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (product != null) {
       _json["product"] = (product).toJson();
     }
@@ -3631,31 +4086,43 @@ class TestOrderLineItem {
 }
 
 class TestOrderLineItemProduct {
-  /** Brand of the item. */
+  /// Brand of the item.
   core.String brand;
-  /** The item's channel. */
+
+  /// The item's channel.
   core.String channel;
-  /** Condition or state of the item. */
+
+  /// Condition or state of the item.
   core.String condition;
-  /** The two-letter ISO 639-1 language code for the item. */
+
+  /// The two-letter ISO 639-1 language code for the item.
   core.String contentLanguage;
-  /** Global Trade Item Number (GTIN) of the item. Optional. */
+
+  /// Global Trade Item Number (GTIN) of the item. Optional.
   core.String gtin;
-  /** URL of an image of the item. */
+
+  /// URL of an image of the item.
   core.String imageLink;
-  /** Shared identifier for all variants of the same product. Optional. */
+
+  /// Shared identifier for all variants of the same product. Optional.
   core.String itemGroupId;
-  /** Manufacturer Part Number (MPN) of the item. Optional. */
+
+  /// Manufacturer Part Number (MPN) of the item. Optional.
   core.String mpn;
-  /** An identifier of the item. */
+
+  /// An identifier of the item.
   core.String offerId;
-  /** The price for the product. */
+
+  /// The price for the product.
   Price price;
-  /** The CLDR territory code of the target country of the product. */
+
+  /// The CLDR territory code of the target country of the product.
   core.String targetCountry;
-  /** The title of the product. */
+
+  /// The title of the product.
   core.String title;
-  /** Variant attributes for the item. Optional. */
+
+  /// Variant attributes for the item. Optional.
   core.List<OrderLineItemProductVariantAttribute> variantAttributes;
 
   TestOrderLineItemProduct();
@@ -3698,12 +4165,16 @@ class TestOrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"].map((value) => new OrderLineItemProductVariantAttribute.fromJson(value)).toList();
+      variantAttributes = _json["variantAttributes"]
+          .map((value) =>
+              new OrderLineItemProductVariantAttribute.fromJson(value))
+          .toList();
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (brand != null) {
       _json["brand"] = brand;
     }
@@ -3741,25 +4212,28 @@ class TestOrderLineItemProduct {
       _json["title"] = title;
     }
     if (variantAttributes != null) {
-      _json["variantAttributes"] = variantAttributes.map((value) => (value).toJson()).toList();
+      _json["variantAttributes"] =
+          variantAttributes.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
 }
 
 class TestOrderPaymentMethod {
-  /** The card expiration month (January = 1, February = 2 etc.). */
+  /// The card expiration month (January = 1, February = 2 etc.).
   core.int expirationMonth;
-  /** The card expiration year (4-digit, e.g. 2015). */
+
+  /// The card expiration year (4-digit, e.g. 2015).
   core.int expirationYear;
-  /** The last four digits of the card number. */
+
+  /// The last four digits of the card number.
   core.String lastFourDigits;
-  /** The billing address. */
+
+  /// The billing address.
   core.String predefinedBillingAddress;
-  /**
-   * The type of instrument. Note that real orders might have different values
-   * than the four values accepted by createTestOrder.
-   */
+
+  /// The type of instrument. Note that real orders might have different values
+  /// than the four values accepted by createTestOrder.
   core.String type;
 
   TestOrderPaymentMethod();
@@ -3782,8 +4256,9 @@ class TestOrderPaymentMethod {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (expirationMonth != null) {
       _json["expirationMonth"] = expirationMonth;
     }

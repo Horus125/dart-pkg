@@ -9,23 +9,28 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 
-export 'package:_discoveryapis_commons/_discoveryapis_commons.dart' show
-    ApiRequestError, DetailedApiRequestError, Media, UploadOptions,
-    ResumableUploadOptions, DownloadOptions, PartialDownloadOptions,
-    ByteRange;
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show
+        ApiRequestError,
+        DetailedApiRequestError,
+        Media,
+        UploadOptions,
+        ResumableUploadOptions,
+        DownloadOptions,
+        PartialDownloadOptions,
+        ByteRange;
 
 const core.String USER_AGENT = 'dart-api-client adexchangeseller/v1.1';
 
-/**
- * Accesses the inventory of Ad Exchange seller users and generates reports.
- */
+/// Accesses the inventory of Ad Exchange seller users and generates reports.
 class AdexchangesellerApi {
-  /** View and manage your Ad Exchange data */
-  static const AdexchangeSellerScope = "https://www.googleapis.com/auth/adexchange.seller";
+  /// View and manage your Ad Exchange data
+  static const AdexchangeSellerScope =
+      "https://www.googleapis.com/auth/adexchange.seller";
 
-  /** View your Ad Exchange data */
-  static const AdexchangeSellerReadonlyScope = "https://www.googleapis.com/auth/adexchange.seller.readonly";
-
+  /// View your Ad Exchange data
+  static const AdexchangeSellerReadonlyScope =
+      "https://www.googleapis.com/auth/adexchange.seller.readonly";
 
   final commons.ApiRequester _requester;
 
@@ -33,40 +38,45 @@ class AdexchangesellerApi {
   AdclientsResourceApi get adclients => new AdclientsResourceApi(_requester);
   AdunitsResourceApi get adunits => new AdunitsResourceApi(_requester);
   AlertsResourceApi get alerts => new AlertsResourceApi(_requester);
-  CustomchannelsResourceApi get customchannels => new CustomchannelsResourceApi(_requester);
+  CustomchannelsResourceApi get customchannels =>
+      new CustomchannelsResourceApi(_requester);
   MetadataResourceApi get metadata => new MetadataResourceApi(_requester);
-  PreferreddealsResourceApi get preferreddeals => new PreferreddealsResourceApi(_requester);
+  PreferreddealsResourceApi get preferreddeals =>
+      new PreferreddealsResourceApi(_requester);
   ReportsResourceApi get reports => new ReportsResourceApi(_requester);
-  UrlchannelsResourceApi get urlchannels => new UrlchannelsResourceApi(_requester);
+  UrlchannelsResourceApi get urlchannels =>
+      new UrlchannelsResourceApi(_requester);
 
-  AdexchangesellerApi(http.Client client, {core.String rootUrl: "https://www.googleapis.com/", core.String servicePath: "adexchangeseller/v1.1/"}) :
-      _requester = new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+  AdexchangesellerApi(http.Client client,
+      {core.String rootUrl: "https://www.googleapis.com/",
+      core.String servicePath: "adexchangeseller/v1.1/"})
+      : _requester =
+            new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
 }
-
 
 class AccountsResourceApi {
   final commons.ApiRequester _requester;
 
-  AccountsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AccountsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Get information about the selected Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * [accountId] - Account to get information about. Tip: 'myaccount' is a valid
-   * ID.
-   *
-   * Completes with a [Account].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Account> get(core.String accountId) {
+  /// Get information about the selected Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [accountId] - Account to get information about. Tip: 'myaccount' is a
+  /// valid ID.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Account].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Account> get(core.String accountId, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -77,50 +87,51 @@ class AccountsResourceApi {
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'accounts/' + commons.Escaper.ecapeVariable('$accountId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Account.fromJson(data));
   }
-
 }
-
 
 class AdclientsResourceApi {
   final commons.ApiRequester _requester;
 
-  AdclientsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AdclientsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * List all ad clients in this Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * [maxResults] - The maximum number of ad clients to include in the response,
-   * used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through ad clients. To
-   * retrieve the next page, set this parameter to the value of "nextPageToken"
-   * from the previous response.
-   *
-   * Completes with a [AdClients].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AdClients> list({core.int maxResults, core.String pageToken}) {
+  /// List all ad clients in this Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [maxResults] - The maximum number of ad clients to include in the
+  /// response, used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through ad clients. To
+  /// retrieve the next page, set this parameter to the value of "nextPageToken"
+  /// from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AdClients].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AdClients> list(
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -134,48 +145,50 @@ class AdclientsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'adclients';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AdClients.fromJson(data));
   }
-
 }
-
 
 class AdunitsResourceApi {
   final commons.ApiRequester _requester;
 
-  AdunitsCustomchannelsResourceApi get customchannels => new AdunitsCustomchannelsResourceApi(_requester);
+  AdunitsCustomchannelsResourceApi get customchannels =>
+      new AdunitsCustomchannelsResourceApi(_requester);
 
-  AdunitsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AdunitsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Gets the specified ad unit in the specified ad client.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client for which to get the ad unit.
-   *
-   * [adUnitId] - Ad unit to retrieve.
-   *
-   * Completes with a [AdUnit].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AdUnit> get(core.String adClientId, core.String adUnitId) {
+  /// Gets the specified ad unit in the specified ad client.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client for which to get the ad unit.
+  ///
+  /// [adUnitId] - Ad unit to retrieve.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AdUnit].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AdUnit> get(core.String adClientId, core.String adUnitId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -189,45 +202,55 @@ class AdunitsResourceApi {
     if (adUnitId == null) {
       throw new core.ArgumentError("Parameter adUnitId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/adunits/' + commons.Escaper.ecapeVariable('$adUnitId');
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/adunits/' +
+        commons.Escaper.ecapeVariable('$adUnitId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AdUnit.fromJson(data));
   }
 
-  /**
-   * List all ad units in the specified ad client for this Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client for which to list ad units.
-   *
-   * [includeInactive] - Whether to include inactive ad units. Default: true.
-   *
-   * [maxResults] - The maximum number of ad units to include in the response,
-   * used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through ad units. To
-   * retrieve the next page, set this parameter to the value of "nextPageToken"
-   * from the previous response.
-   *
-   * Completes with a [AdUnits].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AdUnits> list(core.String adClientId, {core.bool includeInactive, core.int maxResults, core.String pageToken}) {
+  /// List all ad units in the specified ad client for this Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client for which to list ad units.
+  ///
+  /// [includeInactive] - Whether to include inactive ad units. Default: true.
+  ///
+  /// [maxResults] - The maximum number of ad units to include in the response,
+  /// used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through ad units. To
+  /// retrieve the next page, set this parameter to the value of "nextPageToken"
+  /// from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AdUnits].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AdUnits> list(core.String adClientId,
+      {core.bool includeInactive,
+      core.int maxResults,
+      core.String pageToken,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -247,54 +270,59 @@ class AdunitsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/adunits';
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/adunits';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AdUnits.fromJson(data));
   }
-
 }
-
 
 class AdunitsCustomchannelsResourceApi {
   final commons.ApiRequester _requester;
 
-  AdunitsCustomchannelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AdunitsCustomchannelsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * List all custom channels which the specified ad unit belongs to.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client which contains the ad unit.
-   *
-   * [adUnitId] - Ad unit for which to list custom channels.
-   *
-   * [maxResults] - The maximum number of custom channels to include in the
-   * response, used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through custom channels.
-   * To retrieve the next page, set this parameter to the value of
-   * "nextPageToken" from the previous response.
-   *
-   * Completes with a [CustomChannels].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<CustomChannels> list(core.String adClientId, core.String adUnitId, {core.int maxResults, core.String pageToken}) {
+  /// List all custom channels which the specified ad unit belongs to.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client which contains the ad unit.
+  ///
+  /// [adUnitId] - Ad unit for which to list custom channels.
+  ///
+  /// [maxResults] - The maximum number of custom channels to include in the
+  /// response, used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through custom channels.
+  /// To retrieve the next page, set this parameter to the value of
+  /// "nextPageToken" from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [CustomChannels].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<CustomChannels> list(
+      core.String adClientId, core.String adUnitId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -314,46 +342,50 @@ class AdunitsCustomchannelsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/adunits/' + commons.Escaper.ecapeVariable('$adUnitId') + '/customchannels';
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/adunits/' +
+        commons.Escaper.ecapeVariable('$adUnitId') +
+        '/customchannels';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new CustomChannels.fromJson(data));
   }
-
 }
-
 
 class AlertsResourceApi {
   final commons.ApiRequester _requester;
 
-  AlertsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  AlertsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * List the alerts for this Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * [locale] - The locale to use for translating alert messages. The account
-   * locale will be used if this is not supplied. The AdSense default (English)
-   * will be used if the supplied locale is invalid or unsupported.
-   *
-   * Completes with a [Alerts].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Alerts> list({core.String locale}) {
+  /// List the alerts for this Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [locale] - The locale to use for translating alert messages. The account
+  /// locale will be used if this is not supplied. The AdSense default (English)
+  /// will be used if the supplied locale is invalid or unsupported.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Alerts].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Alerts> list({core.String locale, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -364,48 +396,51 @@ class AlertsResourceApi {
     if (locale != null) {
       _queryParams["locale"] = [locale];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'alerts';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Alerts.fromJson(data));
   }
-
 }
-
 
 class CustomchannelsResourceApi {
   final commons.ApiRequester _requester;
 
-  CustomchannelsAdunitsResourceApi get adunits => new CustomchannelsAdunitsResourceApi(_requester);
+  CustomchannelsAdunitsResourceApi get adunits =>
+      new CustomchannelsAdunitsResourceApi(_requester);
 
-  CustomchannelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  CustomchannelsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Get the specified custom channel from the specified ad client.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client which contains the custom channel.
-   *
-   * [customChannelId] - Custom channel to retrieve.
-   *
-   * Completes with a [CustomChannel].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<CustomChannel> get(core.String adClientId, core.String customChannelId) {
+  /// Get the specified custom channel from the specified ad client.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client which contains the custom channel.
+  ///
+  /// [customChannelId] - Custom channel to retrieve.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [CustomChannel].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<CustomChannel> get(
+      core.String adClientId, core.String customChannelId,
+      {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -419,44 +454,51 @@ class CustomchannelsResourceApi {
     if (customChannelId == null) {
       throw new core.ArgumentError("Parameter customChannelId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/customchannels/' + commons.Escaper.ecapeVariable('$customChannelId');
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/customchannels/' +
+        commons.Escaper.ecapeVariable('$customChannelId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new CustomChannel.fromJson(data));
   }
 
-  /**
-   * List all custom channels in the specified ad client for this Ad Exchange
-   * account.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client for which to list custom channels.
-   *
-   * [maxResults] - The maximum number of custom channels to include in the
-   * response, used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through custom channels.
-   * To retrieve the next page, set this parameter to the value of
-   * "nextPageToken" from the previous response.
-   *
-   * Completes with a [CustomChannels].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<CustomChannels> list(core.String adClientId, {core.int maxResults, core.String pageToken}) {
+  /// List all custom channels in the specified ad client for this Ad Exchange
+  /// account.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client for which to list custom channels.
+  ///
+  /// [maxResults] - The maximum number of custom channels to include in the
+  /// response, used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through custom channels.
+  /// To retrieve the next page, set this parameter to the value of
+  /// "nextPageToken" from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [CustomChannels].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<CustomChannels> list(core.String adClientId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -473,56 +515,64 @@ class CustomchannelsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/customchannels';
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/customchannels';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new CustomChannels.fromJson(data));
   }
-
 }
-
 
 class CustomchannelsAdunitsResourceApi {
   final commons.ApiRequester _requester;
 
-  CustomchannelsAdunitsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  CustomchannelsAdunitsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * List all ad units in the specified custom channel.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client which contains the custom channel.
-   *
-   * [customChannelId] - Custom channel for which to list ad units.
-   *
-   * [includeInactive] - Whether to include inactive ad units. Default: true.
-   *
-   * [maxResults] - The maximum number of ad units to include in the response,
-   * used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through ad units. To
-   * retrieve the next page, set this parameter to the value of "nextPageToken"
-   * from the previous response.
-   *
-   * Completes with a [AdUnits].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<AdUnits> list(core.String adClientId, core.String customChannelId, {core.bool includeInactive, core.int maxResults, core.String pageToken}) {
+  /// List all ad units in the specified custom channel.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client which contains the custom channel.
+  ///
+  /// [customChannelId] - Custom channel for which to list ad units.
+  ///
+  /// [includeInactive] - Whether to include inactive ad units. Default: true.
+  ///
+  /// [maxResults] - The maximum number of ad units to include in the response,
+  /// used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through ad units. To
+  /// retrieve the next page, set this parameter to the value of "nextPageToken"
+  /// from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [AdUnits].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<AdUnits> list(
+      core.String adClientId, core.String customChannelId,
+      {core.bool includeInactive,
+      core.int maxResults,
+      core.String pageToken,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -545,53 +595,58 @@ class CustomchannelsAdunitsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/customchannels/' + commons.Escaper.ecapeVariable('$customChannelId') + '/adunits';
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/customchannels/' +
+        commons.Escaper.ecapeVariable('$customChannelId') +
+        '/adunits';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new AdUnits.fromJson(data));
   }
-
 }
-
 
 class MetadataResourceApi {
   final commons.ApiRequester _requester;
 
-  MetadataDimensionsResourceApi get dimensions => new MetadataDimensionsResourceApi(_requester);
-  MetadataMetricsResourceApi get metrics => new MetadataMetricsResourceApi(_requester);
+  MetadataDimensionsResourceApi get dimensions =>
+      new MetadataDimensionsResourceApi(_requester);
+  MetadataMetricsResourceApi get metrics =>
+      new MetadataMetricsResourceApi(_requester);
 
-  MetadataResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  MetadataResourceApi(commons.ApiRequester client) : _requester = client;
 }
-
 
 class MetadataDimensionsResourceApi {
   final commons.ApiRequester _requester;
 
-  MetadataDimensionsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  MetadataDimensionsResourceApi(commons.ApiRequester client)
+      : _requester = client;
 
-  /**
-   * List the metadata for the dimensions available to this AdExchange account.
-   *
-   * Request parameters:
-   *
-   * Completes with a [Metadata].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Metadata> list() {
+  /// List the metadata for the dimensions available to this AdExchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Metadata].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Metadata> list({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -599,42 +654,42 @@ class MetadataDimensionsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'metadata/dimensions';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Metadata.fromJson(data));
   }
-
 }
-
 
 class MetadataMetricsResourceApi {
   final commons.ApiRequester _requester;
 
-  MetadataMetricsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  MetadataMetricsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * List the metadata for the metrics available to this AdExchange account.
-   *
-   * Request parameters:
-   *
-   * Completes with a [Metadata].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Metadata> list() {
+  /// List the metadata for the metrics available to this AdExchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Metadata].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Metadata> list({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -642,44 +697,44 @@ class MetadataMetricsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'metadata/metrics';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Metadata.fromJson(data));
   }
-
 }
-
 
 class PreferreddealsResourceApi {
   final commons.ApiRequester _requester;
 
-  PreferreddealsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  PreferreddealsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Get information about the selected Ad Exchange Preferred Deal.
-   *
-   * Request parameters:
-   *
-   * [dealId] - Preferred deal to get information about.
-   *
-   * Completes with a [PreferredDeal].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<PreferredDeal> get(core.String dealId) {
+  /// Get information about the selected Ad Exchange Preferred Deal.
+  ///
+  /// Request parameters:
+  ///
+  /// [dealId] - Preferred deal to get information about.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [PreferredDeal].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<PreferredDeal> get(core.String dealId, {core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -690,33 +745,36 @@ class PreferreddealsResourceApi {
     if (dealId == null) {
       throw new core.ArgumentError("Parameter dealId is required.");
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'preferreddeals/' + commons.Escaper.ecapeVariable('$dealId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new PreferredDeal.fromJson(data));
   }
 
-  /**
-   * List the preferred deals for this Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * Completes with a [PreferredDeals].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<PreferredDeals> list() {
+  /// List the preferred deals for this Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [PreferredDeals].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<PreferredDeals> list({core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -724,88 +782,98 @@ class PreferreddealsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'preferreddeals';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new PreferredDeals.fromJson(data));
   }
-
 }
-
 
 class ReportsResourceApi {
   final commons.ApiRequester _requester;
 
   ReportsSavedResourceApi get saved => new ReportsSavedResourceApi(_requester);
 
-  ReportsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ReportsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Generate an Ad Exchange report based on the report request sent in the
-   * query parameters. Returns the result as JSON; to retrieve output in CSV
-   * format specify "alt=csv" as a query parameter.
-   *
-   * Request parameters:
-   *
-   * [startDate] - Start of the date range to report on in "YYYY-MM-DD" format,
-   * inclusive.
-   * Value must have pattern
-   * "\d{4}-\d{2}-\d{2}|(today|startOfMonth|startOfYear)(([\-\+]\d+[dwmy]){0,3}?)".
-   *
-   * [endDate] - End of the date range to report on in "YYYY-MM-DD" format,
-   * inclusive.
-   * Value must have pattern
-   * "\d{4}-\d{2}-\d{2}|(today|startOfMonth|startOfYear)(([\-\+]\d+[dwmy]){0,3}?)".
-   *
-   * [dimension] - Dimensions to base the report on.
-   * Value must have pattern "[a-zA-Z_]+".
-   *
-   * [filter] - Filters to be run on the report.
-   * Value must have pattern "[a-zA-Z_]+(==|=@).+".
-   *
-   * [locale] - Optional locale to use for translating report output to a local
-   * language. Defaults to "en_US" if not specified.
-   * Value must have pattern "[a-zA-Z_]+".
-   *
-   * [maxResults] - The maximum number of rows of report data to return.
-   * Value must be between "0" and "50000".
-   *
-   * [metric] - Numeric columns to include in the report.
-   * Value must have pattern "[a-zA-Z_]+".
-   *
-   * [sort] - The name of a dimension or metric to sort the resulting report on,
-   * optionally prefixed with "+" to sort ascending or "-" to sort descending.
-   * If no prefix is specified, the column is sorted ascending.
-   * Value must have pattern "(\+|-)?[a-zA-Z_]+".
-   *
-   * [startIndex] - Index of the first row of report data to return.
-   * Value must be between "0" and "5000".
-   *
-   * [downloadOptions] - Options for downloading. A download can be either a
-   * Metadata (default) or Media download. Partial Media downloads are possible
-   * as well.
-   *
-   * Completes with a
-   *
-   * - [Report] for Metadata downloads (see [downloadOptions]).
-   *
-   * - [commons.Media] for Media downloads (see [downloadOptions]).
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future generate(core.String startDate, core.String endDate, {core.List<core.String> dimension, core.List<core.String> filter, core.String locale, core.int maxResults, core.List<core.String> metric, core.List<core.String> sort, core.int startIndex, commons.DownloadOptions downloadOptions: commons.DownloadOptions.Metadata}) {
+  /// Generate an Ad Exchange report based on the report request sent in the
+  /// query parameters. Returns the result as JSON; to retrieve output in CSV
+  /// format specify "alt=csv" as a query parameter.
+  ///
+  /// Request parameters:
+  ///
+  /// [startDate] - Start of the date range to report on in "YYYY-MM-DD" format,
+  /// inclusive.
+  /// Value must have pattern
+  /// "\d{4}-\d{2}-\d{2}|(today|startOfMonth|startOfYear)(([\-\+]\d+[dwmy]){0,3}?)".
+  ///
+  /// [endDate] - End of the date range to report on in "YYYY-MM-DD" format,
+  /// inclusive.
+  /// Value must have pattern
+  /// "\d{4}-\d{2}-\d{2}|(today|startOfMonth|startOfYear)(([\-\+]\d+[dwmy]){0,3}?)".
+  ///
+  /// [dimension] - Dimensions to base the report on.
+  /// Value must have pattern "[a-zA-Z_]+".
+  ///
+  /// [filter] - Filters to be run on the report.
+  /// Value must have pattern "[a-zA-Z_]+(==|=@).+".
+  ///
+  /// [locale] - Optional locale to use for translating report output to a local
+  /// language. Defaults to "en_US" if not specified.
+  /// Value must have pattern "[a-zA-Z_]+".
+  ///
+  /// [maxResults] - The maximum number of rows of report data to return.
+  /// Value must be between "0" and "50000".
+  ///
+  /// [metric] - Numeric columns to include in the report.
+  /// Value must have pattern "[a-zA-Z_]+".
+  ///
+  /// [sort] - The name of a dimension or metric to sort the resulting report
+  /// on, optionally prefixed with "+" to sort ascending or "-" to sort
+  /// descending. If no prefix is specified, the column is sorted ascending.
+  /// Value must have pattern "(\+|-)?[a-zA-Z_]+".
+  ///
+  /// [startIndex] - Index of the first row of report data to return.
+  /// Value must be between "0" and "5000".
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// [downloadOptions] - Options for downloading. A download can be either a
+  /// Metadata (default) or Media download. Partial Media downloads are possible
+  /// as well.
+  ///
+  /// Completes with a
+  ///
+  /// - [Report] for Metadata downloads (see [downloadOptions]).
+  ///
+  /// - [commons.Media] for Media downloads (see [downloadOptions]).
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future generate(core.String startDate, core.String endDate,
+      {core.List<core.String> dimension,
+      core.List<core.String> filter,
+      core.String locale,
+      core.int maxResults,
+      core.List<core.String> metric,
+      core.List<core.String> sort,
+      core.int startIndex,
+      core.String $fields,
+      commons.DownloadOptions downloadOptions:
+          commons.DownloadOptions.Metadata}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -842,18 +910,20 @@ class ReportsResourceApi {
     if (startIndex != null) {
       _queryParams["startIndex"] = ["${startIndex}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _downloadOptions = downloadOptions;
 
     _url = 'reports';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     if (_downloadOptions == null ||
         _downloadOptions == commons.DownloadOptions.Metadata) {
       return _response.then((data) => new Report.fromJson(data));
@@ -861,43 +931,45 @@ class ReportsResourceApi {
       return _response;
     }
   }
-
 }
-
 
 class ReportsSavedResourceApi {
   final commons.ApiRequester _requester;
 
-  ReportsSavedResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  ReportsSavedResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * Generate an Ad Exchange report based on the saved report ID sent in the
-   * query parameters.
-   *
-   * Request parameters:
-   *
-   * [savedReportId] - The saved report to retrieve.
-   *
-   * [locale] - Optional locale to use for translating report output to a local
-   * language. Defaults to "en_US" if not specified.
-   * Value must have pattern "[a-zA-Z_]+".
-   *
-   * [maxResults] - The maximum number of rows of report data to return.
-   * Value must be between "0" and "50000".
-   *
-   * [startIndex] - Index of the first row of report data to return.
-   * Value must be between "0" and "5000".
-   *
-   * Completes with a [Report].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<Report> generate(core.String savedReportId, {core.String locale, core.int maxResults, core.int startIndex}) {
+  /// Generate an Ad Exchange report based on the saved report ID sent in the
+  /// query parameters.
+  ///
+  /// Request parameters:
+  ///
+  /// [savedReportId] - The saved report to retrieve.
+  ///
+  /// [locale] - Optional locale to use for translating report output to a local
+  /// language. Defaults to "en_US" if not specified.
+  /// Value must have pattern "[a-zA-Z_]+".
+  ///
+  /// [maxResults] - The maximum number of rows of report data to return.
+  /// Value must be between "0" and "50000".
+  ///
+  /// [startIndex] - Index of the first row of report data to return.
+  /// Value must be between "0" and "5000".
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Report].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Report> generate(core.String savedReportId,
+      {core.String locale,
+      core.int maxResults,
+      core.int startIndex,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -917,41 +989,45 @@ class ReportsSavedResourceApi {
     if (startIndex != null) {
       _queryParams["startIndex"] = ["${startIndex}"];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'reports/' + commons.Escaper.ecapeVariable('$savedReportId');
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new Report.fromJson(data));
   }
 
-  /**
-   * List all saved reports in this Ad Exchange account.
-   *
-   * Request parameters:
-   *
-   * [maxResults] - The maximum number of saved reports to include in the
-   * response, used for paging.
-   * Value must be between "0" and "100".
-   *
-   * [pageToken] - A continuation token, used to page through saved reports. To
-   * retrieve the next page, set this parameter to the value of "nextPageToken"
-   * from the previous response.
-   *
-   * Completes with a [SavedReports].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<SavedReports> list({core.int maxResults, core.String pageToken}) {
+  /// List all saved reports in this Ad Exchange account.
+  ///
+  /// Request parameters:
+  ///
+  /// [maxResults] - The maximum number of saved reports to include in the
+  /// response, used for paging.
+  /// Value must be between "0" and "100".
+  ///
+  /// [pageToken] - A continuation token, used to page through saved reports. To
+  /// retrieve the next page, set this parameter to the value of "nextPageToken"
+  /// from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [SavedReports].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<SavedReports> list(
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -965,53 +1041,54 @@ class ReportsSavedResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
     _url = 'reports/saved';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new SavedReports.fromJson(data));
   }
-
 }
-
 
 class UrlchannelsResourceApi {
   final commons.ApiRequester _requester;
 
-  UrlchannelsResourceApi(commons.ApiRequester client) : 
-      _requester = client;
+  UrlchannelsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /**
-   * List all URL channels in the specified ad client for this Ad Exchange
-   * account.
-   *
-   * Request parameters:
-   *
-   * [adClientId] - Ad client for which to list URL channels.
-   *
-   * [maxResults] - The maximum number of URL channels to include in the
-   * response, used for paging.
-   * Value must be between "0" and "10000".
-   *
-   * [pageToken] - A continuation token, used to page through URL channels. To
-   * retrieve the next page, set this parameter to the value of "nextPageToken"
-   * from the previous response.
-   *
-   * Completes with a [UrlChannels].
-   *
-   * Completes with a [commons.ApiRequestError] if the API endpoint returned an
-   * error.
-   *
-   * If the used [http.Client] completes with an error when making a REST call,
-   * this method will complete with the same error.
-   */
-  async.Future<UrlChannels> list(core.String adClientId, {core.int maxResults, core.String pageToken}) {
+  /// List all URL channels in the specified ad client for this Ad Exchange
+  /// account.
+  ///
+  /// Request parameters:
+  ///
+  /// [adClientId] - Ad client for which to list URL channels.
+  ///
+  /// [maxResults] - The maximum number of URL channels to include in the
+  /// response, used for paging.
+  /// Value must be between "0" and "10000".
+  ///
+  /// [pageToken] - A continuation token, used to page through URL channels. To
+  /// retrieve the next page, set this parameter to the value of "nextPageToken"
+  /// from the previous response.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [UrlChannels].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<UrlChannels> list(core.String adClientId,
+      {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1028,29 +1105,32 @@ class UrlchannelsResourceApi {
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
 
-    _url = 'adclients/' + commons.Escaper.ecapeVariable('$adClientId') + '/urlchannels';
+    _url = 'adclients/' +
+        commons.Escaper.ecapeVariable('$adClientId') +
+        '/urlchannels';
 
-    var _response = _requester.request(_url,
-                                       "GET",
-                                       body: _body,
-                                       queryParams: _queryParams,
-                                       uploadOptions: _uploadOptions,
-                                       uploadMedia: _uploadMedia,
-                                       downloadOptions: _downloadOptions);
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
     return _response.then((data) => new UrlChannels.fromJson(data));
   }
-
 }
 
-
-
 class Account {
-  /** Unique identifier of this account. */
+  /// Unique identifier of this account.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#account. */
+
+  /// Kind of resource this is, in this case adexchangeseller#account.
   core.String kind;
-  /** Name of this account. */
+
+  /// Name of this account.
   core.String name;
 
   Account();
@@ -1067,8 +1147,9 @@ class Account {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -1083,18 +1164,20 @@ class Account {
 }
 
 class AdClient {
-  /** Whether this ad client is opted in to ARC. */
+  /// Whether this ad client is opted in to ARC.
   core.bool arcOptIn;
-  /** Unique identifier of this ad client. */
+
+  /// Unique identifier of this ad client.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#adClient. */
+
+  /// Kind of resource this is, in this case adexchangeseller#adClient.
   core.String kind;
-  /**
-   * This ad client's product code, which corresponds to the PRODUCT_CODE report
-   * dimension.
-   */
+
+  /// This ad client's product code, which corresponds to the PRODUCT_CODE
+  /// report dimension.
   core.String productCode;
-  /** Whether this ad client supports being reported on. */
+
+  /// Whether this ad client supports being reported on.
   core.bool supportsReporting;
 
   AdClient();
@@ -1117,8 +1200,9 @@ class AdClient {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (arcOptIn != null) {
       _json["arcOptIn"] = arcOptIn;
     }
@@ -1139,16 +1223,17 @@ class AdClient {
 }
 
 class AdClients {
-  /** ETag of this response for caching purposes. */
+  /// ETag of this response for caching purposes.
   core.String etag;
-  /** The ad clients returned in this list response. */
+
+  /// The ad clients returned in this list response.
   core.List<AdClient> items;
-  /** Kind of list this is, in this case adexchangeseller#adClients. */
+
+  /// Kind of list this is, in this case adexchangeseller#adClients.
   core.String kind;
-  /**
-   * Continuation token used to page through ad clients. To retrieve the next
-   * page of results, set the next request's "pageToken" value to this.
-   */
+
+  /// Continuation token used to page through ad clients. To retrieve the next
+  /// page of results, set the next request's "pageToken" value to this.
   core.String nextPageToken;
 
   AdClients();
@@ -1158,7 +1243,8 @@ class AdClients {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new AdClient.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new AdClient.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1168,8 +1254,9 @@ class AdClients {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (etag != null) {
       _json["etag"] = etag;
     }
@@ -1187,30 +1274,28 @@ class AdClients {
 }
 
 class AdUnit {
-  /**
-   * Identity code of this ad unit, not necessarily unique across ad clients.
-   */
+  /// Identity code of this ad unit, not necessarily unique across ad clients.
   core.String code;
-  /**
-   * Unique identifier of this ad unit. This should be considered an opaque
-   * identifier; it is not safe to rely on it being in any particular format.
-   */
+
+  /// Unique identifier of this ad unit. This should be considered an opaque
+  /// identifier; it is not safe to rely on it being in any particular format.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#adUnit. */
+
+  /// Kind of resource this is, in this case adexchangeseller#adUnit.
   core.String kind;
-  /** Name of this ad unit. */
+
+  /// Name of this ad unit.
   core.String name;
-  /**
-   * Status of this ad unit. Possible values are:
-   * NEW: Indicates that the ad unit was created within the last seven days and
-   * does not yet have any activity associated with it.
-   *
-   * ACTIVE: Indicates that there has been activity on this ad unit in the last
-   * seven days.
-   *
-   * INACTIVE: Indicates that there has been no activity on this ad unit in the
-   * last seven days.
-   */
+
+  /// Status of this ad unit. Possible values are:
+  /// NEW: Indicates that the ad unit was created within the last seven days and
+  /// does not yet have any activity associated with it.
+  ///
+  /// ACTIVE: Indicates that there has been activity on this ad unit in the last
+  /// seven days.
+  ///
+  /// INACTIVE: Indicates that there has been no activity on this ad unit in the
+  /// last seven days.
   core.String status;
 
   AdUnit();
@@ -1233,8 +1318,9 @@ class AdUnit {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (code != null) {
       _json["code"] = code;
     }
@@ -1255,16 +1341,17 @@ class AdUnit {
 }
 
 class AdUnits {
-  /** ETag of this response for caching purposes. */
+  /// ETag of this response for caching purposes.
   core.String etag;
-  /** The ad units returned in this list response. */
+
+  /// The ad units returned in this list response.
   core.List<AdUnit> items;
-  /** Kind of list this is, in this case adexchangeseller#adUnits. */
+
+  /// Kind of list this is, in this case adexchangeseller#adUnits.
   core.String kind;
-  /**
-   * Continuation token used to page through ad units. To retrieve the next page
-   * of results, set the next request's "pageToken" value to this.
-   */
+
+  /// Continuation token used to page through ad units. To retrieve the next
+  /// page of results, set the next request's "pageToken" value to this.
   core.String nextPageToken;
 
   AdUnits();
@@ -1274,7 +1361,8 @@ class AdUnits {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new AdUnit.fromJson(value)).toList();
+      items =
+          _json["items"].map((value) => new AdUnit.fromJson(value)).toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1284,8 +1372,9 @@ class AdUnits {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (etag != null) {
       _json["etag"] = etag;
     }
@@ -1303,22 +1392,22 @@ class AdUnits {
 }
 
 class Alert {
-  /**
-   * Unique identifier of this alert. This should be considered an opaque
-   * identifier; it is not safe to rely on it being in any particular format.
-   */
+  /// Unique identifier of this alert. This should be considered an opaque
+  /// identifier; it is not safe to rely on it being in any particular format.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#alert. */
+
+  /// Kind of resource this is, in this case adexchangeseller#alert.
   core.String kind;
-  /** The localized alert message. */
+
+  /// The localized alert message.
   core.String message;
-  /** Severity of this alert. Possible values: INFO, WARNING, SEVERE. */
+
+  /// Severity of this alert. Possible values: INFO, WARNING, SEVERE.
   core.String severity;
-  /**
-   * Type of this alert. Possible values: SELF_HOLD, MIGRATED_TO_BILLING3,
-   * ADDRESS_PIN_VERIFICATION, PHONE_PIN_VERIFICATION, CORPORATE_ENTITY,
-   * GRAYLISTED_PUBLISHER, API_HOLD.
-   */
+
+  /// Type of this alert. Possible values: SELF_HOLD, MIGRATED_TO_BILLING3,
+  /// ADDRESS_PIN_VERIFICATION, PHONE_PIN_VERIFICATION, CORPORATE_ENTITY,
+  /// GRAYLISTED_PUBLISHER, API_HOLD.
   core.String type;
 
   Alert();
@@ -1341,8 +1430,9 @@ class Alert {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -1363,9 +1453,10 @@ class Alert {
 }
 
 class Alerts {
-  /** The alerts returned in this list response. */
+  /// The alerts returned in this list response.
   core.List<Alert> items;
-  /** Kind of list this is, in this case adexchangeseller#alerts. */
+
+  /// Kind of list this is, in this case adexchangeseller#alerts.
   core.String kind;
 
   Alerts();
@@ -1379,8 +1470,9 @@ class Alerts {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -1391,21 +1483,22 @@ class Alerts {
   }
 }
 
-/** The targeting information of this custom channel, if activated. */
+/// The targeting information of this custom channel, if activated.
 class CustomChannelTargetingInfo {
-  /** The name used to describe this channel externally. */
+  /// The name used to describe this channel externally.
   core.String adsAppearOn;
-  /** The external description of the channel. */
+
+  /// The external description of the channel.
   core.String description;
-  /**
-   * The locations in which ads appear. (Only valid for content and mobile
-   * content ads). Acceptable values for content ads are: TOP_LEFT, TOP_CENTER,
-   * TOP_RIGHT, MIDDLE_LEFT, MIDDLE_CENTER, MIDDLE_RIGHT, BOTTOM_LEFT,
-   * BOTTOM_CENTER, BOTTOM_RIGHT, MULTIPLE_LOCATIONS. Acceptable values for
-   * mobile content ads are: TOP, MIDDLE, BOTTOM, MULTIPLE_LOCATIONS.
-   */
+
+  /// The locations in which ads appear. (Only valid for content and mobile
+  /// content ads). Acceptable values for content ads are: TOP_LEFT, TOP_CENTER,
+  /// TOP_RIGHT, MIDDLE_LEFT, MIDDLE_CENTER, MIDDLE_RIGHT, BOTTOM_LEFT,
+  /// BOTTOM_CENTER, BOTTOM_RIGHT, MULTIPLE_LOCATIONS. Acceptable values for
+  /// mobile content ads are: TOP, MIDDLE, BOTTOM, MULTIPLE_LOCATIONS.
   core.String location;
-  /** The language of the sites ads will be displayed on. */
+
+  /// The language of the sites ads will be displayed on.
   core.String siteLanguage;
 
   CustomChannelTargetingInfo();
@@ -1425,8 +1518,9 @@ class CustomChannelTargetingInfo {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (adsAppearOn != null) {
       _json["adsAppearOn"] = adsAppearOn;
     }
@@ -1444,19 +1538,21 @@ class CustomChannelTargetingInfo {
 }
 
 class CustomChannel {
-  /** Code of this custom channel, not necessarily unique across ad clients. */
+  /// Code of this custom channel, not necessarily unique across ad clients.
   core.String code;
-  /**
-   * Unique identifier of this custom channel. This should be considered an
-   * opaque identifier; it is not safe to rely on it being in any particular
-   * format.
-   */
+
+  /// Unique identifier of this custom channel. This should be considered an
+  /// opaque identifier; it is not safe to rely on it being in any particular
+  /// format.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#customChannel. */
+
+  /// Kind of resource this is, in this case adexchangeseller#customChannel.
   core.String kind;
-  /** Name of this custom channel. */
+
+  /// Name of this custom channel.
   core.String name;
-  /** The targeting information of this custom channel, if activated. */
+
+  /// The targeting information of this custom channel, if activated.
   CustomChannelTargetingInfo targetingInfo;
 
   CustomChannel();
@@ -1475,12 +1571,14 @@ class CustomChannel {
       name = _json["name"];
     }
     if (_json.containsKey("targetingInfo")) {
-      targetingInfo = new CustomChannelTargetingInfo.fromJson(_json["targetingInfo"]);
+      targetingInfo =
+          new CustomChannelTargetingInfo.fromJson(_json["targetingInfo"]);
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (code != null) {
       _json["code"] = code;
     }
@@ -1501,16 +1599,17 @@ class CustomChannel {
 }
 
 class CustomChannels {
-  /** ETag of this response for caching purposes. */
+  /// ETag of this response for caching purposes.
   core.String etag;
-  /** The custom channels returned in this list response. */
+
+  /// The custom channels returned in this list response.
   core.List<CustomChannel> items;
-  /** Kind of list this is, in this case adexchangeseller#customChannels. */
+
+  /// Kind of list this is, in this case adexchangeseller#customChannels.
   core.String kind;
-  /**
-   * Continuation token used to page through custom channels. To retrieve the
-   * next page of results, set the next request's "pageToken" value to this.
-   */
+
+  /// Continuation token used to page through custom channels. To retrieve the
+  /// next page of results, set the next request's "pageToken" value to this.
   core.String nextPageToken;
 
   CustomChannels();
@@ -1520,7 +1619,9 @@ class CustomChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new CustomChannel.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new CustomChannel.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1530,8 +1631,9 @@ class CustomChannels {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (etag != null) {
       _json["etag"] = etag;
     }
@@ -1550,22 +1652,26 @@ class CustomChannels {
 
 class Metadata {
   core.List<ReportingMetadataEntry> items;
-  /** Kind of list this is, in this case adexchangeseller#metadata. */
+
+  /// Kind of list this is, in this case adexchangeseller#metadata.
   core.String kind;
 
   Metadata();
 
   Metadata.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new ReportingMetadataEntry.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new ReportingMetadataEntry.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -1577,35 +1683,35 @@ class Metadata {
 }
 
 class PreferredDeal {
-  /** The name of the advertiser this deal is for. */
+  /// The name of the advertiser this deal is for.
   core.String advertiserName;
-  /** The name of the buyer network this deal is for. */
+
+  /// The name of the buyer network this deal is for.
   core.String buyerNetworkName;
-  /**
-   * The currency code that applies to the fixed_cpm value. If not set then
-   * assumed to be USD.
-   */
+
+  /// The currency code that applies to the fixed_cpm value. If not set then
+  /// assumed to be USD.
   core.String currencyCode;
-  /**
-   * Time when this deal stops being active in seconds since the epoch (GMT). If
-   * not set then this deal is valid until manually disabled by the publisher.
-   */
+
+  /// Time when this deal stops being active in seconds since the epoch (GMT).
+  /// If not set then this deal is valid until manually disabled by the
+  /// publisher.
   core.String endTime;
-  /**
-   * The fixed price for this preferred deal. In cpm micros of currency
-   * according to currencyCode. If set, then this preferred deal is eligible for
-   * the fixed price tier of buying (highest priority, pay exactly the
-   * configured fixed price).
-   */
+
+  /// The fixed price for this preferred deal. In cpm micros of currency
+  /// according to currencyCode. If set, then this preferred deal is eligible
+  /// for the fixed price tier of buying (highest priority, pay exactly the
+  /// configured fixed price).
   core.String fixedCpm;
-  /** Unique identifier of this preferred deal. */
+
+  /// Unique identifier of this preferred deal.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#preferredDeal. */
+
+  /// Kind of resource this is, in this case adexchangeseller#preferredDeal.
   core.String kind;
-  /**
-   * Time when this deal becomes active in seconds since the epoch (GMT). If not
-   * set then this deal is active immediately upon creation.
-   */
+
+  /// Time when this deal becomes active in seconds since the epoch (GMT). If
+  /// not set then this deal is active immediately upon creation.
   core.String startTime;
 
   PreferredDeal();
@@ -1637,8 +1743,9 @@ class PreferredDeal {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (advertiserName != null) {
       _json["advertiserName"] = advertiserName;
     }
@@ -1668,24 +1775,28 @@ class PreferredDeal {
 }
 
 class PreferredDeals {
-  /** The preferred deals returned in this list response. */
+  /// The preferred deals returned in this list response.
   core.List<PreferredDeal> items;
-  /** Kind of list this is, in this case adexchangeseller#preferredDeals. */
+
+  /// Kind of list this is, in this case adexchangeseller#preferredDeals.
   core.String kind;
 
   PreferredDeals();
 
   PreferredDeals.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new PreferredDeal.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new PreferredDeal.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (items != null) {
       _json["items"] = items.map((value) => (value).toJson()).toList();
     }
@@ -1697,17 +1808,15 @@ class PreferredDeals {
 }
 
 class ReportHeaders {
-  /**
-   * The currency of this column. Only present if the header type is
-   * METRIC_CURRENCY.
-   */
+  /// The currency of this column. Only present if the header type is
+  /// METRIC_CURRENCY.
   core.String currency;
-  /** The name of the header. */
+
+  /// The name of the header.
   core.String name;
-  /**
-   * The type of the header; one of DIMENSION, METRIC_TALLY, METRIC_RATIO, or
-   * METRIC_CURRENCY.
-   */
+
+  /// The type of the header; one of DIMENSION, METRIC_TALLY, METRIC_RATIO, or
+  /// METRIC_CURRENCY.
   core.String type;
 
   ReportHeaders();
@@ -1724,8 +1833,9 @@ class ReportHeaders {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (currency != null) {
       _json["currency"] = currency;
     }
@@ -1740,37 +1850,33 @@ class ReportHeaders {
 }
 
 class Report {
-  /**
-   * The averages of the report. This is the same length as any other row in the
-   * report; cells corresponding to dimension columns are empty.
-   */
+  /// The averages of the report. This is the same length as any other row in
+  /// the report; cells corresponding to dimension columns are empty.
   core.List<core.String> averages;
-  /**
-   * The header information of the columns requested in the report. This is a
-   * list of headers; one for each dimension in the request, followed by one for
-   * each metric in the request.
-   */
+
+  /// The header information of the columns requested in the report. This is a
+  /// list of headers; one for each dimension in the request, followed by one
+  /// for each metric in the request.
   core.List<ReportHeaders> headers;
-  /** Kind this is, in this case adexchangeseller#report. */
+
+  /// Kind this is, in this case adexchangeseller#report.
   core.String kind;
-  /**
-   * The output rows of the report. Each row is a list of cells; one for each
-   * dimension in the request, followed by one for each metric in the request.
-   * The dimension cells contain strings, and the metric cells contain numbers.
-   */
+
+  /// The output rows of the report. Each row is a list of cells; one for each
+  /// dimension in the request, followed by one for each metric in the request.
+  /// The dimension cells contain strings, and the metric cells contain numbers.
   core.List<core.List<core.String>> rows;
-  /**
-   * The total number of rows matched by the report request. Fewer rows may be
-   * returned in the response due to being limited by the row count requested or
-   * the report row limit.
-   */
+
+  /// The total number of rows matched by the report request. Fewer rows may be
+  /// returned in the response due to being limited by the row count requested
+  /// or the report row limit.
   core.String totalMatchedRows;
-  /**
-   * The totals of the report. This is the same length as any other row in the
-   * report; cells corresponding to dimension columns are empty.
-   */
+
+  /// The totals of the report. This is the same length as any other row in the
+  /// report; cells corresponding to dimension columns are empty.
   core.List<core.String> totals;
-  /** Any warnings associated with generation of the report. */
+
+  /// Any warnings associated with generation of the report.
   core.List<core.String> warnings;
 
   Report();
@@ -1780,7 +1886,9 @@ class Report {
       averages = _json["averages"];
     }
     if (_json.containsKey("headers")) {
-      headers = _json["headers"].map((value) => new ReportHeaders.fromJson(value)).toList();
+      headers = _json["headers"]
+          .map((value) => new ReportHeaders.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1799,8 +1907,9 @@ class Report {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (averages != null) {
       _json["averages"] = averages;
     }
@@ -1827,45 +1936,37 @@ class Report {
 }
 
 class ReportingMetadataEntry {
-  /**
-   * For metrics this is a list of dimension IDs which the metric is compatible
-   * with, for dimensions it is a list of compatibility groups the dimension
-   * belongs to.
-   */
+  /// For metrics this is a list of dimension IDs which the metric is compatible
+  /// with, for dimensions it is a list of compatibility groups the dimension
+  /// belongs to.
   core.List<core.String> compatibleDimensions;
-  /**
-   * The names of the metrics the dimension or metric this reporting metadata
-   * entry describes is compatible with.
-   */
+
+  /// The names of the metrics the dimension or metric this reporting metadata
+  /// entry describes is compatible with.
   core.List<core.String> compatibleMetrics;
-  /**
-   * Unique identifier of this reporting metadata entry, corresponding to the
-   * name of the appropriate dimension or metric.
-   */
+
+  /// Unique identifier of this reporting metadata entry, corresponding to the
+  /// name of the appropriate dimension or metric.
   core.String id;
-  /**
-   * Kind of resource this is, in this case
-   * adexchangeseller#reportingMetadataEntry.
-   */
+
+  /// Kind of resource this is, in this case
+  /// adexchangeseller#reportingMetadataEntry.
   core.String kind;
-  /**
-   * The names of the dimensions which the dimension or metric this reporting
-   * metadata entry describes requires to also be present in order for the
-   * report to be valid. Omitting these will not cause an error or warning, but
-   * may result in data which cannot be correctly interpreted.
-   */
+
+  /// The names of the dimensions which the dimension or metric this reporting
+  /// metadata entry describes requires to also be present in order for the
+  /// report to be valid. Omitting these will not cause an error or warning, but
+  /// may result in data which cannot be correctly interpreted.
   core.List<core.String> requiredDimensions;
-  /**
-   * The names of the metrics which the dimension or metric this reporting
-   * metadata entry describes requires to also be present in order for the
-   * report to be valid. Omitting these will not cause an error or warning, but
-   * may result in data which cannot be correctly interpreted.
-   */
+
+  /// The names of the metrics which the dimension or metric this reporting
+  /// metadata entry describes requires to also be present in order for the
+  /// report to be valid. Omitting these will not cause an error or warning, but
+  /// may result in data which cannot be correctly interpreted.
   core.List<core.String> requiredMetrics;
-  /**
-   * The codes of the projects supported by the dimension or metric this
-   * reporting metadata entry describes.
-   */
+
+  /// The codes of the projects supported by the dimension or metric this
+  /// reporting metadata entry describes.
   core.List<core.String> supportedProducts;
 
   ReportingMetadataEntry();
@@ -1894,8 +1995,9 @@ class ReportingMetadataEntry {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (compatibleDimensions != null) {
       _json["compatibleDimensions"] = compatibleDimensions;
     }
@@ -1922,11 +2024,13 @@ class ReportingMetadataEntry {
 }
 
 class SavedReport {
-  /** Unique identifier of this saved report. */
+  /// Unique identifier of this saved report.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#savedReport. */
+
+  /// Kind of resource this is, in this case adexchangeseller#savedReport.
   core.String kind;
-  /** This saved report's name. */
+
+  /// This saved report's name.
   core.String name;
 
   SavedReport();
@@ -1943,8 +2047,9 @@ class SavedReport {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -1959,16 +2064,17 @@ class SavedReport {
 }
 
 class SavedReports {
-  /** ETag of this response for caching purposes. */
+  /// ETag of this response for caching purposes.
   core.String etag;
-  /** The saved reports returned in this list response. */
+
+  /// The saved reports returned in this list response.
   core.List<SavedReport> items;
-  /** Kind of list this is, in this case adexchangeseller#savedReports. */
+
+  /// Kind of list this is, in this case adexchangeseller#savedReports.
   core.String kind;
-  /**
-   * Continuation token used to page through saved reports. To retrieve the next
-   * page of results, set the next request's "pageToken" value to this.
-   */
+
+  /// Continuation token used to page through saved reports. To retrieve the
+  /// next page of results, set the next request's "pageToken" value to this.
   core.String nextPageToken;
 
   SavedReports();
@@ -1978,7 +2084,9 @@ class SavedReports {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new SavedReport.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new SavedReport.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1988,8 +2096,9 @@ class SavedReports {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (etag != null) {
       _json["etag"] = etag;
     }
@@ -2007,17 +2116,15 @@ class SavedReports {
 }
 
 class UrlChannel {
-  /**
-   * Unique identifier of this URL channel. This should be considered an opaque
-   * identifier; it is not safe to rely on it being in any particular format.
-   */
+  /// Unique identifier of this URL channel. This should be considered an opaque
+  /// identifier; it is not safe to rely on it being in any particular format.
   core.String id;
-  /** Kind of resource this is, in this case adexchangeseller#urlChannel. */
+
+  /// Kind of resource this is, in this case adexchangeseller#urlChannel.
   core.String kind;
-  /**
-   * URL Pattern of this URL channel. Does not include "http://" or "https://".
-   * Example: www.example.com/home
-   */
+
+  /// URL Pattern of this URL channel. Does not include "http://" or "https://".
+  /// Example: www.example.com/home
   core.String urlPattern;
 
   UrlChannel();
@@ -2034,8 +2141,9 @@ class UrlChannel {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (id != null) {
       _json["id"] = id;
     }
@@ -2050,16 +2158,17 @@ class UrlChannel {
 }
 
 class UrlChannels {
-  /** ETag of this response for caching purposes. */
+  /// ETag of this response for caching purposes.
   core.String etag;
-  /** The URL channels returned in this list response. */
+
+  /// The URL channels returned in this list response.
   core.List<UrlChannel> items;
-  /** Kind of list this is, in this case adexchangeseller#urlChannels. */
+
+  /// Kind of list this is, in this case adexchangeseller#urlChannels.
   core.String kind;
-  /**
-   * Continuation token used to page through URL channels. To retrieve the next
-   * page of results, set the next request's "pageToken" value to this.
-   */
+
+  /// Continuation token used to page through URL channels. To retrieve the next
+  /// page of results, set the next request's "pageToken" value to this.
   core.String nextPageToken;
 
   UrlChannels();
@@ -2069,7 +2178,9 @@ class UrlChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new UrlChannel.fromJson(value)).toList();
+      items = _json["items"]
+          .map((value) => new UrlChannel.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2079,8 +2190,9 @@ class UrlChannels {
     }
   }
 
-  core.Map toJson() {
-    var _json = new core.Map();
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
     if (etag != null) {
       _json["etag"] = etag;
     }
