@@ -1,3 +1,17 @@
+## 0.12.26
+
+* The `spawnHybridUri()` function now allows root-relative URLs, which are
+  interpreted as relative to the root of the package.
+
+## 0.12.25
+
+* Add a `override_platforms` configuration field which allows test platforms'
+  settings (such as browsers' executables) to be overridden by the user.
+
+* Add a `define_platforms` configuration field which makes it possible to define
+  new platforms that use the same logic as existing ones but have different
+  settings.
+
 ## 0.12.24+8
 
 * `spawnHybridUri()` now interprets relative URIs correctly in browser tests.
