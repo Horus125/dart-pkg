@@ -1,0 +1,12 @@
+name: unicode
+version: 0.0.10
+author: Andrew Mezoni <andrew.mezoni@gmail.com>
+description: Unicode characters library auto generated from http://www.unicode.org.
+homepage: https://github.com/mezoni/unicode
+dependencies:
+  lists: any
+dev_dependencies:
+  http: any
+  strings: any
+  template_block: any
+  unittest: any

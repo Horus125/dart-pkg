@@ -1,0 +1,12 @@
+name: lists
+version: 0.0.22
+author: Andrew Mezoni <andrew.mezoni@gmail.com>
+description: Collection of the lists (BitList, FilledList, GroupedRangeList, ListPointer, RangeList, SparseBoolList, SparseList, StepList, WrappedList).
+homepage: https://github.com/mezoni/lists
+dev_dependencies:
+  build_tools: any
+  test: any
+
+transformers:
+- test/pub_serve:
+    $include: test/**_test.dart
