@@ -181,7 +181,11 @@ class _FakeAsync implements FakeAsync {
     if (_zone == null) {
       _zone = Zone.current.fork(specification: _zoneSpec);
     }
-    return _zone.runGuarded(() => callback(this));
+    var result;
+    _zone.runGuarded(() {
+      result = callback(this);
+    });
+    return result;
   }
 
   Zone _zone;
@@ -207,7 +211,7 @@ class _FakeAsync implements FakeAsync {
         _microtasks.add(microtask);
       });
 
-  _drainTimersWhile(bool predicate(_FakeTimer)) {
+  _drainTimersWhile(bool predicate(_FakeTimer timer)) {
     _drainMicrotasks();
     _FakeTimer next;
     while ((next = _getNextTimer()) != null && predicate(next)) {

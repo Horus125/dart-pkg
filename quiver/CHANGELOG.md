@@ -1,3 +1,18 @@
+#### 0.26.0 - 2017-11-01
+   * BREAKING CHANGE: eliminated deprecated `flip`. Replaced by `reverse` in
+     0.25.0.
+   * BREAKING CHANGE: eliminated deprecated `repeat`. Deprecated in 0.25.0.
+     Callers should use `String`'s `*` operator.
+   * Deprecated: `reverse` in the `strings` library. No replacement is
+     provided.
+   * Deprecated: `createTimer`, `createTimerPeriodic` in the `async` library.
+     These were originally written to support FakeTimer, which is superseded
+     by FakeAsync.
+   * New: Added `isLeapYear`, `daysInMonth`, `clampDayOfMonth` APIs in the
+     `time` library.
+   * Multimap is now backed by a LinkedHashMap rather than HashMap.
+   * Multimap: added `contains` to know if an association key/value exists.
+
 #### 0.25.0 - 2017-03-28
    * BREAKING CHANGE: minimum SDK constraint increased to 1.21.0. This allows
      use of async-await and generic function in Quiver.
@@ -35,10 +50,10 @@
    * Fix: `fake_async.dart` timers are now active while executing the callback
 
 #### 0.21.4 - 2015-05-15
-   * Add stats reporting for fake async tests. You can query the number of 
-     pending microtasks and timers via `microtaskCount`, `periodicTimerCount`, 
+   * Add stats reporting for fake async tests. You can query the number of
+     pending microtasks and timers via `microtaskCount`, `periodicTimerCount`,
      `nonPeriodicTimerCount`.
-                                         
+
 #### 0.21.3+1 - 2015-05-11
    * Switch from unittest to test.
 
