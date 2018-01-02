@@ -1,5 +1,5 @@
 name: quiver
-version: 0.26.0
+version: 0.26.2
 authors:
 - Justin Fagnani <justinfagnani@google.com>
 - Yegor Jbanov <yjbanov@google.com>
@@ -12,6 +12,7 @@ authors:
 - Sean Eagan <seaneagan1@gmail.com>
 - Victor Berchet <victor@suumit.com>
 - Wil Pirino <willyp@google.com>
+- Adam Lofts <adam.lofts@gmail.com>
 description: A set of utility libraries for Dart
 homepage: https://github.com/google/quiver-dart
 environment:

@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library markdown.block_parser;
-
 import 'ast.dart';
 import 'document.dart';
 import 'util.dart';
@@ -18,7 +16,7 @@ final _setextPattern = new RegExp(r'^[ ]{0,3}(=+|-+)\s*$');
 ///
 /// Starts with 1-6 unescaped `#` characters which must not be followed by a
 /// non-space character. Line may end with any number of `#` characters,.
-final _headerPattern = new RegExp(r'^(#{1,6})[ \x09\x0b\x0c](.*?)#*$');
+final _headerPattern = new RegExp(r'^ {0,3}(#{1,6})[ \x09\x0b\x0c](.*?)#*$');
 
 /// The line starts with `>` with one optional space after.
 final _blockquotePattern = new RegExp(r'^[ ]{0,3}>[ ]?(.*)$');
@@ -223,7 +221,7 @@ class SetextHeaderSyntax extends BlockSyntax {
 
   bool canParse(BlockParser parser) {
     if (!_interperableAsParagraph(parser.current)) return false;
-    int i = 1;
+    var i = 1;
     while (true) {
       var nextLine = parser.peek(i);
       if (nextLine == null) {
@@ -243,7 +241,7 @@ class SetextHeaderSyntax extends BlockSyntax {
 
   Node parse(BlockParser parser) {
     var lines = <String>[];
-    var tag;
+    String tag;
     while (!parser.isDone) {
       var match = _setextPattern.firstMatch(parser.current);
       if (match == null) {
@@ -264,14 +262,15 @@ class SetextHeaderSyntax extends BlockSyntax {
     return new Element(tag, [contents]);
   }
 
-  bool _interperableAsParagraph(line) => !(_indentPattern.hasMatch(line) ||
-      _codePattern.hasMatch(line) ||
-      _headerPattern.hasMatch(line) ||
-      _blockquotePattern.hasMatch(line) ||
-      _hrPattern.hasMatch(line) ||
-      _ulPattern.hasMatch(line) ||
-      _olPattern.hasMatch(line) ||
-      _emptyPattern.hasMatch(line));
+  bool _interperableAsParagraph(String line) =>
+      !(_indentPattern.hasMatch(line) ||
+          _codePattern.hasMatch(line) ||
+          _headerPattern.hasMatch(line) ||
+          _blockquotePattern.hasMatch(line) ||
+          _hrPattern.hasMatch(line) ||
+          _ulPattern.hasMatch(line) ||
+          _olPattern.hasMatch(line) ||
+          _emptyPattern.hasMatch(line));
 }
 
 /// Parses setext-style headers, and adds generated IDs to the generated
@@ -396,7 +395,7 @@ class CodeBlockSyntax extends BlockSyntax {
     childLines.add('');
 
     // Escape the code.
-    var escaped = escapeHtmlImpl(childLines.join('\n'));
+    var escaped = escapeHtml(childLines.join('\n'));
 
     return new Element('pre', [new Element.text('code', escaped)]);
   }
@@ -442,7 +441,7 @@ class FencedCodeBlockSyntax extends BlockSyntax {
     childLines.add('');
 
     // Escape the code.
-    var escaped = escapeHtmlImpl(childLines.join('\n'));
+    var escaped = escapeHtml(childLines.join('\n'));
 
     var code = new Element.text('code', escaped);
 
@@ -487,7 +486,7 @@ abstract class BlockHtmlSyntax extends BlockSyntax {
 }
 
 class BlockTagBlockHtmlSyntax extends BlockHtmlSyntax {
-  RegExp get pattern => new RegExp(
+  static final _pattern = new RegExp(
       r'^ {0,3}</?(?:address|article|aside|base|basefont|blockquote|body|'
       r'caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|'
       r'figcaption|figure|footer|form|frame|frameset|h1|head|header|hr|html|'
@@ -495,6 +494,8 @@ class BlockTagBlockHtmlSyntax extends BlockHtmlSyntax {
       r'option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|'
       'title|tr|track|ul)'
       r'(?:\s|>|/>|$)');
+
+  RegExp get pattern => _pattern;
 
   const BlockTagBlockHtmlSyntax();
 
@@ -521,7 +522,7 @@ class OtherTagBlockHtmlSyntax extends BlockTagBlockHtmlSyntax {
   // * some word characters
   // * either:
   //   * a close bracket, or
-  //   * whitespace followed by not-brackets follwed by a close bracket
+  //   * whitespace followed by not-brackets followed by a close bracket
   // * possible whitespace and the end of the line.
   RegExp get pattern => new RegExp(r'^ {0,3}</?\w+(?:>|\s+[^>]*>)\s*$');
 
@@ -533,14 +534,12 @@ class OtherTagBlockHtmlSyntax extends BlockTagBlockHtmlSyntax {
 /// In practice this means that the syntax dominates; it is allowed to eat
 /// many lines, including blank lines, before matching its `endPattern`.
 class LongBlockHtmlSyntax extends BlockHtmlSyntax {
-  final RegExp _pattern;
+  final RegExp pattern;
   final RegExp _endPattern;
 
-  LongBlockHtmlSyntax(pattern, endPattern)
-      : _pattern = new RegExp(pattern),
+  LongBlockHtmlSyntax(String pattern, String endPattern)
+      : pattern = new RegExp(pattern),
         _endPattern = new RegExp(endPattern);
-
-  RegExp get pattern => _pattern;
 
   Node parse(BlockParser parser) {
     var childLines = <String>[];
@@ -634,14 +633,14 @@ abstract class ListSyntax extends BlockSyntax {
         listMarker = marker;
         var markerAsSpaces = ' ' * (digits.length + marker.length);
         if (isBlank) {
-          // See http://spec.commonmark.org/0.27/#list-items under "3. Item
+          // See http://spec.commonmark.org/0.28/#list-items under "3. Item
           // starting with a blank line."
           //
           // If the list item starts with a blank line, the final piece of the
           // indentation is just a single space.
           indent = precedingWhitespace + markerAsSpaces + ' ';
         } else if (restWhitespace.length >= 4) {
-          // See http://spec.commonmark.org/0.27/#list-items under "2. Item
+          // See http://spec.commonmark.org/0.28/#list-items under "2. Item
           // starting with indented code."
           //
           // If the list item starts with indented code, we need to _not_ count
@@ -689,7 +688,7 @@ abstract class ListSyntax extends BlockSyntax {
     }
 
     // Must strip paragraph tags if the list is "tight".
-    // http://spec.commonmark.org/0.27/#lists
+    // http://spec.commonmark.org/0.28/#lists
     var listIsTight = !anyEmptyLines && !anyEmptyLinesBetweenBlocks;
 
     if (listIsTight) {
@@ -722,7 +721,7 @@ abstract class ListSyntax extends BlockSyntax {
 
   /// Removes any trailing empty lines and notes whether any items are separated
   /// by such lines.
-  bool removeTrailingEmptyLines(List items) {
+  bool removeTrailingEmptyLines(List<ListItem> items) {
     var anyEmpty = false;
     for (var i = 0; i < items.length; i++) {
       if (items[i].lines.length == 1) continue;
@@ -802,21 +801,23 @@ class TableSyntax extends BlockSyntax {
     }).toList();
   }
 
-  Node parseRow(BlockParser parser, List<String> alignments, String cellType) {
+  Element parseRow(
+      BlockParser parser, List<String> alignments, String cellType) {
     var line = parser.current
         .replaceFirst(_openingPipe, '')
         .replaceFirst(_closingPipe, '');
     var cells = line.split(_pipePattern);
     parser.advance();
-    var row = <Element>[], precell;
+    var row = <Element>[];
+    String preCell;
 
-    for (String cell in cells) {
-      if (precell != null) {
-        cell = precell + cell;
-        precell = null;
+    for (var cell in cells) {
+      if (preCell != null) {
+        cell = preCell + cell;
+        preCell = null;
       }
       if (cell.endsWith('\\')) {
-        precell = cell.substring(0, cell.length - 1) + '|';
+        preCell = cell.substring(0, cell.length - 1) + '|';
         continue;
       }
 
@@ -871,7 +872,7 @@ class ParagraphSyntax extends BlockSyntax {
     bool lineStartsReflinkDefinition(int i) =>
         lines[i].startsWith(_reflinkDefinitionStart);
 
-    int i = 0;
+    var i = 0;
     loopOverDefinitions:
     while (true) {
       // Check for reflink definitions.
@@ -955,7 +956,7 @@ class ParagraphSyntax extends BlockSyntax {
         // Leading indentation.
         r'''^[ ]{0,3}'''
         // Reference id in brackets, and URL.
-        r'''\[([^\]]+)\]:\s+(?:<(\S+)>|(\S+))\s*'''
+        r'''\[((?:\\\]|[^\]])+)\]:\s*(?:<(\S+)>|(\S+))\s*'''
         // Title in double or single quotes, or parens.
         r'''("[^"]+"|'[^']+'|\([^)]+\)|)\s*$''',
         multiLine: true);

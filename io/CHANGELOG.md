@@ -1,3 +1,27 @@
+## 0.3.1
+
+- Added `SharedStdIn.nextLine` (similar to `readLineSync`) and `lines`:
+
+```dart
+main() async {
+  // Prints the first line entered on stdin.
+  print(await sharedStdIn.nextLine());
+  
+  // Prints all remaining lines.
+  await for (final line in sharedStdIn.lines) {
+    print(line);
+  }
+}
+```
+
+- Added a `copyPath` and `copyPathSync` function, similar to `cp -R`.
+
+- Added a dependency on `package:path`.
+
+- Added the remaining missing arguments to `ProcessManager.spawnX` which
+  forward to `Process.start`. It is now an interchangeable function for running
+  a process.
+
 ## 0.3.0
 
 - **BREAKING CHANGE**: The `arguments` argument to `ProcessManager.spawn` is
@@ -5,7 +29,9 @@
   built-in `Process.start`, and easier to use as a drop in replacement:
 
 ```dart
-processManager.spawn('dart', ['--version']);
+main() {
+  processManager.spawn('dart', ['--version']);
+}
 ```
 
 - Fixed a bug where processes created from `ProcessManager.spawn` could not

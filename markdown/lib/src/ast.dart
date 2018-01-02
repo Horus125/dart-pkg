@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library markdown.src.ast;
-
 typedef Node Resolver(String name);
 
 /// Base class for any AST item.
@@ -45,7 +43,9 @@ class Element implements Node {
 
   void accept(NodeVisitor visitor) {
     if (visitor.visitElementBefore(this)) {
-      for (var child in children) child.accept(visitor);
+      if (children != null) {
+        for (var child in children) child.accept(visitor);
+      }
       visitor.visitElementAfter(this);
     }
   }

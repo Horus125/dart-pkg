@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library markdown.src.html_renderer;
-
 import 'dart:collection';
 
 import 'ast.dart';
@@ -107,8 +105,8 @@ class HtmlRenderer implements NodeVisitor {
       return id;
     }
 
-    int suffix = 2;
-    String suffixedId = '$id-$suffix';
+    var suffix = 2;
+    var suffixedId = '$id-$suffix';
     while (uniqueIds.contains(suffixedId)) {
       suffixedId = '$id-${suffix++}';
     }

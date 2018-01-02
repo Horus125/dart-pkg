@@ -1,3 +1,22 @@
+## 1.1.1
+
+* Add support for GitHub's colon-based Emoji syntax. :tada:! This is available
+  in the `gitHubWeb` extension set.
+
+## 1.1.0
+
+* Make the constructor for ExtensionSet public, for tools like dartdoc.
+* Split the `gitHub` ExtensionSet into two sets: `gitHubFlavored`, which
+  represents the GitHub Flavored Markdown spec, and `gitHubWeb`, which
+  represents what GitHub actually renders Markdown.
+
+## 1.0.0
+
+* Fix issue where `accept` could cause an exception.
+* Remove deprecated `escapeHtml` function.
+* Fix compliance with auto-links, including support for email addresses.
+* Updated `ExtensionSet.gitHub` to more closely align with GitHub markdown.
+
 ## 0.11.4
 
 * Fix bug with lazy blockquote continuations (#162)

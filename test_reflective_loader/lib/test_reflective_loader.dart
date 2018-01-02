@@ -223,14 +223,28 @@ Future _invokeSymbolIfExists(InstanceMirror instanceMirror, Symbol symbol) {
  * This properly handles the following cases:
  * - The test fails by throwing an exception
  * - The test returns a future which completes with an error.
- *
- * However, it does not handle the case where the test creates an asynchronous
- * callback using expectAsync(), and that callback generates a failure.
+ * - An exception is thrown to the zone handler from a timer task.
  */
 Future _runFailingTest(ClassMirror classMirror, Symbol symbol) {
-  return new Future(() => _runTest(classMirror, symbol)).then((_) {
-    test_package.fail('Test passed - expected to fail.');
-  }, onError: (_) {});
+  bool passed = false;
+  return runZoned(() {
+    return new Future.sync(() => _runTest(classMirror, symbol)).then((_) {
+      passed = true;
+      test_package.fail('Test passed - expected to fail.');
+    }).catchError((e) {
+      // if passed, and we call fail(), rethrow this exception
+      if (passed) {
+        throw e;
+      }
+      // otherwise, an exception is not a failure for _runFailingTest
+    });
+  }, onError: (e) {
+    // if passed, and we call fail(), rethrow this exception
+    if (passed) {
+      throw e;
+    }
+    // otherwise, an exception is not a failure for _runFailingTest
+  });
 }
 
 _runTest(ClassMirror classMirror, Symbol symbol) {

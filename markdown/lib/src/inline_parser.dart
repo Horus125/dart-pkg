@@ -2,10 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library markdown.src.inline_parser;
-
 import 'ast.dart';
 import 'document.dart';
+import 'emojis.dart';
 import 'util.dart';
 
 /// Maintains the internal state needed to parse inline span elements in
@@ -13,6 +12,7 @@ import 'util.dart';
 class InlineParser {
   static final List<InlineSyntax> _defaultSyntaxes =
       new List<InlineSyntax>.unmodifiable(<InlineSyntax>[
+    new EmailAutolinkSyntax(),
     new AutolinkSyntax(),
     new LineBreakSyntax(),
     new LinkSyntax(),
@@ -244,14 +244,34 @@ class InlineHtmlSyntax extends TextSyntax {
   InlineHtmlSyntax() : super(r'<[/!?]?[A-Za-z][A-Za-z0-9-]*(?: [^>]*)?>');
 }
 
-/// Matches autolinks like `<http://foo.com>`.
-class AutolinkSyntax extends InlineSyntax {
-  AutolinkSyntax() : super(r'<(([a-zA-Z][a-zA-Z\-\+\.]+):(?://)?[^>]*)>');
+/// Matches autolinks like `<foo@bar.example.com>`.
+///
+/// See <http://spec.commonmark.org/0.28/#email-address>.
+class EmailAutolinkSyntax extends InlineSyntax {
+  static final _email =
+      r'''[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}'''
+      r'''[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*''';
+
+  EmailAutolinkSyntax() : super('<($_email)>');
 
   bool onMatch(InlineParser parser, Match match) {
     var url = match[1];
-    var anchor = new Element.text('a', escapeHtmlImpl(url));
-    anchor.attributes['href'] = url;
+    var anchor = new Element.text('a', escapeHtml(url));
+    anchor.attributes['href'] = Uri.encodeFull('mailto:$url');
+    parser.addNode(anchor);
+
+    return true;
+  }
+}
+
+/// Matches autolinks like `<http://foo.com>`.
+class AutolinkSyntax extends InlineSyntax {
+  AutolinkSyntax() : super(r'<(([a-zA-Z][a-zA-Z\-\+\.]+):(?://)?[^\s>]*)>');
+
+  bool onMatch(InlineParser parser, Match match) {
+    var url = match[1];
+    var anchor = new Element.text('a', escapeHtml(url));
+    anchor.attributes['href'] = Uri.encodeFull(url);
     parser.addNode(anchor);
 
     return true;
@@ -289,7 +309,7 @@ class LinkSyntax extends TagSyntax {
   /// This handles both reference-style and inline-style links as well as
   /// optional titles for inline links. To make that a bit more palatable, this
   /// breaks it into pieces.
-  static String get linkPattern {
+  static String get _linkPattern {
     var refLink = r'\[([^\]]*)\]'; // `[id]` reflink id.
     var title = r'(?:\s*"([^"]+?)"\s*|)'; // Optional title in quotes.
     var inlineLink = '\\((\\S*?)$title\\)'; // `(url "title")` link.
@@ -304,7 +324,7 @@ class LinkSyntax extends TagSyntax {
   }
 
   LinkSyntax({this.linkResolver, String pattern: r'\['})
-      : super(pattern, end: linkPattern);
+      : super(pattern, end: _linkPattern);
 
   Node createNode(InlineParser parser, Match match, TagState state) {
     if (match[1] == null) {
@@ -339,9 +359,9 @@ class LinkSyntax extends TagSyntax {
 
     var element = new Element('a', state.children);
 
-    element.attributes["href"] = escapeHtmlImpl(link.url);
+    element.attributes["href"] = escapeHtml(link.url);
     if (link.title != null) {
-      element.attributes['title'] = escapeHtmlImpl(link.title);
+      element.attributes['title'] = escapeHtml(link.title);
     }
 
     return element;
@@ -364,9 +384,9 @@ class LinkSyntax extends TagSyntax {
 
       return new Link(null, url, title);
     } else {
-      var id;
+      String id;
       String _contents() {
-        int offset = pattern.pattern.length - 1;
+        var offset = pattern.pattern.length - 1;
         return parser.source.substring(state.startPos + offset, parser.pos);
       }
 
@@ -408,11 +428,11 @@ class ImageSyntax extends LinkSyntax {
     var link = getLink(parser, match, state);
     if (link == null) return null;
     var image = new Element.empty("img");
-    image.attributes["src"] = escapeHtmlImpl(link.url);
+    image.attributes["src"] = escapeHtml(link.url);
     image.attributes["alt"] = state?.textContent ?? '';
 
     if (link.title != null) {
-      image.attributes["title"] = escapeHtmlImpl(link.title);
+      image.attributes["title"] = escapeHtml(link.title);
     }
 
     return image;
@@ -424,7 +444,7 @@ class CodeSyntax extends InlineSyntax {
   // This pattern matches:
   //
   // * a string of backticks (not followed by any more), followed by
-  // * a non-greedy string of anying, including newlines, ending with anything
+  // * a non-greedy string of anything, including newlines, ending with anything
   //   except a backtick, followed by
   // * a string of backticks the same length as the first, not followed by any
   //   more.
@@ -455,7 +475,30 @@ class CodeSyntax extends InlineSyntax {
   }
 
   bool onMatch(InlineParser parser, Match match) {
-    parser.addNode(new Element.text('code', escapeHtmlImpl(match[2].trim())));
+    parser.addNode(new Element.text('code', escapeHtml(match[2].trim())));
+    return true;
+  }
+}
+
+/// Matches GitHub Markdown emoji syntax like `:smile:`.
+///
+/// There is no formal specification of GitHub's support for this colon-based
+/// emoji support, so this syntax is based on the results of Markdown-enabled
+/// text fields at github.com.
+class EmojiSyntax extends InlineSyntax {
+  // Emoji "aliases" are mostly limited to lower-case letters, numbers, and
+  // underscores, but GitHub also supports `:+1:` and `:-1:`.
+  EmojiSyntax() : super(':([a-z0-9_+-]+):');
+
+  bool onMatch(InlineParser parser, Match match) {
+    var alias = match[1];
+    var emoji = emojis[alias];
+    if (emoji == null) {
+      parser.advanceBy(1);
+      return false;
+    }
+    parser.addNode(new Text(emoji));
+
     return true;
   }
 }

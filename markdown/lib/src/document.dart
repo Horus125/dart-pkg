@@ -1,4 +1,6 @@
-library markdown.src.document;
+// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 
 import 'ast.dart';
 import 'block_parser.dart';
@@ -31,7 +33,7 @@ class Document {
 
   /// Parses the given [lines] of Markdown to a series of AST nodes.
   List<Node> parseLines(List<String> lines) {
-    List<Node> nodes = new BlockParser(lines, this).parseLines();
+    var nodes = new BlockParser(lines, this).parseLines();
     _parseInlineContent(nodes);
     return nodes;
   }
@@ -40,10 +42,10 @@ class Document {
   List<Node> parseInline(String text) => new InlineParser(text, this).parse();
 
   void _parseInlineContent(List<Node> nodes) {
-    for (int i = 0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
       if (node is UnparsedContent) {
-        List<Node> inlineNodes = parseInline(node.textContent);
+        var inlineNodes = parseInline(node.textContent);
         nodes.removeAt(i);
         nodes.insertAll(i, inlineNodes);
         i += inlineNodes.length - 1;

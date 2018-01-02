@@ -1,125 +1,156 @@
 import 'dart:convert' show JSON;
-import 'dart:io' show Directory, File, Process;
+import 'dart:io' show Directory, File, Process, exitCode;
 
 import 'package:args/args.dart' show ArgParser;
 import 'package:path/path.dart' show absolute;
 import 'package:yaml/yaml.dart' show loadYaml;
 
-int main(List<String> arguments) {
-  const dartdocDir = 'dartdoc-dir';
-  const markdownBefore = 'before';
-  const markdownAfter = 'after';
-  const sdk = 'sdk';
-  const help = 'help';
+const _dartdocDir = 'dartdoc-dir';
+const _markdownBefore = 'before';
+const _markdownAfter = 'after';
+const _sdk = 'sdk';
+const _help = 'help';
+
+void main(List<String> arguments) {
   final parser = new ArgParser()
     ..addSeparator("Usage: dartdoc-compare.dart [OPTIONS] <dart-package>")
-    ..addOption(dartdocDir, help: "Directory of the dartdoc package")
-    ..addOption(markdownBefore, help: "Markdown package 'before' ref")
-    ..addOption(markdownAfter,
+    ..addOption(_dartdocDir, help: "Directory of the dartdoc package")
+    ..addOption(_markdownBefore, help: "Markdown package 'before' ref")
+    ..addOption(_markdownAfter,
         defaultsTo: "HEAD", help: "Markdown package 'after' ref")
-    ..addFlag(sdk,
+    ..addFlag(_sdk,
         defaultsTo: false, negatable: false, help: "Is the package the SDK?")
-    ..addFlag(help, abbr: "h", hide: true);
-  var options = parser.parse(arguments);
-  if (options[help]) {
-    print(parser.usage);
-    return 0;
-  }
-  if (options[dartdocDir] == null || options[markdownBefore] == null) {
-    print(
-        "Invalid arguments: Options --$dartdocDir and --$markdownBefore must be specified");
-    print(parser.usage);
-    return 1;
-  }
-  var comparer = new DartdocCompare()
-    ..dartdoc_dir = options[dartdocDir]
-    ..markdown_before = options[markdownBefore]
-    ..markdown_after = options[markdownAfter]
-    ..dartdoc_bin = absolute(options[dartdocDir], "bin/dartdoc.dart")
-    ..dartdoc_pubspec_path = absolute(options[dartdocDir], "pubspec.yaml")
-    ..sdk = options[sdk];
+    ..addFlag(_help, abbr: "h", hide: true);
 
-  var package = options.rest.first;
-  var success = comparer.compare(package);
-  return success ? 0 : 1;
+  var options = parser.parse(arguments);
+  if (options[_help] as bool) {
+    print(parser.usage);
+    exitCode = 0;
+    return;
+  }
+  if (options[_dartdocDir] == null || options[_markdownBefore] == null) {
+    print(
+        "Invalid arguments: Options --$_dartdocDir and --$_markdownBefore must be specified");
+    print(parser.usage);
+    exitCode = 1;
+    return;
+  }
+  var comparer = new DartdocCompare(
+      options[_dartdocDir] as String,
+      options[_markdownBefore] as String,
+      options[_markdownAfter] as String,
+      absolute(options[_dartdocDir] as String, "bin/dartdoc.dart"),
+      absolute(options[_dartdocDir] as String, "pubspec.yaml"),
+      options[_sdk] as bool);
+
+  String path;
+  if (comparer.sdk) {
+    if (options.rest.isNotEmpty) {
+      path = options.rest.single;
+    }
+  } else {
+    path = options.rest.single;
+  }
+
+  if (comparer.compare(path)) {
+    exitCode = 0;
+  } else {
+    exitCode = 1;
+  }
 }
 
 class DartdocCompare {
-  String dartdoc_dir;
-  String markdown_before;
-  String markdown_after;
-  String dartdoc_bin;
-  String dartdoc_pubspec_path;
-  bool sdk;
+  final String dartdocDir;
+  final String markdownBefore;
+  final String markdownAfter;
+  final String dartdocBin;
+  final String dartdocPubspecPath;
+  final bool sdk;
 
-  bool compare(package) {
+  DartdocCompare(this.dartdocDir, this.markdownBefore, this.markdownAfter,
+      this.dartdocBin, this.dartdocPubspecPath, this.sdk);
+
+  bool compare(String package) {
     // Generate docs with Markdown "A".
-    var out_before = run_dartdoc(markdown_before, package);
+    var outBefore = _runDartdoc(markdownBefore, package);
 
     // Generate docs with Markdown "B".
-    var out_after = run_dartdoc(markdown_after, package);
+    var outAfter = _runDartdoc(markdownAfter, package);
 
     // Compare outputs
-    var diffOptions = ["-r", "-B", out_before, out_after];
+    var diffOptions = ["-r", "-B", outBefore, outAfter];
     var result = Process.runSync("diff", diffOptions, runInShell: true);
-    var nlines = "\n".allMatches(result.stdout).length;
-    print("Diff lines: ${ nlines }");
+    var nlines = "\n".allMatches(result.stdout as String).length;
+    print("Diff lines: $nlines");
     print("diff ${diffOptions.join(" ")}");
     return result.exitCode == 0;
   }
 
-  String run_dartdoc(markdown_ref, package) {
+  String _runDartdoc(String markdownRef, String path) {
     print("==========================================================");
-    print("Running dartdoc for ${markdown_ref}...");
+    print("Running dartdoc for $markdownRef...");
     print("==========================================================");
-    doInPath(dartdoc_dir, () => update_dartdoc_pubspec(markdown_ref));
-    return doInPath(package, () {
-      if (!sdk) system('pub', ['get']);
+    _doInPath(dartdocDir, () => _updateDartdocPubspec(markdownRef));
+    return _doInPath(path, () {
+      if (!sdk) {
+        _system('pub', ['get']);
+      }
       var out = Directory.systemTemp
-          .createTempSync("dartdoc-compare-${markdown_ref}__");
-      var sdk_options =
-          sdk ? ["--sdk-docs", "--dart-sdk=$package"] : <String>[];
+          .createTempSync("dartdoc-compare-${markdownRef}__");
       var cmd = "dart";
-      var args = ["${dartdoc_bin}", "--output=${out.path}"]
-        ..addAll(sdk_options);
+      var args = ["$dartdocBin", "--output=${out.path}"];
+
+      if (sdk) {
+        args.add('--sdk-docs');
+
+        if (path != null) {
+          args.add("--dart-sdk=$path");
+        }
+      }
+
       print("Command: $cmd ${args.join(" ")}");
-      system(cmd, args);
+      _system(cmd, args);
       print("");
 
       return out.path;
     });
   }
 
-  int update_dartdoc_pubspec(markdown_ref) {
-    var dartdoc_pubspec =
-        loadYaml(new File(dartdoc_pubspec_path).readAsStringSync());
+  int _updateDartdocPubspec(String markdownRef) {
+    var dartdocPubspec =
+        loadYaml(new File(dartdocPubspecPath).readAsStringSync()) as Map;
     // make modifiable copy
-    dartdoc_pubspec = JSON.decode(JSON.encode(dartdoc_pubspec));
+    dartdocPubspec = JSON.decode(JSON.encode(dartdocPubspec)) as Map;
 
-    dartdoc_pubspec['dependencies']['markdown'] = {
+    dartdocPubspec['dependencies']['markdown'] = {
       'git': {
         'url': 'git://github.com/dart-lang/markdown.git',
-        'ref': markdown_ref
+        'ref': markdownRef
       }
     };
 
-    new File(dartdoc_pubspec_path)
-        .writeAsStringSync(JSON.encode(dartdoc_pubspec));
-    return system('pub', ['get']);
+    new File(dartdocPubspecPath).writeAsStringSync(JSON.encode(dartdocPubspec));
+    return _system('pub', ['get']);
+  }
+}
+
+int _system(String cmd, List<String> args) {
+  var result = Process.runSync(cmd, args);
+  print(result.stdout);
+  print(result.stderr);
+  return result.exitCode;
+}
+
+T _doInPath<T>(String path, T f()) {
+  if (path == null) {
+    return f();
   }
 
-  static int system(String cmd, List<String> args) {
-    var result = Process.runSync(cmd, args);
-    print(result.stdout);
-    print(result.stderr);
-    return result.exitCode;
-  }
-
-  static Object doInPath(String path, Function f) {
-    var former = Directory.current.path;
-    Directory.current = path;
-    var result = f();
+  var former = Directory.current.path;
+  Directory.current = path;
+  try {
+    return f();
+  } finally {
     Directory.current = former;
-    return result;
   }
 }

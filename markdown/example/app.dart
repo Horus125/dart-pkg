@@ -25,14 +25,14 @@ md.ExtensionSet extensionSet;
 final extensionSets = {
   'basic-radio': md.ExtensionSet.none,
   'commonmark-radio': md.ExtensionSet.commonMark,
-  'gfm-radio': md.ExtensionSet.gitHub,
+  'gfm-radio': md.ExtensionSet.gitHubWeb,
 };
 
 void main() {
   versionSpan.text = 'v${md.version}';
   markdownInput.onKeyUp.listen(_renderMarkdown);
 
-  String savedMarkdown = window.localStorage['markdown'];
+  var savedMarkdown = window.localStorage['markdown'];
 
   if (savedMarkdown != null &&
       savedMarkdown.isNotEmpty &&

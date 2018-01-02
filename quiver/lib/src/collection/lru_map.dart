@@ -197,7 +197,9 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
   V remove(Object key) {
     final entry = _entries.remove(key);
     if (entry != null) {
-      if (entry == _head) {
+      if (entry == _head && entry == _tail) {
+        _head = _tail = null;
+      } else if (entry == _head) {
         _head = _head.next;
       } else if (entry == _tail) {
         _tail.previous.next = null;
@@ -215,6 +217,11 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
 
   /// Moves [entry] to the MRU position, shifting the linked list if necessary.
   void _promoteEntry(_LinkedEntry<K, V> entry) {
+    // If this entry is already in the MRU position we are done.
+    if (entry == _head) {
+      return;
+    }
+
     if (entry.previous != null) {
       // If already existed in the map, link previous to next.
       entry.previous.next = entry.next;
@@ -223,6 +230,10 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
       if (_tail == entry) {
         _tail = entry.previous;
       }
+    }
+    // If this entry is not the end of the list then link the next entry to the previous entry.
+    if (entry.next != null) {
+      entry.next.previous = entry.previous;
     }
 
     // Replace head with this element.

@@ -54,7 +54,7 @@ void main() {
 }
 ```
 
-### Extension Sets
+### Extension sets
 
 To make extension management easy, you can also just specify an extension set.
 Both `markdownToHtml()` and `new Document()` accept an `extensionSet` named
@@ -69,14 +69,15 @@ parameter. Right now there are two extension sets:
   * `new InlineHtmlSyntax()`
   * `const FencedCodeBlockSyntax()`
 
-* `ExtensionSet.gitHub` includes five extensions:
+* `ExtensionSet.gitHubWeb` includes six extensions:
 
+  * `new EmojiSyntax()`
   * `new InlineHtmlSyntax()`
-  * `const FencedCodeBlockSyntax()`
   * `const HeaderWithIdSyntax()`, which adds `id` attributes to ATX-style
     headers, for easy intra-document linking.
   * `const SetextHeaderWithIdSyntax()`, which adds `id` attributes to
     Setext-style headers, for easy intra-document linking.
+  * `const FencedCodeBlockSyntax()`
   * `const TableSyntax()`
 
 ### Custom syntax extensions
@@ -91,8 +92,9 @@ void main() {
   print(markdownToHtml('nyan', inlineSyntaxes: syntaxes));
   //=> <p>~=[,,_,,]:3</p>
 }
+```
 
-### HTML Sanitization
+### HTML sanitization
 
 This package offers no features in the way of HTML sanitization. Read Estevão
 Soares dos Santos's great article, ["Markdown's XSS Vulnerability (and how to
@@ -100,7 +102,6 @@ mitigate it)"], to learn more.
 
 The authors recommend that you perform any necessary sanitization on the
 resulting HTML, for example via `dart:html`'s [NodeValidator].
-```
 
 ### CommonMark compliance
 
@@ -121,20 +122,21 @@ compliance with [CommonMark].
  1. Check out the [CommonMark source]. Make sure you checkout a *major* release.
  2. Dump the test output overwriting the existing tests file.
 
-    ``` terminal
-    /path/to/common_mark_dir> python3 test/spec_tests.py --dump-tests \
-      > /path/to/markdown.dart/tool/common_mark_tests.json
+    ```console
+    > cd /path/to/common_mark_dir
+    > python3 test/spec_tests.py --dump-tests \
+      /path/to/markdown.dart/tool/common_mark_tests.json
     ```
 
  3. Update the stats files as described above. Note any changes in the results.
  4. Update any references to the existing spec by search for
-    `http://spec.commonmark.org/0.27` in the repository. (Including this one.)
+    `http://spec.commonmark.org/0.28` in the repository. (Including this one.)
     Verify the updated links are still valid.
  5. Commit changes, including a corresponding note in `CHANGELOG.md`.
 
 [Perl Markdown]: http://daringfireball.net/projects/markdown/
 [CommonMark]: http://commonmark.org/
-[commonMark-raw-html]: http://spec.commonmark.org/0.27/#raw-html
+[commonMark-raw-html]: http://spec.commonmark.org/0.28/#raw-html
 [CommonMark source]: https://github.com/jgm/CommonMark/
 [pandoc-auto_identifiers]: http://pandoc.org/README.html#extension-auto_identifiers
 ["Markdown's XSS Vulnerability (and how to mitigate it)"]: https://github.com/showdownjs/showdown/wiki/Markdown%27s-XSS-Vulnerability-(and-how-to-mitigate-it)
