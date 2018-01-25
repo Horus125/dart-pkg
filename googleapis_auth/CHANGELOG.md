@@ -1,3 +1,9 @@
+## 0.2.4
+
+* Added `id_token` to `AccessCredentials`
+
+* Migrated to Dart 2 `BigInt`.
+
 ## 0.2.3+6
 
 - Fix async issue in oauth2 flow implementation

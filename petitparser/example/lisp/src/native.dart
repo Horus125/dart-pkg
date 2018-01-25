@@ -108,7 +108,7 @@ class NativeEnvironment extends Environment {
       buffer.write(eval(env, args.head));
       args = args.tail;
     }
-    print(buffer);
+    printer(buffer.toString());
     return null;
   }
 
@@ -127,7 +127,7 @@ class NativeEnvironment extends Environment {
   }
 
   static _while(Environment env, Cons args) {
-    var result = null;
+    var result;
     while (eval(env, args.head)) {
       result = evalList(env, args.tail);
     }
@@ -161,7 +161,7 @@ class NativeEnvironment extends Environment {
   static _plus(Environment env, Cons args) {
     var value = eval(env, args.head) as num;
     for (args = args.tail; args != null; args = args.tail) {
-      value += eval(env, args.head) as num;;
+      value += eval(env, args.head) as num;
     }
     return value;
   }
@@ -202,15 +202,15 @@ class NativeEnvironment extends Environment {
   }
 
   static _smaller(Environment env, Cons args) {
-    var a = eval(env, args.head) as num;
-    var b = eval(env, args.tail.head) as num;
-    return a < b;
+    var a = eval(env, args.head) as Comparable;
+    var b = eval(env, args.tail.head) as Comparable;
+    return a.compareTo(b) < 0;
   }
 
   static _smallerOrEqual(Environment env, Cons args) {
-    var a = eval(env, args.head) as num;
-    var b = eval(env, args.tail.head) as num;
-    return a <= b;
+    var a = eval(env, args.head) as Comparable;
+    var b = eval(env, args.tail.head) as Comparable;
+    return a.compareTo(b) <= 0;
   }
 
   static _equal(Environment env, Cons args) {
@@ -226,15 +226,15 @@ class NativeEnvironment extends Environment {
   }
 
   static _larger(Environment env, Cons args) {
-    var a = eval(env, args.head) as num;
-    var b = eval(env, args.tail.head) as num;
-    return a > b;
+    var a = eval(env, args.head) as Comparable;
+    var b = eval(env, args.tail.head) as Comparable;
+    return a.compareTo(b) > 0;
   }
 
   static _largerOrEqual(Environment env, Cons args) {
-    var a = eval(env, args.head) as num;
-    var b = eval(env, args.tail.head) as num;
-    return a >= b;
+    var a = eval(env, args.head) as Comparable;
+    var b = eval(env, args.tail.head) as Comparable;
+    return a.compareTo(b) >= 0;
   }
 
   static _cons(Environment env, Cons args) {
@@ -267,3 +267,9 @@ class NativeEnvironment extends Environment {
     return cons;
   }
 }
+
+/// Type of printer function to output text on the console.
+typedef void Printer(Object);
+
+/// Default printer to output text on the console.
+Printer printer = print;

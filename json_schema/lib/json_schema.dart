@@ -14,18 +14,25 @@ import 'package:path/path.dart' as PATH;
 part 'src/json_schema/schema.dart';
 part 'src/json_schema/validator.dart';
 
-final _logger = new Logger('json_schema');
+final Logger _logger = new Logger('json_schema');
 
 class SchemaType implements Comparable<SchemaType> {
-  static const ARRAY = const SchemaType._(0);
-  static const BOOLEAN = const SchemaType._(1);
-  static const INTEGER = const SchemaType._(2);
-  static const NUMBER = const SchemaType._(3);
-  static const NULL = const SchemaType._(4);
-  static const OBJECT = const SchemaType._(5);
-  static const STRING = const SchemaType._(6);
+  static const SchemaType ARRAY = const SchemaType._(0);
 
-  static get values => [ARRAY, BOOLEAN, INTEGER, NUMBER, NULL, OBJECT, STRING];
+  static const SchemaType BOOLEAN = const SchemaType._(1);
+
+  static const SchemaType INTEGER = const SchemaType._(2);
+
+  static const SchemaType NUMBER = const SchemaType._(3);
+
+  static const SchemaType NULL = const SchemaType._(4);
+
+  static const SchemaType OBJECT = const SchemaType._(5);
+
+  static const SchemaType STRING = const SchemaType._(6);
+
+  static List<SchemaType> get values =>
+      const <SchemaType>[ARRAY, BOOLEAN, INTEGER, NUMBER, NULL, OBJECT, STRING];
 
   final int value;
 
@@ -33,7 +40,7 @@ class SchemaType implements Comparable<SchemaType> {
 
   const SchemaType._(this.value);
 
-  copy() => this;
+  SchemaType copy() => this;
 
   int compareTo(SchemaType other) => value.compareTo(other.value);
 
@@ -87,10 +94,10 @@ class SchemaType implements Comparable<SchemaType> {
 // custom <library json_schema>
 
 /// Used to provide your own uri validator (if default does not suit needs)
-set uriValidator(bool validator(String)) => _uriValidator = validator;
+set uriValidator(bool validator(String s)) => _uriValidator = validator;
 
 /// Used to provide your own email validator (if default does not suit needs)
-set emailValidator(bool validator(String)) => _emailValidator = validator;
+set emailValidator(bool validator(String s)) => _emailValidator = validator;
 
 bool logFormatExceptions = false;
 

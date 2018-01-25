@@ -1,3 +1,34 @@
+## 1.2.0
+
+* Type the `callback` parameter to `ArgParser.addOption()` as `Function` rather
+  than `void Function(value)`. This allows strong-mode users to write `callback:
+  (String value) { ... }` rather than having to manually cast `value` to a
+  `String` (or a `List<String>` with `allowMultiple: true`).
+
+## 1.1.0
+
+* `ArgParser.parse()` now takes an `Iterable<String>` rather than a
+  `List<String>`.
+
+* `ArgParser.addOption()`'s `allowed` option now takes an `Iterable<String>`
+  rather than a `List<String>`.
+
+## 1.0.2
+
+* Fix analyzer warning
+
+## 1.0.1
+
+* Fix a fuzzy arrow type warning.
+
+## 1.0.0
+
+* **Breaking change**: The `allowTrailingOptions` argument to `new
+  ArgumentParser()` defaults to `true` instead of `false`.
+
+* Add `new ArgParser.allowAnything()`. This allows any input, without parsing
+  any options.
+
 ## 0.13.7
 
 * Add explicit support for forwarding the value returned by `Command.run()` to

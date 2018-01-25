@@ -1,3 +1,13 @@
+## 0.13.2+2
+
+* Update signature for implementations of `Iterable.singleWhere` to include 
+  optional argument.
+   
+## 0.13.2+1
+
+* Changed the implementation of `Set` and `List` classes to use base classes
+  from `dart:collection`.
+
 ## 0.13.2
 
  * Support the latest release of `pkg/csslib`.

@@ -27,7 +27,7 @@ class AccessToken {
   final DateTime expiry;
 
   /// [expiry] must be a UTC `DateTime`.
-  AccessToken(String this.type, String this.data, DateTime this.expiry) {
+  AccessToken(this.type, this.data, this.expiry) {
     if (type == null || data == null || expiry == null) {
       throw new ArgumentError('Arguments type/data/expiry may not be null.');
     }
@@ -54,10 +54,14 @@ class AccessCredentials {
   /// This field may be null.
   final String refreshToken;
 
+  /// A JWT used in calls to Google APIs that accept an id_token param.
+  final String idToken;
+
   /// Scopes these credentials are valid for.
   final List<String> scopes;
 
-  AccessCredentials(this.accessToken, this.refreshToken, this.scopes) {
+  AccessCredentials(this.accessToken, this.refreshToken, this.scopes,
+      {this.idToken}) {
     if (accessToken == null || scopes == null) {
       throw new ArgumentError('Arguments accessToken/scopes must not be null.');
     }
@@ -148,7 +152,7 @@ class ServiceAccountCredentials {
   /// The optional named argument [impersonatedUser] is used to set the user
   /// to impersonate if impersonating a user is needed.
   ServiceAccountCredentials(this.email, this.clientId, String privateKey,
-      {String this.impersonatedUser})
+      {this.impersonatedUser})
       : privateKey = privateKey,
         privateRSAKey = keyFromString(privateKey) {
     if (email == null || clientId == null || privateKey == null) {
@@ -236,7 +240,7 @@ Future<AccessCredentials> refreshCredentials(
 
   var body = new Stream<List<int>>.fromIterable(
       [(ASCII.encode(formValues.join('&')))]);
-  var request = new RequestImpl('POST', _GoogleTokenUri, body);
+  var request = new RequestImpl('POST', _googleTokenUri, body);
   request.headers['content-type'] = 'application/x-www-form-urlencoded';
 
   var response = await client.send(request);
@@ -251,33 +255,34 @@ Future<AccessCredentials> refreshCredentials(
         'Expected json response.');
   }
 
-  return response.stream
+  var object = await response.stream
       .transform(ASCII.decoder)
       .transform(JSON.decoder)
-      .first
-      .then((object) {
-    Map json = object as Map;
+      .first;
 
-    var token = json['access_token'];
-    var seconds = json['expires_in'];
-    var tokenType = json['token_type'];
-    var error = json['error'];
+  var json = object as Map;
 
-    if (response.statusCode != 200 && error != null) {
-      throw new RefreshFailedException('Refreshing attempt failed. '
-          'Response was ${response.statusCode}. Error message was $error.');
-    }
+  var idToken = json['id_token'];
+  var token = json['access_token'];
+  var seconds = json['expires_in'];
+  var tokenType = json['token_type'];
+  var error = json['error'];
 
-    if (token == null || seconds is! int || tokenType != 'Bearer') {
-      throw new Exception('Refresing attempt failed. '
-          'Invalid server response.');
-    }
+  if (response.statusCode != 200 && error != null) {
+    throw new RefreshFailedException('Refreshing attempt failed. '
+        'Response was ${response.statusCode}. Error message was $error.');
+  }
 
-    return new AccessCredentials(
-        new AccessToken(tokenType, token, expiryDate(seconds)),
-        credentials.refreshToken,
-        credentials.scopes);
-  });
+  if (token == null || seconds is! int || tokenType != 'Bearer') {
+    throw new Exception('Refresing attempt failed. '
+        'Invalid server response.');
+  }
+
+  return new AccessCredentials(
+      new AccessToken(tokenType, token, expiryDate(seconds)),
+      credentials.refreshToken,
+      credentials.scopes,
+      idToken: idToken);
 }
 
-final _GoogleTokenUri = Uri.parse('https://accounts.google.com/o/oauth2/token');
+final _googleTokenUri = Uri.parse('https://accounts.google.com/o/oauth2/token');

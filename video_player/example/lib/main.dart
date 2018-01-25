@@ -75,21 +75,15 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
       ),
       new Align(
         alignment: Alignment.bottomCenter,
-        child: new SizedBox(
-          height: 20.0,
-          width: double.INFINITY,
-          child: new VideoProgressBar(controller),
+        child: new VideoProgressIndicator(
+          controller,
+          allowScrubbing: true,
         ),
       ),
       new Center(child: imageFadeAnim),
     ];
 
-    if (!controller.value.initialized) {
-      children.add(new Center(child: const CupertinoActivityIndicator()));
-    }
-
     return new Stack(
-      alignment: Alignment.bottomCenter,
       fit: StackFit.passthrough,
       children: children,
     );
@@ -261,11 +255,7 @@ class VideoInListOfCards extends StatelessWidget {
                   alignment: FractionalOffset.bottomRight +
                       const FractionalOffset(-0.1, -0.1),
                   children: <Widget>[
-                    new Center(
-                        child: new AspectRatio(
-                      aspectRatio: 3 / 2,
-                      child: new VideoPlayPause(controller),
-                    )),
+                    new AspectRatioVideo(controller),
                     new Image.asset('assets/flutter-mark-square-64.png'),
                   ]),
             ],
@@ -281,19 +271,49 @@ class VideoInListOfCards extends StatelessWidget {
   }
 }
 
-class FullScreenVideo extends StatelessWidget {
+class AspectRatioVideo extends StatefulWidget {
   final VideoPlayerController controller;
 
-  FullScreenVideo(this.controller);
+  AspectRatioVideo(this.controller);
+
+  @override
+  AspectRatioVideoState createState() => new AspectRatioVideoState();
+}
+
+class AspectRatioVideoState extends State<AspectRatioVideo> {
+  VideoPlayerController get controller => widget.controller;
+  bool initialized = false;
+
+  VoidCallback listener;
+
+  @override
+  void initState() {
+    super.initState();
+    listener = () {
+      if (!mounted) {
+        return;
+      }
+      if (initialized != controller.value.initialized) {
+        initialized = controller.value.initialized;
+        setState(() {});
+      }
+    };
+    controller.addListener(listener);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new AspectRatio(
-        aspectRatio: 3 / 2,
-        child: new VideoPlayPause(controller),
-      ),
-    );
+    if (initialized) {
+      final Size size = controller.value.size;
+      return new Center(
+        child: new AspectRatio(
+          aspectRatio: size.width / size.height,
+          child: new VideoPlayPause(controller),
+        ),
+      );
+    } else {
+      return new Container();
+    }
   }
 }
 
@@ -318,7 +338,7 @@ void main() {
               new PlayerLifeCycle(
                 'http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4',
                 (BuildContext context, VideoPlayerController controller) =>
-                    new FullScreenVideo(controller),
+                    new AspectRatioVideo(controller),
               ),
               new PlayerLifeCycle(
                   'http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4',

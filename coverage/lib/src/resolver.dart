@@ -1,4 +1,6 @@
-library coverage.resolver;
+// Copyright (c) 2014, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
 import 'dart:io';
@@ -155,7 +157,7 @@ class Loader {
   final List<String> failed = [];
 
   /// Loads an imported resource and returns a [Future] with a [List] of lines.
-  /// Returns [null] if the resource could not be loaded.
+  /// Returns `null` if the resource could not be loaded.
   Future<List<String>> load(String path) async {
     try {
       return new File(path).readAsLines();

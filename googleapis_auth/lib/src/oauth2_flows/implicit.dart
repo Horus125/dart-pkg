@@ -12,7 +12,7 @@ import '../../auth.dart';
 import '../utils.dart';
 
 // This will be overridden by tests.
-String GapiUrl = 'https://apis.google.com/js/client.js';
+String gapiUrl = 'https://apis.google.com/js/client.js';
 
 /// This class performs the implicit browser-based oauth2 flow.
 ///
@@ -53,18 +53,22 @@ class ImplicitFlow {
       timeout.cancel();
       try {
         var gapi = js.context['gapi']['auth'];
-        gapi.callMethod('init', [
-          () {
-            completer.complete();
-          }
-        ]);
+        try {
+          gapi.callMethod('init', [
+            () {
+              completer.complete();
+            }
+          ]);
+        } on NoSuchMethodError {
+          throw new StateError('gapi.auth not loaded.');
+        }
       } catch (error, stack) {
         completer.completeError(error, stack);
       }
     };
 
     var script = new html.ScriptElement();
-    script.src = '${GapiUrl}?onload=dartGapiLoaded';
+    script.src = '${gapiUrl}?onload=dartGapiLoaded';
     script.onError.first.then((errorEvent) {
       timeout.cancel();
       completer.completeError(new Exception('Failed to load gapi library.'));
@@ -74,19 +78,19 @@ class ImplicitFlow {
     return completer.future;
   }
 
-  Future loginHybrid({bool force: false, bool immediate: false}) {
-    return _login(force, immediate, true);
-  }
+  Future<LoginResult> loginHybrid({bool force: false, bool immediate: false}) =>
+      _login(force, immediate, true);
 
-  Future<AccessCredentials> login({bool force: false, bool immediate: false}) {
-    return _login(force, immediate, false);
+  Future<AccessCredentials> login(
+      {bool force: false, bool immediate: false}) async {
+    return (await _login(force, immediate, false)).credential;
   }
 
   // Completes with either credentials or a tuple of credentials and authCode.
   //  hybrid  =>  [AccessCredentials credentials, String authCode]
   // !hybrid  =>  AccessCredentials
-  Future _login(bool force, bool immediate, bool hybrid) {
-    var completer = new Completer();
+  Future<LoginResult> _login(bool force, bool immediate, bool hybrid) {
+    var completer = new Completer<LoginResult>();
 
     var gapi = js.context['gapi']['auth'];
 
@@ -131,9 +135,9 @@ class ImplicitFlow {
               completer.completeError(new Exception('Expected to get auth code '
                   'from server in hybrid flow, but did not.'));
             }
-            completer.complete([credentials, code]);
+            completer.complete(new LoginResult(credentials, code: code));
           } else {
-            completer.complete(credentials);
+            completer.complete(new LoginResult(credentials));
           }
         }
       }
@@ -141,4 +145,11 @@ class ImplicitFlow {
 
     return completer.future;
   }
+}
+
+class LoginResult {
+  final AccessCredentials credential;
+  final String code;
+
+  LoginResult(this.credential, {this.code});
 }

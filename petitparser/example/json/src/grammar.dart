@@ -4,7 +4,7 @@ import 'package:petitparser/petitparser.dart';
 
 /// JSON grammar.
 class JsonGrammar extends GrammarParser {
-  JsonGrammar() : super(new JsonGrammarDefinition());
+  JsonGrammar() : super(const JsonGrammarDefinition());
 }
 
 /// JSON grammar definition.
@@ -44,9 +44,9 @@ class JsonGrammarDefinition extends GrammarDefinition {
       | ref(characterUnicode);
   characterNormal() => pattern('^"\\');
   characterEscape() => char('\\')
-      & pattern(new List.from(jsonEscapeChars.keys).join());
+      & pattern(jsonEscapeChars.keys.join());
   characterUnicode() => string('\\u')
-      & pattern("0-9A-Fa-f").times(4);
+      & pattern('0-9A-Fa-f').times(4);
   numberPrimitive() => char('-').optional()
       & char('0').or(digit().plus())
       & char('.').seq(digit().plus()).optional()

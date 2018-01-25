@@ -4,32 +4,39 @@ import 'dart:html';
 
 import '../lisp/lisp.dart';
 
-void inspector(Element element, Environment environment) {
-  var result = '';
+void inspect(Element element, Environment environment) {
+  var buffer = new StringBuffer();
   while (environment != null) {
-    result = '$result<ul>';
+    buffer.write('<ul>');
     for (var symbol in environment.keys) {
-      result = '$result<li><b>$symbol</b>: ${environment[symbol]}</li>';
+      buffer.write('<li><b>$symbol</b>: ${environment[symbol]}</li>');
     }
-    result = '$result</ul>';
-    result = '$result<hr/>';
+    buffer.write('</ul>');
+    buffer.write('<hr/>');
     environment = environment.owner;
   }
-  element.innerHtml = result;
+  element.innerHtml = buffer.toString();
 }
 
 void main() {
-  var root = new NativeEnvironment();
-  var standard = new StandardEnvironment(root);
-  var environment = standard.create();
+  final root = new NativeEnvironment();
+  final standard = new StandardEnvironment(root);
+  final environment = standard.create();
 
-  var input = querySelector('#input') as TextAreaElement;
-  var output = querySelector('#output') as TextAreaElement;
+  final input = querySelector('#input') as TextAreaElement;
+  final output = querySelector('#output') as TextAreaElement;
+  final transcript = querySelector('#transcript');
+  final inspector = querySelector('#inspector');
 
+  printer = (Object object) {
+    transcript.appendText(object.toString());
+    transcript.append(document.createElement('br'));
+  };
   querySelector('#evaluate').onClick.listen((event) {
+    transcript.innerHtml = '';
     Object result = evalString(lispParser, environment, input.value);
     output.value = result.toString();
-    inspector(querySelector('#inspector'), environment);
+    inspect(inspector, environment);
   });
-  inspector(querySelector('#inspector'), environment);
+  inspect(inspector, environment);
 }

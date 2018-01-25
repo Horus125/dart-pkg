@@ -30,18 +30,23 @@ import '../utils.dart';
 //
 // Scopes are separated by spaces.
 Future<List<String>> obtainScopesFromAccessToken(
-    String accessToken, http.Client client) {
+    String accessToken, http.Client client) async {
   var url = Uri.parse('https://www.googleapis.com/oauth2/v2/tokeninfo'
       '?access_token=${Uri.encodeQueryComponent(accessToken)}');
-  return client.post(url).then((http.Response response) {
-    if (response.statusCode == 200) {
-      Map json = JSON.decode(response.body);
-      return (json['scope'] as String).split(' ').toList();
-    } else {
-      throw new Exception('Unable to obtain list of scopes an access token '
-          'is valid for. Server responded with ${response.statusCode}.');
+
+  var response = await client.post(url);
+  if (response.statusCode == 200) {
+    Map json = JSON.decode(response.body);
+    var scope = json['scope'];
+    if (scope is! String) {
+      throw new Exception(
+          'The response did not include a `scope` value of type `String`.');
     }
-  });
+    return scope.split(' ').toList();
+  } else {
+    throw new Exception('Unable to obtain list of scopes an access token '
+        'is valid for. Server responded with ${response.statusCode}.');
+  }
 }
 
 Future<AccessCredentials> obtainAccessCredentialsUsingCode(
@@ -67,6 +72,7 @@ Future<AccessCredentials> obtainAccessCredentialsUsingCode(
       .transform(JSON.decoder)
       .first;
 
+  var idToken = json['id_token'];
   var tokenType = json['token_type'];
   var accessToken = json['access_token'];
   var seconds = json['expires_in'];
@@ -91,14 +97,16 @@ Future<AccessCredentials> obtainAccessCredentialsUsingCode(
     return new AccessCredentials(
         new AccessToken('Bearer', accessToken, expiryDate(seconds)),
         refreshToken,
-        scopes);
+        scopes,
+        idToken: idToken);
   }
 
   scopes = await obtainScopesFromAccessToken(accessToken, client);
   return new AccessCredentials(
       new AccessToken('Bearer', accessToken, expiryDate(seconds)),
       refreshToken,
-      scopes);
+      scopes,
+      idToken: idToken);
 }
 
 /// Abstract class for obtaining access credentials via the authorization code
