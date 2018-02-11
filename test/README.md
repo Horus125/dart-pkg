@@ -233,14 +233,14 @@ identifiers are defined:
 * `blink`: Whether the test is running in a browser that uses the Blink
   rendering engine.
 
-* `windows`: Whether the test is running on Windows. If `vm` is false, this will
-  be `false` as well.
+* `windows`: Whether the test is running on Windows. This can only be `true` if
+  either `vm` or `node` is true.
 
-* `mac-os`: Whether the test is running on Mac OS. If `vm` is false, this will
-  be `false` as well.
+* `mac-os`: Whether the test is running on Mac OS. This can only be `true` if
+  either `vm` or `node` is true.
 
-* `linux`: Whether the test is running on Linux. If `vm` is false, this will be
-  `false` as well.
+* `linux`: Whether the test is running on Linux. This can only be `true` if
+  either `vm` or `node` is true.
 
 * `android`: Whether the test is running on Android. If `vm` is false, this will
   be `false` as well, which means that this *won't* be true if the test is
@@ -297,6 +297,9 @@ passes `-Dnode=true`, so tests can determine whether they're running on Node
 using [`const bool.fromEnvironment("node")`][bool.fromEnvironment].
 
 [bool.fromEnvironment]: https://api.dartlang.org/stable/1.24.2/dart-core/bool/bool.fromEnvironment.html
+
+If a top-level `node_modules` directory exists, tests running on Node.js can
+import modules from it.
 
 ## Asynchronous Tests
 

@@ -23,6 +23,7 @@ export 'src/frontend/expect.dart' hide formatFailure;
 export 'src/frontend/expect_async.dart';
 export 'src/frontend/future_matchers.dart';
 export 'src/frontend/on_platform.dart';
+export 'src/frontend/never_called.dart';
 export 'src/frontend/prints_matcher.dart';
 export 'src/frontend/skip.dart';
 export 'src/frontend/spawn_hybrid.dart';
@@ -33,6 +34,7 @@ export 'src/frontend/test_on.dart';
 export 'src/frontend/throws_matcher.dart';
 export 'src/frontend/throws_matchers.dart';
 export 'src/frontend/timeout.dart';
+export 'src/frontend/utils.dart';
 
 /// The global declarer.
 ///
@@ -67,7 +69,8 @@ Declarer get _declarer {
     ExpandedReporter.watch(engine,
         color: true, printPath: false, printPlatform: false);
 
-    var success = await engine.run();
+    var success = await runZoned(() => Invoker.guard(engine.run),
+        zoneValues: {#test.declarer: _globalDeclarer});
     // TODO(nweiz): Set the exit code on the VM when issue 6943 is fixed.
     if (success) return null;
     print('');
@@ -252,6 +255,9 @@ void tearDown(callback()) => _declarer.tearDown(callback);
 ///
 /// The [callback] is run before any callbacks registered with [tearDown]. Like
 /// [tearDown], the most recently registered callback is run first.
+///
+/// If this is called from within a [setUpAll] or [tearDownAll] callback, it
+/// instead runs the function after *all* tests in the current test suite.
 void addTearDown(callback()) {
   if (Invoker.current == null) {
     throw new StateError("addTearDown() may only be called within a test.");

@@ -9,6 +9,7 @@ import 'package:term_glyph/term_glyph.dart' as glyph;
 
 import '../backend/declarer.dart';
 import '../backend/group.dart';
+import '../backend/invoker.dart';
 import '../backend/live_test.dart';
 import '../backend/metadata.dart';
 import '../backend/operating_system.dart';
@@ -79,7 +80,7 @@ class RemoteListener {
       verboseChain = metadata.verboseTrace;
       var declarer = new Declarer(
           metadata: metadata,
-          platformVariables: message['platformVariables'].toSet(),
+          platformVariables: new Set.from(message['platformVariables']),
           collectTraces: message['collectTraces'],
           noRetry: message['noRetry']);
 
@@ -97,7 +98,14 @@ class RemoteListener {
               : OperatingSystem.find(message['os']),
           path: message['path']);
 
-      new RemoteListener._(suite, printZone)._listen(channel);
+      runZoned(() {
+        Invoker.guard(
+            () => new RemoteListener._(suite, printZone)._listen(channel));
+      },
+          // Make the declarer visible to running tests so that they'll throw
+          // useful errors when calling `test()` and `group()` within a test,
+          // and so they can add to the declarer's `tearDownAll()` list.
+          zoneValues: {#test.declarer: declarer});
     }, onError: (error, stackTrace) {
       _sendError(channel, error, stackTrace, verboseChain);
     }, zoneSpecification: new ZoneSpecification(print: (_, __, ___, line) {
@@ -108,8 +116,8 @@ class RemoteListener {
     return controller.foreign;
   }
 
-  /// Returns a [Set] from a JSON serialized list.
-  static Set<String> _deserializeSet(List<String> list) {
+  /// Returns a [Set] from a JSON serialized list of strings.
+  static Set<String> _deserializeSet(List list) {
     if (list == null) return null;
     if (list.isEmpty) return null;
     return new Set.from(list);

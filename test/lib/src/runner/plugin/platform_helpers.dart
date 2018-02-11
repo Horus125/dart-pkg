@@ -15,15 +15,12 @@ import '../../backend/test_platform.dart';
 import '../../util/io.dart';
 import '../../util/remote_exception.dart';
 import '../../util/stack_trace_mapper.dart';
-import '../application_exception.dart';
 import '../configuration.dart';
 import '../configuration/suite.dart';
 import '../environment.dart';
 import '../load_exception.dart';
 import '../runner_suite.dart';
 import '../runner_test.dart';
-
-final _deserializeTimeout = new Duration(minutes: 8);
 
 /// A helper method for creating a [RunnerSuiteController] containing tests
 /// that communicate over [channel].
@@ -53,7 +50,9 @@ Future<RunnerSuiteController> deserializeSuite(
   suiteChannel.sink.add({
     'platform': platform.serialize(),
     'metadata': suiteConfig.metadata.serialize(),
-    'os': platform == TestPlatform.vm ? currentOS.identifier : null,
+    'os': (platform == TestPlatform.vm || platform == TestPlatform.nodeJS)
+        ? currentOS.identifier
+        : null,
     'asciiGlyphs': Platform.isWindows,
     'path': path,
     'collectTraces': Configuration.current.reporter == 'json',
@@ -113,13 +112,7 @@ Future<RunnerSuiteController> deserializeSuite(
       });
 
   return new RunnerSuiteController(
-      environment,
-      suiteConfig,
-      await completer.future.timeout(_deserializeTimeout, onTimeout: () {
-        throw new ApplicationException(
-            "Timed out while loading the test suite.\n"
-            "It's likely that there's a missing import or syntax error.");
-      }),
+      environment, suiteConfig, await completer.future,
       path: path,
       platform: platform,
       os: currentOS,

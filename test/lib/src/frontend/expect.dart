@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:matcher/matcher.dart';
+import 'package:meta/meta.dart';
 
 import '../backend/closed_exception.dart';
 import '../backend/invoker.dart';
@@ -156,12 +157,12 @@ Future _expect(actual, matcher,
     reason ??= '$e at $trace';
   }
   fail(formatter(actual, matcher, reason, matchState, verbose));
-  return _emptyFuture;
 }
 
 /// Convenience method for throwing a new [TestFailure] with the provided
 /// [message].
-void fail(String message) => throw new TestFailure(message);
+@alwaysThrows
+Null fail(String message) => throw new TestFailure(message);
 
 // The default error formatter.
 @Deprecated("Will be removed in 0.13.0.")
