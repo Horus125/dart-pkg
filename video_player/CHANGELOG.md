@@ -1,3 +1,14 @@
+## 0.2.1
+
+* Fixed some signatures to account for strong mode runtime errors.
+* Fixed spelling mistake in toString output.
+
+## 0.2.0
+
+* **Breaking change**. Renamed `VideoPlayerController.isErroneous` to `VideoPlayerController.hasError`.
+* Updated documentation of when fields are available on `VideoPlayerController`.
+* Updated links in README.md.
+
 ## 0.1.1
 
 * Simplified and upgraded Android project template to Android SDK 27.

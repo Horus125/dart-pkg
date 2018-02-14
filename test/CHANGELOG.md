@@ -1,3 +1,11 @@
+## 0.12.30+3
+
+* Fix a memory leak when loading browser tests.
+
+## 0.12.30+2
+
+* Avoid loading test suites whose tags are excluded by `--excluded-tags`.
+
 ## 0.12.30+1
 
 * Internal changes.

@@ -1,3 +1,23 @@
+## 0.3.2+1
+
+* `ansi.dart`
+
+  * The "forScript" code paths now ignore the `ansiOutputEnabled` value. Affects
+    the `escapeForScript` property on `AnsiCode` and the `wrap` and `wrapWith`
+    functions when `forScript` is true.
+
+## 0.3.2
+
+* `ansi.dart`
+
+  * Added `forScript` named argument to top-level `wrapWith` function.
+
+  * `AnsiCode`
+
+    * Added `String get escapeForScript` property.
+
+    * Added `forScript` named argument to `wrap` function.
+
 ## 0.3.1
 
 - Added `SharedStdIn.nextLine` (similar to `readLineSync`) and `lines`:

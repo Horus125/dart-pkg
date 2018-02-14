@@ -11,7 +11,7 @@ import 'package:meta/meta.dart';
 final MethodChannel _channel = const MethodChannel('flutter.io/videoPlayer')
   // This will clear all open videos on the platform when a full restart is
   // performed.
-  ..invokeMethod("init");
+  ..invokeMethod('init');
 
 class DurationRange {
   DurationRange(this.start, this.end);
@@ -31,14 +31,37 @@ class DurationRange {
   String toString() => '$runtimeType(start: $start, end: $end)';
 }
 
+/// The duration, current position, buffering state, error state and settings
+/// of a [VideoPlayerController].
 class VideoPlayerValue {
+  /// The total duration of the video.
+  ///
+  /// Is null when [initialized] is false.
   final Duration duration;
+
+  /// The current playback position.
   final Duration position;
+
+  /// The currently buffered ranges.
   final List<DurationRange> buffered;
+
+  /// True if the video is playing. False if it's paused.
   final bool isPlaying;
+
+  /// True if the video is looping.
   final bool isLooping;
+
+  /// The current volume of the playback.
   final double volume;
+
+  /// A description of the error if present.
+  ///
+  /// If [hasError] is false this is [null].
   final String errorDescription;
+
+  /// The [size] of the currently loaded video.
+  ///
+  /// Is null when [initialized] is false.
   final Size size;
 
   VideoPlayerValue({
@@ -58,7 +81,7 @@ class VideoPlayerValue {
       : this(duration: null, errorDescription: errorDescription);
 
   bool get initialized => duration != null;
-  bool get isErroneous => errorDescription != null;
+  bool get hasError => errorDescription != null;
   double get aspectRatio => size.width / size.height;
 
   VideoPlayerValue copyWith({
@@ -90,7 +113,7 @@ class VideoPlayerValue {
         'size: $size, '
         'position: $position, '
         'buffered: [${buffered.join(', ')}], '
-        'isplaying: $isPlaying, '
+        'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
         'volume: $volume, '
         'errorDescription: $errorDescription)';
@@ -113,7 +136,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Timer timer;
   bool isDisposed = false;
   Completer<Null> _creatingCompleter;
-  StreamSubscription<Map<String, dynamic>> _eventSubscription;
+  StreamSubscription<dynamic> _eventSubscription;
   _VideoAppLifeCycleObserver _lifeCycleObserver;
 
   VideoPlayerController(this.uri) : super(new VideoPlayerValue(duration: null));
@@ -122,42 +145,48 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _lifeCycleObserver = new _VideoAppLifeCycleObserver(this);
     _lifeCycleObserver.initialize();
     _creatingCompleter = new Completer<Null>();
-    final Map<String, dynamic> response = await _channel.invokeMethod(
+    final Map<dynamic, dynamic> response = await _channel.invokeMethod(
       'create',
       <String, dynamic>{'dataSource': uri},
     );
-    _textureId = response["textureId"];
+    _textureId = response['textureId'];
     _creatingCompleter.complete(null);
 
-    DurationRange toDurationRange(List<int> values) {
+    DurationRange toDurationRange(dynamic value) {
+      final List<dynamic> pair = value;
       return new DurationRange(
-        new Duration(milliseconds: values[0]),
-        new Duration(milliseconds: values[1]),
+        new Duration(milliseconds: pair[0]),
+        new Duration(milliseconds: pair[1]),
       );
     }
 
     void eventListener(dynamic event) {
-      final Map<String, dynamic> map = event;
-      if (map["event"] == "initialized") {
-        value = value.copyWith(
-          duration: new Duration(milliseconds: map["duration"]),
-          size: new Size(map["width"].toDouble(), map["height"].toDouble()),
-        );
-        _applyLooping();
-        _applyVolume();
-        _applyPlayPause();
-      } else if (map["event"] == "completed") {
-        value = value.copyWith(isPlaying: false);
-        timer?.cancel();
-      } else if (map["event"] == "bufferingUpdate") {
-        final List<List<int>> bufferedValues = map["values"];
-        value = value.copyWith(
-          buffered: bufferedValues.map(toDurationRange).toList(),
-        );
+      final Map<dynamic, dynamic> map = event;
+      switch (map['event']) {
+        case 'initialized':
+          value = value.copyWith(
+            duration: new Duration(milliseconds: map['duration']),
+            size: new Size(map['width'].toDouble(), map['height'].toDouble()),
+          );
+          _applyLooping();
+          _applyVolume();
+          _applyPlayPause();
+          break;
+        case 'completed':
+          value = value.copyWith(isPlaying: false);
+          timer?.cancel();
+          break;
+        case 'bufferingUpdate':
+          final List<dynamic> values = map['values'];
+          value = value.copyWith(
+            buffered: values.map<DurationRange>(toDurationRange).toList(),
+          );
+          break;
       }
     }
 
-    void errorListener(PlatformException e) {
+    void errorListener(Object obj) {
+      final PlatformException e = obj;
       value = new VideoPlayerValue.erroneous(e.message);
       timer?.cancel();
     }
@@ -168,7 +197,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   EventChannel _eventChannelFor(int textureId) {
-    return new EventChannel("flutter.io/videoPlayer/videoEvents$textureId");
+    return new EventChannel('flutter.io/videoPlayer/videoEvents$textureId');
   }
 
   @override
