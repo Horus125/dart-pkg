@@ -49,6 +49,7 @@ class FoldersResourceApi {
   ///
   /// In order to succeed, the addition of this new Folder must not violate
   /// the Folder naming, height or fanout constraints.
+  ///
   /// + The Folder's display_name must be distinct from all other Folder's that
   /// share its parent.
   /// + The addition of the Folder must not cause the active Folder hierarchy
@@ -116,10 +117,12 @@ class FoldersResourceApi {
   }
 
   /// Requests deletion of a Folder. The Folder is moved into the
-  /// [DELETE_REQUESTED] state immediately, and is deleted approximately 30 days
-  /// later. This method may only be called on an empty Folder in the [ACTIVE]
-  /// state, where a Folder is empty if it doesn't contain any Folders or
-  /// Projects in the [ACTIVE] state.
+  /// DELETE_REQUESTED state
+  /// immediately, and is deleted approximately 30 days later. This method may
+  /// only be called on an empty Folder in the
+  /// ACTIVE state, where a Folder is empty if
+  /// it doesn't contain any Folders or Projects in the
+  /// ACTIVE state.
   /// The caller must have `resourcemanager.folders.delete` permission on the
   /// identified folder.
   ///
@@ -281,6 +284,10 @@ class FoldersResourceApi {
   ///
   /// Request parameters:
   ///
+  /// [showDeleted] - Controls whether Folders in the
+  /// DELETE_REQUESTED
+  /// state should be returned. Defaults to false. This field is optional.
+  ///
   /// [pageToken] - A pagination token returned from a previous call to
   /// `ListFolders`
   /// that indicates where this listing should continue from.
@@ -296,10 +303,6 @@ class FoldersResourceApi {
   /// Access to this method is controlled by checking the
   /// `resourcemanager.folders.list` permission on the `parent`.
   ///
-  /// [showDeleted] - Controls whether Folders in the [DELETE_REQUESTED} state
-  /// should
-  /// be returned.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -311,10 +314,10 @@ class FoldersResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListFoldersResponse> list(
-      {core.String pageToken,
+      {core.bool showDeleted,
+      core.String pageToken,
       core.int pageSize,
       core.String parent,
-      core.bool showDeleted,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -323,6 +326,9 @@ class FoldersResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if (showDeleted != null) {
+      _queryParams["showDeleted"] = ["${showDeleted}"];
+    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
@@ -331,9 +337,6 @@ class FoldersResourceApi {
     }
     if (parent != null) {
       _queryParams["parent"] = [parent];
-    }
-    if (showDeleted != null) {
-      _queryParams["showDeleted"] = ["${showDeleted}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -363,7 +366,8 @@ class FoldersResourceApi {
   /// In addition, the Operation.metadata field will be populated with a
   /// FolderOperation message as an aid to stateless clients.
   /// Folder moves will be rejected if they violate either the naming, height
-  /// or fanout constraints described in the [CreateFolder] documentation.
+  /// or fanout constraints described in the
+  /// CreateFolder documentation.
   /// The caller must have `resourcemanager.folders.move` permission on the
   /// folder's current and proposed new parent.
   ///
@@ -418,9 +422,10 @@ class FoldersResourceApi {
 
   /// Updates a Folder, changing its display_name.
   /// Changes to the folder display_name will be rejected if they violate either
-  /// the display_name formatting rules or naming constraints described in
-  /// the [CreateFolder] documentation.
-  /// + The Folder's display name must start and end with a letter or digit,
+  /// the display_name formatting rules or naming constraints described in the
+  /// CreateFolder documentation.
+  ///
+  /// The Folder's display name must start and end with a letter or digit,
   /// may contain letters, digits, spaces, hyphens and underscores and can be
   /// no longer than 30 characters. This is captured by the regular expression:
   /// [\p{L}\p{N}]({\p{L}\p{N}_- ]{0,28}[\p{L}\p{N}])?.
@@ -651,11 +656,13 @@ class FoldersResourceApi {
   }
 
   /// Cancels the deletion request for a Folder. This method may only be
-  /// called on a Folder in the [DELETE_REQUESTED] state.
-  /// In order to succeed, the Folder's parent must be in the [ACTIVE] state.
+  /// called on a Folder in the
+  /// DELETE_REQUESTED state.
+  /// In order to succeed, the Folder's parent must be in the
+  /// ACTIVE state.
   /// In addition, reintroducing the folder into the tree must not violate
   /// folder naming, height and fanout constraints described in the
-  /// [CreateFolder] documentation.
+  /// CreateFolder documentation.
   /// The caller must have `resourcemanager.folders.undelete` permission on the
   /// identified folder.
   ///
@@ -718,7 +725,7 @@ class FoldersResourceApi {
 /// If there are AuditConfigs for both `allServices` and a specific service,
 /// the union of the two AuditConfigs is used for that service: the log_types
 /// specified in each AuditConfig are enabled, and the exempted_members in each
-/// AuditConfig are exempted.
+/// AuditLogConfig are exempted.
 ///
 /// Example Policy with multiple AuditConfigs:
 ///
@@ -928,7 +935,8 @@ class Folder {
 
   /// Output only.  The lifecycle state of the folder.
   /// Updates to the lifecycle_state must be performed via
-  /// [DeleteFolder] and [UndeleteFolder].
+  /// DeleteFolder and
+  /// UndeleteFolder.
   /// Possible string values are:
   /// - "LIFECYCLE_STATE_UNSPECIFIED" : Unspecified state.
   /// - "ACTIVE" : The normal and active state.
@@ -941,7 +949,8 @@ class Folder {
   core.String name;
 
   /// The Folder’s parent's resource name.
-  /// Updates to the folder's parent must be performed via [MoveFolders].
+  /// Updates to the folder's parent must be performed via
+  /// MoveFolder.
   core.String parent;
 
   Folder();
@@ -1275,7 +1284,7 @@ class Operation {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
   /// Specifies cloud audit logging configuration for this policy.
   core.List<AuditConfig> auditConfigs;
@@ -1305,7 +1314,7 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();
@@ -1415,13 +1424,14 @@ class SearchFoldersRequest {
   /// can be used along with the suffix wildcard symbol `*`.
   ///
   /// Some example queries are:
-  /// |Query|Description|
-  /// |------|-----------|
+  ///
+  /// |Query | Description|
+  /// |----- | -----------|
   /// |displayName=Test*|Folders whose display name starts with "Test".|
   /// |lifecycleState=ACTIVE|Folders whose lifecycleState is ACTIVE.|
   /// |parent=folders/123|Folders whose parent is "folders/123".|
-  /// |parent=folders/123 AND lifecycleState=ACTIVE|Active folders whose
-  /// parent is "folders/123".|
+  /// |parent=folders/123 AND lifecycleState=ACTIVE|Active folders whose parent
+  /// is "folders/123".|
   core.String query;
 
   SearchFoldersRequest();

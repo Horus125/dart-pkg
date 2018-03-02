@@ -1986,6 +1986,10 @@ class ReadgroupsetsCoveragebucketsResourceApi {
   /// [readGroupSetId] - Required. The ID of the read group set over which
   /// coverage is requested.
   ///
+  /// [referenceName] - The name of the reference to query, within the reference
+  /// set associated
+  /// with this query. Optional.
+  ///
   /// [end] - The end position of the range on the reference, 0-based exclusive.
   /// If
   /// specified, `referenceName` must also be specified. If unset or 0, defaults
@@ -2013,10 +2017,6 @@ class ReadgroupsetsCoveragebucketsResourceApi {
   /// `bucketWidth` is currently 2048 base pairs; this is subject to
   /// change.
   ///
-  /// [referenceName] - The name of the reference to query, within the reference
-  /// set associated
-  /// with this query. Optional.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -2028,12 +2028,12 @@ class ReadgroupsetsCoveragebucketsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListCoverageBucketsResponse> list(core.String readGroupSetId,
-      {core.String end,
+      {core.String referenceName,
+      core.String end,
       core.String pageToken,
       core.int pageSize,
       core.String start,
       core.String targetBucketWidth,
-      core.String referenceName,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -2044,6 +2044,9 @@ class ReadgroupsetsCoveragebucketsResourceApi {
 
     if (readGroupSetId == null) {
       throw new core.ArgumentError("Parameter readGroupSetId is required.");
+    }
+    if (referenceName != null) {
+      _queryParams["referenceName"] = [referenceName];
     }
     if (end != null) {
       _queryParams["end"] = [end];
@@ -2059,9 +2062,6 @@ class ReadgroupsetsCoveragebucketsResourceApi {
     }
     if (targetBucketWidth != null) {
       _queryParams["targetBucketWidth"] = [targetBucketWidth];
-    }
-    if (referenceName != null) {
-      _queryParams["referenceName"] = [referenceName];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -5076,7 +5076,7 @@ class OperationMetadata {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
   /// Associates a list of `members` to a `role`.
   /// `bindings` with no members will result in an error.
@@ -5103,7 +5103,7 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();

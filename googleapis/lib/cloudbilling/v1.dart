@@ -95,14 +95,14 @@ class BillingAccountsResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [pageSize] - Requested page size. The maximum page size is 100; this is
-  /// also the
-  /// default.
-  ///
   /// [pageToken] - A token identifying a page of results to return. This should
   /// be a
   /// `next_page_token` value returned from a previous `ListBillingAccounts`
   /// call. If unspecified, the first page of results is returned.
+  ///
+  /// [pageSize] - Requested page size. The maximum page size is 100; this is
+  /// also the
+  /// default.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -115,7 +115,7 @@ class BillingAccountsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListBillingAccountsResponse> list(
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -123,11 +123,11 @@ class BillingAccountsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -153,8 +153,9 @@ class BillingAccountsProjectsResourceApi {
       : _requester = client;
 
   /// Lists the projects associated with a billing account. The current
-  /// authenticated user must be an [owner of the billing
-  /// account](https://support.google.com/cloud/answer/4430947).
+  /// authenticated user must have the "billing.resourceAssociations.list" IAM
+  /// permission, which is often given to billing account
+  /// [viewers](https://support.google.com/cloud/answer/4430947).
   ///
   /// Request parameters:
   ///
@@ -163,14 +164,14 @@ class BillingAccountsProjectsResourceApi {
   /// you want to list. For example, `billingAccounts/012345-567890-ABCDEF`.
   /// Value must have pattern "^billingAccounts/[^/]+$".
   ///
-  /// [pageSize] - Requested page size. The maximum page size is 100; this is
-  /// also the
-  /// default.
-  ///
   /// [pageToken] - A token identifying a page of results to be returned. This
   /// should be a
   /// `next_page_token` value returned from a previous `ListProjectBillingInfo`
   /// call. If unspecified, the first page of results is returned.
+  ///
+  /// [pageSize] - Requested page size. The maximum page size is 100; this is
+  /// also the
+  /// default.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -183,7 +184,7 @@ class BillingAccountsProjectsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListProjectBillingInfoResponse> list(core.String name,
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -194,11 +195,11 @@ class BillingAccountsProjectsResourceApi {
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -368,12 +369,12 @@ class ServicesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [pageSize] - Requested page size. Defaults to 5000.
-  ///
   /// [pageToken] - A token identifying a page of results to return. This should
   /// be a
   /// `next_page_token` value returned from a previous `ListServices`
   /// call. If unspecified, the first page of results is returned.
+  ///
+  /// [pageSize] - Requested page size. Defaults to 5000.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -386,7 +387,7 @@ class ServicesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListServicesResponse> list(
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -394,11 +395,11 @@ class ServicesResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -437,23 +438,25 @@ class ServicesSkusResourceApi {
   /// [endTime] - Optional exclusive end time of the time range for which the
   /// pricing
   /// versions will be returned. Timestamps in the future are not allowed.
-  /// Maximum allowable time range is 1 month (31 days). Time range as a whole
-  /// is optional. If not specified, the latest pricing will be returned (up to
-  /// 12 hours old at most).
-  ///
-  /// [pageSize] - Requested page size. Defaults to 5000.
-  ///
-  /// [startTime] - Optional inclusive start time of the time range for which
-  /// the pricing
-  /// versions will be returned. Timestamps in the future are not allowed.
-  /// Maximum allowable time range is 1 month (31 days). Time range as a whole
-  /// is optional. If not specified, the latest pricing will be returned (up to
-  /// 12 hours old at most).
+  /// The time range has to be within a single calendar month in
+  /// America/Los_Angeles timezone. Time range as a whole is optional. If not
+  /// specified, the latest pricing will be returned (up to 12 hours old at
+  /// most).
   ///
   /// [pageToken] - A token identifying a page of results to return. This should
   /// be a
   /// `next_page_token` value returned from a previous `ListSkus`
   /// call. If unspecified, the first page of results is returned.
+  ///
+  /// [startTime] - Optional inclusive start time of the time range for which
+  /// the pricing
+  /// versions will be returned. Timestamps in the future are not allowed.
+  /// The time range has to be within a single calendar month in
+  /// America/Los_Angeles timezone. Time range as a whole is optional. If not
+  /// specified, the latest pricing will be returned (up to 12 hours old at
+  /// most).
+  ///
+  /// [pageSize] - Requested page size. Defaults to 5000.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -468,9 +471,9 @@ class ServicesSkusResourceApi {
   async.Future<ListSkusResponse> list(core.String parent,
       {core.String currencyCode,
       core.String endTime,
-      core.int pageSize,
-      core.String startTime,
       core.String pageToken,
+      core.String startTime,
+      core.int pageSize,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -488,14 +491,14 @@ class ServicesSkusResourceApi {
     if (endTime != null) {
       _queryParams["endTime"] = [endTime];
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
     }
     if (startTime != null) {
       _queryParams["startTime"] = [startTime];
     }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -973,13 +976,20 @@ class PricingInfo {
   /// doesn't require aggregation.
   AggregationInfo aggregationInfo;
 
-  /// Conversion rate for currency conversion, from USD to the currency
-  /// specified
-  /// in the request. If the currency is not specified this defaults to 1.0.
+  /// Conversion rate used for currency conversion, from USD to the currency
+  /// specified in the request. This includes any surcharge collected for
+  /// billing
+  /// in non USD currency. If a currency is not specified in the request this
+  /// defaults to 1.0.
   /// Example: USD * currency_conversion_rate = JPY
   core.double currencyConversionRate;
 
-  /// The timestamp from which this pricing was effective.
+  /// The timestamp from which this pricing was effective within the requested
+  /// time range. This is guaranteed to be greater than or equal to the
+  /// start_time field in the request and less than the end_time field in the
+  /// request. If a time range was not specified in the request this field will
+  /// be equivalent to a time within the last 12 hours, indicating the latest
+  /// pricing info.
   core.String effectiveTime;
 
   /// Expresses the pricing formula. See `PricingExpression` for an example.

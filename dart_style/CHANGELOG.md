@@ -1,3 +1,11 @@
+# 1.0.10
+
+* Don't split before `.` if the target expression is an argument list with a
+  trailing comma (#548, #665).
+* Preserve metadata on for-in variables (#648).
+* Support optional `new`/`const` (#652).
+* Better formatting of initialization lists after trailing commas (#658).
+
 # 1.0.9
 
 * Updated tests. No user-facing changes.

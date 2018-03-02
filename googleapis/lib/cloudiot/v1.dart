@@ -272,16 +272,16 @@ class ProjectsLocationsRegistriesResourceApi {
   /// `projects/example-project/locations/us-central1`.
   /// Value must have pattern "^projects/[^/]+/locations/[^/]+$".
   ///
+  /// [pageToken] - The value returned by the last
+  /// `ListDeviceRegistriesResponse`; indicates
+  /// that this is a continuation of a prior `ListDeviceRegistries` call, and
+  /// that the system should return the next page of data.
+  ///
   /// [pageSize] - The maximum number of registries to return in the response.
   /// If this value
   /// is zero, the service will select a default size. A call may return fewer
   /// objects than requested, but if there is a non-empty `page_token`, it
   /// indicates that more entries are available.
-  ///
-  /// [pageToken] - The value returned by the last
-  /// `ListDeviceRegistriesResponse`; indicates
-  /// that this is a continuation of a prior `ListDeviceRegistries` call, and
-  /// that the system should return the next page of data.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -294,7 +294,7 @@ class ProjectsLocationsRegistriesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListDeviceRegistriesResponse> list(core.String parent,
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -305,11 +305,11 @@ class ProjectsLocationsRegistriesResourceApi {
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -344,8 +344,8 @@ class ProjectsLocationsRegistriesResourceApi {
   /// mask.
   /// The field mask must not be empty, and it must not contain fields that
   /// are immutable or only set by the server.
-  /// Mutable top-level fields: `event_notification_config`, `mqtt_config`, and
-  /// `state_notification_config`.
+  /// Mutable top-level fields: `event_notification_config`, `http_config`,
+  /// `mqtt_config`, and `state_notification_config`.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -630,6 +630,10 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
   /// Value must have pattern
   /// "^projects/[^/]+/locations/[^/]+/registries/[^/]+/devices/[^/]+$".
   ///
+  /// [fieldMask] - The fields of the `Device` resource to be returned in the
+  /// response. If the
+  /// field mask is unset or empty, all fields are returned.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -640,7 +644,8 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
   ///
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
-  async.Future<Device> get(core.String name, {core.String $fields}) {
+  async.Future<Device> get(core.String name,
+      {core.String fieldMask, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -650,6 +655,9 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
 
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
+    }
+    if (fieldMask != null) {
+      _queryParams["fieldMask"] = [fieldMask];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -675,10 +683,6 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
   /// Value must have pattern
   /// "^projects/[^/]+/locations/[^/]+/registries/[^/]+$".
   ///
-  /// [deviceNumIds] - A list of device numerical ids. If empty, it will ignore
-  /// this field. This
-  /// field cannot hold more than 10,000 entries.
-  ///
   /// [pageToken] - The value returned by the last `ListDevicesResponse`;
   /// indicates
   /// that this is a continuation of a prior `ListDevices` call, and
@@ -700,6 +704,10 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
   /// For example, `['device0', 'device12']`. This field cannot hold more than
   /// 10,000 entries.
   ///
+  /// [deviceNumIds] - A list of device numerical ids. If empty, it will ignore
+  /// this field. This
+  /// field cannot hold more than 10,000 entries.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -711,11 +719,11 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListDevicesResponse> list(core.String parent,
-      {core.List<core.String> deviceNumIds,
-      core.String pageToken,
+      {core.String pageToken,
       core.String fieldMask,
       core.int pageSize,
       core.List<core.String> deviceIds,
+      core.List<core.String> deviceNumIds,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -726,9 +734,6 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
 
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
-    }
-    if (deviceNumIds != null) {
-      _queryParams["deviceNumIds"] = deviceNumIds;
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
@@ -741,6 +746,9 @@ class ProjectsLocationsRegistriesDevicesResourceApi {
     }
     if (deviceIds != null) {
       _queryParams["deviceIds"] = deviceIds;
+    }
+    if (deviceNumIds != null) {
+      _queryParams["deviceNumIds"] = deviceNumIds;
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1021,7 +1029,7 @@ class ProjectsLocationsRegistriesDevicesStatesResourceApi {
 /// If there are AuditConfigs for both `allServices` and a specific service,
 /// the union of the two AuditConfigs is used for that service: the log_types
 /// specified in each AuditConfig are enabled, and the exempted_members in each
-/// AuditConfig are exempted.
+/// AuditLogConfig are exempted.
 ///
 /// Example Policy with multiple AuditConfigs:
 ///
@@ -1068,7 +1076,6 @@ class AuditConfig {
   /// The configuration for logging of each type of permission.
   /// Next ID: 4
   core.List<AuditLogConfig> auditLogConfigs;
-  core.List<core.String> exemptedMembers;
 
   /// Specifies a service that will be enabled for audit logging.
   /// For example, `storage.googleapis.com`, `cloudsql.googleapis.com`.
@@ -1083,9 +1090,6 @@ class AuditConfig {
           .map((value) => new AuditLogConfig.fromJson(value))
           .toList();
     }
-    if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
-    }
     if (_json.containsKey("service")) {
       service = _json["service"];
     }
@@ -1097,9 +1101,6 @@ class AuditConfig {
     if (auditLogConfigs != null) {
       _json["auditLogConfigs"] =
           auditLogConfigs.map((value) => (value).toJson()).toList();
-    }
-    if (exemptedMembers != null) {
-      _json["exemptedMembers"] = exemptedMembers;
     }
     if (service != null) {
       _json["service"] = service;
@@ -1167,13 +1168,6 @@ class AuditLogConfig {
 
 /// Associates `members` with a `role`.
 class Binding {
-  /// The condition that is associated with this binding.
-  /// NOTE: an unsatisfied condition will not allow user access via current
-  /// binding. Different bindings, including their conditions, are examined
-  /// independently.
-  /// This field is GOOGLE_INTERNAL.
-  Expr condition;
-
   /// Specifies the identities requesting access for a Cloud Platform resource.
   /// `members` can have the following values:
   ///
@@ -1206,9 +1200,6 @@ class Binding {
   Binding();
 
   Binding.fromJson(core.Map _json) {
-    if (_json.containsKey("condition")) {
-      condition = new Expr.fromJson(_json["condition"]);
-    }
     if (_json.containsKey("members")) {
       members = _json["members"];
     }
@@ -1220,9 +1211,6 @@ class Binding {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
-    if (condition != null) {
-      _json["condition"] = (condition).toJson();
-    }
     if (members != null) {
       _json["members"] = members;
     }
@@ -1289,9 +1277,11 @@ class Device {
   /// minutes.
   core.String lastEventTime;
 
-  /// [Output only] The last time a heartbeat was received. Timestamps are
-  /// periodically collected and written to storage; they may be stale by a few
-  /// minutes. This field is only for devices connecting through MQTT.
+  /// [Output only] The last time an MQTT `PINGREQ` was received. This field
+  /// applies only to devices connecting through MQTT. MQTT clients usually only
+  /// send `PINGREQ` messages if the connection is idle, and no other messages
+  /// have been sent. Timestamps are periodically collected and written to
+  /// storage; they may be stale by a few minutes.
   core.String lastHeartbeatTime;
 
   /// [Output only] The last time a state event was received. Timestamps are
@@ -1568,7 +1558,11 @@ class DeviceRegistry {
   /// The configuration for notification of telemetry events received from the
   /// device. All telemetry events that were successfully published by the
   /// device and acknowledged by Cloud IoT Core are guaranteed to be
-  /// delivered to Cloud Pub/Sub. Only the first configuration is used.
+  /// delivered to Cloud Pub/Sub. Only the first configuration is used. If you
+  /// try to publish a device telemetry event using MQTT without specifying a
+  /// Cloud Pub/Sub topic for the device's registry, the connection closes
+  /// automatically. If you try to do so using an HTTP connection, an error
+  /// is returned.
   core.List<EventNotificationConfig> eventNotificationConfigs;
 
   /// The DeviceService (HTTP) configuration for this device registry.
@@ -1720,12 +1714,16 @@ class EventNotificationConfig {
   /// A Cloud Pub/Sub topic name. For example,
   /// `projects/myProject/topics/deviceEvents`.
   core.String pubsubTopicName;
+  core.String subfolderMatches;
 
   EventNotificationConfig();
 
   EventNotificationConfig.fromJson(core.Map _json) {
     if (_json.containsKey("pubsubTopicName")) {
       pubsubTopicName = _json["pubsubTopicName"];
+    }
+    if (_json.containsKey("subfolderMatches")) {
+      subfolderMatches = _json["subfolderMatches"];
     }
   }
 
@@ -1735,67 +1733,8 @@ class EventNotificationConfig {
     if (pubsubTopicName != null) {
       _json["pubsubTopicName"] = pubsubTopicName;
     }
-    return _json;
-  }
-}
-
-/// Represents an expression text. Example:
-///
-///     title: "User account presence"
-///     description: "Determines whether the request has a user account"
-///     expression: "size(request.user) > 0"
-class Expr {
-  /// An optional description of the expression. This is a longer text which
-  /// describes the expression, e.g. when hovered over it in a UI.
-  core.String description;
-
-  /// Textual representation of an expression in
-  /// Common Expression Language syntax.
-  ///
-  /// The application context of the containing message determines which
-  /// well-known feature set of CEL is supported.
-  core.String expression;
-
-  /// An optional string indicating the location of the expression for error
-  /// reporting, e.g. a file name and a position in the file.
-  core.String location;
-
-  /// An optional title for the expression, i.e. a short string describing
-  /// its purpose. This can be used e.g. in UIs which allow to enter the
-  /// expression.
-  core.String title;
-
-  Expr();
-
-  Expr.fromJson(core.Map _json) {
-    if (_json.containsKey("description")) {
-      description = _json["description"];
-    }
-    if (_json.containsKey("expression")) {
-      expression = _json["expression"];
-    }
-    if (_json.containsKey("location")) {
-      location = _json["location"];
-    }
-    if (_json.containsKey("title")) {
-      title = _json["title"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (description != null) {
-      _json["description"] = description;
-    }
-    if (expression != null) {
-      _json["expression"] = expression;
-    }
-    if (location != null) {
-      _json["location"] = location;
-    }
-    if (title != null) {
-      _json["title"] = title;
+    if (subfolderMatches != null) {
+      _json["subfolderMatches"] = subfolderMatches;
     }
     return _json;
   }
@@ -2076,7 +2015,7 @@ class MqttConfig {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
   /// Specifies cloud audit logging configuration for this policy.
   core.List<AuditConfig> auditConfigs;
@@ -2106,9 +2045,7 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  core.bool iamOwned;
-
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();
@@ -2127,9 +2064,6 @@ class Policy {
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
     }
-    if (_json.containsKey("iamOwned")) {
-      iamOwned = _json["iamOwned"];
-    }
     if (_json.containsKey("version")) {
       version = _json["version"];
     }
@@ -2147,9 +2081,6 @@ class Policy {
     }
     if (etag != null) {
       _json["etag"] = etag;
-    }
-    if (iamOwned != null) {
-      _json["iamOwned"] = iamOwned;
     }
     if (version != null) {
       _json["version"] = version;

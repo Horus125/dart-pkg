@@ -24,6 +24,8 @@ class IamApi {
 
   final commons.ApiRequester _requester;
 
+  IamPoliciesResourceApi get iamPolicies =>
+      new IamPoliciesResourceApi(_requester);
   OrganizationsResourceApi get organizations =>
       new OrganizationsResourceApi(_requester);
   PermissionsResourceApi get permissions =>
@@ -36,6 +38,58 @@ class IamApi {
       core.String servicePath: ""})
       : _requester =
             new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+}
+
+class IamPoliciesResourceApi {
+  final commons.ApiRequester _requester;
+
+  IamPoliciesResourceApi(commons.ApiRequester client) : _requester = client;
+
+  /// Returns a list of services that support service level audit logging
+  /// configuration for the given resource.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [QueryAuditableServicesResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<QueryAuditableServicesResponse> queryAuditableServices(
+      QueryAuditableServicesRequest request,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'v1/iamPolicies:queryAuditableServices';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response
+        .then((data) => new QueryAuditableServicesResponse.fromJson(data));
+  }
 }
 
 class OrganizationsResourceApi {
@@ -1652,6 +1706,14 @@ class RolesResourceApi {
   ///
   /// Request parameters:
   ///
+  /// [showDeleted] - Include Roles that have been deleted.
+  ///
+  /// [pageToken] - Optional pagination token returned in an earlier
+  /// ListRolesResponse.
+  ///
+  /// [pageSize] - Optional limit on the number of roles to include in the
+  /// response.
+  ///
   /// [view] - Optional view for the returned Role objects.
   /// Possible string values are:
   /// - "BASIC" : A BASIC.
@@ -1662,14 +1724,6 @@ class RolesResourceApi {
   /// `` (empty string) -- this refers to curated roles.
   /// `organizations/{ORGANIZATION_ID}`
   /// `projects/{PROJECT_ID}`
-  ///
-  /// [showDeleted] - Include Roles that have been deleted.
-  ///
-  /// [pageToken] - Optional pagination token returned in an earlier
-  /// ListRolesResponse.
-  ///
-  /// [pageSize] - Optional limit on the number of roles to include in the
-  /// response.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1682,11 +1736,11 @@ class RolesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListRolesResponse> list(
-      {core.String view,
-      core.String parent,
-      core.bool showDeleted,
+      {core.bool showDeleted,
       core.String pageToken,
       core.int pageSize,
+      core.String view,
+      core.String parent,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1695,12 +1749,6 @@ class RolesResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
-    if (view != null) {
-      _queryParams["view"] = [view];
-    }
-    if (parent != null) {
-      _queryParams["parent"] = [parent];
-    }
     if (showDeleted != null) {
       _queryParams["showDeleted"] = ["${showDeleted}"];
     }
@@ -1709,6 +1757,12 @@ class RolesResourceApi {
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (view != null) {
+      _queryParams["view"] = [view];
+    }
+    if (parent != null) {
+      _queryParams["parent"] = [parent];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1774,6 +1828,94 @@ class RolesResourceApi {
   }
 }
 
+/// Specifies the audit configuration for a service.
+/// The configuration determines which permission types are logged, and what
+/// identities, if any, are exempted from logging.
+/// An AuditConfig must have one or more AuditLogConfigs.
+///
+/// If there are AuditConfigs for both `allServices` and a specific service,
+/// the union of the two AuditConfigs is used for that service: the log_types
+/// specified in each AuditConfig are enabled, and the exempted_members in each
+/// AuditLogConfig are exempted.
+///
+/// Example Policy with multiple AuditConfigs:
+///
+///     {
+///       "audit_configs": [
+///         {
+///           "service": "allServices"
+///           "audit_log_configs": [
+///             {
+///               "log_type": "DATA_READ",
+///               "exempted_members": [
+///                 "user:foo@gmail.com"
+///               ]
+///             },
+///             {
+///               "log_type": "DATA_WRITE",
+///             },
+///             {
+///               "log_type": "ADMIN_READ",
+///             }
+///           ]
+///         },
+///         {
+///           "service": "fooservice.googleapis.com"
+///           "audit_log_configs": [
+///             {
+///               "log_type": "DATA_READ",
+///             },
+///             {
+///               "log_type": "DATA_WRITE",
+///               "exempted_members": [
+///                 "user:bar@gmail.com"
+///               ]
+///             }
+///           ]
+///         }
+///       ]
+///     }
+///
+/// For fooservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ
+/// logging. It also exempts foo@gmail.com from DATA_READ logging, and
+/// bar@gmail.com from DATA_WRITE logging.
+class AuditConfig {
+  /// The configuration for logging of each type of permission.
+  /// Next ID: 4
+  core.List<AuditLogConfig> auditLogConfigs;
+
+  /// Specifies a service that will be enabled for audit logging.
+  /// For example, `storage.googleapis.com`, `cloudsql.googleapis.com`.
+  /// `allServices` is a special value that covers all services.
+  core.String service;
+
+  AuditConfig();
+
+  AuditConfig.fromJson(core.Map _json) {
+    if (_json.containsKey("auditLogConfigs")) {
+      auditLogConfigs = _json["auditLogConfigs"]
+          .map((value) => new AuditLogConfig.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("service")) {
+      service = _json["service"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (auditLogConfigs != null) {
+      _json["auditLogConfigs"] =
+          auditLogConfigs.map((value) => (value).toJson()).toList();
+    }
+    if (service != null) {
+      _json["service"] = service;
+    }
+    return _json;
+  }
+}
+
 /// Audit log information specific to Cloud IAM. This message is serialized
 /// as an `Any` type in the `ServiceData` message of an
 /// `AuditLog` message.
@@ -1794,6 +1936,87 @@ class AuditData {
         new core.Map<core.String, core.Object>();
     if (policyDelta != null) {
       _json["policyDelta"] = (policyDelta).toJson();
+    }
+    return _json;
+  }
+}
+
+/// Provides the configuration for logging a type of permissions.
+/// Example:
+///
+///     {
+///       "audit_log_configs": [
+///         {
+///           "log_type": "DATA_READ",
+///           "exempted_members": [
+///             "user:foo@gmail.com"
+///           ]
+///         },
+///         {
+///           "log_type": "DATA_WRITE",
+///         }
+///       ]
+///     }
+///
+/// This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting
+/// foo@gmail.com from DATA_READ logging.
+class AuditLogConfig {
+  /// Specifies the identities that do not cause logging for this type of
+  /// permission.
+  /// Follows the same format of Binding.members.
+  core.List<core.String> exemptedMembers;
+
+  /// The log type that this config enables.
+  /// Possible string values are:
+  /// - "LOG_TYPE_UNSPECIFIED" : Default case. Should never be this.
+  /// - "ADMIN_READ" : Admin reads. Example: CloudIAM getIamPolicy
+  /// - "DATA_WRITE" : Data writes. Example: CloudSQL Users create
+  /// - "DATA_READ" : Data reads. Example: CloudSQL Users list
+  core.String logType;
+
+  AuditLogConfig();
+
+  AuditLogConfig.fromJson(core.Map _json) {
+    if (_json.containsKey("exemptedMembers")) {
+      exemptedMembers = _json["exemptedMembers"];
+    }
+    if (_json.containsKey("logType")) {
+      logType = _json["logType"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (exemptedMembers != null) {
+      _json["exemptedMembers"] = exemptedMembers;
+    }
+    if (logType != null) {
+      _json["logType"] = logType;
+    }
+    return _json;
+  }
+}
+
+/// Contains information about an auditable service.
+class AuditableService {
+  /// Public name of the service.
+  /// For example, the service name for Cloud IAM is 'iam.googleapis.com'.
+  core.String name;
+
+  AuditableService();
+
+  AuditableService.fromJson(core.Map _json) {
+    if (_json.containsKey("name")) {
+      name = _json["name"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (name != null) {
+      _json["name"] = name;
     }
     return _json;
   }
@@ -1865,12 +2088,6 @@ class BindingDelta {
   /// - "REMOVE" : Removal of a Binding.
   core.String action;
 
-  /// The condition that is associated with this binding.
-  /// This field is GOOGLE_INTERNAL.
-  /// This field is not logged in IAM side because it's only for audit logging.
-  /// Optional
-  Expr condition;
-
   /// A single identity requesting access for a Cloud Platform resource.
   /// Follows the same format of Binding.members.
   /// Required
@@ -1887,9 +2104,6 @@ class BindingDelta {
     if (_json.containsKey("action")) {
       action = _json["action"];
     }
-    if (_json.containsKey("condition")) {
-      condition = new Expr.fromJson(_json["condition"]);
-    }
     if (_json.containsKey("member")) {
       member = _json["member"];
     }
@@ -1903,9 +2117,6 @@ class BindingDelta {
         new core.Map<core.String, core.Object>();
     if (action != null) {
       _json["action"] = action;
-    }
-    if (condition != null) {
-      _json["condition"] = (condition).toJson();
     }
     if (member != null) {
       _json["member"] = member;
@@ -1960,8 +2171,9 @@ class CreateServiceAccountKeyRequest {
   /// - "KEY_ALG_RSA_2048" : 2k RSA Key.
   core.String keyAlgorithm;
 
-  /// The output format of the private key. `GOOGLE_CREDENTIALS_FILE` is the
-  /// default output format.
+  /// The output format of the private key. The default value is
+  /// `TYPE_GOOGLE_CREDENTIALS_FILE`, which is the Google Credentials File
+  /// format.
   /// Possible string values are:
   /// - "TYPE_UNSPECIFIED" : Unspecified. Equivalent to
   /// `TYPE_GOOGLE_CREDENTIALS_FILE`.
@@ -2049,68 +2261,6 @@ class Empty {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
-    return _json;
-  }
-}
-
-/// Represents an expression text. Example:
-///
-///     title: "User account presence"
-///     description: "Determines whether the request has a user account"
-///     expression: "size(request.user) > 0"
-class Expr {
-  /// An optional description of the expression. This is a longer text which
-  /// describes the expression, e.g. when hovered over it in a UI.
-  core.String description;
-
-  /// Textual representation of an expression in
-  /// Common Expression Language syntax.
-  ///
-  /// The application context of the containing message determines which
-  /// well-known feature set of CEL is supported.
-  core.String expression;
-
-  /// An optional string indicating the location of the expression for error
-  /// reporting, e.g. a file name and a position in the file.
-  core.String location;
-
-  /// An optional title for the expression, i.e. a short string describing
-  /// its purpose. This can be used e.g. in UIs which allow to enter the
-  /// expression.
-  core.String title;
-
-  Expr();
-
-  Expr.fromJson(core.Map _json) {
-    if (_json.containsKey("description")) {
-      description = _json["description"];
-    }
-    if (_json.containsKey("expression")) {
-      expression = _json["expression"];
-    }
-    if (_json.containsKey("location")) {
-      location = _json["location"];
-    }
-    if (_json.containsKey("title")) {
-      title = _json["title"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (description != null) {
-      _json["description"] = description;
-    }
-    if (expression != null) {
-      _json["expression"] = expression;
-    }
-    if (location != null) {
-      _json["location"] = location;
-    }
-    if (title != null) {
-      _json["title"] = title;
-    }
     return _json;
   }
 }
@@ -2211,6 +2361,9 @@ class ListServiceAccountsResponse {
 
 /// A permission which can be included by a role.
 class Permission {
+  /// The service API associated with the permission is not enabled.
+  core.bool apiDisabled;
+
   /// The current custom role support level.
   /// Possible string values are:
   /// - "SUPPORTED" : Permission is fully supported for custom role use.
@@ -2242,6 +2395,9 @@ class Permission {
   Permission();
 
   Permission.fromJson(core.Map _json) {
+    if (_json.containsKey("apiDisabled")) {
+      apiDisabled = _json["apiDisabled"];
+    }
     if (_json.containsKey("customRolesSupportLevel")) {
       customRolesSupportLevel = _json["customRolesSupportLevel"];
     }
@@ -2265,6 +2421,9 @@ class Permission {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (apiDisabled != null) {
+      _json["apiDisabled"] = apiDisabled;
+    }
     if (customRolesSupportLevel != null) {
       _json["customRolesSupportLevel"] = customRolesSupportLevel;
     }
@@ -2319,8 +2478,11 @@ class Permission {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
+  /// Specifies cloud audit logging configuration for this policy.
+  core.List<AuditConfig> auditConfigs;
+
   /// Associates a list of `members` to a `role`.
   /// `bindings` with no members will result in an error.
   core.List<Binding> bindings;
@@ -2346,12 +2508,17 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();
 
   Policy.fromJson(core.Map _json) {
+    if (_json.containsKey("auditConfigs")) {
+      auditConfigs = _json["auditConfigs"]
+          .map((value) => new AuditConfig.fromJson(value))
+          .toList();
+    }
     if (_json.containsKey("bindings")) {
       bindings = _json["bindings"]
           .map((value) => new Binding.fromJson(value))
@@ -2368,6 +2535,10 @@ class Policy {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (auditConfigs != null) {
+      _json["auditConfigs"] =
+          auditConfigs.map((value) => (value).toJson()).toList();
+    }
     if (bindings != null) {
       _json["bindings"] = bindings.map((value) => (value).toJson()).toList();
     }
@@ -2402,6 +2573,59 @@ class PolicyDelta {
     if (bindingDeltas != null) {
       _json["bindingDeltas"] =
           bindingDeltas.map((value) => (value).toJson()).toList();
+    }
+    return _json;
+  }
+}
+
+/// A request to get the list of auditable services for a resource.
+class QueryAuditableServicesRequest {
+  /// Required. The full resource name to query from the list of auditable
+  /// services.
+  ///
+  /// The name follows the Google Cloud Platform resource format.
+  /// For example, a Cloud Platform project with id `my-project` will be named
+  /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
+  core.String fullResourceName;
+
+  QueryAuditableServicesRequest();
+
+  QueryAuditableServicesRequest.fromJson(core.Map _json) {
+    if (_json.containsKey("fullResourceName")) {
+      fullResourceName = _json["fullResourceName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (fullResourceName != null) {
+      _json["fullResourceName"] = fullResourceName;
+    }
+    return _json;
+  }
+}
+
+/// A response containing a list of auditable services for a resource.
+class QueryAuditableServicesResponse {
+  /// The auditable services for a resource.
+  core.List<AuditableService> services;
+
+  QueryAuditableServicesResponse();
+
+  QueryAuditableServicesResponse.fromJson(core.Map _json) {
+    if (_json.containsKey("services")) {
+      services = _json["services"]
+          .map((value) => new AuditableService.fromJson(value))
+          .toList();
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (services != null) {
+      _json["services"] = services.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
@@ -2694,9 +2918,8 @@ class Role {
 /// `unique_id`.
 ///
 /// If the account already exists, the account's resource name is returned
-/// in util::Status's ResourceInfo.resource_name in the format of
-/// projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}. The caller can
-/// use the name in other methods to access the account.
+/// in the format of projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}. The caller
+/// can use the name in other methods to access the account.
 ///
 /// All other methods can identify the service account using the format
 /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -2733,7 +2956,7 @@ class ServiceAccount {
   /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
   core.String name;
 
-  /// @OutputOnly. The OAuth2 client id for the service account.
+  /// @OutputOnly The OAuth2 client id for the service account.
   /// This is used in conjunction with the OAuth2 clientconfig API to make
   /// three legged OAuth2 (3LO) flows to access the data of Google users.
   core.String oauth2ClientId;
@@ -2937,11 +3160,22 @@ class SetIamPolicyRequest {
   /// might reject them.
   Policy policy;
 
+  /// OPTIONAL: A FieldMask specifying which fields of the policy to modify.
+  /// Only
+  /// the fields in the mask will be modified. If no mask is provided, the
+  /// following default mask is used:
+  /// paths: "bindings, etag"
+  /// This field is only used by Cloud IAM.
+  core.String updateMask;
+
   SetIamPolicyRequest();
 
   SetIamPolicyRequest.fromJson(core.Map _json) {
     if (_json.containsKey("policy")) {
       policy = new Policy.fromJson(_json["policy"]);
+    }
+    if (_json.containsKey("updateMask")) {
+      updateMask = _json["updateMask"];
     }
   }
 
@@ -2950,6 +3184,9 @@ class SetIamPolicyRequest {
         new core.Map<core.String, core.Object>();
     if (policy != null) {
       _json["policy"] = (policy).toJson();
+    }
+    if (updateMask != null) {
+      _json["updateMask"] = updateMask;
     }
     return _json;
   }

@@ -507,7 +507,7 @@ class ChromeosdevicesResourceApi {
   /// - "status" : Chromebook status.
   /// - "supportEndDate" : Chromebook support end date.
   ///
-  /// [orgUnitPath] - Full path of the organization unit or its Id
+  /// [orgUnitPath] - Full path of the organizational unit or its ID
   ///
   /// [pageToken] - Token to specify next page in the list
   ///
@@ -593,7 +593,7 @@ class ChromeosdevicesResourceApi {
     return _response.then((data) => new ChromeOsDevices.fromJson(data));
   }
 
-  /// Move or insert multiple Chrome OS Devices to Organization Unit
+  /// Move or insert multiple Chrome OS Devices to organizational unit
   ///
   /// [request] - The metadata request object.
   ///
@@ -601,7 +601,7 @@ class ChromeosdevicesResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - Full path of the target organization unit or its Id
+  /// [orgUnitPath] - Full path of the target organizational unit or its ID
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1349,7 +1349,7 @@ class GroupsResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1391,7 +1391,7 @@ class GroupsResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1486,8 +1486,8 @@ class GroupsResourceApi {
   ///
   /// [pageToken] - Token to specify next page in the list
   ///
-  /// [userKey] - Email or immutable Id of the user if only those groups are to
-  /// be listed, the given user is a member of. If Id, it should match with id
+  /// [userKey] - Email or immutable ID of the user if only those groups are to
+  /// be listed, the given user is a member of. If ID, it should match with id
   /// of user object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -1550,7 +1550,7 @@ class GroupsResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group. If Id, it should match
+  /// [groupKey] - Email or immutable ID of the group. If ID, it should match
   /// with id of group object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -1599,7 +1599,7 @@ class GroupsResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group. If Id, it should match
+  /// [groupKey] - Email or immutable ID of the group. If ID, it should match
   /// with id of group object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -1652,7 +1652,7 @@ class GroupsAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [alias] - The alias to be removed
   ///
@@ -1705,7 +1705,7 @@ class GroupsAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1751,7 +1751,7 @@ class GroupsAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1799,9 +1799,9 @@ class MembersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
-  /// [memberKey] - Email or immutable Id of the member
+  /// [memberKey] - Email or immutable ID of the member
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1850,9 +1850,9 @@ class MembersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
-  /// [memberKey] - Email or immutable Id of the member
+  /// [memberKey] - Email or immutable ID of the member
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1897,13 +1897,65 @@ class MembersResourceApi {
     return _response.then((data) => new Member.fromJson(data));
   }
 
+  /// Checks Membership of an user within a Group
+  ///
+  /// Request parameters:
+  ///
+  /// [groupKey] - Email or immutable Id of the group
+  ///
+  /// [memberKey] - Email or immutable Id of the member
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [MembersHasMember].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<MembersHasMember> hasMember(
+      core.String groupKey, core.String memberKey,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (groupKey == null) {
+      throw new core.ArgumentError("Parameter groupKey is required.");
+    }
+    if (memberKey == null) {
+      throw new core.ArgumentError("Parameter memberKey is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'groups/' +
+        commons.Escaper.ecapeVariable('$groupKey') +
+        '/hasMember/' +
+        commons.Escaper.ecapeVariable('$memberKey');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new MembersHasMember.fromJson(data));
+  }
+
   /// Add user to the specified group.
   ///
   /// [request] - The metadata request object.
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1949,7 +2001,7 @@ class MembersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group
+  /// [groupKey] - Email or immutable ID of the group
   ///
   /// [maxResults] - Maximum number of results to return. Default is 200
   ///
@@ -2013,10 +2065,10 @@ class MembersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group. If Id, it should match
+  /// [groupKey] - Email or immutable ID of the group. If ID, it should match
   /// with id of group object
   ///
-  /// [memberKey] - Email or immutable Id of the user. If Id, it should match
+  /// [memberKey] - Email or immutable ID of the user. If ID, it should match
   /// with id of member object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -2072,10 +2124,10 @@ class MembersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [groupKey] - Email or immutable Id of the group. If Id, it should match
+  /// [groupKey] - Email or immutable ID of the group. If ID, it should match
   /// with id of group object
   ///
-  /// [memberKey] - Email or immutable Id of the user. If Id, it should match
+  /// [memberKey] - Email or immutable ID of the user. If ID, it should match
   /// with id of member object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -2695,13 +2747,13 @@ class OrgunitsResourceApi {
 
   OrgunitsResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /// Remove Organization Unit
+  /// Remove organizational unit
   ///
   /// Request parameters:
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - Full path of the organization unit or its Id
+  /// [orgUnitPath] - Full path of the organizational unit or its ID
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2750,13 +2802,13 @@ class OrgunitsResourceApi {
     return _response.then((data) => null);
   }
 
-  /// Retrieve Organization Unit
+  /// Retrieve organizational unit
   ///
   /// Request parameters:
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - Full path of the organization unit or its Id
+  /// [orgUnitPath] - Full path of the organizational unit or its ID
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2805,7 +2857,7 @@ class OrgunitsResourceApi {
     return _response.then((data) => new OrgUnit.fromJson(data));
   }
 
-  /// Add Organization Unit
+  /// Add organizational unit
   ///
   /// [request] - The metadata request object.
   ///
@@ -2855,18 +2907,18 @@ class OrgunitsResourceApi {
     return _response.then((data) => new OrgUnit.fromJson(data));
   }
 
-  /// Retrieve all Organization Units
+  /// Retrieve all organizational units
   ///
   /// Request parameters:
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - the URL-encoded organization unit's path or its Id
+  /// [orgUnitPath] - the URL-encoded organizational unit's path or its ID
   ///
   /// [type] - Whether to return all sub-organizations or just immediate
   /// children
   /// Possible string values are:
-  /// - "all" : All sub-organization units.
+  /// - "all" : All sub-organizational units.
   /// - "children" : Immediate children only (default).
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -2914,7 +2966,7 @@ class OrgunitsResourceApi {
     return _response.then((data) => new OrgUnits.fromJson(data));
   }
 
-  /// Update Organization Unit. This method supports patch semantics.
+  /// Update organizational unit. This method supports patch semantics.
   ///
   /// [request] - The metadata request object.
   ///
@@ -2922,7 +2974,7 @@ class OrgunitsResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - Full path of the organization unit or its Id
+  /// [orgUnitPath] - Full path of the organizational unit or its ID
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2974,7 +3026,7 @@ class OrgunitsResourceApi {
     return _response.then((data) => new OrgUnit.fromJson(data));
   }
 
-  /// Update Organization Unit
+  /// Update organizational unit
   ///
   /// [request] - The metadata request object.
   ///
@@ -2982,7 +3034,7 @@ class OrgunitsResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [orgUnitPath] - Full path of the organization unit or its Id
+  /// [orgUnitPath] - Full path of the organizational unit or its ID
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -3169,10 +3221,343 @@ class ResolvedAppAccessSettingsResourceApi {
 class ResourcesResourceApi {
   final commons.ApiRequester _requester;
 
+  ResourcesBuildingsResourceApi get buildings =>
+      new ResourcesBuildingsResourceApi(_requester);
   ResourcesCalendarsResourceApi get calendars =>
       new ResourcesCalendarsResourceApi(_requester);
+  ResourcesFeaturesResourceApi get features =>
+      new ResourcesFeaturesResourceApi(_requester);
 
   ResourcesResourceApi(commons.ApiRequester client) : _requester = client;
+}
+
+class ResourcesBuildingsResourceApi {
+  final commons.ApiRequester _requester;
+
+  ResourcesBuildingsResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Deletes a building.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [buildingId] - The ID of the building to delete.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String customer, core.String buildingId,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (buildingId == null) {
+      throw new core.ArgumentError("Parameter buildingId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _downloadOptions = null;
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings/' +
+        commons.Escaper.ecapeVariable('$buildingId');
+
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// Retrieves a building.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [buildingId] - The unique ID of the building to retrieve.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Building].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Building> get(core.String customer, core.String buildingId,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (buildingId == null) {
+      throw new core.ArgumentError("Parameter buildingId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings/' +
+        commons.Escaper.ecapeVariable('$buildingId');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Building.fromJson(data));
+  }
+
+  /// Inserts a building.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Building].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Building> insert(Building request, core.String customer,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Building.fromJson(data));
+  }
+
+  /// Retrieves a list of buildings for an account.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Buildings].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Buildings> list(core.String customer, {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Buildings.fromJson(data));
+  }
+
+  /// Updates a building. This method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [buildingId] - The ID of the building to update.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Building].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Building> patch(
+      Building request, core.String customer, core.String buildingId,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (buildingId == null) {
+      throw new core.ArgumentError("Parameter buildingId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings/' +
+        commons.Escaper.ecapeVariable('$buildingId');
+
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Building.fromJson(data));
+  }
+
+  /// Updates a building.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [buildingId] - The ID of the building to update.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Building].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Building> update(
+      Building request, core.String customer, core.String buildingId,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (buildingId == null) {
+      throw new core.ArgumentError("Parameter buildingId is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/buildings/' +
+        commons.Escaper.ecapeVariable('$buildingId');
+
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Building.fromJson(data));
+  }
 }
 
 class ResourcesCalendarsResourceApi {
@@ -3352,7 +3737,21 @@ class ResourcesCalendarsResourceApi {
   /// [maxResults] - Maximum number of results to return.
   /// Value must be between "1" and "500".
   ///
+  /// [orderBy] - Field(s) to sort results by in either ascending or descending
+  /// order. Supported fields include resourceId, resourceName, capacity,
+  /// buildingId, and floorName. If no order is specified, defaults to
+  /// ascending. Should be of the form "field [asc|desc], field [asc|desc],
+  /// ...". For example buildingId, capacity desc would return results sorted
+  /// first by buildingId in ascending order then by capacity in descending
+  /// order.
+  ///
   /// [pageToken] - Token to specify the next page in the list.
+  ///
+  /// [query] - String query used to filter results. Should be of the form
+  /// "field operator value" where field can be any of supported fields and
+  /// operators can be any of supported operations. Operators include '=' for
+  /// exact match and ':' for prefix match where applicable. For prefix match,
+  /// the value should always be followed by a *.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -3365,7 +3764,11 @@ class ResourcesCalendarsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<CalendarResources> list(core.String customer,
-      {core.int maxResults, core.String pageToken, core.String $fields}) {
+      {core.int maxResults,
+      core.String orderBy,
+      core.String pageToken,
+      core.String query,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -3379,8 +3782,14 @@ class ResourcesCalendarsResourceApi {
     if (maxResults != null) {
       _queryParams["maxResults"] = ["${maxResults}"];
     }
+    if (orderBy != null) {
+      _queryParams["orderBy"] = [orderBy];
+    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (query != null) {
+      _queryParams["query"] = [query];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3523,6 +3932,401 @@ class ResourcesCalendarsResourceApi {
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
     return _response.then((data) => new CalendarResource.fromJson(data));
+  }
+}
+
+class ResourcesFeaturesResourceApi {
+  final commons.ApiRequester _requester;
+
+  ResourcesFeaturesResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Deletes a feature.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [featureKey] - The unique ID of the feature to delete.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future delete(core.String customer, core.String featureKey,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (featureKey == null) {
+      throw new core.ArgumentError("Parameter featureKey is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _downloadOptions = null;
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features/' +
+        commons.Escaper.ecapeVariable('$featureKey');
+
+    var _response = _requester.request(_url, "DELETE",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// Retrieves a feature.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [featureKey] - The unique ID of the feature to retrieve.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Feature].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Feature> get(core.String customer, core.String featureKey,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (featureKey == null) {
+      throw new core.ArgumentError("Parameter featureKey is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features/' +
+        commons.Escaper.ecapeVariable('$featureKey');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Feature.fromJson(data));
+  }
+
+  /// Inserts a feature.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Feature].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Feature> insert(Feature request, core.String customer,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Feature.fromJson(data));
+  }
+
+  /// Retrieves a list of features for an account.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [pageToken] - Token to specify the next page in the list.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Features].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Features> list(core.String customer,
+      {core.String pageToken, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Features.fromJson(data));
+  }
+
+  /// Updates a feature. This method supports patch semantics.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [featureKey] - The unique ID of the feature to update.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Feature].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Feature> patch(
+      Feature request, core.String customer, core.String featureKey,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (featureKey == null) {
+      throw new core.ArgumentError("Parameter featureKey is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features/' +
+        commons.Escaper.ecapeVariable('$featureKey');
+
+    var _response = _requester.request(_url, "PATCH",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Feature.fromJson(data));
+  }
+
+  /// Renames a feature.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [oldName] - The unique ID of the feature to rename.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future rename(
+      FeatureRename request, core.String customer, core.String oldName,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (oldName == null) {
+      throw new core.ArgumentError("Parameter oldName is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _downloadOptions = null;
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features/' +
+        commons.Escaper.ecapeVariable('$oldName') +
+        '/rename';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// Updates a feature.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [customer] - The unique ID for the customer's G Suite account. As an
+  /// account administrator, you can also use the my_customer alias to represent
+  /// your account's customer ID.
+  ///
+  /// [featureKey] - The unique ID of the feature to update.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Feature].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Feature> update(
+      Feature request, core.String customer, core.String featureKey,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (customer == null) {
+      throw new core.ArgumentError("Parameter customer is required.");
+    }
+    if (featureKey == null) {
+      throw new core.ArgumentError("Parameter featureKey is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'customer/' +
+        commons.Escaper.ecapeVariable('$customer') +
+        '/resources/features/' +
+        commons.Escaper.ecapeVariable('$featureKey');
+
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Feature.fromJson(data));
   }
 }
 
@@ -4094,7 +4898,7 @@ class SchemasResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [schemaKey] - Name or immutable Id of the schema
+  /// [schemaKey] - Name or immutable ID of the schema
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4145,7 +4949,7 @@ class SchemasResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [schemaKey] - Name or immutable Id of the schema
+  /// [schemaKey] - Name or immutable ID of the schema
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4290,7 +5094,7 @@ class SchemasResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [schemaKey] - Name or immutable Id of the schema.
+  /// [schemaKey] - Name or immutable ID of the schema.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4347,7 +5151,7 @@ class SchemasResourceApi {
   ///
   /// [customerId] - Immutable ID of the G Suite account
   ///
-  /// [schemaKey] - Name or immutable Id of the schema.
+  /// [schemaKey] - Name or immutable ID of the schema.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4564,7 +5368,7 @@ class UsersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4606,7 +5410,7 @@ class UsersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [customFieldMask] - Comma-separated list of schema names. All fields from
   /// these schemas are fetched. This should only be set when projection=custom.
@@ -4861,7 +5665,7 @@ class UsersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user as admin
+  /// [userKey] - Email or immutable ID of the user as admin
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -4909,7 +5713,7 @@ class UsersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user. If Id, it should match with
+  /// [userKey] - Email or immutable ID of the user. If ID, it should match with
   /// id of user object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -5006,7 +5810,7 @@ class UsersResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user. If Id, it should match with
+  /// [userKey] - Email or immutable ID of the user. If ID, it should match with
   /// id of user object
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -5204,7 +6008,7 @@ class UsersAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [alias] - The alias to be removed
   ///
@@ -5257,7 +6061,7 @@ class UsersAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5303,7 +6107,7 @@ class UsersAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [event] - Event on which subscription is intended (if subscribing)
   /// Possible string values are:
@@ -5356,7 +6160,7 @@ class UsersAliasesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [event] - Event on which subscription is intended (if subscribing)
   /// Possible string values are:
@@ -5417,7 +6221,7 @@ class UsersPhotosResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5461,7 +6265,7 @@ class UsersPhotosResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5507,7 +6311,7 @@ class UsersPhotosResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5557,7 +6361,7 @@ class UsersPhotosResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5612,7 +6416,7 @@ class VerificationCodesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -5656,7 +6460,7 @@ class VerificationCodesResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [userKey] - Email or immutable Id of the user
+  /// [userKey] - Email or immutable ID of the user
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -6055,48 +6859,257 @@ class Asps {
   }
 }
 
-/// JSON template for Calendar Resource object in Directory API.
-class CalendarResource {
+/// JSON template for Building object in Directory API.
+class Building {
+  /// Unique identifier for the building. The maximum length is 100 characters.
+  core.String buildingId;
+
+  /// The building name as seen by users in Calendar. Must be unique for the
+  /// customer. For example, "NYC-CHEL". The maximum length is 100 characters.
+  core.String buildingName;
+
+  /// The geographic coordinates of the center of the building, expressed as
+  /// latitude and longitude in decimal degrees.
+  BuildingCoordinates coordinates;
+
+  /// A brief description of the building. For example, "Chelsea Market".
+  core.String description;
+
   /// ETag of the resource.
   core.String etags;
 
-  /// The auto-generated name of the calendar resource which includes metadata
-  /// about the resource such as building name, floor, capacity, etc. For
-  /// example, NYC-2-Training Room 1A (16)
+  /// The display names for all floors in this building. The floors are expected
+  /// to be sorted in ascending order, from lowest floor to highest floor. For
+  /// example, ["B2", "B1", "L", "1", "2", "2M", "3", "PH"] Must contain at
+  /// least one entry.
+  core.List<core.String> floorNames;
+
+  /// Kind of resource this is.
+  core.String kind;
+
+  Building();
+
+  Building.fromJson(core.Map _json) {
+    if (_json.containsKey("buildingId")) {
+      buildingId = _json["buildingId"];
+    }
+    if (_json.containsKey("buildingName")) {
+      buildingName = _json["buildingName"];
+    }
+    if (_json.containsKey("coordinates")) {
+      coordinates = new BuildingCoordinates.fromJson(_json["coordinates"]);
+    }
+    if (_json.containsKey("description")) {
+      description = _json["description"];
+    }
+    if (_json.containsKey("etags")) {
+      etags = _json["etags"];
+    }
+    if (_json.containsKey("floorNames")) {
+      floorNames = _json["floorNames"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (buildingId != null) {
+      _json["buildingId"] = buildingId;
+    }
+    if (buildingName != null) {
+      _json["buildingName"] = buildingName;
+    }
+    if (coordinates != null) {
+      _json["coordinates"] = (coordinates).toJson();
+    }
+    if (description != null) {
+      _json["description"] = description;
+    }
+    if (etags != null) {
+      _json["etags"] = etags;
+    }
+    if (floorNames != null) {
+      _json["floorNames"] = floorNames;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for coordinates of a building in Directory API.
+class BuildingCoordinates {
+  /// Latitude in decimal degrees.
+  core.double latitude;
+
+  /// Longitude in decimal degrees.
+  core.double longitude;
+
+  BuildingCoordinates();
+
+  BuildingCoordinates.fromJson(core.Map _json) {
+    if (_json.containsKey("latitude")) {
+      latitude = _json["latitude"];
+    }
+    if (_json.containsKey("longitude")) {
+      longitude = _json["longitude"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (latitude != null) {
+      _json["latitude"] = latitude;
+    }
+    if (longitude != null) {
+      _json["longitude"] = longitude;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for Building List Response object in Directory API.
+class Buildings {
+  /// The Buildings in this page of results.
+  core.List<Building> buildings;
+
+  /// ETag of the resource.
+  core.String etag;
+
+  /// Kind of resource this is.
+  core.String kind;
+
+  /// The continuation token, used to page through large result sets. Provide
+  /// this value in a subsequent request to return the next page of results.
+  core.String nextPageToken;
+
+  Buildings();
+
+  Buildings.fromJson(core.Map _json) {
+    if (_json.containsKey("buildings")) {
+      buildings = _json["buildings"]
+          .map((value) => new Building.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("etag")) {
+      etag = _json["etag"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("nextPageToken")) {
+      nextPageToken = _json["nextPageToken"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (buildings != null) {
+      _json["buildings"] = buildings.map((value) => (value).toJson()).toList();
+    }
+    if (etag != null) {
+      _json["etag"] = etag;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (nextPageToken != null) {
+      _json["nextPageToken"] = nextPageToken;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for Calendar Resource object in Directory API.
+class CalendarResource {
+  /// Unique ID for the building a resource is located in.
+  core.String buildingId;
+
+  /// Capacity of a resource, number of seats in a room.
+  core.int capacity;
+
+  /// ETag of the resource.
+  core.String etags;
+
+  ///
+  ///
+  /// The values for Object must be JSON objects. It can consist of `num`,
+  /// `String`, `bool` and `null` as well as `Map` and `List` values.
+  core.Object featureInstances;
+
+  /// Name of the floor a resource is located on.
+  core.String floorName;
+
+  /// Name of the section within a floor a resource is located in.
+  core.String floorSection;
+
+  /// The read-only auto-generated name of the calendar resource which includes
+  /// metadata about the resource such as building name, floor, capacity, etc.
+  /// For example, "NYC-2-Training Room 1A (16)".
   core.String generatedResourceName;
 
   /// The type of the resource. For calendar resources, the value is
   /// admin#directory#resources#calendars#CalendarResource.
   core.String kind;
 
-  /// The brief description of the calendar resource.
+  /// The category of the calendar resource. Either CONFERENCE_ROOM or OTHER.
+  /// Legacy data is set to CATEGORY_UNKNOWN.
+  core.String resourceCategory;
+
+  /// Description of the resource, visible only to admins.
   core.String resourceDescription;
 
-  /// The read-only email ID for the calendar resource. Generated as part of
+  /// The read-only email for the calendar resource. Generated as part of
   /// creating a new calendar resource.
   core.String resourceEmail;
 
   /// The unique ID for the calendar resource.
   core.String resourceId;
 
-  /// The name of the calendar resource. For example, Training Room 1A
+  /// The name of the calendar resource. For example, "Training Room 1A".
   core.String resourceName;
 
-  /// The type of the calendar resource. Used for grouping resources in the
-  /// calendar user interface.
+  /// The type of the calendar resource, intended for non-room resources.
   core.String resourceType;
+
+  /// Description of the resource, visible to users and admins.
+  core.String userVisibleDescription;
 
   CalendarResource();
 
   CalendarResource.fromJson(core.Map _json) {
+    if (_json.containsKey("buildingId")) {
+      buildingId = _json["buildingId"];
+    }
+    if (_json.containsKey("capacity")) {
+      capacity = _json["capacity"];
+    }
     if (_json.containsKey("etags")) {
       etags = _json["etags"];
+    }
+    if (_json.containsKey("featureInstances")) {
+      featureInstances = _json["featureInstances"];
+    }
+    if (_json.containsKey("floorName")) {
+      floorName = _json["floorName"];
+    }
+    if (_json.containsKey("floorSection")) {
+      floorSection = _json["floorSection"];
     }
     if (_json.containsKey("generatedResourceName")) {
       generatedResourceName = _json["generatedResourceName"];
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
+    }
+    if (_json.containsKey("resourceCategory")) {
+      resourceCategory = _json["resourceCategory"];
     }
     if (_json.containsKey("resourceDescription")) {
       resourceDescription = _json["resourceDescription"];
@@ -6113,19 +7126,40 @@ class CalendarResource {
     if (_json.containsKey("resourceType")) {
       resourceType = _json["resourceType"];
     }
+    if (_json.containsKey("userVisibleDescription")) {
+      userVisibleDescription = _json["userVisibleDescription"];
+    }
   }
 
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (buildingId != null) {
+      _json["buildingId"] = buildingId;
+    }
+    if (capacity != null) {
+      _json["capacity"] = capacity;
+    }
     if (etags != null) {
       _json["etags"] = etags;
+    }
+    if (featureInstances != null) {
+      _json["featureInstances"] = featureInstances;
+    }
+    if (floorName != null) {
+      _json["floorName"] = floorName;
+    }
+    if (floorSection != null) {
+      _json["floorSection"] = floorSection;
     }
     if (generatedResourceName != null) {
       _json["generatedResourceName"] = generatedResourceName;
     }
     if (kind != null) {
       _json["kind"] = kind;
+    }
+    if (resourceCategory != null) {
+      _json["resourceCategory"] = resourceCategory;
     }
     if (resourceDescription != null) {
       _json["resourceDescription"] = resourceDescription;
@@ -6141,6 +7175,9 @@ class CalendarResource {
     }
     if (resourceType != null) {
       _json["resourceType"] = resourceType;
+    }
+    if (userVisibleDescription != null) {
+      _json["userVisibleDescription"] = userVisibleDescription;
     }
     return _json;
   }
@@ -6340,6 +7377,55 @@ class ChromeOsDeviceActiveTimeRanges {
   }
 }
 
+class ChromeOsDeviceDeviceFiles {
+  /// Date and time the file was created
+  core.DateTime createTime;
+
+  /// File downlod URL
+  core.String downloadUrl;
+
+  /// File name
+  core.String name;
+
+  /// File type
+  core.String type;
+
+  ChromeOsDeviceDeviceFiles();
+
+  ChromeOsDeviceDeviceFiles.fromJson(core.Map _json) {
+    if (_json.containsKey("createTime")) {
+      createTime = core.DateTime.parse(_json["createTime"]);
+    }
+    if (_json.containsKey("downloadUrl")) {
+      downloadUrl = _json["downloadUrl"];
+    }
+    if (_json.containsKey("name")) {
+      name = _json["name"];
+    }
+    if (_json.containsKey("type")) {
+      type = _json["type"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (createTime != null) {
+      _json["createTime"] = (createTime).toIso8601String();
+    }
+    if (downloadUrl != null) {
+      _json["downloadUrl"] = downloadUrl;
+    }
+    if (name != null) {
+      _json["name"] = name;
+    }
+    if (type != null) {
+      _json["type"] = type;
+    }
+    return _json;
+  }
+}
+
 class ChromeOsDeviceRecentUsers {
   /// Email address of the user. Present only if the user type is managed
   core.String email;
@@ -6371,6 +7457,62 @@ class ChromeOsDeviceRecentUsers {
   }
 }
 
+class ChromeOsDeviceTpmVersionInfo {
+  core.String family;
+  core.String firmwareVersion;
+  core.String manufacturer;
+  core.String specLevel;
+  core.String tpmModel;
+  core.String vendorSpecific;
+
+  ChromeOsDeviceTpmVersionInfo();
+
+  ChromeOsDeviceTpmVersionInfo.fromJson(core.Map _json) {
+    if (_json.containsKey("family")) {
+      family = _json["family"];
+    }
+    if (_json.containsKey("firmwareVersion")) {
+      firmwareVersion = _json["firmwareVersion"];
+    }
+    if (_json.containsKey("manufacturer")) {
+      manufacturer = _json["manufacturer"];
+    }
+    if (_json.containsKey("specLevel")) {
+      specLevel = _json["specLevel"];
+    }
+    if (_json.containsKey("tpmModel")) {
+      tpmModel = _json["tpmModel"];
+    }
+    if (_json.containsKey("vendorSpecific")) {
+      vendorSpecific = _json["vendorSpecific"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (family != null) {
+      _json["family"] = family;
+    }
+    if (firmwareVersion != null) {
+      _json["firmwareVersion"] = firmwareVersion;
+    }
+    if (manufacturer != null) {
+      _json["manufacturer"] = manufacturer;
+    }
+    if (specLevel != null) {
+      _json["specLevel"] = specLevel;
+    }
+    if (tpmModel != null) {
+      _json["tpmModel"] = tpmModel;
+    }
+    if (vendorSpecific != null) {
+      _json["vendorSpecific"] = vendorSpecific;
+    }
+    return _json;
+  }
+}
+
 /// JSON template for Chrome Os Device resource in Directory API.
 class ChromeOsDevice {
   /// List of active time ranges (Read-only)
@@ -6387,6 +7529,9 @@ class ChromeOsDevice {
 
   /// Chromebook boot mode (Read-only)
   core.String bootMode;
+
+  /// List of device files to download (Read-only)
+  core.List<ChromeOsDeviceDeviceFiles> deviceFiles;
 
   /// Unique identifier of Chrome OS Device (Read-only)
   core.String deviceId;
@@ -6447,6 +7592,7 @@ class ChromeOsDevice {
 
   /// Final date the device will be supported (Read-only)
   core.DateTime supportEndDate;
+  ChromeOsDeviceTpmVersionInfo tpmVersionInfo;
 
   /// Will Chromebook auto renew after support end date (Read-only)
   core.bool willAutoRenew;
@@ -6470,6 +7616,11 @@ class ChromeOsDevice {
     }
     if (_json.containsKey("bootMode")) {
       bootMode = _json["bootMode"];
+    }
+    if (_json.containsKey("deviceFiles")) {
+      deviceFiles = _json["deviceFiles"]
+          .map((value) => new ChromeOsDeviceDeviceFiles.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("deviceId")) {
       deviceId = _json["deviceId"];
@@ -6530,6 +7681,10 @@ class ChromeOsDevice {
     if (_json.containsKey("supportEndDate")) {
       supportEndDate = core.DateTime.parse(_json["supportEndDate"]);
     }
+    if (_json.containsKey("tpmVersionInfo")) {
+      tpmVersionInfo =
+          new ChromeOsDeviceTpmVersionInfo.fromJson(_json["tpmVersionInfo"]);
+    }
     if (_json.containsKey("willAutoRenew")) {
       willAutoRenew = _json["willAutoRenew"];
     }
@@ -6553,6 +7708,10 @@ class ChromeOsDevice {
     }
     if (bootMode != null) {
       _json["bootMode"] = bootMode;
+    }
+    if (deviceFiles != null) {
+      _json["deviceFiles"] =
+          deviceFiles.map((value) => (value).toJson()).toList();
     }
     if (deviceId != null) {
       _json["deviceId"] = deviceId;
@@ -6611,6 +7770,9 @@ class ChromeOsDevice {
     }
     if (supportEndDate != null) {
       _json["supportEndDate"] = (supportEndDate).toIso8601String();
+    }
+    if (tpmVersionInfo != null) {
+      _json["tpmVersionInfo"] = (tpmVersionInfo).toJson();
     }
     if (willAutoRenew != null) {
       _json["willAutoRenew"] = willAutoRenew;
@@ -7162,6 +8324,145 @@ class Domains2 {
   }
 }
 
+/// JSON template for Feature object in Directory API.
+class Feature {
+  /// ETag of the resource.
+  core.String etags;
+
+  /// Kind of resource this is.
+  core.String kind;
+
+  /// The name of the feature.
+  core.String name;
+
+  Feature();
+
+  Feature.fromJson(core.Map _json) {
+    if (_json.containsKey("etags")) {
+      etags = _json["etags"];
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("name")) {
+      name = _json["name"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (etags != null) {
+      _json["etags"] = etags;
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (name != null) {
+      _json["name"] = name;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for a "feature instance".
+class FeatureInstance {
+  Feature feature;
+
+  FeatureInstance();
+
+  FeatureInstance.fromJson(core.Map _json) {
+    if (_json.containsKey("feature")) {
+      feature = new Feature.fromJson(_json["feature"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (feature != null) {
+      _json["feature"] = (feature).toJson();
+    }
+    return _json;
+  }
+}
+
+/// JSON request template for renaming a feature.
+class FeatureRename {
+  /// New name of the feature.
+  core.String newName;
+
+  FeatureRename();
+
+  FeatureRename.fromJson(core.Map _json) {
+    if (_json.containsKey("newName")) {
+      newName = _json["newName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (newName != null) {
+      _json["newName"] = newName;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for Feature List Response object in Directory API.
+class Features {
+  /// ETag of the resource.
+  core.String etag;
+
+  /// The Features in this page of results.
+  core.List<Feature> features;
+
+  /// Kind of resource this is.
+  core.String kind;
+
+  /// The continuation token, used to page through large result sets. Provide
+  /// this value in a subsequent request to return the next page of results.
+  core.String nextPageToken;
+
+  Features();
+
+  Features.fromJson(core.Map _json) {
+    if (_json.containsKey("etag")) {
+      etag = _json["etag"];
+    }
+    if (_json.containsKey("features")) {
+      features = _json["features"]
+          .map((value) => new Feature.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("nextPageToken")) {
+      nextPageToken = _json["nextPageToken"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (etag != null) {
+      _json["etag"] = etag;
+    }
+    if (features != null) {
+      _json["features"] = features.map((value) => (value).toJson()).toList();
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (nextPageToken != null) {
+      _json["nextPageToken"] = nextPageToken;
+    }
+    return _json;
+  }
+}
+
 /// JSON template for Group resource in Directory API.
 class Group {
   /// Is the group created by admin (Read-only) *
@@ -7441,6 +8742,29 @@ class Members {
     }
     if (nextPageToken != null) {
       _json["nextPageToken"] = nextPageToken;
+    }
+    return _json;
+  }
+}
+
+/// JSON template for Has Member response in Directory API.
+class MembersHasMember {
+  /// Identifies whether given user is a member or not.
+  core.bool isMember;
+
+  MembersHasMember();
+
+  MembersHasMember.fromJson(core.Map _json) {
+    if (_json.containsKey("isMember")) {
+      isMember = _json["isMember"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (isMember != null) {
+      _json["isMember"] = isMember;
     }
     return _json;
   }
@@ -9775,7 +11099,7 @@ class UserCustomProperties
 
   UserCustomProperties();
 
-  UserCustomProperties.fromJson(core.Map _json) {
+  UserCustomProperties.fromJson(core.Map<core.String, core.dynamic> _json) {
     _json.forEach((core.String key, value) {
       this[key] = value;
     });
@@ -10522,6 +11846,9 @@ class UserPhoto {
 /// JSON template for a POSIX account entry. Description of the field family:
 /// go/fbs-posix.
 class UserPosixAccount {
+  /// A POSIX account field identifier. (Read-only)
+  core.String accountId;
+
   /// The GECOS (user information) for this account.
   core.String gecos;
 
@@ -10549,6 +11876,9 @@ class UserPosixAccount {
   UserPosixAccount();
 
   UserPosixAccount.fromJson(core.Map _json) {
+    if (_json.containsKey("accountId")) {
+      accountId = _json["accountId"];
+    }
     if (_json.containsKey("gecos")) {
       gecos = _json["gecos"];
     }
@@ -10578,6 +11908,9 @@ class UserPosixAccount {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (accountId != null) {
+      _json["accountId"] = accountId;
+    }
     if (gecos != null) {
       _json["gecos"] = gecos;
     }

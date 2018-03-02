@@ -855,8 +855,9 @@ class CheckError {
   /// The error code.
   /// Possible string values are:
   /// - "ERROR_CODE_UNSPECIFIED" : This is never used in `CheckResponse`.
-  /// - "NOT_FOUND" : The consumer's project id was not found.
-  /// Same as google.rpc.Code.NOT_FOUND.
+  /// - "NOT_FOUND" : The consumer's project id, network container, or resource
+  /// container was
+  /// not found. Same as google.rpc.Code.NOT_FOUND.
   /// - "PERMISSION_DENIED" : The consumer doesn't have access to the specified
   /// resource.
   /// Same as google.rpc.Code.PERMISSION_DENIED.
@@ -920,6 +921,13 @@ class CheckError {
   /// Free-form text providing details on the error cause of the error.
   core.String detail;
 
+  /// Subject to whom this error applies. See the specific code enum for more
+  /// details on this field. For example:
+  ///     - “project:<project-id or project-number>”
+  ///     - “folder:<folder-id>”
+  ///     - “organization:<organization-id>”
+  core.String subject;
+
   CheckError();
 
   CheckError.fromJson(core.Map _json) {
@@ -928,6 +936,9 @@ class CheckError {
     }
     if (_json.containsKey("detail")) {
       detail = _json["detail"];
+    }
+    if (_json.containsKey("subject")) {
+      subject = _json["subject"];
     }
   }
 
@@ -939,6 +950,9 @@ class CheckError {
     }
     if (detail != null) {
       _json["detail"] = detail;
+    }
+    if (subject != null) {
+      _json["subject"] = subject;
     }
     return _json;
   }

@@ -4,7 +4,6 @@ library googleapis.kgsearch.v1;
 
 import 'dart:core' as core;
 import 'dart:async' as async;
-import 'dart:convert' as convert;
 
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
@@ -38,6 +37,8 @@ class EntitiesResourceApi {
   ///
   /// Request parameters:
   ///
+  /// [indent] - Enables indenting of json results.
+  ///
   /// [languages] - The list of language codes (defined in ISO 693) to run the
   /// query with,
   /// e.g. 'en'.
@@ -57,8 +58,6 @@ class EntitiesResourceApi {
   /// (as defined in http://schema.org/Person). If multiple types are specified,
   /// returned entities will contain one or more of these types.
   ///
-  /// [indent] - Enables indenting of json results.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -70,13 +69,13 @@ class EntitiesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<SearchResponse> search(
-      {core.List<core.String> languages,
+      {core.bool indent,
+      core.List<core.String> languages,
       core.List<core.String> ids,
       core.int limit,
       core.bool prefix,
       core.String query,
       core.List<core.String> types,
-      core.bool indent,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -85,6 +84,9 @@ class EntitiesResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if (indent != null) {
+      _queryParams["indent"] = ["${indent}"];
+    }
     if (languages != null) {
       _queryParams["languages"] = languages;
     }
@@ -102,9 +104,6 @@ class EntitiesResourceApi {
     }
     if (types != null) {
       _queryParams["types"] = types;
-    }
-    if (indent != null) {
-      _queryParams["indent"] = ["${indent}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];

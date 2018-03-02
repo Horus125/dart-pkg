@@ -1,3 +1,156 @@
+## 0.50.0
+
+* [api-new] serviceusage:v1
+* [api] androidenterprise:v1
+* [api] androidmanagement:v1
+* [api] appengine:v1
+* [api] bigquery:v2
+* [api] calendar:v3
+* [api] cloudiot:v1
+* [api] compute:v1
+* [api] doubleclickbidmanager:v1
+* [api] gmail:v1
+* [api] iam:v1
+* [api] manufacturers:v1
+* [api] ml:v1
+* [api] monitoring:v3
+* [api] poly:v1
+* [api] safebrowsing:v4
+* [api] serviceconsumermanagement:v1
+* [api] servicemanagement:v1
+* [api] sheets:v4
+* [api] slides:v1
+* [api] spanner:v1
+* [api] testing:v1
+* [api] youtube:v3
+* [api-breaking] bigquery:v2
+* [api-breaking] bigquery:v2
+* [api-breaking] cloudiot:v1
+* [api-breaking] manufacturers:v1
+* [api-breaking] ml:v1
+* [api-breaking] servicemanagement:v1
+
+## 0.49.0
+
+* [api] analytics:v3
+* [api] androidenterprise:v1
+* [api] androidmanagement:v1
+* [api] appengine:v1
+* [api] books:v1
+* [api] compute:v1
+* [api] content:v2
+* [api] content:v2sandbox
+* [api] drive:v2
+* [api] drive:v3
+* [api] firebasedynamiclinks:v1
+* [api] iam:v1
+* [api] logging:v2
+* [api] ml:v1
+* [api] pagespeedonline:v1
+* [api] pagespeedonline:v2
+* [api] pubsub:v1
+* [api] safebrowsing:v4
+* [api] script:v1
+* [api] sheets:v4
+* [api] slides:v1
+* [api] speech:v1
+* [api] vision:v1
+* [api-breaking] appsactivity:v1
+* [api-breaking] cloudiot:v1
+* [api-breaking] cloudkms:v1
+* [api-breaking] firebaserules:v1
+* [api-breaking] games:v1
+* [api-breaking] ml:v1
+* [api-breaking] oslogin:v1
+* [api-breaking] partners:v2
+* [api-breaking] serviceconsumermanagement:v1
+* [api-breaking] servicemanagement:v1
+* [api-breaking] serviceuser:v1
+* [api-breaking] speech:v1
+
+## 0.48.0
+
+* [api] classroom:v1
+* [api] content:v2
+* [api] content:v2sandbox
+* [api] androiddeviceprovisioning:v1
+* [api] monitoring:v3
+* [api] storage:v1
+* [api] androidpublisher:v2
+* [api] androidmanagement:v1
+* [api] cloudtrace:v2
+* [api] youtubereporting:v1
+* [api] servicecontrol:v1
+* [api] cloudbuild:v1
+* [api] calendar:v3
+* [api] slides:v1
+* [api] bigquery:v2
+* [api] ml:v1
+* [api] sheets:v4
+* [api] testing:v1
+* [api] safebrowsing:v4
+* [api] androidenterprise:v1
+* [api] admin:reports_v1
+* [api] admin:directory_v1
+* [api-breaking] cloudtrace:v2
+* [api-breaking] youtubereporting:v1
+* [api-breaking] iam:v1
+* [api-breaking] speech:v1
+* [api-breaking] youtube:v3
+* [api-removed] consumersurveys:v2
+
+## 0.47.1
+
+* [api-new] oslogin:v1
+* [api-new] poly:v1
+* [api-new] serviceconsumermanagement:v1
+* [api] admin:directory_v1
+* [api] androidenterprise:v1
+* [api] androidmanagement:v1
+* [api] appengine:v1
+* [api] cloudbuild:v1
+* [api] content:v2
+* [api] content:v2sandbox
+* [api] fusiontables:v2
+* [api] ml:v1
+* [api] monitoring:v3
+* [api] pubsub:v1
+* [api] slides:v1
+* [api] speech:v1
+* [api] youtube:v3
+
+## 0.47.0
+
+* [api-new] dfareporting:v3_0
+* [api] analyticsreporting:v4
+* [api] androidenterprise:v1
+* [api] bigquerydatatransfer:v1
+* [api] bigquery:v2
+* [api] classroom:v1
+* [api] cloudbuild:v1
+* [api] cloudfunctions:v1
+* [api] drive:v2
+* [api] drive:v3
+* [api] firebasedynamiclinks:v1
+* [api] firebaseremoteconfig:v1
+* [api] language:v1
+* [api] logging:v2
+* [api] ml:v1
+* [api] tagmanager:v1
+* [api] tagmanager:v2
+* [api-breaking] androidpublisher:v2
+* [api-breaking] appengine:v1
+* [api-breaking] bigquerydatatransfer:v1
+* [api-breaking] content:v2
+* [api-breaking] content:v2sandbox
+* [api-breaking] monitoring:v3
+* [api-breaking] script:v1
+* [api-breaking] servicemanagement:v1
+* [api-breaking] serviceuser:v1
+* [api-breaking] storage:v1
+* [api-breaking] tagmanager:v1
+* [api-removed] playmoviespartner:v1
+
 ## 0.46.0
 
 * [api] admin:directory_v1

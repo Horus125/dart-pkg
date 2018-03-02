@@ -131,6 +131,9 @@ class ProjectsRegionsClustersResourceApi {
   ///
   /// [clusterName] - Required. The cluster name.
   ///
+  /// [clusterUuid] - Optional. Specifying the cluster_uuid means the RPC should
+  /// fail (with error NOT_FOUND) if cluster with specified UUID does not exist.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -143,7 +146,7 @@ class ProjectsRegionsClustersResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> delete(
       core.String projectId, core.String region, core.String clusterName,
-      {core.String $fields}) {
+      {core.String clusterUuid, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -159,6 +162,9 @@ class ProjectsRegionsClustersResourceApi {
     }
     if (clusterName == null) {
       throw new core.ArgumentError("Parameter clusterName is required.");
+    }
+    if (clusterUuid != null) {
+      _queryParams["clusterUuid"] = [clusterUuid];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -406,6 +412,14 @@ class ProjectsRegionsClustersResourceApi {
   ///
   /// [clusterName] - Required. The cluster name.
   ///
+  /// [gracefulDecommissionTimeout] - Optional. Timeout for graceful YARN
+  /// decomissioning. Graceful decommissioning allows removing nodes from the
+  /// cluster without interrupting jobs in progress. Timeout specifies how long
+  /// to wait for jobs in progress to finish before forcefully removing nodes
+  /// (and potentially interrupting jobs). Default timeout is 0 (for forceful
+  /// decommission), and the maximum allowed timeout is 1 day.Only supported on
+  /// Dataproc image versions 1.2 and higher.
+  ///
   /// [updateMask] - Required. Specifies the path, relative to Cluster, of the
   /// field to update. For example, to change the number of workers in a cluster
   /// to 5, the update_mask parameter would be specified as
@@ -451,7 +465,9 @@ class ProjectsRegionsClustersResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> patch(Cluster request, core.String projectId,
       core.String region, core.String clusterName,
-      {core.String updateMask, core.String $fields}) {
+      {core.String gracefulDecommissionTimeout,
+      core.String updateMask,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -470,6 +486,11 @@ class ProjectsRegionsClustersResourceApi {
     }
     if (clusterName == null) {
       throw new core.ArgumentError("Parameter clusterName is required.");
+    }
+    if (gracefulDecommissionTimeout != null) {
+      _queryParams["gracefulDecommissionTimeout"] = [
+        gracefulDecommissionTimeout
+      ];
     }
     if (updateMask != null) {
       _queryParams["updateMask"] = [updateMask];
@@ -703,22 +724,6 @@ class ProjectsRegionsJobsResourceApi {
   /// [region] - Required. The Cloud Dataproc region in which to handle the
   /// request.
   ///
-  /// [filter] - Optional. A filter constraining the jobs to list. Filters are
-  /// case-sensitive and have the following syntax:field = value AND field =
-  /// value ...where field is status.state or labels.[KEY], and [KEY] is a label
-  /// key. value can be * to match all values. status.state can be either ACTIVE
-  /// or INACTIVE. Only the logical AND operator is supported; space-separated
-  /// items are treated as having an implicit AND operator.Example
-  /// filter:status.state = ACTIVE AND labels.env = staging AND labels.starred =
-  /// *
-  ///
-  /// [jobStateMatcher] - Optional. Specifies enumerated categories of jobs to
-  /// list (default = match ALL jobs).
-  /// Possible string values are:
-  /// - "ALL" : A ALL.
-  /// - "ACTIVE" : A ACTIVE.
-  /// - "NON_ACTIVE" : A NON_ACTIVE.
-  ///
   /// [pageToken] - Optional. The page token, returned by a previous call, to
   /// request the next page of results.
   ///
@@ -726,6 +731,23 @@ class ProjectsRegionsJobsResourceApi {
   ///
   /// [clusterName] - Optional. If set, the returned jobs list includes only
   /// jobs that were submitted to the named cluster.
+  ///
+  /// [filter] - Optional. A filter constraining the jobs to list. Filters are
+  /// case-sensitive and have the following syntax:field = value AND field =
+  /// value ...where field is status.state or labels.[KEY], and [KEY] is a label
+  /// key. value can be * to match all values. status.state can be either ACTIVE
+  /// or NON_ACTIVE. Only the logical AND operator is supported; space-separated
+  /// items are treated as having an implicit AND operator.Example
+  /// filter:status.state = ACTIVE AND labels.env = staging AND labels.starred =
+  /// *
+  ///
+  /// [jobStateMatcher] - Optional. Specifies enumerated categories of jobs to
+  /// list. (default = match ALL jobs).If filter is provided, jobStateMatcher
+  /// will be ignored.
+  /// Possible string values are:
+  /// - "ALL" : A ALL.
+  /// - "ACTIVE" : A ACTIVE.
+  /// - "NON_ACTIVE" : A NON_ACTIVE.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -738,11 +760,11 @@ class ProjectsRegionsJobsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListJobsResponse> list(core.String projectId, core.String region,
-      {core.String filter,
-      core.String jobStateMatcher,
-      core.String pageToken,
+      {core.String pageToken,
       core.int pageSize,
       core.String clusterName,
+      core.String filter,
+      core.String jobStateMatcher,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -757,12 +779,6 @@ class ProjectsRegionsJobsResourceApi {
     if (region == null) {
       throw new core.ArgumentError("Parameter region is required.");
     }
-    if (filter != null) {
-      _queryParams["filter"] = [filter];
-    }
-    if (jobStateMatcher != null) {
-      _queryParams["jobStateMatcher"] = [jobStateMatcher];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
@@ -771,6 +787,12 @@ class ProjectsRegionsJobsResourceApi {
     }
     if (clusterName != null) {
       _queryParams["clusterName"] = [clusterName];
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
+    }
+    if (jobStateMatcher != null) {
+      _queryParams["jobStateMatcher"] = [jobStateMatcher];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1205,7 +1227,7 @@ class Cluster {
   /// Names of deleted clusters can be reused.
   core.String clusterName;
 
-  /// Output-only. A cluster UUID (Unique Universal Identifier). Cloud Dataproc
+  /// Output only. A cluster UUID (Unique Universal Identifier). Cloud Dataproc
   /// generates this value when it creates the cluster.
   core.String clusterUuid;
 
@@ -1230,10 +1252,10 @@ class Cluster {
   /// to.
   core.String projectId;
 
-  /// Output-only. Cluster status.
+  /// Output only. Cluster status.
   ClusterStatus status;
 
-  /// Output-only. The previous cluster status.
+  /// Output only. The previous cluster status.
   core.List<ClusterStatus> statusHistory;
 
   Cluster();
@@ -1436,28 +1458,28 @@ class ClusterMetrics {
 
 /// Metadata describing the operation.
 class ClusterOperationMetadata {
-  /// Output-only. Name of the cluster for the operation.
+  /// Output only. Name of the cluster for the operation.
   core.String clusterName;
 
-  /// Output-only. Cluster UUID for the operation.
+  /// Output only. Cluster UUID for the operation.
   core.String clusterUuid;
 
-  /// Output-only. Short description of operation.
+  /// Output only. Short description of operation.
   core.String description;
 
-  /// Output-only. Labels associated with the operation
+  /// Output only. Labels associated with the operation
   core.Map<core.String, core.String> labels;
 
-  /// Output-only. The operation type.
+  /// Output only. The operation type.
   core.String operationType;
 
-  /// Output-only. Current operation status.
+  /// Output only. Current operation status.
   ClusterOperationStatus status;
 
-  /// Output-only. The previous operation status.
+  /// Output only. The previous operation status.
   core.List<ClusterOperationStatus> statusHistory;
 
-  /// Output-only. Errors encountered during operation execution.
+  /// Output only. Errors encountered during operation execution.
   core.List<core.String> warnings;
 
   ClusterOperationMetadata();
@@ -1525,13 +1547,13 @@ class ClusterOperationMetadata {
 
 /// The status of the operation.
 class ClusterOperationStatus {
-  /// Output-only.A message containing any operation metadata details.
+  /// Output only. A message containing any operation metadata details.
   core.String details;
 
-  /// Output-only. A message containing the detailed operation state.
+  /// Output only. A message containing the detailed operation state.
   core.String innerState;
 
-  /// Output-only. A message containing the operation state.
+  /// Output only. A message containing the operation state.
   /// Possible string values are:
   /// - "UNKNOWN" : Unused.
   /// - "PENDING" : The operation has been created.
@@ -1539,7 +1561,7 @@ class ClusterOperationStatus {
   /// - "DONE" : The operation is done; either cancelled or completed.
   core.String state;
 
-  /// Output-only. The time this state was entered.
+  /// Output only. The time this state was entered.
   core.String stateStartTime;
 
   ClusterOperationStatus();
@@ -1580,10 +1602,10 @@ class ClusterOperationStatus {
 
 /// The status of a cluster and its instances.
 class ClusterStatus {
-  /// Output-only. Optional details of cluster's state.
+  /// Output only. Optional details of cluster's state.
   core.String detail;
 
-  /// Output-only. The cluster's state.
+  /// Output only. The cluster's state.
   /// Possible string values are:
   /// - "UNKNOWN" : The cluster state is unknown.
   /// - "CREATING" : The cluster is being created and set up. It is not ready
@@ -1596,13 +1618,13 @@ class ClusterStatus {
   /// process jobs.
   core.String state;
 
-  /// Output-only. Time when this state was entered.
+  /// Output only. Time when this state was entered.
   core.String stateStartTime;
 
-  /// Output-only. Additional state information that includes status reported by
+  /// Output only. Additional state information that includes status reported by
   /// the agent.
   /// Possible string values are:
-  /// - "UNSPECIFIED"
+  /// - "UNSPECIFIED" : The cluster substate is unknown.
   /// - "UNHEALTHY" : The cluster is known to be in an unhealthy state (for
   /// example, critical daemons are not running or HDFS capacity is
   /// exhausted).Applies to RUNNING state.
@@ -1661,7 +1683,7 @@ class DiagnoseClusterRequest {
 
 /// The location of diagnostic output.
 class DiagnoseClusterResults {
-  /// Output-only. The Google Cloud Storage URI of the diagnostic output. The
+  /// Output only. The Google Cloud Storage URI of the diagnostic output. The
   /// output report is a plain text file with a summary of collected
   /// diagnostics.
   core.String outputUri;
@@ -2062,7 +2084,7 @@ class InstanceGroupConfig {
   /// Optional. Disk option config settings.
   DiskConfig diskConfig;
 
-  /// Output-only. The Google Compute Engine image resource used for cluster
+  /// Output only. The Google Compute Engine image resource used for cluster
   /// instances. Inferred from SoftwareConfig.image_version.
   core.String imageUri;
 
@@ -2082,7 +2104,7 @@ class InstanceGroupConfig {
   /// n1-standard-2
   core.String machineTypeUri;
 
-  /// Output-only. The config for Google Compute Engine Instance Group Manager
+  /// Output only. The config for Google Compute Engine Instance Group Manager
   /// that manages this group. This is only used for preemptible instance
   /// groups.
   ManagedGroupConfig managedGroupConfig;
@@ -2157,12 +2179,12 @@ class InstanceGroupConfig {
 
 /// A Cloud Dataproc job resource.
 class Job {
-  /// Output-only. If present, the location of miscellaneous control files which
+  /// Output only. If present, the location of miscellaneous control files which
   /// may be used as part of job setup and handling. If not present, control
   /// files may be placed in the same location as driver_output_uri.
   core.String driverControlFilesUri;
 
-  /// Output-only. A URI pointing to the location of the stdout of the job's
+  /// Output only. A URI pointing to the location of the stdout of the job's
   /// driver program.
   core.String driverOutputResourceUri;
 
@@ -2204,15 +2226,15 @@ class Job {
   /// Job is a SparkSql job.
   SparkSqlJob sparkSqlJob;
 
-  /// Output-only. The job status. Additional application-specific status
+  /// Output only. The job status. Additional application-specific status
   /// information may be contained in the <code>type_job</code> and
   /// <code>yarn_applications</code> fields.
   JobStatus status;
 
-  /// Output-only. The previous job status.
+  /// Output only. The previous job status.
   core.List<JobStatus> statusHistory;
 
-  /// Output-only. The collection of YARN applications spun up by this job.Beta
+  /// Output only. The collection of YARN applications spun up by this job.Beta
   /// Feature: This report is available for testing purposes only. It may be
   /// changed before final release.
   core.List<YarnApplication> yarnApplications;
@@ -2330,7 +2352,7 @@ class JobPlacement {
   /// Required. The name of the cluster where the job will be submitted.
   core.String clusterName;
 
-  /// Output-only. A cluster UUID generated by the Cloud Dataproc service when
+  /// Output only. A cluster UUID generated by the Cloud Dataproc service when
   /// the job is submitted.
   core.String clusterUuid;
 
@@ -2395,8 +2417,7 @@ class JobReference {
   }
 }
 
-/// Job scheduling options.Beta Feature: These options are available for testing
-/// purposes only. They may be changed before final release.
+/// Job scheduling options.
 class JobScheduling {
   /// Optional. Maximum number of times per hour a driver may be restarted as a
   /// result of driver terminating with non-zero code before job is reported
@@ -2424,11 +2445,11 @@ class JobScheduling {
 
 /// Cloud Dataproc job status.
 class JobStatus {
-  /// Output-only. Optional job state details, such as an error description if
+  /// Output only. Optional job state details, such as an error description if
   /// the state is <code>ERROR</code>.
   core.String details;
 
-  /// Output-only. A state message specifying the overall job state.
+  /// Output only. A state message specifying the overall job state.
   /// Possible string values are:
   /// - "STATE_UNSPECIFIED" : The job state is unknown.
   /// - "PENDING" : The job is pending; it has been submitted, but is not yet
@@ -2447,13 +2468,13 @@ class JobStatus {
   /// failure details for this attempt.Applies to restartable jobs only.
   core.String state;
 
-  /// Output-only. The time when this state was entered.
+  /// Output only. The time when this state was entered.
   core.String stateStartTime;
 
-  /// Output-only. Additional state information, which includes status reported
+  /// Output only. Additional state information, which includes status reported
   /// by the agent.
   /// Possible string values are:
-  /// - "UNSPECIFIED"
+  /// - "UNSPECIFIED" : The job substate is unknown.
   /// - "SUBMITTED" : The Job is submitted to the agent.Applies to RUNNING
   /// state.
   /// - "QUEUED" : The Job has been received and is awaiting execution (it may
@@ -2503,10 +2524,10 @@ class JobStatus {
 
 /// The list of all clusters in a project.
 class ListClustersResponse {
-  /// Output-only. The clusters in the project.
+  /// Output only. The clusters in the project.
   core.List<Cluster> clusters;
 
-  /// Output-only. This token is included in the response if there are more
+  /// Output only. This token is included in the response if there are more
   /// results to fetch. To fetch additional results, provide this value as the
   /// page_token in a subsequent ListClustersRequest.
   core.String nextPageToken;
@@ -2539,7 +2560,7 @@ class ListClustersResponse {
 
 /// A list of jobs in a project.
 class ListJobsResponse {
-  /// Output-only. Jobs list.
+  /// Output only. Jobs list.
   core.List<Job> jobs;
 
   /// Optional. This token is included in the response if there are more results
@@ -2633,10 +2654,10 @@ class LoggingConfig {
 
 /// Specifies the resources used to actively manage an instance group.
 class ManagedGroupConfig {
-  /// Output-only. The name of the Instance Group Manager for this group.
+  /// Output only. The name of the Instance Group Manager for this group.
   core.String instanceGroupManagerName;
 
-  /// Output-only. The name of the Instance Template used for the Managed
+  /// Output only. The name of the Instance Template used for the Managed
   /// Instance Group.
   core.String instanceTemplateName;
 

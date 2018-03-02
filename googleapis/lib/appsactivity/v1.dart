@@ -4,7 +4,6 @@ library googleapis.appsactivity.v1;
 
 import 'dart:core' as core;
 import 'dart:async' as async;
-import 'dart:convert' as convert;
 
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
@@ -18,21 +17,6 @@ const core.String USER_AGENT = 'dart-api-client appsactivity/v1';
 class AppsactivityApi {
   /// View the activity history of your Google apps
   static const ActivityScope = "https://www.googleapis.com/auth/activity";
-
-  /// View and manage the files in your Google Drive
-  static const DriveScope = "https://www.googleapis.com/auth/drive";
-
-  /// View and manage metadata of files in your Google Drive
-  static const DriveMetadataScope =
-      "https://www.googleapis.com/auth/drive.metadata";
-
-  /// View metadata for files in your Google Drive
-  static const DriveMetadataReadonlyScope =
-      "https://www.googleapis.com/auth/drive.metadata.readonly";
-
-  /// View the files in your Google Drive
-  static const DriveReadonlyScope =
-      "https://www.googleapis.com/auth/drive.readonly";
 
   final commons.ApiRequester _requester;
 
@@ -430,6 +414,7 @@ class Permission {
   /// Possible string values are:
   /// - "commenter"
   /// - "owner"
+  /// - "publishedReader"
   /// - "reader"
   /// - "writer"
   core.String role;

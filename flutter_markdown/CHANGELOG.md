@@ -1,3 +1,12 @@
+## 0.1.3
+
+* Add `path` and `http` as declared dependencies in `pubspec.yaml`
+
+## 0.1.2
+
+* Add support for horizontal rules.
+* Fix the `onTap` callback on images nested in hyperlinks
+
 ## 0.1.1
 
 * Add support for local file paths in image links. Make sure to set the

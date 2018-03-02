@@ -13928,6 +13928,7 @@ class Account {
   /// - "47" for BGN
   /// - "48" for HRK
   /// - "49" for MXN
+  /// - "50" for NGN
   core.String currencyId;
 
   /// Default placement dimensions for this account.
@@ -17742,7 +17743,7 @@ class Creative {
   core.String backgroundColor;
 
   /// Click-through URL for backup image. Applicable to the following creative
-  /// types: FLASH_INPAGE and HTML5_BANNER. Applicable to DISPLAY when the
+  /// types: FLASH_INPAGE, and HTML5_BANNER. Applicable to DISPLAY when the
   /// primary asset type is not HTML_IMAGE.
   core.String backupImageClickThroughUrl;
 
@@ -21049,6 +21050,7 @@ class DirectorySite {
   /// - "47" for BGN
   /// - "48" for HRK
   /// - "49" for MXN
+  /// - "50" for NGN
   core.String currencyId;
 
   /// Description of this directory site. This is a read-only field.
@@ -22213,7 +22215,8 @@ class Flight {
 
 /// Floodlight Activity GenerateTag Response
 class FloodlightActivitiesGenerateTagResponse {
-  /// Generated tag for this floodlight activity.
+  /// Generated tag for this Floodlight activity. For global site tags, this is
+  /// the event snippet.
   core.String floodlightActivityTag;
 
   /// Identifies what kind of resource this is. Value: the fixed string
@@ -22409,8 +22412,8 @@ class FloodlightActivity {
   /// - "XHTML"
   core.String tagFormat;
 
-  /// Value of the cat= paramter in the floodlight tag, which the ad servers use
-  /// to identify the activity. This is optional: if empty, a new tag string
+  /// Value of the cat= parameter in the floodlight tag, which the ad servers
+  /// use to identify the activity. This is optional: if empty, a new tag string
   /// will be generated for you. This string must be 1 to 8 characters long,
   /// with valid characters being [a-z][A-Z][0-9][-][ _ ]. This tag string must
   /// also be unique among activities of the same activity group. This field is
@@ -28400,7 +28403,7 @@ class ReportReachCriteria {
 
   /// Whether to enable all reach dimension combinations in the report. Defaults
   /// to false. If enabled, the date range of the report should be within the
-  /// last three months.
+  /// last 42 days.
   core.bool enableAllDimensionCombinations;
 
   /// The list of names of metrics the report should include.

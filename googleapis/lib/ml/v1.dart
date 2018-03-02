@@ -35,6 +35,8 @@ class ProjectsResourceApi {
   final commons.ApiRequester _requester;
 
   ProjectsJobsResourceApi get jobs => new ProjectsJobsResourceApi(_requester);
+  ProjectsLocationsResourceApi get locations =>
+      new ProjectsLocationsResourceApi(_requester);
   ProjectsModelsResourceApi get models =>
       new ProjectsModelsResourceApi(_requester);
   ProjectsOperationsResourceApi get operations =>
@@ -92,8 +94,9 @@ class ProjectsResourceApi {
   }
 
   /// Performs prediction on the data in the request.
-  ///
-  /// **** REMOVE FROM GENERATED DOCUMENTATION
+  /// Cloud ML Engine implements a custom `predict` verb on top of an HTTP POST
+  /// method. <p>For details of the request and response format, see the **guide
+  /// to the [predict request format](/ml-engine/docs/v1/predict-request)**.
   ///
   /// [request] - The metadata request object.
   ///
@@ -348,12 +351,24 @@ class ProjectsJobsResourceApi {
 
   /// Lists the jobs in the project.
   ///
+  /// If there are no jobs that match the request parameters, the list
+  /// request returns an empty response body: {}.
+  ///
   /// Request parameters:
   ///
   /// [parent] - Required. The name of the project for which to list jobs.
   /// Value must have pattern "^projects/[^/]+$".
   ///
   /// [filter] - Optional. Specifies the subset of jobs to retrieve.
+  /// You can filter on the value of one or more attributes of the job object.
+  /// For example, retrieve jobs with a job identifier that starts with
+  /// 'census':
+  /// <p><code>gcloud ml-engine jobs list --filter='jobId:census*'</code>
+  /// <p>List all failed jobs with names that start with 'rnn':
+  /// <p><code>gcloud ml-engine jobs list --filter='jobId:rnn*
+  /// AND state:FAILED'</code>
+  /// <p>For more examples, see the guide to
+  /// <a href="/ml-engine/docs/monitor-training">monitoring jobs</a>.
   ///
   /// [pageToken] - Optional. A page token to request the next page of results.
   ///
@@ -531,6 +546,124 @@ class ProjectsJobsResourceApi {
         downloadOptions: _downloadOptions);
     return _response.then(
         (data) => new GoogleIamV1TestIamPermissionsResponse.fromJson(data));
+  }
+}
+
+class ProjectsLocationsResourceApi {
+  final commons.ApiRequester _requester;
+
+  ProjectsLocationsResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Get the complete list of CMLE capabilities in a location, along with their
+  /// location-specific properties.
+  ///
+  /// Request parameters:
+  ///
+  /// [name] - Required. The name of the location.
+  /// Value must have pattern "^projects/[^/]+/locations/[^/]+$".
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [GoogleCloudMlV1Location].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<GoogleCloudMlV1Location> get(core.String name,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (name == null) {
+      throw new core.ArgumentError("Parameter name is required.");
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'v1/' + commons.Escaper.ecapeVariableReserved('$name');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new GoogleCloudMlV1Location.fromJson(data));
+  }
+
+  /// List all locations that provides at least one type of CMLE capability.
+  ///
+  /// Request parameters:
+  ///
+  /// [parent] - Required. The name of the project for which available locations
+  /// are to be
+  /// listed (since some locations might be whitelisted for specific projects).
+  /// Value must have pattern "^projects/[^/]+$".
+  ///
+  /// [pageSize] - Optional. The number of locations to retrieve per "page" of
+  /// results. If there
+  /// are more remaining results than this number, the response message will
+  /// contain a valid value in the `next_page_token` field.
+  ///
+  /// The default value is 20, and the maximum page size is 100.
+  ///
+  /// [pageToken] - Optional. A page token to request the next page of results.
+  ///
+  /// You get the token from the `next_page_token` field of the response from
+  /// the previous call.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [GoogleCloudMlV1ListLocationsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<GoogleCloudMlV1ListLocationsResponse> list(core.String parent,
+      {core.int pageSize, core.String pageToken, core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (parent == null) {
+      throw new core.ArgumentError("Parameter parent is required.");
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url =
+        'v1/' + commons.Escaper.ecapeVariableReserved('$parent') + '/locations';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then(
+        (data) => new GoogleCloudMlV1ListLocationsResponse.fromJson(data));
   }
 }
 
@@ -746,11 +879,19 @@ class ProjectsModelsResourceApi {
   /// Each project can contain multiple models, and each model can have multiple
   /// versions.
   ///
+  /// If there are no models that match the request parameters, the list request
+  /// returns an empty response body: {}.
+  ///
   /// Request parameters:
   ///
   /// [parent] - Required. The name of the project whose models are to be
   /// listed.
   /// Value must have pattern "^projects/[^/]+$".
+  ///
+  /// [pageToken] - Optional. A page token to request the next page of results.
+  ///
+  /// You get the token from the `next_page_token` field of the response from
+  /// the previous call.
   ///
   /// [pageSize] - Optional. The number of models to retrieve per "page" of
   /// results. If there
@@ -759,10 +900,7 @@ class ProjectsModelsResourceApi {
   ///
   /// The default value is 20, and the maximum page size is 100.
   ///
-  /// [pageToken] - Optional. A page token to request the next page of results.
-  ///
-  /// You get the token from the `next_page_token` field of the response from
-  /// the previous call.
+  /// [filter] - Optional. Specifies the subset of models to retrieve.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -775,7 +913,10 @@ class ProjectsModelsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<GoogleCloudMlV1ListModelsResponse> list(core.String parent,
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken,
+      core.int pageSize,
+      core.String filter,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -786,11 +927,14 @@ class ProjectsModelsResourceApi {
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
     }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
     }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -833,13 +977,9 @@ class ProjectsModelsResourceApi {
   ///         "name":"version_1"
   ///       }
   ///     }
-  /// In this example, the model is blindly overwritten since no etag is given.
   ///
-  /// To adopt etag mechanism, include `etag` field in the mask, and include the
-  /// `etag` value in your model resource.
-  ///
-  /// Currently the supported update masks are `description`,
-  /// `default_version.name`, `labels`, and `etag`.
+  /// Currently the supported update masks are `description` and
+  /// `default_version.name`.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1173,9 +1313,12 @@ class ProjectsModelsVersionsResourceApi {
 
   /// Gets basic information about all the versions of a model.
   ///
-  /// If you expect that a model has a lot of versions, or if you need to handle
+  /// If you expect that a model has many versions, or if you need to handle
   /// only a limited number of results at a time, you can request that the list
-  /// be retrieved in batches (called pages):
+  /// be retrieved in batches (called pages).
+  ///
+  /// If there are no versions that match the request parameters, the list
+  /// request returns an empty response body: {}.
   ///
   /// Request parameters:
   ///
@@ -1194,6 +1337,8 @@ class ProjectsModelsVersionsResourceApi {
   ///
   /// The default value is 20, and the maximum page size is 100.
   ///
+  /// [filter] - Optional. Specifies the subset of versions to retrieve.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -1205,7 +1350,10 @@ class ProjectsModelsVersionsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<GoogleCloudMlV1ListVersionsResponse> list(core.String parent,
-      {core.String pageToken, core.int pageSize, core.String $fields}) {
+      {core.String pageToken,
+      core.int pageSize,
+      core.String filter,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1221,6 +1369,9 @@ class ProjectsModelsVersionsResourceApi {
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1260,14 +1411,8 @@ class ProjectsModelsVersionsResourceApi {
   ///     {
   ///       "description": "foo"
   ///     }
-  /// In this example, the version is blindly overwritten since no etag is
-  /// given.
   ///
-  /// To adopt etag mechanism, include `etag` field in the mask, and include the
-  /// `etag` value in your version resource.
-  ///
-  /// Currently the only supported update masks are `description`, `labels`, and
-  /// `etag`.
+  /// Currently the only supported update mask is`description`.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1546,11 +1691,11 @@ class ProjectsOperationsResourceApi {
   /// [name] - The name of the operation's parent resource.
   /// Value must have pattern "^projects/[^/]+$".
   ///
+  /// [pageToken] - The standard list page token.
+  ///
   /// [pageSize] - The standard list page size.
   ///
   /// [filter] - The standard list filter.
-  ///
-  /// [pageToken] - The standard list page token.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1563,9 +1708,9 @@ class ProjectsOperationsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<GoogleLongrunningListOperationsResponse> list(core.String name,
-      {core.int pageSize,
+      {core.String pageToken,
+      core.int pageSize,
       core.String filter,
-      core.String pageToken,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1577,14 +1722,14 @@ class ProjectsOperationsResourceApi {
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
     }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
     }
     if (filter != null) {
       _queryParams["filter"] = [filter];
-    }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1780,6 +1925,42 @@ class GoogleCloudMlV1CancelJobRequest {
   }
 }
 
+class GoogleCloudMlV1Capability {
+  /// Available accelerators for the capability.
+  core.List<core.String> availableAccelerators;
+
+  ///
+  /// Possible string values are:
+  /// - "TYPE_UNSPECIFIED"
+  /// - "TRAINING"
+  /// - "BATCH_PREDICTION"
+  /// - "ONLINE_PREDICTION"
+  core.String type;
+
+  GoogleCloudMlV1Capability();
+
+  GoogleCloudMlV1Capability.fromJson(core.Map _json) {
+    if (_json.containsKey("availableAccelerators")) {
+      availableAccelerators = _json["availableAccelerators"];
+    }
+    if (_json.containsKey("type")) {
+      type = _json["type"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (availableAccelerators != null) {
+      _json["availableAccelerators"] = availableAccelerators;
+    }
+    if (type != null) {
+      _json["type"] = type;
+    }
+    return _json;
+  }
+}
+
 /// Returns service account information associated with a project.
 class GoogleCloudMlV1GetConfigResponse {
   /// The service account Cloud ML uses to access resources in the project.
@@ -1827,6 +2008,9 @@ class GoogleCloudMlV1HyperparameterOutput {
   /// The hyperparameters given to this trial.
   core.Map<core.String, core.String> hyperparameters;
 
+  /// True if the trial is stopped early.
+  core.bool isTrialStoppedEarly;
+
   /// The trial id for these results.
   core.String trialId;
 
@@ -1848,6 +2032,9 @@ class GoogleCloudMlV1HyperparameterOutput {
     if (_json.containsKey("hyperparameters")) {
       hyperparameters = _json["hyperparameters"];
     }
+    if (_json.containsKey("isTrialStoppedEarly")) {
+      isTrialStoppedEarly = _json["isTrialStoppedEarly"];
+    }
     if (_json.containsKey("trialId")) {
       trialId = _json["trialId"];
     }
@@ -1866,6 +2053,9 @@ class GoogleCloudMlV1HyperparameterOutput {
     if (hyperparameters != null) {
       _json["hyperparameters"] = hyperparameters;
     }
+    if (isTrialStoppedEarly != null) {
+      _json["isTrialStoppedEarly"] = isTrialStoppedEarly;
+    }
     if (trialId != null) {
       _json["trialId"] = trialId;
     }
@@ -1875,6 +2065,10 @@ class GoogleCloudMlV1HyperparameterOutput {
 
 /// Represents a set of hyperparameters to optimize.
 class GoogleCloudMlV1HyperparameterSpec {
+  /// Optional. Indicates if the hyperparameter tuning job enables auto trial
+  /// early stopping.
+  core.bool enableTrialEarlyStopping;
+
   /// Required. The type of goal to use for tuning. Available types are
   /// `MAXIMIZE` and `MINIMIZE`.
   ///
@@ -1915,9 +2109,17 @@ class GoogleCloudMlV1HyperparameterSpec {
   /// Required. The set of parameters to tune.
   core.List<GoogleCloudMlV1ParameterSpec> params;
 
+  /// Optional. The prior hyperparameter tuning job id that users hope to
+  /// continue with. The job id will be used to find the corresponding vizier
+  /// study guid and resume the study.
+  core.String resumePreviousJobId;
+
   GoogleCloudMlV1HyperparameterSpec();
 
   GoogleCloudMlV1HyperparameterSpec.fromJson(core.Map _json) {
+    if (_json.containsKey("enableTrialEarlyStopping")) {
+      enableTrialEarlyStopping = _json["enableTrialEarlyStopping"];
+    }
     if (_json.containsKey("goal")) {
       goal = _json["goal"];
     }
@@ -1935,11 +2137,17 @@ class GoogleCloudMlV1HyperparameterSpec {
           .map((value) => new GoogleCloudMlV1ParameterSpec.fromJson(value))
           .toList();
     }
+    if (_json.containsKey("resumePreviousJobId")) {
+      resumePreviousJobId = _json["resumePreviousJobId"];
+    }
   }
 
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (enableTrialEarlyStopping != null) {
+      _json["enableTrialEarlyStopping"] = enableTrialEarlyStopping;
+    }
     if (goal != null) {
       _json["goal"] = goal;
     }
@@ -1955,13 +2163,14 @@ class GoogleCloudMlV1HyperparameterSpec {
     if (params != null) {
       _json["params"] = params.map((value) => (value).toJson()).toList();
     }
+    if (resumePreviousJobId != null) {
+      _json["resumePreviousJobId"] = resumePreviousJobId;
+    }
     return _json;
   }
 }
 
 /// Represents a training or prediction job.
-///
-/// Next ID: 16
 class GoogleCloudMlV1Job {
   /// Output only. When the job was created.
   core.String createTime;
@@ -2117,6 +2326,40 @@ class GoogleCloudMlV1ListJobsResponse {
   }
 }
 
+class GoogleCloudMlV1ListLocationsResponse {
+  /// Locations where at least one type of CMLE capability is available.
+  core.List<GoogleCloudMlV1Location> locations;
+
+  /// Optional. Pass this token as the `page_token` field of the request for a
+  /// subsequent call.
+  core.String nextPageToken;
+
+  GoogleCloudMlV1ListLocationsResponse();
+
+  GoogleCloudMlV1ListLocationsResponse.fromJson(core.Map _json) {
+    if (_json.containsKey("locations")) {
+      locations = _json["locations"]
+          .map((value) => new GoogleCloudMlV1Location.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("nextPageToken")) {
+      nextPageToken = _json["nextPageToken"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (locations != null) {
+      _json["locations"] = locations.map((value) => (value).toJson()).toList();
+    }
+    if (nextPageToken != null) {
+      _json["nextPageToken"] = nextPageToken;
+    }
+    return _json;
+  }
+}
+
 /// Response message for the ListModels method.
 class GoogleCloudMlV1ListModelsResponse {
   /// The list of models.
@@ -2187,6 +2430,38 @@ class GoogleCloudMlV1ListVersionsResponse {
   }
 }
 
+class GoogleCloudMlV1Location {
+  /// Capabilities available in the location.
+  core.List<GoogleCloudMlV1Capability> capabilities;
+  core.String name;
+
+  GoogleCloudMlV1Location();
+
+  GoogleCloudMlV1Location.fromJson(core.Map _json) {
+    if (_json.containsKey("capabilities")) {
+      capabilities = _json["capabilities"]
+          .map((value) => new GoogleCloudMlV1Capability.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("name")) {
+      name = _json["name"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (capabilities != null) {
+      _json["capabilities"] =
+          capabilities.map((value) => (value).toJson()).toList();
+    }
+    if (name != null) {
+      _json["name"] = name;
+    }
+    return _json;
+  }
+}
+
 /// Options for manually scaling a model.
 class GoogleCloudMlV1ManualScaling {
   /// The number of nodes to allocate for this model. These nodes are always up,
@@ -2218,8 +2493,6 @@ class GoogleCloudMlV1ManualScaling {
 /// A model can have multiple versions, each of which is a deployed, trained
 /// model ready to receive prediction requests. The model itself is just a
 /// container.
-///
-/// Next ID: 8
 class GoogleCloudMlV1Model {
   /// Output only. The default version of the model. This version will be used
   /// to
@@ -2244,6 +2517,8 @@ class GoogleCloudMlV1Model {
   /// Optional. The list of regions where the model is going to be deployed.
   /// Currently only one region per model is supported.
   /// Defaults to 'us-central1' if nothing is set.
+  /// See the <a href="/ml-engine/docs/regions">available regions</a> for
+  /// ML Engine services.
   /// Note:
   /// *   No matter where a model is deployed, it can always be accessed by
   ///     users from anywhere, both for online and batch prediction.
@@ -2296,8 +2571,6 @@ class GoogleCloudMlV1Model {
 }
 
 /// Represents the metadata of the long-running operation.
-///
-/// Next ID: 9
 class GoogleCloudMlV1OperationMetadata {
   /// The time the operation was submitted.
   core.String createTime;
@@ -2319,7 +2592,11 @@ class GoogleCloudMlV1OperationMetadata {
   /// - "DELETE_MODEL" : An operation to delete an existing model.
   /// - "UPDATE_MODEL" : An operation to update an existing model.
   /// - "UPDATE_VERSION" : An operation to update an existing version.
+  /// - "UPDATE_CONFIG" : An operation to update project configuration.
   core.String operationType;
+
+  /// Contains the project number associated with the operation.
+  core.String projectNumber;
 
   /// The time operation processing started.
   core.String startTime;
@@ -2344,6 +2621,9 @@ class GoogleCloudMlV1OperationMetadata {
     }
     if (_json.containsKey("operationType")) {
       operationType = _json["operationType"];
+    }
+    if (_json.containsKey("projectNumber")) {
+      projectNumber = _json["projectNumber"];
     }
     if (_json.containsKey("startTime")) {
       startTime = _json["startTime"];
@@ -2370,6 +2650,9 @@ class GoogleCloudMlV1OperationMetadata {
     }
     if (operationType != null) {
       _json["operationType"] = operationType;
+    }
+    if (projectNumber != null) {
+      _json["projectNumber"] = projectNumber;
     }
     if (startTime != null) {
       _json["startTime"] = startTime;
@@ -2496,193 +2779,6 @@ class GoogleCloudMlV1ParameterSpec {
 }
 
 /// Request for predictions to be issued against a trained model.
-///
-/// The body of the request is a single JSON object with a single top-level
-/// field:
-///
-/// <dl>
-///   <dt>instances</dt>
-///   <dd>A JSON array containing values representing the instances to use for
-///       prediction.</dd>
-/// </dl>
-///
-/// The structure of each element of the instances list is determined by your
-/// model's input definition. Instances can include named inputs or can contain
-/// only unlabeled values.
-///
-/// Not all data includes named inputs. Some instances will be simple
-/// JSON values (boolean, number, or string). However, instances are often lists
-/// of simple values, or complex nested lists. Here are some examples of request
-/// bodies:
-///
-/// CSV data with each row encoded as a string value:
-/// <pre>
-/// {"instances": ["1.0,true,\\"x\\"", "-2.0,false,\\"y\\""]}
-/// </pre>
-/// Plain text:
-/// <pre>
-/// {"instances": ["the quick brown fox", "la bruja le dio"]}
-/// </pre>
-/// Sentences encoded as lists of words (vectors of strings):
-/// <pre>
-/// {
-///   "instances": [
-///     ["the","quick","brown"],
-///     ["la","bruja","le"],
-///     ...
-///   ]
-/// }
-/// </pre>
-/// Floating point scalar values:
-/// <pre>
-/// {"instances": [0.0, 1.1, 2.2]}
-/// </pre>
-/// Vectors of integers:
-/// <pre>
-/// {
-///   "instances": [
-///     [0, 1, 2],
-///     [3, 4, 5],
-///     ...
-///   ]
-/// }
-/// </pre>
-/// Tensors (in this case, two-dimensional tensors):
-/// <pre>
-/// {
-///   "instances": [
-///     [
-///       [0, 1, 2],
-///       [3, 4, 5]
-///     ],
-///     ...
-///   ]
-/// }
-/// </pre>
-/// Images can be represented different ways. In this encoding scheme the first
-/// two dimensions represent the rows and columns of the image, and the third
-/// contains lists (vectors) of the R, G, and B values for each pixel.
-/// <pre>
-/// {
-///   "instances": [
-///     [
-///       [
-///         [138, 30, 66],
-///         [130, 20, 56],
-///         ...
-///       ],
-///       [
-///         [126, 38, 61],
-///         [122, 24, 57],
-///         ...
-///       ],
-///       ...
-///     ],
-///     ...
-///   ]
-/// }
-/// </pre>
-/// JSON strings must be encoded as UTF-8. To send binary data, you must
-/// base64-encode the data and mark it as binary. To mark a JSON string
-/// as binary, replace it with a JSON object with a single attribute named
-/// `b64`:
-/// <pre>{"b64": "..."} </pre>
-/// For example:
-///
-/// Two Serialized tf.Examples (fake data, for illustrative purposes only):
-/// <pre>
-/// {"instances": [{"b64": "X5ad6u"}, {"b64": "IA9j4nx"}]}
-/// </pre>
-/// Two JPEG image byte strings (fake data, for illustrative purposes only):
-/// <pre>
-/// {"instances": [{"b64": "ASa8asdf"}, {"b64": "JLK7ljk3"}]}
-/// </pre>
-/// If your data includes named references, format each instance as a JSON
-/// object
-/// with the named references as the keys:
-///
-/// JSON input data to be preprocessed:
-/// <pre>
-/// {
-///   "instances": [
-///     {
-///       "a": 1.0,
-///       "b": true,
-///       "c": "x"
-///     },
-///     {
-///       "a": -2.0,
-///       "b": false,
-///       "c": "y"
-///     }
-///   ]
-/// }
-/// </pre>
-/// Some models have an underlying TensorFlow graph that accepts multiple input
-/// tensors. In this case, you should use the names of JSON name/value pairs to
-/// identify the input tensors, as shown in the following exmaples:
-///
-/// For a graph with input tensor aliases "tag" (string) and "image"
-/// (base64-encoded string):
-/// <pre>
-/// {
-///   "instances": [
-///     {
-///       "tag": "beach",
-///       "image": {"b64": "ASa8asdf"}
-///     },
-///     {
-///       "tag": "car",
-///       "image": {"b64": "JLK7ljk3"}
-///     }
-///   ]
-/// }
-/// </pre>
-/// For a graph with input tensor aliases "tag" (string) and "image"
-/// (3-dimensional array of 8-bit ints):
-/// <pre>
-/// {
-///   "instances": [
-///     {
-///       "tag": "beach",
-///       "image": [
-///         [
-///           [138, 30, 66],
-///           [130, 20, 56],
-///           ...
-///         ],
-///         [
-///           [126, 38, 61],
-///           [122, 24, 57],
-///           ...
-///         ],
-///         ...
-///       ]
-///     },
-///     {
-///       "tag": "car",
-///       "image": [
-///         [
-///           [255, 0, 102],
-///           [255, 0, 97],
-///           ...
-///         ],
-///         [
-///           [254, 1, 101],
-///           [254, 2, 93],
-///           ...
-///         ],
-///         ...
-///       ]
-///     },
-///     ...
-///   ]
-/// }
-/// </pre>
-/// If the call is successful, the response body will contain one prediction
-/// entry per instance in the request body. If prediction fails for any
-/// instance, the response body will contain no predictions and will contian
-/// a single error entry instead.
 class GoogleCloudMlV1PredictRequest {
   ///
   /// Required. The prediction request body.
@@ -2717,10 +2813,12 @@ class GoogleCloudMlV1PredictionInput {
   /// Required. The format of the input data files.
   /// Possible string values are:
   /// - "DATA_FORMAT_UNSPECIFIED" : Unspecified format.
-  /// - "TEXT" : The source file is a text file with instances separated by the
-  /// new-line character.
-  /// - "TF_RECORD" : The source file is a TFRecord file.
-  /// - "TF_RECORD_GZIP" : The source file is a GZIP-compressed TFRecord file.
+  /// - "JSON" : Each line of the file is a JSON dictionary representing one
+  /// record.
+  /// - "TEXT" : Deprecated. Use JSON instead.
+  /// - "TF_RECORD" : INPUT ONLY. The source file is a TFRecord file.
+  /// - "TF_RECORD_GZIP" : INPUT ONLY. The source file is a GZIP-compressed
+  /// TFRecord file.
   core.String dataFormat;
 
   /// Required. The Google Cloud Storage location of the input data files.
@@ -2742,6 +2840,8 @@ class GoogleCloudMlV1PredictionInput {
   core.String outputPath;
 
   /// Required. The Google Compute Engine region to run the prediction job in.
+  /// See the <a href="/ml-engine/docs/regions">available regions</a> for
+  /// ML Engine services.
   core.String region;
 
   /// Optional. The Google Cloud ML runtime version to use for this batch
@@ -2750,6 +2850,16 @@ class GoogleCloudMlV1PredictionInput {
   /// latest stable version when model version information is not available
   /// such as when the model is specified by uri.
   core.String runtimeVersion;
+
+  /// Optional. The name of the signature defined in the SavedModel to use for
+  /// this job. Please refer to
+  /// [SavedModel](https://tensorflow.github.io/serving/serving_basic.html)
+  /// for information about how to use signatures.
+  ///
+  /// Defaults to
+  /// [DEFAULT_SERVING_SIGNATURE_DEF_KEY](https://www.tensorflow.org/api_docs/python/tf/saved_model/signature_constants)
+  /// , which is "serving_default".
+  core.String signatureName;
 
   /// Use this field if you want to specify a Google Cloud Storage path for
   /// the model to use.
@@ -2789,6 +2899,9 @@ class GoogleCloudMlV1PredictionInput {
     if (_json.containsKey("runtimeVersion")) {
       runtimeVersion = _json["runtimeVersion"];
     }
+    if (_json.containsKey("signatureName")) {
+      signatureName = _json["signatureName"];
+    }
     if (_json.containsKey("uri")) {
       uri = _json["uri"];
     }
@@ -2823,6 +2936,9 @@ class GoogleCloudMlV1PredictionInput {
     }
     if (runtimeVersion != null) {
       _json["runtimeVersion"] = runtimeVersion;
+    }
+    if (signatureName != null) {
+      _json["signatureName"] = signatureName;
     }
     if (uri != null) {
       _json["uri"] = uri;
@@ -2898,7 +3014,13 @@ class GoogleCloudMlV1SetDefaultVersionRequest {
   }
 }
 
-/// Represents input parameters for a training job.
+/// Represents input parameters for a training job. When using the
+/// gcloud command to submit your training job, you can specify
+/// the input parameters as command-line arguments and/or in a YAML
+/// configuration
+/// file referenced from the --config command-line argument. For
+/// details, see the guide to
+/// <a href="/ml-engine/docs/training-jobs">submitting a training job</a>.
 class GoogleCloudMlV1TrainingInput {
   /// Optional. Command line arguments to pass to the program.
   core.List<core.String> args;
@@ -2948,15 +3070,34 @@ class GoogleCloudMlV1TrainingInput {
   ///   <dt>standard_gpu</dt>
   ///   <dd>
   /// A machine equivalent to <code suppresswarning="true">standard</code> that
-  ///   also includes a
+  ///   also includes a single NVIDIA Tesla K80 GPU. See more about
   ///   <a href="/ml-engine/docs/how-tos/using-gpus">
-  ///   GPU that you can use in your trainer</a>.
+  ///   using GPUs for training your model</a>.
   ///   </dd>
   ///   <dt>complex_model_m_gpu</dt>
   ///   <dd>
   ///   A machine equivalent to
   ///   <code suppresswarning="true">complex_model_m</code> that also includes
-  ///   four GPUs.
+  ///   four NVIDIA Tesla K80 GPUs.
+  ///   </dd>
+  ///   <dt>complex_model_l_gpu</dt>
+  ///   <dd>
+  ///   A machine equivalent to
+  ///   <code suppresswarning="true">complex_model_l</code> that also includes
+  ///   eight NVIDIA Tesla K80 GPUs.
+  ///   </dd>
+  ///   <dt>standard_p100</dt>
+  ///   <dd>
+  /// A machine equivalent to <code suppresswarning="true">standard</code> that
+  ///   also includes a single NVIDIA Tesla P100 GPU. The availability of these
+  ///   GPUs is in the Beta launch stage.
+  ///   </dd>
+  ///   <dt>complex_model_m_p100</dt>
+  ///   <dd>
+  ///   A machine equivalent to
+  ///   <code suppresswarning="true">complex_model_m</code> that also includes
+  ///   four NVIDIA Tesla P100 GPUs. The availability of these GPUs is in
+  ///   the Beta launch stage.
   ///   </dd>
   /// </dl>
   ///
@@ -2989,7 +3130,15 @@ class GoogleCloudMlV1TrainingInput {
   /// Required. The Python module name to run after installing the packages.
   core.String pythonModule;
 
+  /// Optional. The version of Python used in training. If not set, the default
+  /// version is '2.7'. Python '3.5' is available when `runtime_version` is set
+  /// to '1.4' and above. Python '2.7' works with all supported runtime
+  /// versions.
+  core.String pythonVersion;
+
   /// Required. The Google Compute Engine region to run the training job in.
+  /// See the <a href="/ml-engine/docs/regions">available regions</a> for
+  /// ML Engine services.
   core.String region;
 
   /// Optional. The Google Cloud ML runtime version to use for training.  If not
@@ -3078,6 +3227,9 @@ class GoogleCloudMlV1TrainingInput {
     if (_json.containsKey("pythonModule")) {
       pythonModule = _json["pythonModule"];
     }
+    if (_json.containsKey("pythonVersion")) {
+      pythonVersion = _json["pythonVersion"];
+    }
     if (_json.containsKey("region")) {
       region = _json["region"];
     }
@@ -3121,6 +3273,9 @@ class GoogleCloudMlV1TrainingInput {
     }
     if (pythonModule != null) {
       _json["pythonModule"] = pythonModule;
+    }
+    if (pythonVersion != null) {
+      _json["pythonVersion"] = pythonVersion;
     }
     if (region != null) {
       _json["region"] = region;
@@ -3203,7 +3358,6 @@ class GoogleCloudMlV1TrainingOutput {
 /// information about all of the versions of a given model by calling
 /// [projects.models.versions.list](/ml-engine/reference/rest/v1/projects.models.versions/list).
 ///
-/// Next ID: 19
 /// LINT.IfChange
 class GoogleCloudMlV1Version {
   /// Automatically scale the number of nodes used to serve the model in
@@ -3266,10 +3420,17 @@ class GoogleCloudMlV1Version {
   /// Possible string values are:
   /// - "UNKNOWN" : The version state is unspecified.
   /// - "READY" : The version is ready for prediction.
-  /// - "CREATING" : The version is in the process of creation.
+  /// - "CREATING" : The version is being created. New UpdateVersion and
+  /// DeleteVersion
+  /// requests will fail if a version is in the CREATING state.
   /// - "FAILED" : The version failed to be created, possibly cancelled.
   /// `error_message` should contain the details of the failure.
-  /// - "DELETING" : The version is in the process of deletion.
+  /// - "DELETING" : The version is being deleted. New UpdateVersion and
+  /// DeleteVersion
+  /// requests will fail if a version is in the DELETING state.
+  /// - "UPDATING" : The version is being updated. New UpdateVersion and
+  /// DeleteVersion
+  /// requests will fail if a version is in the UPDATING state.
   core.String state;
 
   GoogleCloudMlV1Version();
@@ -3352,167 +3513,8 @@ class GoogleCloudMlV1Version {
   }
 }
 
-/// Specifies the audit configuration for a service.
-/// The configuration determines which permission types are logged, and what
-/// identities, if any, are exempted from logging.
-/// An AuditConfig must have one or more AuditLogConfigs.
-///
-/// If there are AuditConfigs for both `allServices` and a specific service,
-/// the union of the two AuditConfigs is used for that service: the log_types
-/// specified in each AuditConfig are enabled, and the exempted_members in each
-/// AuditConfig are exempted.
-///
-/// Example Policy with multiple AuditConfigs:
-///
-///     {
-///       "audit_configs": [
-///         {
-///           "service": "allServices"
-///           "audit_log_configs": [
-///             {
-///               "log_type": "DATA_READ",
-///               "exempted_members": [
-///                 "user:foo@gmail.com"
-///               ]
-///             },
-///             {
-///               "log_type": "DATA_WRITE",
-///             },
-///             {
-///               "log_type": "ADMIN_READ",
-///             }
-///           ]
-///         },
-///         {
-///           "service": "fooservice.googleapis.com"
-///           "audit_log_configs": [
-///             {
-///               "log_type": "DATA_READ",
-///             },
-///             {
-///               "log_type": "DATA_WRITE",
-///               "exempted_members": [
-///                 "user:bar@gmail.com"
-///               ]
-///             }
-///           ]
-///         }
-///       ]
-///     }
-///
-/// For fooservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ
-/// logging. It also exempts foo@gmail.com from DATA_READ logging, and
-/// bar@gmail.com from DATA_WRITE logging.
-class GoogleIamV1AuditConfig {
-  /// The configuration for logging of each type of permission.
-  /// Next ID: 4
-  core.List<GoogleIamV1AuditLogConfig> auditLogConfigs;
-  core.List<core.String> exemptedMembers;
-
-  /// Specifies a service that will be enabled for audit logging.
-  /// For example, `storage.googleapis.com`, `cloudsql.googleapis.com`.
-  /// `allServices` is a special value that covers all services.
-  core.String service;
-
-  GoogleIamV1AuditConfig();
-
-  GoogleIamV1AuditConfig.fromJson(core.Map _json) {
-    if (_json.containsKey("auditLogConfigs")) {
-      auditLogConfigs = _json["auditLogConfigs"]
-          .map((value) => new GoogleIamV1AuditLogConfig.fromJson(value))
-          .toList();
-    }
-    if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
-    }
-    if (_json.containsKey("service")) {
-      service = _json["service"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (auditLogConfigs != null) {
-      _json["auditLogConfigs"] =
-          auditLogConfigs.map((value) => (value).toJson()).toList();
-    }
-    if (exemptedMembers != null) {
-      _json["exemptedMembers"] = exemptedMembers;
-    }
-    if (service != null) {
-      _json["service"] = service;
-    }
-    return _json;
-  }
-}
-
-/// Provides the configuration for logging a type of permissions.
-/// Example:
-///
-///     {
-///       "audit_log_configs": [
-///         {
-///           "log_type": "DATA_READ",
-///           "exempted_members": [
-///             "user:foo@gmail.com"
-///           ]
-///         },
-///         {
-///           "log_type": "DATA_WRITE",
-///         }
-///       ]
-///     }
-///
-/// This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting
-/// foo@gmail.com from DATA_READ logging.
-class GoogleIamV1AuditLogConfig {
-  /// Specifies the identities that do not cause logging for this type of
-  /// permission.
-  /// Follows the same format of Binding.members.
-  core.List<core.String> exemptedMembers;
-
-  /// The log type that this config enables.
-  /// Possible string values are:
-  /// - "LOG_TYPE_UNSPECIFIED" : Default case. Should never be this.
-  /// - "ADMIN_READ" : Admin reads. Example: CloudIAM getIamPolicy
-  /// - "DATA_WRITE" : Data writes. Example: CloudSQL Users create
-  /// - "DATA_READ" : Data reads. Example: CloudSQL Users list
-  core.String logType;
-
-  GoogleIamV1AuditLogConfig();
-
-  GoogleIamV1AuditLogConfig.fromJson(core.Map _json) {
-    if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
-    }
-    if (_json.containsKey("logType")) {
-      logType = _json["logType"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (exemptedMembers != null) {
-      _json["exemptedMembers"] = exemptedMembers;
-    }
-    if (logType != null) {
-      _json["logType"] = logType;
-    }
-    return _json;
-  }
-}
-
 /// Associates `members` with a `role`.
 class GoogleIamV1Binding {
-  /// The condition that is associated with this binding.
-  /// NOTE: an unsatisfied condition will not allow user access via current
-  /// binding. Different bindings, including their conditions, are examined
-  /// independently.
-  /// This field is GOOGLE_INTERNAL.
-  GoogleTypeExpr condition;
-
   /// Specifies the identities requesting access for a Cloud Platform resource.
   /// `members` can have the following values:
   ///
@@ -3545,9 +3547,6 @@ class GoogleIamV1Binding {
   GoogleIamV1Binding();
 
   GoogleIamV1Binding.fromJson(core.Map _json) {
-    if (_json.containsKey("condition")) {
-      condition = new GoogleTypeExpr.fromJson(_json["condition"]);
-    }
     if (_json.containsKey("members")) {
       members = _json["members"];
     }
@@ -3559,9 +3558,6 @@ class GoogleIamV1Binding {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
-    if (condition != null) {
-      _json["condition"] = (condition).toJson();
-    }
     if (members != null) {
       _json["members"] = members;
     }
@@ -3604,11 +3600,8 @@ class GoogleIamV1Binding {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class GoogleIamV1Policy {
-  /// Specifies cloud audit logging configuration for this policy.
-  core.List<GoogleIamV1AuditConfig> auditConfigs;
-
   /// Associates a list of `members` to a `role`.
   /// `bindings` with no members will result in an error.
   core.List<GoogleIamV1Binding> bindings;
@@ -3634,19 +3627,12 @@ class GoogleIamV1Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  core.bool iamOwned;
-
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   GoogleIamV1Policy();
 
   GoogleIamV1Policy.fromJson(core.Map _json) {
-    if (_json.containsKey("auditConfigs")) {
-      auditConfigs = _json["auditConfigs"]
-          .map((value) => new GoogleIamV1AuditConfig.fromJson(value))
-          .toList();
-    }
     if (_json.containsKey("bindings")) {
       bindings = _json["bindings"]
           .map((value) => new GoogleIamV1Binding.fromJson(value))
@@ -3654,9 +3640,6 @@ class GoogleIamV1Policy {
     }
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
-    }
-    if (_json.containsKey("iamOwned")) {
-      iamOwned = _json["iamOwned"];
     }
     if (_json.containsKey("version")) {
       version = _json["version"];
@@ -3666,18 +3649,11 @@ class GoogleIamV1Policy {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
-    if (auditConfigs != null) {
-      _json["auditConfigs"] =
-          auditConfigs.map((value) => (value).toJson()).toList();
-    }
     if (bindings != null) {
       _json["bindings"] = bindings.map((value) => (value).toJson()).toList();
     }
     if (etag != null) {
       _json["etag"] = etag;
-    }
-    if (iamOwned != null) {
-      _json["iamOwned"] = iamOwned;
     }
     if (version != null) {
       _json["version"] = version;
@@ -3694,22 +3670,11 @@ class GoogleIamV1SetIamPolicyRequest {
   /// might reject them.
   GoogleIamV1Policy policy;
 
-  /// OPTIONAL: A FieldMask specifying which fields of the policy to modify.
-  /// Only
-  /// the fields in the mask will be modified. If no mask is provided, the
-  /// following default mask is used:
-  /// paths: "bindings, etag"
-  /// This field is only used by Cloud IAM.
-  core.String updateMask;
-
   GoogleIamV1SetIamPolicyRequest();
 
   GoogleIamV1SetIamPolicyRequest.fromJson(core.Map _json) {
     if (_json.containsKey("policy")) {
       policy = new GoogleIamV1Policy.fromJson(_json["policy"]);
-    }
-    if (_json.containsKey("updateMask")) {
-      updateMask = _json["updateMask"];
     }
   }
 
@@ -3718,9 +3683,6 @@ class GoogleIamV1SetIamPolicyRequest {
         new core.Map<core.String, core.Object>();
     if (policy != null) {
       _json["policy"] = (policy).toJson();
-    }
-    if (updateMask != null) {
-      _json["updateMask"] = updateMask;
     }
     return _json;
   }
@@ -4010,68 +3972,6 @@ class GoogleRpcStatus {
     }
     if (message != null) {
       _json["message"] = message;
-    }
-    return _json;
-  }
-}
-
-/// Represents an expression text. Example:
-///
-///     title: "User account presence"
-///     description: "Determines whether the request has a user account"
-///     expression: "size(request.user) > 0"
-class GoogleTypeExpr {
-  /// An optional description of the expression. This is a longer text which
-  /// describes the expression, e.g. when hovered over it in a UI.
-  core.String description;
-
-  /// Textual representation of an expression in
-  /// Common Expression Language syntax.
-  ///
-  /// The application context of the containing message determines which
-  /// well-known feature set of CEL is supported.
-  core.String expression;
-
-  /// An optional string indicating the location of the expression for error
-  /// reporting, e.g. a file name and a position in the file.
-  core.String location;
-
-  /// An optional title for the expression, i.e. a short string describing
-  /// its purpose. This can be used e.g. in UIs which allow to enter the
-  /// expression.
-  core.String title;
-
-  GoogleTypeExpr();
-
-  GoogleTypeExpr.fromJson(core.Map _json) {
-    if (_json.containsKey("description")) {
-      description = _json["description"];
-    }
-    if (_json.containsKey("expression")) {
-      expression = _json["expression"];
-    }
-    if (_json.containsKey("location")) {
-      location = _json["location"];
-    }
-    if (_json.containsKey("title")) {
-      title = _json["title"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (description != null) {
-      _json["description"] = description;
-    }
-    if (expression != null) {
-      _json["expression"] = expression;
-    }
-    if (location != null) {
-      _json["location"] = location;
-    }
-    if (title != null) {
-      _json["title"] = title;
     }
     return _json;
   }

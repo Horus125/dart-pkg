@@ -19,6 +19,10 @@ class SlidesApi {
   /// View and manage the files in your Google Drive
   static const DriveScope = "https://www.googleapis.com/auth/drive";
 
+  /// View and manage Google Drive files and folders that you have opened or
+  /// created with this app
+  static const DriveFileScope = "https://www.googleapis.com/auth/drive.file";
+
   /// View the files in your Google Drive
   static const DriveReadonlyScope =
       "https://www.googleapis.com/auth/drive.readonly";
@@ -282,11 +286,21 @@ class PresentationsPagesResourceApi {
   /// Generates a thumbnail of the latest version of the specified page in the
   /// presentation and returns a URL to the thumbnail image.
   ///
+  /// This request counts as an [expensive read request](/slides/limits) for
+  /// quota purposes.
+  ///
   /// Request parameters:
   ///
   /// [presentationId] - The ID of the presentation to retrieve.
   ///
   /// [pageObjectId] - The object ID of the page whose thumbnail to retrieve.
+  ///
+  /// [thumbnailProperties_mimeType] - The optional mime type of the thumbnail
+  /// image.
+  ///
+  /// If you don't specify the mime type, the default mime type will be PNG.
+  /// Possible string values are:
+  /// - "PNG" : A PNG.
   ///
   /// [thumbnailProperties_thumbnailSize] - The optional thumbnail image size.
   ///
@@ -295,13 +309,6 @@ class PresentationsPagesResourceApi {
   /// Possible string values are:
   /// - "THUMBNAIL_SIZE_UNSPECIFIED" : A THUMBNAIL_SIZE_UNSPECIFIED.
   /// - "LARGE" : A LARGE.
-  ///
-  /// [thumbnailProperties_mimeType] - The optional mime type of the thumbnail
-  /// image.
-  ///
-  /// If you don't specify the mime type, the default mime type will be PNG.
-  /// Possible string values are:
-  /// - "PNG" : A PNG.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -315,8 +322,8 @@ class PresentationsPagesResourceApi {
   /// this method will complete with the same error.
   async.Future<Thumbnail> getThumbnail(
       core.String presentationId, core.String pageObjectId,
-      {core.String thumbnailProperties_thumbnailSize,
-      core.String thumbnailProperties_mimeType,
+      {core.String thumbnailProperties_mimeType,
+      core.String thumbnailProperties_thumbnailSize,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -331,14 +338,14 @@ class PresentationsPagesResourceApi {
     if (pageObjectId == null) {
       throw new core.ArgumentError("Parameter pageObjectId is required.");
     }
-    if (thumbnailProperties_thumbnailSize != null) {
-      _queryParams["thumbnailProperties.thumbnailSize"] = [
-        thumbnailProperties_thumbnailSize
-      ];
-    }
     if (thumbnailProperties_mimeType != null) {
       _queryParams["thumbnailProperties.mimeType"] = [
         thumbnailProperties_mimeType
+      ];
+    }
+    if (thumbnailProperties_thumbnailSize != null) {
+      _queryParams["thumbnailProperties.thumbnailSize"] = [
+        thumbnailProperties_thumbnailSize
       ];
     }
     if ($fields != null) {
@@ -544,6 +551,9 @@ class BatchUpdatePresentationResponse {
   /// replies to some requests may be empty.
   core.List<Response> replies;
 
+  /// The updated write control after applying the request.
+  WriteControl writeControl;
+
   BatchUpdatePresentationResponse();
 
   BatchUpdatePresentationResponse.fromJson(core.Map _json) {
@@ -555,6 +565,9 @@ class BatchUpdatePresentationResponse {
           .map((value) => new Response.fromJson(value))
           .toList();
     }
+    if (_json.containsKey("writeControl")) {
+      writeControl = new WriteControl.fromJson(_json["writeControl"]);
+    }
   }
 
   core.Map<core.String, core.Object> toJson() {
@@ -565,6 +578,9 @@ class BatchUpdatePresentationResponse {
     }
     if (replies != null) {
       _json["replies"] = replies.map((value) => (value).toJson()).toList();
+    }
+    if (writeControl != null) {
+      _json["writeControl"] = (writeControl).toJson();
     }
     return _json;
   }
@@ -696,6 +712,15 @@ class CreateImageRequest {
   /// ratio, the image is scaled and centered with respect to the size in order
   /// to maintain aspect ratio. The provided transform is applied after this
   /// operation.
+  ///
+  /// The PageElementProperties.size property is
+  /// optional. If you don't specify the size, the default size of the image is
+  /// used.
+  ///
+  /// The PageElementProperties.transform property is
+  /// optional. If you don't specify a transform, the image will be placed at
+  /// the
+  /// top left corner of the page.
   PageElementProperties elementProperties;
 
   /// A user-supplied object ID.
@@ -718,7 +743,7 @@ class CreateImageRequest {
   /// cannot exceed 25 megapixels, and must be in either in PNG, JPEG, or GIF
   /// format.
   ///
-  /// The provided URL can be at maximum 2K bytes large.
+  /// The provided URL can be at most 2 kB in length.
   core.String url;
 
   CreateImageRequest();
@@ -1663,6 +1688,15 @@ class CreateTableResponse {
 /// Creates a video.
 class CreateVideoRequest {
   /// The element properties for the video.
+  ///
+  /// The PageElementProperties.size property is
+  /// optional. If you don't specify a size, a default size is chosen by the
+  /// server.
+  ///
+  /// The PageElementProperties.transform property is
+  /// optional. The transform must not have shear components.
+  /// If you don't specify a transform, the video will be placed at the top left
+  /// corner of the page.
   PageElementProperties elementProperties;
 
   /// The video source's unique identifier for this video.
@@ -2270,6 +2304,10 @@ class Image {
   /// The properties of the image.
   ImageProperties imageProperties;
 
+  /// The source URL is the URL used to insert the image. The source URL can be
+  /// empty.
+  core.String sourceUrl;
+
   Image();
 
   Image.fromJson(core.Map _json) {
@@ -2278,6 +2316,9 @@ class Image {
     }
     if (_json.containsKey("imageProperties")) {
       imageProperties = new ImageProperties.fromJson(_json["imageProperties"]);
+    }
+    if (_json.containsKey("sourceUrl")) {
+      sourceUrl = _json["sourceUrl"];
     }
   }
 
@@ -2289,6 +2330,9 @@ class Image {
     }
     if (imageProperties != null) {
       _json["imageProperties"] = (imageProperties).toJson();
+    }
+    if (sourceUrl != null) {
+      _json["sourceUrl"] = sourceUrl;
     }
     return _json;
   }
@@ -3260,9 +3304,9 @@ class Outline {
 
   /// The outline property state.
   ///
-  /// Updating the the outline on a page element will implicitly update this
-  /// field to`RENDERED`, unless another value is specified in the same request.
-  /// To have no outline on a page element, set this field to `NOT_RENDERED`. In
+  /// Updating the outline on a page element will implicitly update this field
+  /// to `RENDERED`, unless another value is specified in the same request. To
+  /// have no outline on a page element, set this field to `NOT_RENDERED`. In
   /// this case, any other outline fields set in the same request will be
   /// ignored.
   /// Possible string values are:
@@ -4340,6 +4384,30 @@ class ReplaceAllShapesWithImageRequest {
   /// given text.
   SubstringMatchCriteria containsText;
 
+  /// The image replace method.
+  ///
+  /// If you specify both a `replace_method` and an `image_replace_method`, the
+  /// `image_replace_method` takes precedence.
+  ///
+  /// If you do not specify a value for `image_replace_method`, but specify a
+  /// value for `replace_method`, then the specified `replace_method` value is
+  /// used.
+  ///
+  /// If you do not specify either, then CENTER_INSIDE is used.
+  /// Possible string values are:
+  /// - "IMAGE_REPLACE_METHOD_UNSPECIFIED" : Unspecified image replace method.
+  /// This value must not be used.
+  /// - "CENTER_INSIDE" : Scales and centers the image to fit within the bounds
+  /// of the original
+  /// shape and maintains the image's aspect ratio. The rendered size of the
+  /// image may be smaller than the size of the shape. This is the default
+  /// method when one is not specified.
+  /// - "CENTER_CROP" : Scales and centers the image to fill the bounds of the
+  /// original shape.
+  /// The image may be cropped in order to fill the shape. The rendered size of
+  /// the image will be the same as that of the original shape.
+  core.String imageReplaceMethod;
+
   /// The image URL.
   ///
   /// The image is fetched once at insertion time and a copy is stored for
@@ -4347,7 +4415,7 @@ class ReplaceAllShapesWithImageRequest {
   /// cannot exceed 25 megapixels, and must be in either in PNG, JPEG, or GIF
   /// format.
   ///
-  /// The provided URL can be at maximum 2K bytes large.
+  /// The provided URL can be at most 2 kB in length.
   core.String imageUrl;
 
   /// If non-empty, limits the matches to page elements only on the given pages.
@@ -4359,6 +4427,10 @@ class ReplaceAllShapesWithImageRequest {
   core.List<core.String> pageObjectIds;
 
   /// The replace method.
+  /// Deprecated: use `image_replace_method` instead.
+  ///
+  /// If you specify both a `replace_method` and an `image_replace_method`, the
+  /// `image_replace_method` takes precedence.
   /// Possible string values are:
   /// - "CENTER_INSIDE" : Scales and centers the image to fit within the bounds
   /// of the original
@@ -4377,6 +4449,9 @@ class ReplaceAllShapesWithImageRequest {
     if (_json.containsKey("containsText")) {
       containsText = new SubstringMatchCriteria.fromJson(_json["containsText"]);
     }
+    if (_json.containsKey("imageReplaceMethod")) {
+      imageReplaceMethod = _json["imageReplaceMethod"];
+    }
     if (_json.containsKey("imageUrl")) {
       imageUrl = _json["imageUrl"];
     }
@@ -4393,6 +4468,9 @@ class ReplaceAllShapesWithImageRequest {
         new core.Map<core.String, core.Object>();
     if (containsText != null) {
       _json["containsText"] = (containsText).toJson();
+    }
+    if (imageReplaceMethod != null) {
+      _json["imageReplaceMethod"] = imageReplaceMethod;
     }
     if (imageUrl != null) {
       _json["imageUrl"] = imageUrl;
@@ -4682,6 +4760,10 @@ class Request {
   /// Updates the properties of a Line.
   UpdateLinePropertiesRequest updateLineProperties;
 
+  /// Updates the alt text title and/or description of a
+  /// page element.
+  UpdatePageElementAltTextRequest updatePageElementAltText;
+
   /// Updates the transform of a page element.
   UpdatePageElementTransformRequest updatePageElementTransform;
 
@@ -4818,6 +4900,10 @@ class Request {
       updateLineProperties = new UpdateLinePropertiesRequest.fromJson(
           _json["updateLineProperties"]);
     }
+    if (_json.containsKey("updatePageElementAltText")) {
+      updatePageElementAltText = new UpdatePageElementAltTextRequest.fromJson(
+          _json["updatePageElementAltText"]);
+    }
     if (_json.containsKey("updatePageElementTransform")) {
       updatePageElementTransform =
           new UpdatePageElementTransformRequest.fromJson(
@@ -4951,6 +5037,9 @@ class Request {
     }
     if (updateLineProperties != null) {
       _json["updateLineProperties"] = (updateLineProperties).toJson();
+    }
+    if (updatePageElementAltText != null) {
+      _json["updatePageElementAltText"] = (updatePageElementAltText).toJson();
     }
     if (updatePageElementTransform != null) {
       _json["updatePageElementTransform"] =
@@ -5199,11 +5288,9 @@ class Shadow {
 
   /// The shadow property state.
   ///
-  /// Updating the the shadow on a page element will implicitly update this
-  /// field
-  /// to `RENDERED`, unless another value is specified in the same request. To
-  /// have no shadow on a page element, set this field to `NOT_RENDERED`. In
-  /// this
+  /// Updating the shadow on a page element will implicitly update this field to
+  /// `RENDERED`, unless another value is specified in the same request. To have
+  /// no shadow on a page element, set this field to `NOT_RENDERED`. In this
   /// case, any other shadow fields set in the same request will be ignored.
   /// Possible string values are:
   /// - "RENDERED" : If a property's state is RENDERED, then the element has the
@@ -5739,6 +5826,26 @@ class ShapeBackgroundFill {
 /// Determining the rendered value of the property depends on the corresponding
 /// property_state field value.
 class ShapeProperties {
+  /// The alignment of the content in the shape. If unspecified,
+  /// the alignment is inherited from a parent placeholder if it exists. If the
+  /// shape has no parent, the default alignment matches the alignment for new
+  /// shapes created in the Slides editor.
+  /// Possible string values are:
+  /// - "CONTENT_ALIGNMENT_UNSPECIFIED" : An unspecified content alignment. The
+  /// content alignment is inherited from
+  /// the parent if it exists.
+  /// - "CONTENT_ALIGNMENT_UNSUPPORTED" : An unsupported content alignment.
+  /// - "TOP" : An alignment that aligns the content to the top of the content
+  /// holder.
+  /// Corresponds to ECMA-376 ST_TextAnchoringType 't'.
+  /// - "MIDDLE" : An alignment that aligns the content to the middle of the
+  /// content
+  /// holder. Corresponds to ECMA-376 ST_TextAnchoringType 'ctr'.
+  /// - "BOTTOM" : An alignment that aligns the content to the bottom of the
+  /// content
+  /// holder. Corresponds to ECMA-376 ST_TextAnchoringType 'b'.
+  core.String contentAlignment;
+
   /// The hyperlink destination of the shape. If unset, there is no link. Links
   /// are not inherited from parent placeholders.
   Link link;
@@ -5764,6 +5871,9 @@ class ShapeProperties {
   ShapeProperties();
 
   ShapeProperties.fromJson(core.Map _json) {
+    if (_json.containsKey("contentAlignment")) {
+      contentAlignment = _json["contentAlignment"];
+    }
     if (_json.containsKey("link")) {
       link = new Link.fromJson(_json["link"]);
     }
@@ -5782,6 +5892,9 @@ class ShapeProperties {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (contentAlignment != null) {
+      _json["contentAlignment"] = contentAlignment;
+    }
     if (link != null) {
       _json["link"] = (link).toJson();
     }
@@ -6021,7 +6134,7 @@ class StretchedPictureFill {
   /// cannot exceed 25 megapixels, and must be in either in PNG, JPEG, or GIF
   /// format.
   ///
-  /// The provided URL can be at maximum 2K bytes large.
+  /// The provided URL can be at most 2 kB in length.
   core.String contentUrl;
 
   /// The original size of the picture fill. This field is read-only.
@@ -6473,6 +6586,24 @@ class TableCellLocation {
 
 /// The properties of the TableCell.
 class TableCellProperties {
+  /// The alignment of the content in the table cell. The default alignment
+  /// matches the alignment for newly created table cells in the Slides editor.
+  /// Possible string values are:
+  /// - "CONTENT_ALIGNMENT_UNSPECIFIED" : An unspecified content alignment. The
+  /// content alignment is inherited from
+  /// the parent if it exists.
+  /// - "CONTENT_ALIGNMENT_UNSUPPORTED" : An unsupported content alignment.
+  /// - "TOP" : An alignment that aligns the content to the top of the content
+  /// holder.
+  /// Corresponds to ECMA-376 ST_TextAnchoringType 't'.
+  /// - "MIDDLE" : An alignment that aligns the content to the middle of the
+  /// content
+  /// holder. Corresponds to ECMA-376 ST_TextAnchoringType 'ctr'.
+  /// - "BOTTOM" : An alignment that aligns the content to the bottom of the
+  /// content
+  /// holder. Corresponds to ECMA-376 ST_TextAnchoringType 'b'.
+  core.String contentAlignment;
+
   /// The background fill of the table cell. The default fill matches the fill
   /// for newly created table cells in the Slides editor.
   TableCellBackgroundFill tableCellBackgroundFill;
@@ -6480,6 +6611,9 @@ class TableCellProperties {
   TableCellProperties();
 
   TableCellProperties.fromJson(core.Map _json) {
+    if (_json.containsKey("contentAlignment")) {
+      contentAlignment = _json["contentAlignment"];
+    }
     if (_json.containsKey("tableCellBackgroundFill")) {
       tableCellBackgroundFill = new TableCellBackgroundFill.fromJson(
           _json["tableCellBackgroundFill"]);
@@ -6489,6 +6623,9 @@ class TableCellProperties {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (contentAlignment != null) {
+      _json["contentAlignment"] = contentAlignment;
+    }
     if (tableCellBackgroundFill != null) {
       _json["tableCellBackgroundFill"] = (tableCellBackgroundFill).toJson();
     }
@@ -7273,6 +7410,55 @@ class UpdateLinePropertiesRequest {
     }
     if (objectId != null) {
       _json["objectId"] = objectId;
+    }
+    return _json;
+  }
+}
+
+/// Updates the alt text title and/or description of a
+/// page element.
+class UpdatePageElementAltTextRequest {
+  /// The updated alt text description of the page element. If unset the
+  /// existing
+  /// value will be maintained. The description is exposed to screen readers
+  /// and other accessibility interfaces. Only use human readable values related
+  /// to the content of the page element.
+  core.String description;
+
+  /// The object ID of the page element the updates are applied to.
+  core.String objectId;
+
+  /// The updated alt text title of the page element. If unset the
+  /// existing value will be maintained. The title is exposed to screen readers
+  /// and other accessibility interfaces. Only use human readable values related
+  /// to the content of the page element.
+  core.String title;
+
+  UpdatePageElementAltTextRequest();
+
+  UpdatePageElementAltTextRequest.fromJson(core.Map _json) {
+    if (_json.containsKey("description")) {
+      description = _json["description"];
+    }
+    if (_json.containsKey("objectId")) {
+      objectId = _json["objectId"];
+    }
+    if (_json.containsKey("title")) {
+      title = _json["title"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (description != null) {
+      _json["description"] = description;
+    }
+    if (objectId != null) {
+      _json["objectId"] = objectId;
+    }
+    if (title != null) {
+      _json["title"] = title;
     }
     return _json;
   }

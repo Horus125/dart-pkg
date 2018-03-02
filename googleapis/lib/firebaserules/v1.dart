@@ -367,6 +367,14 @@ class ProjectsReleasesResourceApi {
   /// Format: `projects/{project_id}`
   /// Value must have pattern "^projects/[^/]+$".
   ///
+  /// [pageToken] - Next page token for the next batch of `Release` instances.
+  ///
+  /// [pageSize] - Page size to load. Maximum of 100. Defaults to 10.
+  /// Note: `page_size` is just a hint and the service may choose to load fewer
+  /// than `page_size` results due to the size of the output. To traverse all of
+  /// the releases, the caller should iterate until the `page_token` on the
+  /// response is empty.
+  ///
   /// [filter] - `Release` filter. The list method supports filters with
   /// restrictions on the
   /// `Release.name`, `Release.ruleset_name`, and `Release.test_suite_name`.
@@ -394,14 +402,6 @@ class ProjectsReleasesResourceApi {
   /// relative to the project. Fully qualified prefixed may also be used. e.g.
   /// `test_suite_name=projects/foo/testsuites/uuid1`
   ///
-  /// [pageToken] - Next page token for the next batch of `Release` instances.
-  ///
-  /// [pageSize] - Page size to load. Maximum of 100. Defaults to 10.
-  /// Note: `page_size` is just a hint and the service may choose to load fewer
-  /// than `page_size` results due to the size of the output. To traverse all of
-  /// the releases, the caller should iterate until the `page_token` on the
-  /// response is empty.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -413,9 +413,9 @@ class ProjectsReleasesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListReleasesResponse> list(core.String name,
-      {core.String filter,
-      core.String pageToken,
+      {core.String pageToken,
       core.int pageSize,
+      core.String filter,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -427,14 +427,14 @@ class ProjectsReleasesResourceApi {
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
     }
-    if (filter != null) {
-      _queryParams["filter"] = [filter];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -498,83 +498,6 @@ class ProjectsReleasesResourceApi {
     _url = 'v1/' + commons.Escaper.ecapeVariableReserved('$name');
 
     var _response = _requester.request(_url, "PATCH",
-        body: _body,
-        queryParams: _queryParams,
-        uploadOptions: _uploadOptions,
-        uploadMedia: _uploadMedia,
-        downloadOptions: _downloadOptions);
-    return _response.then((data) => new Release.fromJson(data));
-  }
-
-  /// Update a `Release`.
-  ///
-  /// Only updates to the `ruleset_name` and `test_suite_name` fields will be
-  /// honored. `Release` rename is not supported. To create a `Release` use the
-  /// CreateRelease method.
-  ///
-  /// [request] - The metadata request object.
-  ///
-  /// Request parameters:
-  ///
-  /// [name] - Resource name for the `Release`.
-  ///
-  /// `Release` names may be structured `app1/prod/v2` or flat `app1_prod_v2`
-  /// which affords developers a great deal of flexibility in mapping the name
-  /// to the style that best fits their existing development practices. For
-  /// example, a name could refer to an environment, an app, a version, or some
-  /// combination of three.
-  ///
-  /// In the table below, for the project name `projects/foo`, the following
-  /// relative release paths show how flat and structured names might be chosen
-  /// to match a desired development / deployment strategy.
-  ///
-  /// Use Case     | Flat Name           | Structured Name
-  /// -------------|---------------------|----------------
-  /// Environments | releases/qa         | releases/qa
-  /// Apps         | releases/app1_qa    | releases/app1/qa
-  /// Versions     | releases/app1_v2_qa | releases/app1/v2/qa
-  ///
-  /// The delimiter between the release name path elements can be almost
-  /// anything
-  /// and it should work equally well with the release name list filter, but in
-  /// many ways the structured paths provide a clearer picture of the
-  /// relationship between `Release` instances.
-  ///
-  /// Format: `projects/{project_id}/releases/{release_id}`
-  /// Value must have pattern "^projects/[^/]+/releases/.+$".
-  ///
-  /// [$fields] - Selector specifying which fields to include in a partial
-  /// response.
-  ///
-  /// Completes with a [Release].
-  ///
-  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
-  /// error.
-  ///
-  /// If the used [http.Client] completes with an error when making a REST call,
-  /// this method will complete with the same error.
-  async.Future<Release> update(Release request, core.String name,
-      {core.String $fields}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
-    }
-    if (name == null) {
-      throw new core.ArgumentError("Parameter name is required.");
-    }
-    if ($fields != null) {
-      _queryParams["fields"] = [$fields];
-    }
-
-    _url = 'v1/' + commons.Escaper.ecapeVariableReserved('$name');
-
-    var _response = _requester.request(_url, "PUT",
         body: _body,
         queryParams: _queryParams,
         uploadOptions: _uploadOptions,
@@ -753,6 +676,14 @@ class ProjectsRulesetsResourceApi {
   /// Format: `projects/{project_id}`
   /// Value must have pattern "^projects/[^/]+$".
   ///
+  /// [pageToken] - Next page token for loading the next batch of `Ruleset`
+  /// instances.
+  ///
+  /// [pageSize] - Page size to load. Maximum of 100. Defaults to 10.
+  /// Note: `page_size` is just a hint and the service may choose to load less
+  /// than `page_size` due to the size of the output. To traverse all of the
+  /// releases, caller should iterate until the `page_token` is empty.
+  ///
   /// [filter] - `Ruleset` filter. The list method supports filters with
   /// restrictions on
   /// `Ruleset.name`.
@@ -761,14 +692,6 @@ class ProjectsRulesetsResourceApi {
   /// parses strings that conform to the RFC 3339 date/time specifications.
   ///
   /// Example: `create_time > date("2017-01-01") AND name=UUID-*`
-  ///
-  /// [pageToken] - Next page token for loading the next batch of `Ruleset`
-  /// instances.
-  ///
-  /// [pageSize] - Page size to load. Maximum of 100. Defaults to 10.
-  /// Note: `page_size` is just a hint and the service may choose to load less
-  /// than `page_size` due to the size of the output. To traverse all of the
-  /// releases, caller should iterate until the `page_token` is empty.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -781,9 +704,9 @@ class ProjectsRulesetsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListRulesetsResponse> list(core.String name,
-      {core.String filter,
-      core.String pageToken,
+      {core.String pageToken,
       core.int pageSize,
+      core.String filter,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -795,14 +718,14 @@ class ProjectsRulesetsResourceApi {
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
     }
-    if (filter != null) {
-      _queryParams["filter"] = [filter];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];

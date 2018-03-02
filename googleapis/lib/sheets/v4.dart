@@ -197,10 +197,10 @@ class SpreadsheetsResourceApi {
   ///
   /// [spreadsheetId] - The spreadsheet to request.
   ///
+  /// [ranges] - The ranges to retrieve from the spreadsheet.
+  ///
   /// [includeGridData] - True if grid data should be returned.
   /// This parameter is ignored if a field mask was set in the request.
-  ///
-  /// [ranges] - The ranges to retrieve from the spreadsheet.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -213,8 +213,8 @@ class SpreadsheetsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<Spreadsheet> get(core.String spreadsheetId,
-      {core.bool includeGridData,
-      core.List<core.String> ranges,
+      {core.List<core.String> ranges,
+      core.bool includeGridData,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -226,11 +226,11 @@ class SpreadsheetsResourceApi {
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
     }
-    if (includeGridData != null) {
-      _queryParams["includeGridData"] = ["${includeGridData}"];
-    }
     if (ranges != null) {
       _queryParams["ranges"] = ranges;
+    }
+    if (includeGridData != null) {
+      _queryParams["includeGridData"] = ["${includeGridData}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -536,11 +536,6 @@ class SpreadsheetsValuesResourceApi {
   /// data.
   /// Values will be appended after the last row of the table.
   ///
-  /// [includeValuesInResponse] - Determines if the update response should
-  /// include the values
-  /// of the cells that were appended. By default, responses
-  /// do not include the updated values.
-  ///
   /// [responseValueRenderOption] - Determines how values in the response should
   /// be rendered.
   /// The default render option is ValueRenderOption.FORMATTED_VALUE.
@@ -570,6 +565,11 @@ class SpreadsheetsValuesResourceApi {
   /// - "SERIAL_NUMBER" : A SERIAL_NUMBER.
   /// - "FORMATTED_STRING" : A FORMATTED_STRING.
   ///
+  /// [includeValuesInResponse] - Determines if the update response should
+  /// include the values
+  /// of the cells that were appended. By default, responses
+  /// do not include the updated values.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -582,11 +582,11 @@ class SpreadsheetsValuesResourceApi {
   /// this method will complete with the same error.
   async.Future<AppendValuesResponse> append(
       ValueRange request, core.String spreadsheetId, core.String range,
-      {core.bool includeValuesInResponse,
-      core.String responseValueRenderOption,
+      {core.String responseValueRenderOption,
       core.String insertDataOption,
       core.String valueInputOption,
       core.String responseDateTimeRenderOption,
+      core.bool includeValuesInResponse,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -604,9 +604,6 @@ class SpreadsheetsValuesResourceApi {
     if (range == null) {
       throw new core.ArgumentError("Parameter range is required.");
     }
-    if (includeValuesInResponse != null) {
-      _queryParams["includeValuesInResponse"] = ["${includeValuesInResponse}"];
-    }
     if (responseValueRenderOption != null) {
       _queryParams["responseValueRenderOption"] = [responseValueRenderOption];
     }
@@ -620,6 +617,9 @@ class SpreadsheetsValuesResourceApi {
       _queryParams["responseDateTimeRenderOption"] = [
         responseDateTimeRenderOption
       ];
+    }
+    if (includeValuesInResponse != null) {
+      _queryParams["includeValuesInResponse"] = ["${includeValuesInResponse}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -758,6 +758,13 @@ class SpreadsheetsValuesResourceApi {
   ///
   /// [spreadsheetId] - The ID of the spreadsheet to retrieve data from.
   ///
+  /// [valueRenderOption] - How values should be represented in the output.
+  /// The default render option is ValueRenderOption.FORMATTED_VALUE.
+  /// Possible string values are:
+  /// - "FORMATTED_VALUE" : A FORMATTED_VALUE.
+  /// - "UNFORMATTED_VALUE" : A UNFORMATTED_VALUE.
+  /// - "FORMULA" : A FORMULA.
+  ///
   /// [dateTimeRenderOption] - How dates, times, and durations should be
   /// represented in the output.
   /// This is ignored if value_render_option is
@@ -768,12 +775,7 @@ class SpreadsheetsValuesResourceApi {
   /// - "SERIAL_NUMBER" : A SERIAL_NUMBER.
   /// - "FORMATTED_STRING" : A FORMATTED_STRING.
   ///
-  /// [valueRenderOption] - How values should be represented in the output.
-  /// The default render option is ValueRenderOption.FORMATTED_VALUE.
-  /// Possible string values are:
-  /// - "FORMATTED_VALUE" : A FORMATTED_VALUE.
-  /// - "UNFORMATTED_VALUE" : A UNFORMATTED_VALUE.
-  /// - "FORMULA" : A FORMULA.
+  /// [ranges] - The A1 notation of the values to retrieve.
   ///
   /// [majorDimension] - The major dimension that results should use.
   ///
@@ -787,8 +789,6 @@ class SpreadsheetsValuesResourceApi {
   /// - "ROWS" : A ROWS.
   /// - "COLUMNS" : A COLUMNS.
   ///
-  /// [ranges] - The A1 notation of the values to retrieve.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -800,10 +800,10 @@ class SpreadsheetsValuesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<BatchGetValuesResponse> batchGet(core.String spreadsheetId,
-      {core.String dateTimeRenderOption,
-      core.String valueRenderOption,
-      core.String majorDimension,
+      {core.String valueRenderOption,
+      core.String dateTimeRenderOption,
       core.List<core.String> ranges,
+      core.String majorDimension,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -815,17 +815,17 @@ class SpreadsheetsValuesResourceApi {
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
     }
-    if (dateTimeRenderOption != null) {
-      _queryParams["dateTimeRenderOption"] = [dateTimeRenderOption];
-    }
     if (valueRenderOption != null) {
       _queryParams["valueRenderOption"] = [valueRenderOption];
     }
-    if (majorDimension != null) {
-      _queryParams["majorDimension"] = [majorDimension];
+    if (dateTimeRenderOption != null) {
+      _queryParams["dateTimeRenderOption"] = [dateTimeRenderOption];
     }
     if (ranges != null) {
       _queryParams["ranges"] = ranges;
+    }
+    if (majorDimension != null) {
+      _queryParams["majorDimension"] = [majorDimension];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1092,6 +1092,13 @@ class SpreadsheetsValuesResourceApi {
   /// - "ROWS" : A ROWS.
   /// - "COLUMNS" : A COLUMNS.
   ///
+  /// [valueRenderOption] - How values should be represented in the output.
+  /// The default render option is ValueRenderOption.FORMATTED_VALUE.
+  /// Possible string values are:
+  /// - "FORMATTED_VALUE" : A FORMATTED_VALUE.
+  /// - "UNFORMATTED_VALUE" : A UNFORMATTED_VALUE.
+  /// - "FORMULA" : A FORMULA.
+  ///
   /// [dateTimeRenderOption] - How dates, times, and durations should be
   /// represented in the output.
   /// This is ignored if value_render_option is
@@ -1101,13 +1108,6 @@ class SpreadsheetsValuesResourceApi {
   /// Possible string values are:
   /// - "SERIAL_NUMBER" : A SERIAL_NUMBER.
   /// - "FORMATTED_STRING" : A FORMATTED_STRING.
-  ///
-  /// [valueRenderOption] - How values should be represented in the output.
-  /// The default render option is ValueRenderOption.FORMATTED_VALUE.
-  /// Possible string values are:
-  /// - "FORMATTED_VALUE" : A FORMATTED_VALUE.
-  /// - "UNFORMATTED_VALUE" : A UNFORMATTED_VALUE.
-  /// - "FORMULA" : A FORMULA.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1121,8 +1121,8 @@ class SpreadsheetsValuesResourceApi {
   /// this method will complete with the same error.
   async.Future<ValueRange> get(core.String spreadsheetId, core.String range,
       {core.String majorDimension,
-      core.String dateTimeRenderOption,
       core.String valueRenderOption,
+      core.String dateTimeRenderOption,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1140,11 +1140,11 @@ class SpreadsheetsValuesResourceApi {
     if (majorDimension != null) {
       _queryParams["majorDimension"] = [majorDimension];
     }
-    if (dateTimeRenderOption != null) {
-      _queryParams["dateTimeRenderOption"] = [dateTimeRenderOption];
-    }
     if (valueRenderOption != null) {
       _queryParams["valueRenderOption"] = [valueRenderOption];
+    }
+    if (dateTimeRenderOption != null) {
+      _queryParams["dateTimeRenderOption"] = [dateTimeRenderOption];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1176,22 +1176,6 @@ class SpreadsheetsValuesResourceApi {
   ///
   /// [range] - The A1 notation of the values to update.
   ///
-  /// [valueInputOption] - How the input data should be interpreted.
-  /// Possible string values are:
-  /// - "INPUT_VALUE_OPTION_UNSPECIFIED" : A INPUT_VALUE_OPTION_UNSPECIFIED.
-  /// - "RAW" : A RAW.
-  /// - "USER_ENTERED" : A USER_ENTERED.
-  ///
-  /// [responseDateTimeRenderOption] - Determines how dates, times, and
-  /// durations in the response should be
-  /// rendered. This is ignored if response_value_render_option is
-  /// FORMATTED_VALUE.
-  /// The default dateTime render option is
-  /// [DateTimeRenderOption.SERIAL_NUMBER].
-  /// Possible string values are:
-  /// - "SERIAL_NUMBER" : A SERIAL_NUMBER.
-  /// - "FORMATTED_STRING" : A FORMATTED_STRING.
-  ///
   /// [includeValuesInResponse] - Determines if the update response should
   /// include the values
   /// of the cells that were updated. By default, responses
@@ -1208,6 +1192,22 @@ class SpreadsheetsValuesResourceApi {
   /// - "UNFORMATTED_VALUE" : A UNFORMATTED_VALUE.
   /// - "FORMULA" : A FORMULA.
   ///
+  /// [valueInputOption] - How the input data should be interpreted.
+  /// Possible string values are:
+  /// - "INPUT_VALUE_OPTION_UNSPECIFIED" : A INPUT_VALUE_OPTION_UNSPECIFIED.
+  /// - "RAW" : A RAW.
+  /// - "USER_ENTERED" : A USER_ENTERED.
+  ///
+  /// [responseDateTimeRenderOption] - Determines how dates, times, and
+  /// durations in the response should be
+  /// rendered. This is ignored if response_value_render_option is
+  /// FORMATTED_VALUE.
+  /// The default dateTime render option is
+  /// [DateTimeRenderOption.SERIAL_NUMBER].
+  /// Possible string values are:
+  /// - "SERIAL_NUMBER" : A SERIAL_NUMBER.
+  /// - "FORMATTED_STRING" : A FORMATTED_STRING.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -1220,10 +1220,10 @@ class SpreadsheetsValuesResourceApi {
   /// this method will complete with the same error.
   async.Future<UpdateValuesResponse> update(
       ValueRange request, core.String spreadsheetId, core.String range,
-      {core.String valueInputOption,
-      core.String responseDateTimeRenderOption,
-      core.bool includeValuesInResponse,
+      {core.bool includeValuesInResponse,
       core.String responseValueRenderOption,
+      core.String valueInputOption,
+      core.String responseDateTimeRenderOption,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1241,6 +1241,12 @@ class SpreadsheetsValuesResourceApi {
     if (range == null) {
       throw new core.ArgumentError("Parameter range is required.");
     }
+    if (includeValuesInResponse != null) {
+      _queryParams["includeValuesInResponse"] = ["${includeValuesInResponse}"];
+    }
+    if (responseValueRenderOption != null) {
+      _queryParams["responseValueRenderOption"] = [responseValueRenderOption];
+    }
     if (valueInputOption != null) {
       _queryParams["valueInputOption"] = [valueInputOption];
     }
@@ -1248,12 +1254,6 @@ class SpreadsheetsValuesResourceApi {
       _queryParams["responseDateTimeRenderOption"] = [
         responseDateTimeRenderOption
       ];
-    }
-    if (includeValuesInResponse != null) {
-      _queryParams["includeValuesInResponse"] = ["${includeValuesInResponse}"];
-    }
-    if (responseValueRenderOption != null) {
-      _queryParams["responseValueRenderOption"] = [responseValueRenderOption];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2040,6 +2040,14 @@ class BasicChartDomain {
 /// For example, if charting stock prices over time, multiple series may exist,
 /// one for the "Open Price", "High Price", "Low Price" and "Close Price".
 class BasicChartSeries {
+  /// The line style of this series. Valid only if the
+  /// chartType is AREA,
+  /// LINE, or SCATTER.
+  /// COMBO charts are also supported if the
+  /// series chart type is
+  /// AREA or LINE.
+  LineStyle lineStyle;
+
   /// The data being visualized in this chart series.
   ChartData series;
 
@@ -2091,6 +2099,9 @@ class BasicChartSeries {
   BasicChartSeries();
 
   BasicChartSeries.fromJson(core.Map _json) {
+    if (_json.containsKey("lineStyle")) {
+      lineStyle = new LineStyle.fromJson(_json["lineStyle"]);
+    }
     if (_json.containsKey("series")) {
       series = new ChartData.fromJson(_json["series"]);
     }
@@ -2105,6 +2116,9 @@ class BasicChartSeries {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (lineStyle != null) {
+      _json["lineStyle"] = (lineStyle).toJson();
+    }
     if (series != null) {
       _json["series"] = (series).toJson();
     }
@@ -4144,6 +4158,9 @@ class ChartSpec {
   /// This field is optional.
   TextPosition titleTextPosition;
 
+  /// A waterfall chart specification.
+  WaterfallChartSpec waterfallChart;
+
   ChartSpec();
 
   ChartSpec.fromJson(core.Map _json) {
@@ -4200,6 +4217,9 @@ class ChartSpec {
     if (_json.containsKey("titleTextPosition")) {
       titleTextPosition = new TextPosition.fromJson(_json["titleTextPosition"]);
     }
+    if (_json.containsKey("waterfallChart")) {
+      waterfallChart = new WaterfallChartSpec.fromJson(_json["waterfallChart"]);
+    }
   }
 
   core.Map<core.String, core.Object> toJson() {
@@ -4255,6 +4275,9 @@ class ChartSpec {
     }
     if (titleTextPosition != null) {
       _json["titleTextPosition"] = (titleTextPosition).toJson();
+    }
+    if (waterfallChart != null) {
+      _json["waterfallChart"] = (waterfallChart).toJson();
     }
     return _json;
   }
@@ -6708,6 +6731,82 @@ class HistogramChartSpec {
   }
 }
 
+/// Allows you to organize the numeric values in a source data column into
+/// buckets of a constant size. All values from HistogramRule.start to
+/// HistogramRule.end will be placed into groups of size
+/// HistogramRule.interval. In addition, all values below
+/// HistogramRule.start will be placed in one group, and all values above
+/// HistogramRule.end will be placed in another. Only
+/// HistogramRule.interval is required, though if HistogramRule.start
+/// and HistogramRule.end are both provided, HistogramRule.start must
+/// be less than HistogramRule.end. For example, a pivot table showing
+/// average purchase amount by age that has 50+ rows:
+///
+///     +-----+-------------------+
+///     | Age | AVERAGE of Amount |
+///     +-----+-------------------+
+///     | 16  |            $27.13 |
+///     | 17  |             $5.24 |
+///     | 18  |            $20.15 |
+///     ...
+///     +-----+-------------------+
+/// could be turned into a pivot table that looks like the one below by
+/// applying a histogram group rule with a HistogramRule.start of 25,
+/// an HistogramRule.interval of 20, and an HistogramRule.end
+/// of 65.
+///
+///     +-------------+-------------------+
+///     | Grouped Age | AVERAGE of Amount |
+///     +-------------+-------------------+
+///     | < 25        |            $19.34 |
+///     | 25-45       |            $31.43 |
+///     | 45-65       |            $35.87 |
+///     | > 65        |            $27.55 |
+///     +-------------+-------------------+
+///     | Grand Total |            $29.12 |
+///     +-------------+-------------------+
+class HistogramRule {
+  /// Optional. The maximum value at which items will be placed into buckets
+  /// of constant size. Values above end will be lumped into a single bucket.
+  core.double end;
+
+  /// Required. The size of the buckets that will be created. Must be positive.
+  core.double interval;
+
+  /// Optional. The minimum value at which items will be placed into buckets
+  /// of constant size. Values below start will be lumped into a single bucket.
+  core.double start;
+
+  HistogramRule();
+
+  HistogramRule.fromJson(core.Map _json) {
+    if (_json.containsKey("end")) {
+      end = _json["end"];
+    }
+    if (_json.containsKey("interval")) {
+      interval = _json["interval"];
+    }
+    if (_json.containsKey("start")) {
+      start = _json["start"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (end != null) {
+      _json["end"] = end;
+    }
+    if (interval != null) {
+      _json["interval"] = interval;
+    }
+    if (start != null) {
+      _json["start"] = start;
+    }
+    return _json;
+  }
+}
+
 /// A histogram series containing the series color and data.
 class HistogramSeries {
   /// The color of the column representing this series in each bucket.
@@ -6916,6 +7015,142 @@ class IterativeCalculationSettings {
     }
     if (maxIterations != null) {
       _json["maxIterations"] = maxIterations;
+    }
+    return _json;
+  }
+}
+
+/// Properties that describe the style of a line.
+class LineStyle {
+  /// The dash type of the line.
+  /// Possible string values are:
+  /// - "LINE_DASH_TYPE_UNSPECIFIED" : Default value, do not use.
+  /// - "INVISIBLE" : No dash type, which is equivalent to a non-visible line.
+  /// - "CUSTOM" : A custom dash for a line. Modifying the exact custom dash
+  /// style is
+  /// currently unsupported.
+  /// - "SOLID" : A solid line.
+  /// - "DOTTED" : A dotted line.
+  /// - "MEDIUM_DASHED" : A dashed line where the dashes have "medium" length.
+  /// - "MEDIUM_DASHED_DOTTED" : A line that alternates between a "medium" dash
+  /// and a dot.
+  /// - "LONG_DASHED" : A dashed line where the dashes have "long" length.
+  /// - "LONG_DASHED_DOTTED" : A line that alternates between a "long" dash and
+  /// a dot.
+  core.String type;
+
+  /// The thickness of the line, in px.
+  core.int width;
+
+  LineStyle();
+
+  LineStyle.fromJson(core.Map _json) {
+    if (_json.containsKey("type")) {
+      type = _json["type"];
+    }
+    if (_json.containsKey("width")) {
+      width = _json["width"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (type != null) {
+      _json["type"] = type;
+    }
+    if (width != null) {
+      _json["width"] = width;
+    }
+    return _json;
+  }
+}
+
+/// Allows you to manually organize the values in a source data column into
+/// buckets with names of your choosing. For example, a pivot table that
+/// aggregates population by state:
+///
+///     +-------+-------------------+
+///     | State | SUM of Population |
+///     +-------+-------------------+
+///     | AK    |               0.7 |
+///     | AL    |               4.8 |
+///     | AR    |               2.9 |
+///     ...
+///     +-------+-------------------+
+/// could be turned into a pivot table that aggregates population by time zone
+/// by providing a list of groups (e.g. groupName = 'Central',
+/// items = ['AL', 'AR', 'IA', ...]) to a manual group rule.
+/// Note that a similar effect could be achieved by adding a time zone column
+/// to the source data and adjusting the pivot table.
+///
+///     +-----------+-------------------+
+///     | Time Zone | SUM of Population |
+///     +-----------+-------------------+
+///     | Central   |             106.3 |
+///     | Eastern   |             151.9 |
+///     | Mountain  |              17.4 |
+///     ...
+///     +-----------+-------------------+
+class ManualRule {
+  /// The list of group names and the corresponding items from the source data
+  /// that map to each group name.
+  core.List<ManualRuleGroup> groups;
+
+  ManualRule();
+
+  ManualRule.fromJson(core.Map _json) {
+    if (_json.containsKey("groups")) {
+      groups = _json["groups"]
+          .map((value) => new ManualRuleGroup.fromJson(value))
+          .toList();
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (groups != null) {
+      _json["groups"] = groups.map((value) => (value).toJson()).toList();
+    }
+    return _json;
+  }
+}
+
+/// A group name and a list of items from the source data that should be placed
+/// in the group with this name.
+class ManualRuleGroup {
+  /// The group name, which must be a string. Each group in a given
+  /// ManualRule must have a unique group name.
+  ExtendedValue groupName;
+
+  /// The items in the source data that should be placed into this group. Each
+  /// item may be a string, number, or boolean. Items may appear in at most one
+  /// group within a given ManualRule. Items that do not appear in any
+  /// group will appear on their own.
+  core.List<ExtendedValue> items;
+
+  ManualRuleGroup();
+
+  ManualRuleGroup.fromJson(core.Map _json) {
+    if (_json.containsKey("groupName")) {
+      groupName = new ExtendedValue.fromJson(_json["groupName"]);
+    }
+    if (_json.containsKey("items")) {
+      items = _json["items"]
+          .map((value) => new ExtendedValue.fromJson(value))
+          .toList();
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (groupName != null) {
+      _json["groupName"] = (groupName).toJson();
+    }
+    if (items != null) {
+      _json["items"] = items.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
@@ -7526,6 +7761,47 @@ class PivotFilterCriteria {
 
 /// A single grouping (either row or column) in a pivot table.
 class PivotGroup {
+  /// The group rule to apply to this row/column group.
+  PivotGroupRule groupRule;
+
+  /// The labels to use for the row/column groups which can be customized. For
+  /// example, in the following pivot table, the row label is `Region` (which
+  /// could be renamed to `State`) and the column label is `Product` (which
+  /// could be renamed `Item`). Pivot tables created before December 2017 do
+  /// not have header labels. If you'd like to add header labels to an existing
+  /// pivot table, please delete the existing pivot table and then create a new
+  /// pivot table with same parameters.
+  ///
+  ///     +--------------+---------+-------+
+  ///     | SUM of Units | Product |       |
+  ///     | Region       | Pen     | Paper |
+  ///     +--------------+---------+-------+
+  ///     | New York     |     345 |    98 |
+  ///     | Oregon       |     234 |   123 |
+  ///     | Tennessee    |     531 |   415 |
+  ///     +--------------+---------+-------+
+  ///     | Grand Total  |    1110 |   636 |
+  ///     +--------------+---------+-------+
+  core.String label;
+
+  /// True if the headings in this pivot group should be repeated.
+  /// This is only valid for row groupings and will be ignored by columns.
+  ///
+  /// By default, we minimize repitition of headings by not showing higher
+  /// level headings where they are the same. For example, even though the
+  /// third row below corresponds to "Q1 Mar", "Q1" is not shown because
+  /// it is redundant with previous rows. Setting repeat_headings to true
+  /// would cause "Q1" to be repeated for "Feb" and "Mar".
+  ///
+  ///     +--------------+
+  ///     | Q1     | Jan |
+  ///     |        | Feb |
+  ///     |        | Mar |
+  ///     +--------+-----+
+  ///     | Q1 Total     |
+  ///     +--------------+
+  core.bool repeatHeadings;
+
   /// True if the pivot table should include the totals for this grouping.
   core.bool showTotals;
 
@@ -7553,6 +7829,15 @@ class PivotGroup {
   PivotGroup();
 
   PivotGroup.fromJson(core.Map _json) {
+    if (_json.containsKey("groupRule")) {
+      groupRule = new PivotGroupRule.fromJson(_json["groupRule"]);
+    }
+    if (_json.containsKey("label")) {
+      label = _json["label"];
+    }
+    if (_json.containsKey("repeatHeadings")) {
+      repeatHeadings = _json["repeatHeadings"];
+    }
     if (_json.containsKey("showTotals")) {
       showTotals = _json["showTotals"];
     }
@@ -7576,6 +7861,15 @@ class PivotGroup {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (groupRule != null) {
+      _json["groupRule"] = (groupRule).toJson();
+    }
+    if (label != null) {
+      _json["label"] = label;
+    }
+    if (repeatHeadings != null) {
+      _json["repeatHeadings"] = repeatHeadings;
+    }
     if (showTotals != null) {
       _json["showTotals"] = showTotals;
     }
@@ -7591,6 +7885,42 @@ class PivotGroup {
     if (valueMetadata != null) {
       _json["valueMetadata"] =
           valueMetadata.map((value) => (value).toJson()).toList();
+    }
+    return _json;
+  }
+}
+
+/// An optional setting on a PivotGroup that defines buckets for the values
+/// in the source data column rather than breaking out each individual value.
+/// Only one PivotGroup with a group rule may be added for each column in
+/// the source data, though on any given column you may add both a
+/// PivotGroup that has a rule and a PivotGroup that does not.
+class PivotGroupRule {
+  /// A HistogramRule.
+  HistogramRule histogramRule;
+
+  /// A ManualRule.
+  ManualRule manualRule;
+
+  PivotGroupRule();
+
+  PivotGroupRule.fromJson(core.Map _json) {
+    if (_json.containsKey("histogramRule")) {
+      histogramRule = new HistogramRule.fromJson(_json["histogramRule"]);
+    }
+    if (_json.containsKey("manualRule")) {
+      manualRule = new ManualRule.fromJson(_json["manualRule"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (histogramRule != null) {
+      _json["histogramRule"] = (histogramRule).toJson();
+    }
+    if (manualRule != null) {
+      _json["manualRule"] = (manualRule).toJson();
     }
     return _json;
   }
@@ -7766,6 +8096,23 @@ class PivotTable {
 
 /// The definition of how a value in a pivot table should be calculated.
 class PivotValue {
+  /// If specified, indicates that pivot values should be displayed as
+  /// the result of a calculation with another pivot value. For example, if
+  /// calculated_display_type is specified as PERCENT_OF_GRAND_TOTAL, all the
+  /// pivot values will be displayed as the percentage of the grand total. In
+  /// the Sheets UI, this is referred to as "Show As" in the value section of a
+  /// pivot table.
+  /// Possible string values are:
+  /// - "PIVOT_VALUE_CALCULATED_DISPLAY_TYPE_UNSPECIFIED" : Default value, do
+  /// not use.
+  /// - "PERCENT_OF_ROW_TOTAL" : Shows the pivot values as percentage of the row
+  /// total values.
+  /// - "PERCENT_OF_COLUMN_TOTAL" : Shows the pivot values as percentage of the
+  /// column total values.
+  /// - "PERCENT_OF_GRAND_TOTAL" : Shows the pivot values as percentage of the
+  /// grand total values.
+  core.String calculatedDisplayType;
+
   /// A custom formula to calculate the value.  The formula must start
   /// with an `=` character.
   core.String formula;
@@ -7808,6 +8155,9 @@ class PivotValue {
   PivotValue();
 
   PivotValue.fromJson(core.Map _json) {
+    if (_json.containsKey("calculatedDisplayType")) {
+      calculatedDisplayType = _json["calculatedDisplayType"];
+    }
     if (_json.containsKey("formula")) {
       formula = _json["formula"];
     }
@@ -7825,6 +8175,9 @@ class PivotValue {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (calculatedDisplayType != null) {
+      _json["calculatedDisplayType"] = calculatedDisplayType;
+    }
     if (formula != null) {
       _json["formula"] = formula;
     }
@@ -9592,6 +9945,7 @@ class TextToColumnsRequest {
   /// - "PERIOD" : "."
   /// - "SPACE" : " "
   /// - "CUSTOM" : A custom value as defined in delimiter.
+  /// - "AUTODETECT" : Automatically detect columns.
   core.String delimiterType;
 
   /// The source data range.  This must span exactly one column.
@@ -10549,6 +10903,273 @@ class ValueRange {
     }
     if (values != null) {
       _json["values"] = values;
+    }
+    return _json;
+  }
+}
+
+/// Styles for a waterfall chart column.
+class WaterfallChartColumnStyle {
+  /// The color of the column.
+  Color color;
+
+  /// The label of the column's legend.
+  core.String label;
+
+  WaterfallChartColumnStyle();
+
+  WaterfallChartColumnStyle.fromJson(core.Map _json) {
+    if (_json.containsKey("color")) {
+      color = new Color.fromJson(_json["color"]);
+    }
+    if (_json.containsKey("label")) {
+      label = _json["label"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (color != null) {
+      _json["color"] = (color).toJson();
+    }
+    if (label != null) {
+      _json["label"] = label;
+    }
+    return _json;
+  }
+}
+
+/// A custom subtotal column for a waterfall chart series.
+class WaterfallChartCustomSubtotal {
+  /// True if the data point at subtotal_index is the subtotal. If false,
+  /// the subtotal will be computed and appear after the data point.
+  core.bool dataIsSubtotal;
+
+  /// A label for the subtotal column.
+  core.String label;
+
+  /// The 0-based index of a data point within the series. If
+  /// data_is_subtotal is true, the data point at this index is the
+  /// subtotal. Otherwise, the subtotal appears after the data point with
+  /// this index. A series can have multiple subtotals at arbitrary indices,
+  /// but subtotals do not affect the indices of the data points. For
+  /// example, if a series has 3 data points, their indices will always be 0,
+  /// 1, and 2, regardless of how many subtotals exist on the series or what
+  /// data points they are associated with.
+  core.int subtotalIndex;
+
+  WaterfallChartCustomSubtotal();
+
+  WaterfallChartCustomSubtotal.fromJson(core.Map _json) {
+    if (_json.containsKey("dataIsSubtotal")) {
+      dataIsSubtotal = _json["dataIsSubtotal"];
+    }
+    if (_json.containsKey("label")) {
+      label = _json["label"];
+    }
+    if (_json.containsKey("subtotalIndex")) {
+      subtotalIndex = _json["subtotalIndex"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (dataIsSubtotal != null) {
+      _json["dataIsSubtotal"] = dataIsSubtotal;
+    }
+    if (label != null) {
+      _json["label"] = label;
+    }
+    if (subtotalIndex != null) {
+      _json["subtotalIndex"] = subtotalIndex;
+    }
+    return _json;
+  }
+}
+
+/// The domain of a waterfall chart.
+class WaterfallChartDomain {
+  /// The data of the WaterfallChartDomain.
+  ChartData data;
+
+  /// True to reverse the order of the domain values (horizontal axis).
+  core.bool reversed;
+
+  WaterfallChartDomain();
+
+  WaterfallChartDomain.fromJson(core.Map _json) {
+    if (_json.containsKey("data")) {
+      data = new ChartData.fromJson(_json["data"]);
+    }
+    if (_json.containsKey("reversed")) {
+      reversed = _json["reversed"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (data != null) {
+      _json["data"] = (data).toJson();
+    }
+    if (reversed != null) {
+      _json["reversed"] = reversed;
+    }
+    return _json;
+  }
+}
+
+/// A single series of data for a waterfall chart.
+class WaterfallChartSeries {
+  /// Custom subtotal columns appearing in this series. The order in which
+  /// subtotals are defined is not significant. Only one subtotal may be
+  /// defined for each data point.
+  core.List<WaterfallChartCustomSubtotal> customSubtotals;
+
+  /// The data being visualized in this series.
+  ChartData data;
+
+  /// True to hide the subtotal column from the end of the series. By default,
+  /// a subtotal column will appear at the end of each series. Setting this
+  /// field to true will hide that subtotal column for this series.
+  core.bool hideTrailingSubtotal;
+
+  /// Styles for all columns in this series with negative values.
+  WaterfallChartColumnStyle negativeColumnsStyle;
+
+  /// Styles for all columns in this series with positive values.
+  WaterfallChartColumnStyle positiveColumnsStyle;
+
+  /// Styles for all subtotal columns in this series.
+  WaterfallChartColumnStyle subtotalColumnsStyle;
+
+  WaterfallChartSeries();
+
+  WaterfallChartSeries.fromJson(core.Map _json) {
+    if (_json.containsKey("customSubtotals")) {
+      customSubtotals = _json["customSubtotals"]
+          .map((value) => new WaterfallChartCustomSubtotal.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("data")) {
+      data = new ChartData.fromJson(_json["data"]);
+    }
+    if (_json.containsKey("hideTrailingSubtotal")) {
+      hideTrailingSubtotal = _json["hideTrailingSubtotal"];
+    }
+    if (_json.containsKey("negativeColumnsStyle")) {
+      negativeColumnsStyle =
+          new WaterfallChartColumnStyle.fromJson(_json["negativeColumnsStyle"]);
+    }
+    if (_json.containsKey("positiveColumnsStyle")) {
+      positiveColumnsStyle =
+          new WaterfallChartColumnStyle.fromJson(_json["positiveColumnsStyle"]);
+    }
+    if (_json.containsKey("subtotalColumnsStyle")) {
+      subtotalColumnsStyle =
+          new WaterfallChartColumnStyle.fromJson(_json["subtotalColumnsStyle"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (customSubtotals != null) {
+      _json["customSubtotals"] =
+          customSubtotals.map((value) => (value).toJson()).toList();
+    }
+    if (data != null) {
+      _json["data"] = (data).toJson();
+    }
+    if (hideTrailingSubtotal != null) {
+      _json["hideTrailingSubtotal"] = hideTrailingSubtotal;
+    }
+    if (negativeColumnsStyle != null) {
+      _json["negativeColumnsStyle"] = (negativeColumnsStyle).toJson();
+    }
+    if (positiveColumnsStyle != null) {
+      _json["positiveColumnsStyle"] = (positiveColumnsStyle).toJson();
+    }
+    if (subtotalColumnsStyle != null) {
+      _json["subtotalColumnsStyle"] = (subtotalColumnsStyle).toJson();
+    }
+    return _json;
+  }
+}
+
+/// A waterfall chart.
+class WaterfallChartSpec {
+  /// The line style for the connector lines.
+  LineStyle connectorLineStyle;
+
+  /// The domain data (horizontal axis) for the waterfall chart.
+  WaterfallChartDomain domain;
+
+  /// True to interpret the first value as a total.
+  core.bool firstValueIsTotal;
+
+  /// True to hide connector lines between columns.
+  core.bool hideConnectorLines;
+
+  /// The data this waterfall chart is visualizing.
+  core.List<WaterfallChartSeries> series;
+
+  /// The stacked type.
+  /// Possible string values are:
+  /// - "WATERFALL_STACKED_TYPE_UNSPECIFIED" : Default value, do not use.
+  /// - "STACKED" : Values corresponding to the same domain (horizontal axis)
+  /// value will be
+  /// stacked vertically.
+  /// - "SEQUENTIAL" : Series will spread out along the horizontal axis.
+  core.String stackedType;
+
+  WaterfallChartSpec();
+
+  WaterfallChartSpec.fromJson(core.Map _json) {
+    if (_json.containsKey("connectorLineStyle")) {
+      connectorLineStyle = new LineStyle.fromJson(_json["connectorLineStyle"]);
+    }
+    if (_json.containsKey("domain")) {
+      domain = new WaterfallChartDomain.fromJson(_json["domain"]);
+    }
+    if (_json.containsKey("firstValueIsTotal")) {
+      firstValueIsTotal = _json["firstValueIsTotal"];
+    }
+    if (_json.containsKey("hideConnectorLines")) {
+      hideConnectorLines = _json["hideConnectorLines"];
+    }
+    if (_json.containsKey("series")) {
+      series = _json["series"]
+          .map((value) => new WaterfallChartSeries.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("stackedType")) {
+      stackedType = _json["stackedType"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (connectorLineStyle != null) {
+      _json["connectorLineStyle"] = (connectorLineStyle).toJson();
+    }
+    if (domain != null) {
+      _json["domain"] = (domain).toJson();
+    }
+    if (firstValueIsTotal != null) {
+      _json["firstValueIsTotal"] = firstValueIsTotal;
+    }
+    if (hideConnectorLines != null) {
+      _json["hideConnectorLines"] = hideConnectorLines;
+    }
+    if (series != null) {
+      _json["series"] = series.map((value) => (value).toJson()).toList();
+    }
+    if (stackedType != null) {
+      _json["stackedType"] = stackedType;
     }
     return _json;
   }

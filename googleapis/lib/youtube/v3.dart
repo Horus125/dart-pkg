@@ -7781,6 +7781,7 @@ class CdnSettings {
   /// Possible string values are:
   /// - "30fps"
   /// - "60fps"
+  /// - "variable"
   core.String frameRate;
 
   /// The ingestionInfo object contains information that YouTube provides that
@@ -7802,6 +7803,7 @@ class CdnSettings {
   /// - "360p"
   /// - "480p"
   /// - "720p"
+  /// - "variable"
   core.String resolution;
 
   CdnSettings();
@@ -9016,7 +9018,6 @@ class ChannelSettings {
 }
 
 /// Basic details about a channel, including title, description and thumbnails.
-/// Next available id: 15.
 class ChannelSnippet {
   /// The country of the channel.
   core.String country;
@@ -10465,6 +10466,7 @@ class ContentRating {
   /// - "oflcR18"
   /// - "oflcRp13"
   /// - "oflcRp16"
+  /// - "oflcRp18"
   /// - "oflcUnrated"
   core.String oflcRating;
 
@@ -12357,6 +12359,9 @@ class LiveBroadcastContentDetails {
   /// - "closedCaptionsHttpPost"
   core.String closedCaptionsType;
 
+  /// This setting indicates whether auto start is enabled for this broadcast.
+  core.bool enableAutoStart;
+
   /// This setting indicates whether HTTP POST closed captioning is enabled for
   /// this broadcast. The ingestion URL of the closed captions is returned
   /// through the liveStreams API. This is mutually exclusive with using the
@@ -12452,6 +12457,9 @@ class LiveBroadcastContentDetails {
     if (_json.containsKey("closedCaptionsType")) {
       closedCaptionsType = _json["closedCaptionsType"];
     }
+    if (_json.containsKey("enableAutoStart")) {
+      enableAutoStart = _json["enableAutoStart"];
+    }
     if (_json.containsKey("enableClosedCaptions")) {
       enableClosedCaptions = _json["enableClosedCaptions"];
     }
@@ -12499,6 +12507,9 @@ class LiveBroadcastContentDetails {
     }
     if (closedCaptionsType != null) {
       _json["closedCaptionsType"] = closedCaptionsType;
+    }
+    if (enableAutoStart != null) {
+      _json["enableAutoStart"] = enableAutoStart;
     }
     if (enableClosedCaptions != null) {
       _json["enableClosedCaptions"] = enableClosedCaptions;
@@ -14093,6 +14104,7 @@ class LiveStreamConfigurationIssue {
   /// - "videoBitrateMismatch"
   /// - "videoCodec"
   /// - "videoCodecMismatch"
+  /// - "videoIngestionFasterThanRealtime"
   /// - "videoIngestionStarved"
   /// - "videoInterlaceMismatch"
   /// - "videoProfileMismatch"
@@ -14537,6 +14549,59 @@ class MonitorStreamInfo {
     }
     if (enableMonitorStream != null) {
       _json["enableMonitorStream"] = enableMonitorStream;
+    }
+    return _json;
+  }
+}
+
+/// Nonprofit information.
+class Nonprofit {
+  /// Id of the nonprofit.
+  NonprofitId nonprofitId;
+
+  /// Legal name of the nonprofit.
+  core.String nonprofitLegalName;
+
+  Nonprofit();
+
+  Nonprofit.fromJson(core.Map _json) {
+    if (_json.containsKey("nonprofitId")) {
+      nonprofitId = new NonprofitId.fromJson(_json["nonprofitId"]);
+    }
+    if (_json.containsKey("nonprofitLegalName")) {
+      nonprofitLegalName = _json["nonprofitLegalName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (nonprofitId != null) {
+      _json["nonprofitId"] = (nonprofitId).toJson();
+    }
+    if (nonprofitLegalName != null) {
+      _json["nonprofitLegalName"] = nonprofitLegalName;
+    }
+    return _json;
+  }
+}
+
+class NonprofitId {
+  core.String value;
+
+  NonprofitId();
+
+  NonprofitId.fromJson(core.Map _json) {
+    if (_json.containsKey("value")) {
+      value = _json["value"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (value != null) {
+      _json["value"] = value;
     }
     return _json;
   }
@@ -16514,9 +16579,16 @@ class SuperChatEventSnippet {
   /// "$1.00"). The string is rendered for the given language.
   core.String displayString;
 
+  /// True if this event is a Super Chat for Good purchase.
+  core.bool isSuperChatForGood;
+
   /// The tier for the paid message, which is based on the amount of money spent
   /// to purchase the message.
   core.int messageType;
+
+  /// If this event is a Super Chat for Good purchase, this field will contain
+  /// information about the charity the purchase is donated to.
+  Nonprofit nonprofit;
 
   /// Details about the supporter.
   ChannelProfileDetails supporterDetails;
@@ -16542,8 +16614,14 @@ class SuperChatEventSnippet {
     if (_json.containsKey("displayString")) {
       displayString = _json["displayString"];
     }
+    if (_json.containsKey("isSuperChatForGood")) {
+      isSuperChatForGood = _json["isSuperChatForGood"];
+    }
     if (_json.containsKey("messageType")) {
       messageType = _json["messageType"];
+    }
+    if (_json.containsKey("nonprofit")) {
+      nonprofit = new Nonprofit.fromJson(_json["nonprofit"]);
     }
     if (_json.containsKey("supporterDetails")) {
       supporterDetails =
@@ -16572,8 +16650,14 @@ class SuperChatEventSnippet {
     if (displayString != null) {
       _json["displayString"] = displayString;
     }
+    if (isSuperChatForGood != null) {
+      _json["isSuperChatForGood"] = isSuperChatForGood;
+    }
     if (messageType != null) {
       _json["messageType"] = messageType;
+    }
+    if (nonprofit != null) {
+      _json["nonprofit"] = (nonprofit).toJson();
     }
     if (supporterDetails != null) {
       _json["supporterDetails"] = (supporterDetails).toJson();
@@ -16798,7 +16882,7 @@ class Video {
   /// video in an embedded player.
   VideoPlayer player;
 
-  /// The processingProgress object encapsulates information about YouTube's
+  /// The processingDetails object encapsulates information about YouTube's
   /// progress in processing the uploaded video file. The properties in the
   /// object identify the current processing status and an estimate of the time
   /// remaining until YouTube finishes processing the video. This part also

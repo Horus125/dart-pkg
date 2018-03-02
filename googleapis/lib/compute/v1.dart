@@ -3427,7 +3427,8 @@ class DisksResourceApi {
     return _response.then((data) => new DiskList.fromJson(data));
   }
 
-  /// Resizes the specified persistent disk.
+  /// Resizes the specified persistent disk. You can only increase the size of
+  /// the disk.
   ///
   /// [request] - The metadata request object.
   ///
@@ -3976,7 +3977,7 @@ class FirewallsResourceApi {
   }
 
   /// Updates the specified firewall rule with the data included in the request.
-  /// Using PUT method, can only update following fields of firewall rule:
+  /// The PUT method can only update the following fields of firewall rule:
   /// allowed, description, sourceRanges, sourceTags, targetTags.
   ///
   /// [request] - The metadata request object.
@@ -7320,8 +7321,8 @@ class ImagesResourceApi {
     return _response.then((data) => new Operation.fromJson(data));
   }
 
-  /// Retrieves the list of private images available to the specified project.
-  /// Private images are images you create that belong to your project. This
+  /// Retrieves the list of custom images available to the specified project.
+  /// Custom images are images you create that belong to your project. This
   /// method does not get any images that belong to other projects, including
   /// publicly-available images, like Debian 8. If you want to get a list of
   /// publicly-available images, use this method to make a request to the
@@ -9474,11 +9475,9 @@ class InstanceTemplatesResourceApi {
   InstanceTemplatesResourceApi(commons.ApiRequester client)
       : _requester = client;
 
-  /// Deletes the specified instance template. If you delete an instance
-  /// template that is being referenced from another instance group, the
-  /// instance group will not be able to create or recreate virtual machine
-  /// instances. Deleting an instance template is permanent and cannot be
-  /// undone.
+  /// Deletes the specified instance template. Deleting an instance template is
+  /// permanent and cannot be undone. It's not possible to delete templates
+  /// which are in use by an instance group.
   ///
   /// Request parameters:
   ///
@@ -10670,6 +10669,133 @@ class InstancesResourceApi {
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
     return _response.then((data) => new InstanceList.fromJson(data));
+  }
+
+  /// Retrieves the list of referrers to instances contained within the
+  /// specified zone.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - Project ID for this request.
+  /// Value must have pattern
+  /// "(?:(?:[-a-z0-9]{1,63}\.)*(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?):)?(?:[0-9]{1,19}|(?:[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?))".
+  ///
+  /// [zone] - The name of the zone for this request.
+  /// Value must have pattern "[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
+  ///
+  /// [instance] - Name of the target instance scoping this request, or '-' if
+  /// the request should span over all instances in the container.
+  /// Value must have pattern "-|[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
+  ///
+  /// [filter] - Sets a filter {expression} for filtering listed resources. Your
+  /// {expression} must be in the format: field_name comparison_string
+  /// literal_string.
+  ///
+  /// The field_name is the name of the field you want to compare. Only atomic
+  /// field types are supported (string, number, boolean). The comparison_string
+  /// must be either eq (equals) or ne (not equals). The literal_string is the
+  /// string value to filter to. The literal value must be valid for the type of
+  /// field you are filtering by (string, number, boolean). For string fields,
+  /// the literal value is interpreted as a regular expression using RE2 syntax.
+  /// The literal value must match the entire field.
+  ///
+  /// For example, to filter for instances that do not have a name of
+  /// example-instance, you would use name ne example-instance.
+  ///
+  /// You can filter on nested fields. For example, you could filter on
+  /// instances that have set the scheduling.automaticRestart field to true. Use
+  /// filtering on nested fields to take advantage of labels to organize and
+  /// search for results based on label values.
+  ///
+  /// To filter on multiple expressions, provide each separate expression within
+  /// parentheses. For example, (scheduling.automaticRestart eq true) (zone eq
+  /// us-central1-f). Multiple expressions are treated as AND expressions,
+  /// meaning that resources must match all expressions to pass the filters.
+  ///
+  /// [maxResults] - The maximum number of results per page that should be
+  /// returned. If the number of available results is larger than maxResults,
+  /// Compute Engine returns a nextPageToken that can be used to get the next
+  /// page of results in subsequent list requests. Acceptable values are 0 to
+  /// 500, inclusive. (Default: 500)
+  ///
+  /// [orderBy] - Sorts list results by a certain order. By default, results are
+  /// returned in alphanumerical order based on the resource name.
+  ///
+  /// You can also sort results in descending order based on the creation
+  /// timestamp using orderBy="creationTimestamp desc". This sorts results based
+  /// on the creationTimestamp field in reverse chronological order (newest
+  /// result first). Use this to sort resources like operations so that the
+  /// newest operation is returned first.
+  ///
+  /// Currently, only sorting by name or creationTimestamp desc is supported.
+  ///
+  /// [pageToken] - Specifies a page token to use. Set pageToken to the
+  /// nextPageToken returned by a previous list request to get the next page of
+  /// results.
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [InstanceListReferrers].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<InstanceListReferrers> listReferrers(
+      core.String project, core.String zone, core.String instance,
+      {core.String filter,
+      core.int maxResults,
+      core.String orderBy,
+      core.String pageToken,
+      core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (project == null) {
+      throw new core.ArgumentError("Parameter project is required.");
+    }
+    if (zone == null) {
+      throw new core.ArgumentError("Parameter zone is required.");
+    }
+    if (instance == null) {
+      throw new core.ArgumentError("Parameter instance is required.");
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
+    }
+    if (maxResults != null) {
+      _queryParams["maxResults"] = ["${maxResults}"];
+    }
+    if (orderBy != null) {
+      _queryParams["orderBy"] = [orderBy];
+    }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/zones/' +
+        commons.Escaper.ecapeVariable('$zone') +
+        '/instances/' +
+        commons.Escaper.ecapeVariable('$instance') +
+        '/referrers';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new InstanceListReferrers.fromJson(data));
   }
 
   /// Performs a reset on the instance. For more information, see Resetting an
@@ -11871,6 +11997,104 @@ class InstancesResourceApi {
         '/instances/' +
         commons.Escaper.ecapeVariable('$instance') +
         '/stop';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new Operation.fromJson(data));
+  }
+
+  /// Updates the specified access config from an instance's network interface
+  /// with the data included in the request. This method supports PATCH
+  /// semantics and uses the JSON merge patch format and processing rules.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [project] - Project ID for this request.
+  /// Value must have pattern
+  /// "(?:(?:[-a-z0-9]{1,63}\.)*(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?):)?(?:[0-9]{1,19}|(?:[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?))".
+  ///
+  /// [zone] - The name of the zone for this request.
+  /// Value must have pattern "[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
+  ///
+  /// [instance] - The instance name for this request.
+  /// Value must have pattern "[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
+  ///
+  /// [networkInterface] - The name of the network interface where the access
+  /// config is attached.
+  ///
+  /// [requestId] - An optional request ID to identify requests. Specify a
+  /// unique request ID so that if you must retry your request, the server will
+  /// know to ignore the request if it has already been completed.
+  ///
+  /// For example, consider a situation where you make an initial request and
+  /// the request times out. If you make the request again with the same request
+  /// ID, the server can check if original operation with the same request ID
+  /// was received, and if so, will ignore the second request. This prevents
+  /// clients from accidentally creating duplicate commitments.
+  ///
+  /// The request ID must be a valid UUID with the exception that zero UUID is
+  /// not supported (00000000-0000-0000-0000-000000000000).
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [Operation].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Operation> updateAccessConfig(
+      AccessConfig request,
+      core.String project,
+      core.String zone,
+      core.String instance,
+      core.String networkInterface,
+      {core.String requestId,
+      core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if (project == null) {
+      throw new core.ArgumentError("Parameter project is required.");
+    }
+    if (zone == null) {
+      throw new core.ArgumentError("Parameter zone is required.");
+    }
+    if (instance == null) {
+      throw new core.ArgumentError("Parameter instance is required.");
+    }
+    if (networkInterface == null) {
+      throw new core.ArgumentError("Parameter networkInterface is required.");
+    }
+    _queryParams["networkInterface"] = [networkInterface];
+    if (requestId != null) {
+      _queryParams["requestId"] = [requestId];
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = commons.Escaper.ecapeVariable('$project') +
+        '/zones/' +
+        commons.Escaper.ecapeVariable('$zone') +
+        '/instances/' +
+        commons.Escaper.ecapeVariable('$instance') +
+        '/updateAccessConfig';
 
     var _response = _requester.request(_url, "POST",
         body: _body,
@@ -13621,7 +13845,8 @@ class NetworksResourceApi {
     return _response.then((data) => new NetworkList.fromJson(data));
   }
 
-  /// Patches the specified network with the data included in the request.
+  /// Patches the specified network with the data included in the request. Only
+  /// the following fields can be modified: routingConfig.routingMode.
   ///
   /// [request] - The metadata request object.
   ///
@@ -15283,8 +15508,8 @@ class RegionBackendServicesResourceApi {
   /// [region] - Name of the region scoping this request.
   /// Value must have pattern "[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
   ///
-  /// [backendService] - Name of the BackendService resource to which the
-  /// queried instance belongs.
+  /// [backendService] - Name of the BackendService resource for which to get
+  /// health.
   /// Value must have pattern "[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
@@ -25394,8 +25619,9 @@ class AcceleratorConfig {
   /// The number of the guest accelerator cards exposed to this instance.
   core.int acceleratorCount;
 
-  /// Full or partial URL of the accelerator type resource to expose to this
-  /// instance.
+  /// Full or partial URL of the accelerator type resource to attach to this
+  /// instance. If you are creating an instance template, specify only the
+  /// accelerator name.
   core.String acceleratorType;
 
   AcceleratorConfig();
@@ -25422,7 +25648,8 @@ class AcceleratorConfig {
   }
 }
 
-/// An Accelerator Type resource.
+/// An Accelerator Type resource. (== resource_for beta.acceleratorTypes ==) (==
+/// resource_for v1.acceleratorTypes ==)
 class AcceleratorType {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -25452,7 +25679,8 @@ class AcceleratorType {
   core.String selfLink;
 
   /// [Output Only] The name of the zone where the accelerator type resides,
-  /// such as us-central1-a.
+  /// such as us-central1-a. You must specify this field as part of the HTTP
+  /// request URL. It is not settable as a field in the request body.
   core.String zone;
 
   AcceleratorType();
@@ -26055,6 +26283,14 @@ class AccessConfig {
   /// the zone of the instance.
   core.String natIP;
 
+  /// The DNS domain name for the public PTR record. This field can only be set
+  /// when the set_public_ptr field is enabled.
+  core.String publicPtrDomainName;
+
+  /// Specifies whether a public DNS ?PTR? record should be created to map the
+  /// external IP address of the instance to a DNS domain name.
+  core.bool setPublicPtr;
+
   /// The type of configuration. The default and only option is ONE_TO_ONE_NAT.
   /// Possible string values are:
   /// - "ONE_TO_ONE_NAT"
@@ -26071,6 +26307,12 @@ class AccessConfig {
     }
     if (_json.containsKey("natIP")) {
       natIP = _json["natIP"];
+    }
+    if (_json.containsKey("publicPtrDomainName")) {
+      publicPtrDomainName = _json["publicPtrDomainName"];
+    }
+    if (_json.containsKey("setPublicPtr")) {
+      setPublicPtr = _json["setPublicPtr"];
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -26089,6 +26331,12 @@ class AccessConfig {
     if (natIP != null) {
       _json["natIP"] = natIP;
     }
+    if (publicPtrDomainName != null) {
+      _json["publicPtrDomainName"] = publicPtrDomainName;
+    }
+    if (setPublicPtr != null) {
+      _json["setPublicPtr"] = setPublicPtr;
+    }
     if (type != null) {
       _json["type"] = type;
     }
@@ -26096,12 +26344,15 @@ class AccessConfig {
   }
 }
 
-/// A reserved address resource.
+/// A reserved address resource. (== resource_for beta.addresses ==) (==
+/// resource_for v1.addresses ==) (== resource_for beta.globalAddresses ==) (==
+/// resource_for v1.globalAddresses ==)
 class Address {
   /// The static IP address represented by this resource.
   core.String address;
 
-  /// The type of address to reserve. If unspecified, defaults to EXTERNAL.
+  /// The type of address to reserve, either INTERNAL or EXTERNAL. If
+  /// unspecified, defaults to EXTERNAL.
   /// Possible string values are:
   /// - "EXTERNAL"
   /// - "INTERNAL"
@@ -26140,7 +26391,9 @@ class Address {
   core.String name;
 
   /// [Output Only] URL of the region where the regional address resides. This
-  /// field is not applicable to global addresses.
+  /// field is not applicable to global addresses. You must specify this field
+  /// as part of the HTTP request URL. You cannot set this field in the request
+  /// body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -26156,10 +26409,10 @@ class Address {
   /// - "RESERVED"
   core.String status;
 
-  /// For external addresses, this field should not be used.
-  ///
   /// The URL of the subnetwork in which to reserve the address. If an IP
-  /// address is specified, it must be within the subnetwork's IP range.
+  /// address is specified, it must be within the subnetwork's IP range. This
+  /// field can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
+  /// purposes.
   core.String subnetwork;
 
   /// [Output Only] The URLs of the resources that are using this address.
@@ -26999,8 +27252,8 @@ class AttachedDiskInitializeParams {
 
   /// Specifies the disk type to use to create the instance. If not specified,
   /// the default is pd-standard, specified using the full URL. For example:
-  ///
   /// https://www.googleapis.com/compute/v1/projects/project/zones/zone/diskTypes/pd-standard
+  ///
   ///
   /// Other values include pd-ssd and local-ssd. If you define this field, you
   /// can provide either the full or partial URL. For example, the following are
@@ -27012,6 +27265,11 @@ class AttachedDiskInitializeParams {
   /// the name of the disk type, not URL.
   core.String diskType;
 
+  /// Labels to apply to this disk. These can be later modified by the
+  /// disks.setLabels method. This field is only applicable for persistent
+  /// disks.
+  core.Map<core.String, core.String> labels;
+
   /// The source image to create this disk. When creating a new instance, one of
   /// initializeParams.sourceImage or disks.source is required except for local
   /// SSD.
@@ -27019,23 +27277,23 @@ class AttachedDiskInitializeParams {
   /// To create a disk with one of the public operating system images, specify
   /// the image by its family name. For example, specify family/debian-8 to use
   /// the latest Debian 8 image:
-  ///
   /// projects/debian-cloud/global/images/family/debian-8
   ///
-  /// Alternatively, use a specific version of a public operating system image:
   ///
+  /// Alternatively, use a specific version of a public operating system image:
   /// projects/debian-cloud/global/images/debian-8-jessie-vYYYYMMDD
   ///
-  /// To create a disk with a private image that you created, specify the image
+  ///
+  /// To create a disk with a custom image that you created, specify the image
   /// name in the following format:
+  /// global/images/my-custom-image
   ///
-  /// global/images/my-private-image
   ///
-  /// You can also specify a private image by its image family, which returns
-  /// the latest version of the image in that family. Replace the image name
-  /// with family/family-name:
+  /// You can also specify a custom image by its image family, which returns the
+  /// latest version of the image in that family. Replace the image name with
+  /// family/family-name:
+  /// global/images/family/my-image-family
   ///
-  /// global/images/family/my-private-family
   ///
   /// If the source image is deleted later, this field will not be set.
   core.String sourceImage;
@@ -27060,6 +27318,9 @@ class AttachedDiskInitializeParams {
     if (_json.containsKey("diskType")) {
       diskType = _json["diskType"];
     }
+    if (_json.containsKey("labels")) {
+      labels = _json["labels"];
+    }
     if (_json.containsKey("sourceImage")) {
       sourceImage = _json["sourceImage"];
     }
@@ -27081,6 +27342,9 @@ class AttachedDiskInitializeParams {
     if (diskType != null) {
       _json["diskType"] = diskType;
     }
+    if (labels != null) {
+      _json["labels"] = labels;
+    }
     if (sourceImage != null) {
       _json["sourceImage"] = sourceImage;
     }
@@ -27094,7 +27358,9 @@ class AttachedDiskInitializeParams {
 /// Represents an Autoscaler resource. Autoscalers allow you to automatically
 /// scale virtual machine instances in managed instance groups according to an
 /// autoscaling policy that you define. For more information, read Autoscaling
-/// Groups of Instances.
+/// Groups of Instances. (== resource_for beta.autoscalers ==) (== resource_for
+/// v1.autoscalers ==) (== resource_for beta.regionAutoscalers ==) (==
+/// resource_for v1.regionAutoscalers ==)
 class Autoscaler {
   /// The configuration parameters for the autoscaling algorithm. You can define
   /// one or more of the policies for an autoscaler: cpuUtilization,
@@ -28423,7 +28689,8 @@ class BackendBucketList {
 }
 
 /// A BackendService resource. This resource defines a group of backend virtual
-/// machines and their serving capacity.
+/// machines and their serving capacity. (== resource_for v1.backendService ==)
+/// (== resource_for beta.backendService ==)
 class BackendService {
   /// Lifetime of cookies in seconds if session_affinity is GENERATED_COOKIE. If
   /// set to 0, the cookie is non-persistent and lasts only until the end of the
@@ -28532,7 +28799,9 @@ class BackendService {
   core.String protocol;
 
   /// [Output Only] URL of the region where the regional backend service
-  /// resides. This field is not applicable to global backend services.
+  /// resides. This field is not applicable to global backend services. You must
+  /// specify this field as part of the HTTP request URL. It is not settable as
+  /// a field in the request body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -29423,7 +29692,8 @@ class CacheKeyPolicy {
 /// Committed use discounts are subject to Google Cloud Platform's Service
 /// Specific Terms. By purchasing a committed use discount, you agree to these
 /// terms. Committed use discounts will not renew, so you must purchase a new
-/// commitment to continue receiving discounts.
+/// commitment to continue receiving discounts. (== resource_for
+/// beta.commitments ==) (== resource_for v1.commitments ==)
 class Commitment {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -30257,7 +30527,8 @@ class DeprecationStatus {
   }
 }
 
-/// A Disk resource.
+/// A Disk resource. (== resource_for beta.disks ==) (== resource_for v1.disks
+/// ==)
 class Disk {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -30347,23 +30618,22 @@ class Disk {
   /// To create a disk with one of the public operating system images, specify
   /// the image by its family name. For example, specify family/debian-8 to use
   /// the latest Debian 8 image:
-  ///
   /// projects/debian-cloud/global/images/family/debian-8
   ///
-  /// Alternatively, use a specific version of a public operating system image:
   ///
+  /// Alternatively, use a specific version of a public operating system image:
   /// projects/debian-cloud/global/images/debian-8-jessie-vYYYYMMDD
   ///
-  /// To create a disk with a private image that you created, specify the image
+  ///
+  /// To create a disk with a custom image that you created, specify the image
   /// name in the following format:
+  /// global/images/my-custom-image
   ///
-  /// global/images/my-private-image
   ///
-  /// You can also specify a private image by its image family, which returns
-  /// the latest version of the image in that family. Replace the image name
-  /// with family/family-name:
-  ///
-  /// global/images/family/my-private-family
+  /// You can also specify a custom image by its image family, which returns the
+  /// latest version of the image in that family. Replace the image name with
+  /// family/family-name:
+  /// global/images/family/my-image-family
   core.String sourceImage;
 
   /// The customer-supplied encryption key of the source image. Required if the
@@ -30407,14 +30677,17 @@ class Disk {
   core.String status;
 
   /// URL of the disk type resource describing which disk type to use to create
-  /// the disk. Provide this when creating the disk.
+  /// the disk. Provide this when creating the disk. For example:
+  /// project/zones/zone/diskTypes/pd-standard or pd-ssd
   core.String type;
 
   /// [Output Only] Links to the users of the disk (attached instances) in form:
   /// project/zones/zone/instances/instance
   core.List<core.String> users;
 
-  /// [Output Only] URL of the zone where the disk resides.
+  /// [Output Only] URL of the zone where the disk resides. You must specify
+  /// this field as part of the HTTP request URL. It is not settable as a field
+  /// in the request body.
   core.String zone;
 
   Disk();
@@ -30982,7 +31255,8 @@ class DiskMoveRequest {
   }
 }
 
-/// A DiskType resource.
+/// A DiskType resource. (== resource_for beta.diskTypes ==) (== resource_for
+/// v1.diskTypes ==)
 class DiskType {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -31014,7 +31288,9 @@ class DiskType {
   /// as "10GB-10TB".
   core.String validDiskSize;
 
-  /// [Output Only] URL of the zone where the disk type resides.
+  /// [Output Only] URL of the zone where the disk type resides. You must
+  /// specify this field as part of the HTTP request URL. It is not settable as
+  /// a field in the request body.
   core.String zone;
 
   DiskType();
@@ -31846,7 +32122,7 @@ class Firewall {
   core.String creationTimestamp;
 
   /// The list of DENY rules specified by this firewall. Each rule specifies a
-  /// protocol and port-range tuple that describes a permitted connection.
+  /// protocol and port-range tuple that describes a denied connection.
   core.List<FirewallDenied> denied;
 
   /// An optional description of this resource. Provide this property when you
@@ -32256,7 +32532,11 @@ class FirewallList {
 
 /// A ForwardingRule resource. A ForwardingRule resource specifies which pool of
 /// target virtual machines to forward a packet to if it matches the given
-/// [IPAddress, IPProtocol, ports] tuple.
+/// [IPAddress, IPProtocol, ports] tuple. (== resource_for beta.forwardingRules
+/// ==) (== resource_for v1.forwardingRules ==) (== resource_for
+/// beta.globalForwardingRules ==) (== resource_for v1.globalForwardingRules ==)
+/// (== resource_for beta.regionForwardingRules ==) (== resource_for
+/// v1.regionForwardingRules ==)
 class ForwardingRule {
   /// The IP address that this forwarding rule is serving on behalf of.
   ///
@@ -32370,11 +32650,10 @@ class ForwardingRule {
   /// - TargetHttpProxy: 80, 8080
   /// - TargetHttpsProxy: 443
   /// - TargetTcpProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
-  /// 1883, 5222
+  /// 1688, 1883, 5222
   /// - TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995,
-  /// 1883, 5222
+  /// 1688, 1883, 5222
   /// - TargetVpnGateway: 500, 4500
-  /// -
   core.String portRange;
 
   /// This field is used along with the backend_service field for internal load
@@ -32389,7 +32668,9 @@ class ForwardingRule {
   core.List<core.String> ports;
 
   /// [Output Only] URL of the region where the regional forwarding rule
-  /// resides. This field is not applicable to global forwarding rules.
+  /// resides. This field is not applicable to global forwarding rules. You must
+  /// specify this field as part of the HTTP request URL. It is not settable as
+  /// a field in the request body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -32410,8 +32691,6 @@ class ForwardingRule {
   /// forwarding rule. For global forwarding rules, this target must be a global
   /// load balancing resource. The forwarded traffic must be of a type
   /// appropriate to the target object.
-  ///
-  /// This field is not used for internal load balancing.
   core.String target;
 
   ForwardingRule();
@@ -33092,11 +33371,11 @@ class GlobalSetLabelsRequest {
 
 /// Guest OS features.
 class GuestOsFeature {
-  /// The type of supported feature. Currently only VIRTIO_SCSI_MULTIQUEUE is
-  /// supported. For newer Windows images, the server might also populate this
-  /// property with the value WINDOWS to indicate that this is a Windows image.
+  /// The ID of a supported feature. Read  Enabling guest operating system
+  /// features to see a list of available options.
   /// Possible string values are:
   /// - "FEATURE_TYPE_UNSPECIFIED"
+  /// - "MULTI_IP_SUBNET"
   /// - "VIRTIO_SCSI_MULTIQUEUE"
   /// - "WINDOWS"
   core.String type;
@@ -34430,7 +34709,8 @@ class ImageRawDisk {
   }
 }
 
-/// An Image resource.
+/// An Image resource. (== resource_for beta.images ==) (== resource_for
+/// v1.images ==)
 class Image {
   /// Size of the image tar.gz archive stored in Google Cloud Storage (in
   /// bytes).
@@ -34455,15 +34735,9 @@ class Image {
   /// name of the image family must comply with RFC1035.
   core.String family;
 
-  /// A list of features to enable on the guest OS. Applicable for bootable
-  /// images only. Currently, only one feature can be enabled,
-  /// VIRTIO_SCSI_MULTIQUEUE, which allows each virtual CPU to have its own
-  /// queue. For Windows images, you can only enable VIRTIO_SCSI_MULTIQUEUE on
-  /// images with driver version 1.2.0.1621 or higher. Linux images with kernel
-  /// versions 3.17 and higher will support VIRTIO_SCSI_MULTIQUEUE.
-  ///
-  /// For newer Windows images, the server might also populate this property
-  /// with the value WINDOWS to indicate that this is a Windows image.
+  /// A list of features to enable on the guest operating system. Applicable
+  /// only for bootable images. Read  Enabling guest operating system features
+  /// to see a list of available options.
   core.List<GuestOsFeature> guestOsFeatures;
 
   /// [Output Only] The unique identifier for the resource. This identifier is
@@ -34918,7 +35192,8 @@ class ImageList {
   }
 }
 
-/// An Instance resource.
+/// An Instance resource. (== resource_for beta.instances ==) (== resource_for
+/// v1.instances ==)
 class Instance {
   /// Allows this instance to send and receive packets with non-matching
   /// destination or source IPs. This is required if you plan to use this
@@ -34978,16 +35253,16 @@ class Instance {
   /// in the format: zones/zone/machineTypes/machine-type. This is provided by
   /// the client when the instance is created. For example, the following is a
   /// valid partial url to a predefined machine type:
-  ///
   /// zones/us-central1-f/machineTypes/n1-standard-1
+  ///
   ///
   /// To create a custom machine type, provide a URL to a machine type in the
   /// following format, where CPUS is 1 or an even number up to 32 (2, 4, 6, ...
   /// 24, etc), and MEMORY is the total memory for this instance. Memory must be
   /// a multiple of 256 MB and must be supplied in MB (e.g. 5 GB of memory is
   /// 5120 MB):
-  ///
   /// zones/zone/machineTypes/custom-CPUS-MEMORY
+  ///
   ///
   /// For example: zones/us-central1-f/machineTypes/custom-4-5120
   ///
@@ -35060,7 +35335,9 @@ class Instance {
   /// method. Each tag within the list must comply with RFC1035.
   Tags tags;
 
-  /// [Output Only] URL of the zone where the instance resides.
+  /// [Output Only] URL of the zone where the instance resides. You must specify
+  /// this field as part of the HTTP request URL. It is not settable as a field
+  /// in the request body.
   core.String zone;
 
   Instance();
@@ -35415,6 +35692,9 @@ class InstanceAggregatedList {
   }
 }
 
+/// InstanceGroups (== resource_for beta.instanceGroups ==) (== resource_for
+/// v1.instanceGroups ==) (== resource_for beta.regionInstanceGroups ==) (==
+/// resource_for v1.regionInstanceGroups ==)
 class InstanceGroup {
   /// [Output Only] The creation timestamp for this instance group in RFC3339
   /// text format.
@@ -35944,7 +36224,10 @@ class InstanceGroupList {
   }
 }
 
-/// An Instance Group Manager resource.
+/// An Instance Group Manager resource. (== resource_for
+/// beta.instanceGroupManagers ==) (== resource_for v1.instanceGroupManagers ==)
+/// (== resource_for beta.regionInstanceGroupManagers ==) (== resource_for
+/// v1.regionInstanceGroupManagers ==)
 class InstanceGroupManager {
   /// The base instance name to use for instances in this group. The value must
   /// be 1-58 characters long. Instances are named by appending a hyphen and a
@@ -37554,6 +37837,187 @@ class InstanceList {
   }
 }
 
+class InstanceListReferrersWarningData {
+  /// [Output Only] A key that provides more detail on the warning being
+  /// returned. For example, for warnings where there are no results in a list
+  /// request for a particular zone, this key might be scope and the key value
+  /// might be the zone name. Other examples might be a key indicating a
+  /// deprecated resource and a suggested replacement, or a warning about
+  /// invalid network settings (for example, if an instance attempts to perform
+  /// IP forwarding but is not enabled for IP forwarding).
+  core.String key;
+
+  /// [Output Only] A warning data value corresponding to the key.
+  core.String value;
+
+  InstanceListReferrersWarningData();
+
+  InstanceListReferrersWarningData.fromJson(core.Map _json) {
+    if (_json.containsKey("key")) {
+      key = _json["key"];
+    }
+    if (_json.containsKey("value")) {
+      value = _json["value"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (key != null) {
+      _json["key"] = key;
+    }
+    if (value != null) {
+      _json["value"] = value;
+    }
+    return _json;
+  }
+}
+
+/// [Output Only] Informational warning message.
+class InstanceListReferrersWarning {
+  /// [Output Only] A warning code, if applicable. For example, Compute Engine
+  /// returns NO_RESULTS_ON_PAGE if there are no results in the response.
+  /// Possible string values are:
+  /// - "CLEANUP_FAILED"
+  /// - "DEPRECATED_RESOURCE_USED"
+  /// - "DEPRECATED_TYPE_USED"
+  /// - "DISK_SIZE_LARGER_THAN_IMAGE_SIZE"
+  /// - "EXPERIMENTAL_TYPE_USED"
+  /// - "EXTERNAL_API_WARNING"
+  /// - "FIELD_VALUE_OVERRIDEN"
+  /// - "INJECTED_KERNELS_DEPRECATED"
+  /// - "MISSING_TYPE_DEPENDENCY"
+  /// - "NEXT_HOP_ADDRESS_NOT_ASSIGNED"
+  /// - "NEXT_HOP_CANNOT_IP_FORWARD"
+  /// - "NEXT_HOP_INSTANCE_NOT_FOUND"
+  /// - "NEXT_HOP_INSTANCE_NOT_ON_NETWORK"
+  /// - "NEXT_HOP_NOT_RUNNING"
+  /// - "NOT_CRITICAL_ERROR"
+  /// - "NO_RESULTS_ON_PAGE"
+  /// - "REQUIRED_TOS_AGREEMENT"
+  /// - "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING"
+  /// - "RESOURCE_NOT_DELETED"
+  /// - "SCHEMA_VALIDATION_IGNORED"
+  /// - "SINGLE_INSTANCE_PROPERTY_TEMPLATE"
+  /// - "UNDECLARED_PROPERTIES"
+  /// - "UNREACHABLE"
+  core.String code;
+
+  /// [Output Only] Metadata about this warning in key: value format. For
+  /// example:
+  /// "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+  core.List<InstanceListReferrersWarningData> data;
+
+  /// [Output Only] A human-readable description of the warning code.
+  core.String message;
+
+  InstanceListReferrersWarning();
+
+  InstanceListReferrersWarning.fromJson(core.Map _json) {
+    if (_json.containsKey("code")) {
+      code = _json["code"];
+    }
+    if (_json.containsKey("data")) {
+      data = _json["data"]
+          .map((value) => new InstanceListReferrersWarningData.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("message")) {
+      message = _json["message"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (code != null) {
+      _json["code"] = code;
+    }
+    if (data != null) {
+      _json["data"] = data.map((value) => (value).toJson()).toList();
+    }
+    if (message != null) {
+      _json["message"] = message;
+    }
+    return _json;
+  }
+}
+
+/// Contains a list of instance referrers.
+class InstanceListReferrers {
+  /// [Output Only] Unique identifier for the resource; defined by the server.
+  core.String id;
+
+  /// A list of Reference resources.
+  core.List<Reference> items;
+
+  /// [Output Only] Type of resource. Always compute#instanceListReferrers for
+  /// lists of Instance referrers.
+  core.String kind;
+
+  /// [Output Only] This token allows you to get the next page of results for
+  /// list requests. If the number of results is larger than maxResults, use the
+  /// nextPageToken as a value for the query parameter pageToken in the next
+  /// list request. Subsequent list requests will have their own nextPageToken
+  /// to continue paging through the results.
+  core.String nextPageToken;
+
+  /// [Output Only] Server-defined URL for this resource.
+  core.String selfLink;
+
+  /// [Output Only] Informational warning message.
+  InstanceListReferrersWarning warning;
+
+  InstanceListReferrers();
+
+  InstanceListReferrers.fromJson(core.Map _json) {
+    if (_json.containsKey("id")) {
+      id = _json["id"];
+    }
+    if (_json.containsKey("items")) {
+      items =
+          _json["items"].map((value) => new Reference.fromJson(value)).toList();
+    }
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("nextPageToken")) {
+      nextPageToken = _json["nextPageToken"];
+    }
+    if (_json.containsKey("selfLink")) {
+      selfLink = _json["selfLink"];
+    }
+    if (_json.containsKey("warning")) {
+      warning = new InstanceListReferrersWarning.fromJson(_json["warning"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (id != null) {
+      _json["id"] = id;
+    }
+    if (items != null) {
+      _json["items"] = items.map((value) => (value).toJson()).toList();
+    }
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (nextPageToken != null) {
+      _json["nextPageToken"] = nextPageToken;
+    }
+    if (selfLink != null) {
+      _json["selfLink"] = selfLink;
+    }
+    if (warning != null) {
+      _json["warning"] = (warning).toJson();
+    }
+    return _json;
+  }
+}
+
 class InstanceMoveRequest {
   /// The URL of the destination zone to move the instance. This can be a full
   /// or partial URL. For example, the following are all valid URLs to a zone:
@@ -37769,7 +38233,8 @@ class InstanceReference {
   }
 }
 
-/// An Instance Template resource.
+/// An Instance Template resource. (== resource_for beta.instanceTemplates ==)
+/// (== resource_for v1.instanceTemplates ==)
 class InstanceTemplate {
   /// [Output Only] The creation timestamp for this instance template in RFC3339
   /// text format.
@@ -38407,14 +38872,15 @@ class InstancesStartWithEncryptionKeyRequest {
   }
 }
 
-/// Protocol definitions for Mixer API to support Interconnect. Next available
-/// tag: 25
+/// Represents an Interconnects resource. The Interconnects resource is a
+/// dedicated connection between Google's network and your on-premises network.
+/// For more information, see the  Dedicated overview page. (== resource_for
+/// v1.interconnects ==) (== resource_for beta.interconnects ==)
 class Interconnect {
-  /// Administrative status of the interconnect. When this is set to ?true?, the
-  /// Interconnect is functional and may carry traffic (assuming there are
-  /// functional InterconnectAttachments and other requirements are satisfied).
-  /// When set to ?false?, no packets will be carried over this Interconnect and
-  /// no BGP routes will be exchanged over it. By default, it is set to ?true?.
+  /// Administrative status of the interconnect. When this is set to true, the
+  /// Interconnect is functional and can carry traffic. When set to false, no
+  /// packets can be carried over the interconnect and no BGP routes are
+  /// exchanged over it. By default, the status is set to true.
   core.bool adminEnabled;
 
   /// [Output Only] List of CircuitInfo objects, that describe the individual
@@ -38451,7 +38917,8 @@ class Interconnect {
   /// to use this Interconnect.
   core.List<core.String> interconnectAttachments;
 
-  ///
+  /// Type of interconnect. Note that "IT_PRIVATE" has been deprecated in favor
+  /// of "DEDICATED"
   /// Possible string values are:
   /// - "DEDICATED"
   /// - "IT_PRIVATE"
@@ -38461,7 +38928,9 @@ class Interconnect {
   /// interconnects.
   core.String kind;
 
-  ///
+  /// Type of link requested. This field indicates speed of each of the links in
+  /// the bundle, not the entire bundle. Only 10G per link is allowed for a
+  /// dedicated interconnect. Options: Ethernet_10G_LR
   /// Possible string values are:
   /// - "LINK_TYPE_ETHERNET_10G_LR"
   core.String linkType;
@@ -38488,10 +38957,8 @@ class Interconnect {
   /// [Output Only] The current status of whether or not this Interconnect is
   /// functional.
   /// Possible string values are:
-  /// - "ACTIVE"
   /// - "OS_ACTIVE"
   /// - "OS_UNPROVISIONED"
-  /// - "UNPROVISIONED"
   core.String operationalStatus;
 
   /// [Output Only] IP address configured on the customer side of the
@@ -38653,8 +39120,10 @@ class Interconnect {
   }
 }
 
-/// Protocol definitions for Mixer API to support InterconnectAttachment. Next
-/// available tag: 23
+/// Represents an InterconnectAttachment (VLAN attachment) resource. For more
+/// information, see  Creating VLAN Attachments. (== resource_for
+/// beta.interconnectAttachments ==) (== resource_for v1.interconnectAttachments
+/// ==)
 class InterconnectAttachment {
   /// [Output Only] IPv4 address + prefix length to be configured on Cloud
   /// Router Interface for this interconnect attachment.
@@ -38667,8 +39136,7 @@ class InterconnectAttachment {
   /// customer router subinterface for this interconnect attachment.
   core.String customerRouterIpAddress;
 
-  /// An optional description of this resource. Provide this property when you
-  /// create the resource.
+  /// An optional description of this resource.
   core.String description;
 
   /// [Output Only] Google reference ID, to be used when raising support tickets
@@ -38699,19 +39167,18 @@ class InterconnectAttachment {
   /// [Output Only] The current status of whether or not this interconnect
   /// attachment is functional.
   /// Possible string values are:
-  /// - "ACTIVE"
   /// - "OS_ACTIVE"
   /// - "OS_UNPROVISIONED"
-  /// - "UNPROVISIONED"
   core.String operationalStatus;
 
-  /// [Output Only] Information specific to a Private InterconnectAttachment.
-  /// Only populated if the interconnect that this is attached is of type
-  /// IT_PRIVATE.
+  /// [Output Only] Information specific to an InterconnectAttachment. This
+  /// property is populated if the interconnect that this is attached to is of
+  /// type DEDICATED.
   InterconnectAttachmentPrivateInfo privateInterconnectInfo;
 
   /// [Output Only] URL of the region where the regional interconnect attachment
-  /// resides.
+  /// resides. You must specify this field as part of the HTTP request URL. It
+  /// is not settable as a field in the request body.
   core.String region;
 
   /// URL of the cloud router to be used for dynamic routing. This router must
@@ -39194,8 +39661,8 @@ class InterconnectAttachmentList {
   }
 }
 
-/// Private information for an interconnect attachment when this belongs to an
-/// interconnect of type IT_PRIVATE.
+/// Information for an interconnect attachment when this belongs to an
+/// interconnect of type DEDICATED.
 class InterconnectAttachmentPrivateInfo {
   /// [Output Only] 802.1q encapsulation tag to be used for traffic between
   /// Google and the customer, going to and from this network and region.
@@ -39368,8 +39835,7 @@ class InterconnectAttachmentsScopedList {
 /// CircuitInfo objects are created by Google, so all fields are output only.
 /// Next id: 4
 class InterconnectCircuitInfo {
-  /// Customer-side demarc ID for this circuit. This will only be set if it was
-  /// provided by the Customer to Google during circuit turn-up.
+  /// Customer-side demarc ID for this circuit.
   core.String customerDemarcId;
 
   /// Google-assigned unique ID for this circuit. Assigned at circuit turn-up.
@@ -39591,24 +40057,25 @@ class InterconnectList {
   }
 }
 
-/// Protocol definitions for Mixer API to support InterconnectLocation.
+/// Represents an InterconnectLocations resource. The InterconnectLocations
+/// resource describes the locations where you can connect to Google's networks.
+/// For more information, see  Colocation Facilities.
 class InterconnectLocation {
   /// [Output Only] The postal address of the Point of Presence, each line in
   /// the address is separated by a newline character.
   core.String address;
 
-  /// Availability zone for this location. Within a city, maintenance will not
-  /// be simultaneously scheduled in more than one availability zone. Example:
-  /// "zone1" or "zone2".
+  /// [Output Only] Availability zone for this location. Within a metropolitan
+  /// area (metro), maintenance will not be simultaneously scheduled in more
+  /// than one availability zone. Example: "zone1" or "zone2".
   core.String availabilityZone;
 
-  /// City designator used by the Interconnect UI to locate this
-  /// InterconnectLocation within the Continent. For example: "Chicago, IL",
-  /// "Amsterdam, Netherlands".
+  /// [Output Only] Metropolitan area designator that indicates which city an
+  /// interconnect is located. For example: "Chicago, IL", "Amsterdam,
+  /// Netherlands".
   core.String city;
 
-  /// Continent for this location. Used by the location picker in the
-  /// Interconnect UI.
+  /// [Output Only] Continent for this location.
   /// Possible string values are:
   /// - "AFRICA"
   /// - "ASIA_PAC"
@@ -39995,11 +40462,14 @@ class InterconnectOutageNotification {
   /// that will be affected.
   core.List<core.String> affectedCircuits;
 
-  /// Short user-visible description of the purpose of the outage.
+  /// A description about the purpose of the outage.
   core.String description;
+
+  /// Scheduled end time for the outage (milliseconds since Unix epoch).
   core.String endTime;
 
-  ///
+  /// Form this outage is expected to take. Note that the "IT_" versions of this
+  /// enum have been deprecated in favor of the unprefixed values.
   /// Possible string values are:
   /// - "IT_OUTAGE"
   /// - "IT_PARTIAL_OUTAGE"
@@ -40010,17 +40480,18 @@ class InterconnectOutageNotification {
   /// Unique identifier for this outage notification.
   core.String name;
 
-  ///
+  /// The party that generated this notification. Note that "NSRC_GOOGLE" has
+  /// been deprecated in favor of "GOOGLE"
   /// Possible string values are:
   /// - "GOOGLE"
   /// - "NSRC_GOOGLE"
   core.String source;
 
-  /// Scheduled start and end times for the outage (milliseconds since Unix
-  /// epoch).
+  /// Scheduled start time for the outage (milliseconds since Unix epoch).
   core.String startTime;
 
-  ///
+  /// State of this notification. Note that the "NS_" versions of this enum have
+  /// been deprecated in favor of the unprefixed values.
   /// Possible string values are:
   /// - "ACTIVE"
   /// - "CANCELLED"
@@ -40162,7 +40633,8 @@ class MachineTypeScratchDisks {
   }
 }
 
-/// A Machine Type resource.
+/// A Machine Type resource. (== resource_for v1.machineTypes ==) (==
+/// resource_for beta.machineTypes ==)
 class MachineType {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -40854,6 +41326,8 @@ class ManagedInstance {
   /// - REFRESHING The managed instance group is applying configuration changes
   /// to the instance without stopping it. For example, the group can update the
   /// target pool list for an instance without stopping that instance.
+  /// - VERIFYING The managed instance group has created the instance and it is
+  /// in the process of being verified.
   /// Possible string values are:
   /// - "ABANDONING"
   /// - "CREATING"
@@ -41152,7 +41626,8 @@ class NamedPort {
 }
 
 /// Represents a Network resource. Read Networks and Firewalls for more
-/// information.
+/// information. (== resource_for v1.networks ==) (== resource_for beta.networks
+/// ==)
 class Network {
   /// The range of internal addresses that are legal on this network. This range
   /// is a CIDR specification, for example: 192.168.0.0/16. Provided by the
@@ -41935,7 +42410,11 @@ class OperationWarnings {
   }
 }
 
-/// An Operation resource, used to manage asynchronous API requests.
+/// An Operation resource, used to manage asynchronous API requests. (==
+/// resource_for v1.globalOperations ==) (== resource_for beta.globalOperations
+/// ==) (== resource_for v1.regionOperations ==) (== resource_for
+/// beta.regionOperations ==) (== resource_for v1.zoneOperations ==) (==
+/// resource_for beta.zoneOperations ==)
 class Operation {
   /// [Output Only] Reserved for future use.
   core.String clientOperationId;
@@ -41991,7 +42470,9 @@ class Operation {
   core.int progress;
 
   /// [Output Only] The URL of the region where the operation resides. Only
-  /// available when performing regional operations.
+  /// available when performing regional operations. You must specify this field
+  /// as part of the HTTP request URL. It is not settable as a field in the
+  /// request body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -42031,7 +42512,9 @@ class Operation {
   core.List<OperationWarnings> warnings;
 
   /// [Output Only] The URL of the zone where the operation resides. Only
-  /// available when performing per-zone operations.
+  /// available when performing per-zone operations. You must specify this field
+  /// as part of the HTTP request URL. It is not settable as a field in the
+  /// request body.
   core.String zone;
 
   Operation();
@@ -42796,9 +43279,9 @@ class PathRule {
   }
 }
 
-/// A Project resource. Projects can only be created in the Google Cloud
-/// Platform Console. Unless marked otherwise, values can only be modified in
-/// the console.
+/// A Project resource. For an overview of projects, see  Cloud Platform
+/// Resource Hierarchy. (== resource_for v1.projects ==) (== resource_for
+/// beta.projects ==)
 class Project {
   /// Metadata key/value pairs available to all instances contained in this
   /// project. See Custom metadata for more information.
@@ -43070,6 +43553,8 @@ class Quota {
   /// - "INSTANCE_GROUPS"
   /// - "INSTANCE_GROUP_MANAGERS"
   /// - "INSTANCE_TEMPLATES"
+  /// - "INTERCONNECTS"
+  /// - "INTERNAL_ADDRESSES"
   /// - "IN_USE_ADDRESSES"
   /// - "LOCAL_SSD_TOTAL_GB"
   /// - "NETWORKS"
@@ -43077,6 +43562,8 @@ class Quota {
   /// - "NVIDIA_P100_GPUS"
   /// - "PREEMPTIBLE_CPUS"
   /// - "PREEMPTIBLE_LOCAL_SSD_GB"
+  /// - "PREEMPTIBLE_NVIDIA_K80_GPUS"
+  /// - "PREEMPTIBLE_NVIDIA_P100_GPUS"
   /// - "REGIONAL_AUTOSCALERS"
   /// - "REGIONAL_INSTANCE_GROUP_MANAGERS"
   /// - "ROUTERS"
@@ -43132,7 +43619,61 @@ class Quota {
   }
 }
 
-/// Region resource.
+/// Represents a reference to a resource.
+class Reference {
+  /// [Output Only] Type of the resource. Always compute#reference for
+  /// references.
+  core.String kind;
+
+  /// A description of the reference type with no implied semantics. Possible
+  /// values include:
+  /// - MEMBER_OF
+  core.String referenceType;
+
+  /// URL of the resource which refers to the target.
+  core.String referrer;
+
+  /// URL of the resource to which this reference points.
+  core.String target;
+
+  Reference();
+
+  Reference.fromJson(core.Map _json) {
+    if (_json.containsKey("kind")) {
+      kind = _json["kind"];
+    }
+    if (_json.containsKey("referenceType")) {
+      referenceType = _json["referenceType"];
+    }
+    if (_json.containsKey("referrer")) {
+      referrer = _json["referrer"];
+    }
+    if (_json.containsKey("target")) {
+      target = _json["target"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (kind != null) {
+      _json["kind"] = kind;
+    }
+    if (referenceType != null) {
+      _json["referenceType"] = referenceType;
+    }
+    if (referrer != null) {
+      _json["referrer"] = referrer;
+    }
+    if (target != null) {
+      _json["target"] = target;
+    }
+    return _json;
+  }
+}
+
+/// Region resource. (== resource_for beta.regions ==) (== resource_for
+/// v1.regions ==)
 class Region {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -44582,7 +45123,7 @@ class RouteWarnings {
 /// or a Google Compute Engine-operated gateway.
 ///
 /// Packets that do not match any route in the sending instance's routing table
-/// are dropped.
+/// are dropped. (== resource_for beta.routes ==) (== resource_for v1.routes ==)
 class Route {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -44992,7 +45533,9 @@ class Router {
   /// URI of the network to which this router belongs.
   core.String network;
 
-  /// [Output Only] URI of the region where the router resides.
+  /// [Output Only] URI of the region where the router resides. You must specify
+  /// this field as part of the HTTP request URL. It is not settable as a field
+  /// in the request body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -46179,7 +46722,8 @@ class ServiceAccount {
   }
 }
 
-/// A persistent disk snapshot resource.
+/// A persistent disk snapshot resource. (== resource_for beta.snapshots ==) (==
+/// resource_for v1.snapshots ==)
 class Snapshot {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -46587,7 +47131,8 @@ class SnapshotList {
 
 /// An SslCertificate resource. This resource provides a mechanism to upload an
 /// SSL key and certificate to the load balancer to serve secure connections
-/// from the user.
+/// from the user. (== resource_for beta.sslCertificates ==) (== resource_for
+/// v1.sslCertificates ==)
 class SslCertificate {
   /// A local certificate file. The certificate must be in PEM format. The
   /// certificate chain must be no greater than 5 certs long. The chain must
@@ -46866,7 +47411,8 @@ class SslCertificateList {
   }
 }
 
-/// A Subnetwork resource.
+/// A Subnetwork resource. (== resource_for beta.subnetworks ==) (==
+/// resource_for v1.subnetworks ==)
 class Subnetwork {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -46876,8 +47422,7 @@ class Subnetwork {
   core.String description;
 
   /// [Output Only] The gateway address for default routes to reach destination
-  /// addresses outside this subnetwork. This field can be set only at resource
-  /// creation time.
+  /// addresses outside this subnetwork.
   core.String gatewayAddress;
 
   /// [Output Only] The unique identifier for the resource. This identifier is
@@ -47723,7 +48268,9 @@ class Tags {
   }
 }
 
-/// A TargetHttpProxy resource. This resource defines an HTTP proxy.
+/// A TargetHttpProxy resource. This resource defines an HTTP proxy. (==
+/// resource_for beta.targetHttpProxies ==) (== resource_for
+/// v1.targetHttpProxies ==)
 class TargetHttpProxy {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -48016,7 +48563,9 @@ class TargetHttpsProxiesSetSslCertificatesRequest {
   }
 }
 
-/// A TargetHttpsProxy resource. This resource defines an HTTPS proxy.
+/// A TargetHttpsProxy resource. This resource defines an HTTPS proxy. (==
+/// resource_for beta.targetHttpsProxies ==) (== resource_for
+/// v1.targetHttpsProxies ==)
 class TargetHttpsProxy {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -48302,7 +48851,8 @@ class TargetHttpsProxyList {
 }
 
 /// A TargetInstance resource. This resource defines an endpoint instance that
-/// terminates traffic of certain protocols.
+/// terminates traffic of certain protocols. (== resource_for
+/// beta.targetInstances ==) (== resource_for v1.targetInstances ==)
 class TargetInstance {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -48347,7 +48897,9 @@ class TargetInstance {
   /// [Output Only] Server-defined URL for the resource.
   core.String selfLink;
 
-  /// [Output Only] URL of the zone where the target instance resides.
+  /// [Output Only] URL of the zone where the target instance resides. You must
+  /// specify this field as part of the HTTP request URL. It is not settable as
+  /// a field in the request body.
   core.String zone;
 
   TargetInstance();
@@ -48928,7 +49480,8 @@ class TargetInstancesScopedList {
 }
 
 /// A TargetPool resource. This resource defines a pool of instances, an
-/// associated HttpHealthCheck resource, and the fallback target pool.
+/// associated HttpHealthCheck resource, and the fallback target pool. (==
+/// resource_for beta.targetPools ==) (== resource_for v1.targetPools ==)
 class TargetPool {
   /// This field is applicable only when the containing target pool is serving a
   /// forwarding rule as the primary pool, and its failoverRatio field is
@@ -49846,7 +50399,9 @@ class TargetSslProxiesSetSslCertificatesRequest {
   }
 }
 
-/// A TargetSslProxy resource. This resource defines an SSL proxy.
+/// A TargetSslProxy resource. This resource defines an SSL proxy. (==
+/// resource_for beta.targetSslProxies ==) (== resource_for v1.targetSslProxies
+/// ==)
 class TargetSslProxy {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -50184,7 +50739,9 @@ class TargetTcpProxiesSetProxyHeaderRequest {
   }
 }
 
-/// A TargetTcpProxy resource. This resource defines a TCP proxy.
+/// A TargetTcpProxy resource. This resource defines a TCP proxy. (==
+/// resource_for beta.targetTcpProxies ==) (== resource_for v1.targetTcpProxies
+/// ==)
 class TargetTcpProxy {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -50464,7 +51021,8 @@ class TargetTcpProxyList {
   }
 }
 
-/// Represents a Target VPN gateway resource.
+/// Represents a Target VPN gateway resource. (== resource_for
+/// beta.targetVpnGateways ==) (== resource_for v1.targetVpnGateways ==)
 class TargetVpnGateway {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -50499,7 +51057,9 @@ class TargetVpnGateway {
   /// client when the VPN gateway is created.
   core.String network;
 
-  /// [Output Only] URL of the region where the target VPN gateway resides.
+  /// [Output Only] URL of the region where the target VPN gateway resides. You
+  /// must specify this field as part of the HTTP request URL. It is not
+  /// settable as a field in the request body.
   core.String region;
 
   /// [Output Only] Server-defined URL for the resource.
@@ -51205,8 +51765,9 @@ class UrlMap {
   /// [Output Only] Server-defined URL for the resource.
   core.String selfLink;
 
-  /// The list of expected URL mappings. Request to update this UrlMap will
-  /// succeed only if all of the test cases pass.
+  /// The list of expected URL mapping tests. Request to update this UrlMap will
+  /// succeed only if all of the test cases pass. You can specify a maximum of
+  /// 100 tests per UrlMap.
   core.List<UrlMapTest> tests;
 
   UrlMap();
@@ -51682,6 +52243,8 @@ class UsageExportLocation {
   }
 }
 
+/// VPN tunnel resource. (== resource_for beta.vpnTunnels ==) (== resource_for
+/// v1.vpnTunnels ==)
 class VpnTunnel {
   /// [Output Only] Creation timestamp in RFC3339 text format.
   core.String creationTimestamp;
@@ -51721,7 +52284,9 @@ class VpnTunnel {
   /// IP address of the peer VPN gateway. Only IPv4 is supported.
   core.String peerIp;
 
-  /// [Output Only] URL of the region where the VPN tunnel resides.
+  /// [Output Only] URL of the region where the VPN tunnel resides. You must
+  /// specify this field as part of the HTTP request URL. It is not settable as
+  /// a field in the request body.
   core.String region;
 
   /// Remote traffic selectors to use when establishing the VPN tunnel with peer
@@ -51758,8 +52323,8 @@ class VpnTunnel {
   /// - "WAITING_FOR_FULL_CONFIG"
   core.String status;
 
-  /// URL of the VPN gateway with which this VPN tunnel is associated. Provided
-  /// by the client when the VPN tunnel is created.
+  /// URL of the Target VPN gateway with which this VPN tunnel is associated.
+  /// Provided by the client when the VPN tunnel is created.
   core.String targetVpnGateway;
 
   VpnTunnel();
@@ -52601,7 +53166,8 @@ class XpnResourceId {
   }
 }
 
-/// A Zone resource.
+/// A Zone resource. (== resource_for beta.zones ==) (== resource_for v1.zones
+/// ==)
 class Zone {
   /// [Output Only] Available cpu/platform selections for the zone.
   core.List<core.String> availableCpuPlatforms;

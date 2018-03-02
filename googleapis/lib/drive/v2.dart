@@ -94,10 +94,10 @@ class AboutResourceApi {
   ///
   /// Request parameters:
   ///
-  /// [includeSubscribed] - When calculating the number of remaining change IDs,
-  /// whether to include public files the user has opened and shared files. When
-  /// set to false, this counts only change IDs for owned files and any shared
-  /// or public files that the user has explicitly added to a folder they own.
+  /// [includeSubscribed] - Whether to count changes outside the My Drive
+  /// hierarchy. When set to false, changes to files such as those in the
+  /// Application Data folder or shared files which have not been added to My
+  /// Drive will be omitted from the maxChangeIdCount.
   ///
   /// [maxChangeIdCount] - Maximum number of remaining change IDs to count
   ///
@@ -270,7 +270,8 @@ class ChangesResourceApi {
 
   ChangesResourceApi(commons.ApiRequester client) : _requester = client;
 
-  /// Gets a specific change.
+  /// Deprecated - Use changes.getStartPageToken and changes.list to retrieve
+  /// recent changes.
   ///
   /// Request parameters:
   ///
@@ -391,10 +392,10 @@ class ChangesResourceApi {
   /// been removed from the list of changes, for example by deletion or loss of
   /// access.
   ///
-  /// [includeSubscribed] - Whether to include public files the user has opened
-  /// and shared files. When set to false, the list only includes owned files
-  /// plus any shared or public files the user has explicitly added to a folder
-  /// they own.
+  /// [includeSubscribed] - Whether to include changes outside the My Drive
+  /// hierarchy in the result. When set to false, changes to files such as those
+  /// in the Application Data folder or shared files which have not been added
+  /// to My Drive will be omitted from the result.
   ///
   /// [includeTeamDriveItems] - Whether Team Drive files or changes should be
   /// included in results.
@@ -408,7 +409,7 @@ class ChangesResourceApi {
   /// [spaces] - A comma-separated list of spaces to query. Supported values are
   /// 'drive', 'appDataFolder' and 'photos'.
   ///
-  /// [startChangeId] - Change ID to start listing changes from.
+  /// [startChangeId] - Deprecated - use pageToken instead.
   ///
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
@@ -506,10 +507,10 @@ class ChangesResourceApi {
   /// been removed from the list of changes, for example by deletion or loss of
   /// access.
   ///
-  /// [includeSubscribed] - Whether to include public files the user has opened
-  /// and shared files. When set to false, the list only includes owned files
-  /// plus any shared or public files the user has explicitly added to a folder
-  /// they own.
+  /// [includeSubscribed] - Whether to include changes outside the My Drive
+  /// hierarchy in the result. When set to false, changes to files such as those
+  /// in the Application Data folder or shared files which have not been added
+  /// to My Drive will be omitted from the result.
   ///
   /// [includeTeamDriveItems] - Whether Team Drive files or changes should be
   /// included in results.
@@ -523,7 +524,7 @@ class ChangesResourceApi {
   /// [spaces] - A comma-separated list of spaces to query. Supported values are
   /// 'drive', 'appDataFolder' and 'photos'.
   ///
-  /// [startChangeId] - Change ID to start listing changes from.
+  /// [startChangeId] - Deprecated - use pageToken instead.
   ///
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
@@ -1949,8 +1950,11 @@ class FilesResourceApi {
   ///
   /// [removeParents] - Comma-separated list of parent IDs to remove.
   ///
-  /// [setModifiedDate] - Whether to set the modified date with the supplied
-  /// modified date.
+  /// [setModifiedDate] - Whether to set the modified date using the value
+  /// supplied in the request body. Setting this field to true is equivalent to
+  /// modifiedDateBehavior=fromBodyOrNow, and false is equivalent to
+  /// modifiedDateBehavior=now. To prevent any changes to the modified date set
+  /// modifiedDateBehavior=noChange.
   ///
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
@@ -2255,8 +2259,11 @@ class FilesResourceApi {
   ///
   /// [removeParents] - Comma-separated list of parent IDs to remove.
   ///
-  /// [setModifiedDate] - Whether to set the modified date with the supplied
-  /// modified date.
+  /// [setModifiedDate] - Whether to set the modified date using the value
+  /// supplied in the request body. Setting this field to true is equivalent to
+  /// modifiedDateBehavior=fromBodyOrNow, and false is equivalent to
+  /// modifiedDateBehavior=now. To prevent any changes to the modified date set
+  /// modifiedDateBehavior=noChange.
   ///
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
@@ -2713,6 +2720,11 @@ class PermissionsResourceApi {
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -2722,7 +2734,9 @@ class PermissionsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future delete(core.String fileId, core.String permissionId,
-      {core.bool supportsTeamDrives, core.String $fields}) {
+      {core.bool supportsTeamDrives,
+      core.bool useDomainAdminAccess,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2738,6 +2752,9 @@ class PermissionsResourceApi {
     }
     if (supportsTeamDrives != null) {
       _queryParams["supportsTeamDrives"] = ["${supportsTeamDrives}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2770,6 +2787,11 @@ class PermissionsResourceApi {
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -2781,7 +2803,9 @@ class PermissionsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<Permission> get(core.String fileId, core.String permissionId,
-      {core.bool supportsTeamDrives, core.String $fields}) {
+      {core.bool supportsTeamDrives,
+      core.bool useDomainAdminAccess,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -2797,6 +2821,9 @@ class PermissionsResourceApi {
     }
     if (supportsTeamDrives != null) {
       _queryParams["supportsTeamDrives"] = ["${supportsTeamDrives}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2867,7 +2894,8 @@ class PermissionsResourceApi {
   ///
   /// [fileId] - The ID for the file or Team Drive.
   ///
-  /// [emailMessage] - A custom message to include in notification emails.
+  /// [emailMessage] - A plain text custom message to include in notification
+  /// emails.
   ///
   /// [sendNotificationEmails] - Whether to send notification emails when
   /// sharing to users or groups. This parameter is ignored and an email is sent
@@ -2875,6 +2903,11 @@ class PermissionsResourceApi {
   ///
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
+  ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2890,6 +2923,7 @@ class PermissionsResourceApi {
       {core.String emailMessage,
       core.bool sendNotificationEmails,
       core.bool supportsTeamDrives,
+      core.bool useDomainAdminAccess,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -2912,6 +2946,9 @@ class PermissionsResourceApi {
     }
     if (supportsTeamDrives != null) {
       _queryParams["supportsTeamDrives"] = ["${supportsTeamDrives}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2947,6 +2984,11 @@ class PermissionsResourceApi {
   /// [supportsTeamDrives] - Whether the requesting application supports Team
   /// Drives.
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -2961,6 +3003,7 @@ class PermissionsResourceApi {
       {core.int maxResults,
       core.String pageToken,
       core.bool supportsTeamDrives,
+      core.bool useDomainAdminAccess,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -2980,6 +3023,9 @@ class PermissionsResourceApi {
     }
     if (supportsTeamDrives != null) {
       _queryParams["supportsTeamDrives"] = ["${supportsTeamDrives}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3015,6 +3061,11 @@ class PermissionsResourceApi {
   /// current owners to writers. Does nothing if the specified role is not
   /// 'owner'.
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -3030,6 +3081,7 @@ class PermissionsResourceApi {
       {core.bool removeExpiration,
       core.bool supportsTeamDrives,
       core.bool transferOwnership,
+      core.bool useDomainAdminAccess,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -3055,6 +3107,9 @@ class PermissionsResourceApi {
     }
     if (transferOwnership != null) {
       _queryParams["transferOwnership"] = ["${transferOwnership}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3093,6 +3148,11 @@ class PermissionsResourceApi {
   /// current owners to writers. Does nothing if the specified role is not
   /// 'owner'.
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the item belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -3108,6 +3168,7 @@ class PermissionsResourceApi {
       {core.bool removeExpiration,
       core.bool supportsTeamDrives,
       core.bool transferOwnership,
+      core.bool useDomainAdminAccess,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -3133,6 +3194,9 @@ class PermissionsResourceApi {
     }
     if (transferOwnership != null) {
       _queryParams["transferOwnership"] = ["${transferOwnership}"];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -4355,6 +4419,11 @@ class TeamdrivesResourceApi {
   ///
   /// [teamDriveId] - The ID of the Team Drive
   ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then the requester
+  /// will be granted access if they are an administrator of the domain to which
+  /// the Team Drive belongs.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -4365,7 +4434,8 @@ class TeamdrivesResourceApi {
   ///
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
-  async.Future<TeamDrive> get(core.String teamDriveId, {core.String $fields}) {
+  async.Future<TeamDrive> get(core.String teamDriveId,
+      {core.bool useDomainAdminAccess, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -4375,6 +4445,9 @@ class TeamdrivesResourceApi {
 
     if (teamDriveId == null) {
       throw new core.ArgumentError("Parameter teamDriveId is required.");
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -4453,6 +4526,12 @@ class TeamdrivesResourceApi {
   ///
   /// [pageToken] - Page token for Team Drives.
   ///
+  /// [q] - Query string for searching Team Drives.
+  ///
+  /// [useDomainAdminAccess] - Whether the request should be treated as if it
+  /// was issued by a domain administrator; if set to true, then all Team Drives
+  /// of the domain in which the requester is an administrator are returned.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -4464,7 +4543,11 @@ class TeamdrivesResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<TeamDriveList> list(
-      {core.int maxResults, core.String pageToken, core.String $fields}) {
+      {core.int maxResults,
+      core.String pageToken,
+      core.String q,
+      core.bool useDomainAdminAccess,
+      core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -4477,6 +4560,12 @@ class TeamdrivesResourceApi {
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (q != null) {
+      _queryParams["q"] = [q];
+    }
+    if (useDomainAdminAccess != null) {
+      _queryParams["useDomainAdminAccess"] = ["${useDomainAdminAccess}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -4807,6 +4896,9 @@ class About {
   /// specific type takes precedence.
   core.List<AboutAdditionalRoleInfo> additionalRoleInfo;
 
+  /// Whether the user can create Team Drives.
+  core.bool canCreateTeamDrives;
+
   /// The domain sharing policy for the current user. Possible values are:
   /// - allowed
   /// - allowedWithWarning
@@ -4896,6 +4988,9 @@ class About {
       additionalRoleInfo = _json["additionalRoleInfo"]
           .map((value) => new AboutAdditionalRoleInfo.fromJson(value))
           .toList();
+    }
+    if (_json.containsKey("canCreateTeamDrives")) {
+      canCreateTeamDrives = _json["canCreateTeamDrives"];
     }
     if (_json.containsKey("domainSharingPolicy")) {
       domainSharingPolicy = _json["domainSharingPolicy"];
@@ -4989,6 +5084,9 @@ class About {
     if (additionalRoleInfo != null) {
       _json["additionalRoleInfo"] =
           additionalRoleInfo.map((value) => (value).toJson()).toList();
+    }
+    if (canCreateTeamDrives != null) {
+      _json["canCreateTeamDrives"] = canCreateTeamDrives;
     }
     if (domainSharingPolicy != null) {
       _json["domainSharingPolicy"] = domainSharingPolicy;
@@ -7040,9 +7138,11 @@ class File {
   core.List<User> owners;
 
   /// Collection of parent folders which contain this file.
-  /// Setting this field will put the file in all of the provided folders. On
-  /// insert, if no folders are provided, the file will be placed in the default
-  /// root folder.
+  /// If not specified as part of an insert request, the file will be placed
+  /// directly in the user's My Drive folder. If not specified as part of a copy
+  /// request, the file will inherit any discoverable parents of the source
+  /// file. Update requests can also use the addParents and removeParents
+  /// parameters to modify the parents list.
   core.List<ParentReference> parents;
 
   /// List of permission IDs for users with access to this file.
@@ -7886,7 +7986,8 @@ class Permission {
   /// - They can only be set on user and group permissions
   /// - The date must be in the future
   /// - The date cannot be more than a year in the future
-  /// - The date can only be set on drive.permissions.update requests
+  /// - The date can only be set on drive.permissions.update or
+  /// drive.permissions.patch requests
   core.DateTime expirationDate;
 
   /// The ID of the user this permission refers to, and identical to the
@@ -8791,6 +8892,9 @@ class TeamDrive {
   /// drive.teamdrives.update request that does not set themeId.
   core.String colorRgb;
 
+  /// The time at which the Team Drive was created (RFC 3339 date-time).
+  core.DateTime createdDate;
+
   /// The ID of this Team Drive which is also the ID of the top level folder for
   /// this Team Drive.
   core.String id;
@@ -8825,6 +8929,9 @@ class TeamDrive {
     if (_json.containsKey("colorRgb")) {
       colorRgb = _json["colorRgb"];
     }
+    if (_json.containsKey("createdDate")) {
+      createdDate = core.DateTime.parse(_json["createdDate"]);
+    }
     if (_json.containsKey("id")) {
       id = _json["id"];
     }
@@ -8853,6 +8960,9 @@ class TeamDrive {
     }
     if (colorRgb != null) {
       _json["colorRgb"] = colorRgb;
+    }
+    if (createdDate != null) {
+      _json["createdDate"] = (createdDate).toIso8601String();
     }
     if (id != null) {
       _json["id"] = id;

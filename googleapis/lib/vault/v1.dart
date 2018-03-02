@@ -1224,11 +1224,11 @@ class HeldDriveQuery {
 
 /// Query options for group holds.
 class HeldGroupsQuery {
-  /// The end date range for the search query. These timestamps are in GMT and
+  /// The end time range for the search query. These timestamps are in GMT and
   /// rounded down to the start of the given date.
   core.String endTime;
 
-  /// The start date range for the search query. These timestamps are in GMT and
+  /// The start time range for the search query. These timestamps are in GMT and
   /// rounded down to the start of the given date.
   core.String startTime;
 
@@ -1267,11 +1267,11 @@ class HeldGroupsQuery {
 
 /// Query options for mail holds.
 class HeldMailQuery {
-  /// The end date range for the search query. These timestamps are in GMT and
+  /// The end time range for the search query. These timestamps are in GMT and
   /// rounded down to the start of the given date.
   core.String endTime;
 
-  /// The start date range for the search query. These timestamps are in GMT and
+  /// The start time range for the search query. These timestamps are in GMT and
   /// rounded down to the start of the given date.
   core.String startTime;
 

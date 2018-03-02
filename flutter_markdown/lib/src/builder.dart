@@ -24,6 +24,7 @@ final Set<String> _kBlockTags = new Set<String>.from(<String>[
   'pre',
   'ol',
   'ul',
+  'hr',
 ]);
 
 const List<String> _kListTags = const <String>['ul', 'ol'];
@@ -214,6 +215,11 @@ class MarkdownBuilder implements md.NodeVisitor {
             child: child,
           ),
         );
+      } else if (tag == 'hr') {
+        child = new DecoratedBox(
+          decoration: styleSheet.horizontalRuleDecoration,
+          child: child,
+        );
       }
 
       _addBlockChild(child);
@@ -251,13 +257,21 @@ class MarkdownBuilder implements md.NodeVisitor {
     }
 
     Uri uri = Uri.parse(path);
+    Widget child;
     if (uri.scheme == 'http' || uri.scheme == 'https') {
-      return new Image.network(uri.toString(), width: width, height: height);
+      child = new Image.network(uri.toString(), width: width, height: height);
     } else {
       String filePath = (imageDirectory == null
           ? uri.toFilePath()
           : p.join(imageDirectory.path, uri.toFilePath()));
-      return new Image.file(new File(filePath), width: width, height: height);
+      child = new Image.file(new File(filePath), width: width, height: height);
+    }
+
+    if (_linkHandlers.isNotEmpty) {
+      TapGestureRecognizer recognizer = _linkHandlers.last;
+      return new GestureDetector(child: child, onTap: recognizer.onTap);
+    } else {
+      return child;
     }
   }
 

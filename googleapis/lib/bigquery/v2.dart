@@ -441,6 +441,9 @@ class JobsResourceApi {
   ///
   /// [jobId] - [Required] Job ID of the job to cancel
   ///
+  /// [location] - [Experimental] The geographic location of the job. Required
+  /// except for US and EU.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -453,7 +456,7 @@ class JobsResourceApi {
   /// this method will complete with the same error.
   async.Future<JobCancelResponse> cancel(
       core.String projectId, core.String jobId,
-      {core.String $fields}) {
+      {core.String location, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -466,6 +469,9 @@ class JobsResourceApi {
     }
     if (jobId == null) {
       throw new core.ArgumentError("Parameter jobId is required.");
+    }
+    if (location != null) {
+      _queryParams["location"] = [location];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -496,6 +502,9 @@ class JobsResourceApi {
   ///
   /// [jobId] - [Required] Job ID of the requested job
   ///
+  /// [location] - [Experimental] The geographic location of the job. Required
+  /// except for US and EU.
+  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -507,7 +516,7 @@ class JobsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<Job> get(core.String projectId, core.String jobId,
-      {core.String $fields}) {
+      {core.String location, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -520,6 +529,9 @@ class JobsResourceApi {
     }
     if (jobId == null) {
       throw new core.ArgumentError("Parameter jobId is required.");
+    }
+    if (location != null) {
+      _queryParams["location"] = [location];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -547,6 +559,9 @@ class JobsResourceApi {
   ///
   /// [jobId] - [Required] Job ID of the query job
   ///
+  /// [location] - [Experimental] The geographic location where the job should
+  /// run. Required except for US and EU.
+  ///
   /// [maxResults] - Maximum number of results to read
   ///
   /// [pageToken] - Page token, returned by a previous call, to request the next
@@ -570,7 +585,8 @@ class JobsResourceApi {
   /// this method will complete with the same error.
   async.Future<GetQueryResultsResponse> getQueryResults(
       core.String projectId, core.String jobId,
-      {core.int maxResults,
+      {core.String location,
+      core.int maxResults,
       core.String pageToken,
       core.String startIndex,
       core.int timeoutMs,
@@ -587,6 +603,9 @@ class JobsResourceApi {
     }
     if (jobId == null) {
       throw new core.ArgumentError("Parameter jobId is required.");
+    }
+    if (location != null) {
+      _queryParams["location"] = [location];
     }
     if (maxResults != null) {
       _queryParams["maxResults"] = ["${maxResults}"];
@@ -2046,6 +2065,9 @@ class DatasetListDatasets {
   /// group your datasets.
   core.Map<core.String, core.String> labels;
 
+  /// [Experimental] The geographic location where the data resides.
+  core.String location;
+
   DatasetListDatasets();
 
   DatasetListDatasets.fromJson(core.Map _json) {
@@ -2064,6 +2086,9 @@ class DatasetListDatasets {
     }
     if (_json.containsKey("labels")) {
       labels = _json["labels"];
+    }
+    if (_json.containsKey("location")) {
+      location = _json["location"];
     }
   }
 
@@ -2084,6 +2109,9 @@ class DatasetListDatasets {
     }
     if (labels != null) {
       _json["labels"] = labels;
+    }
+    if (location != null) {
+      _json["location"] = location;
     }
     return _json;
   }
@@ -2179,6 +2207,43 @@ class DatasetReference {
   }
 }
 
+class DestinationTableProperties {
+  /// [Optional] The description for the destination table. This will only be
+  /// used if the destination table is newly created. If the table already
+  /// exists and a value different than the current description is provided, the
+  /// job will fail.
+  core.String description;
+
+  /// [Optional] The friendly name for the destination table. This will only be
+  /// used if the destination table is newly created. If the table already
+  /// exists and a value different than the current friendly name is provided,
+  /// the job will fail.
+  core.String friendlyName;
+
+  DestinationTableProperties();
+
+  DestinationTableProperties.fromJson(core.Map _json) {
+    if (_json.containsKey("description")) {
+      description = _json["description"];
+    }
+    if (_json.containsKey("friendlyName")) {
+      friendlyName = _json["friendlyName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (description != null) {
+      _json["description"] = description;
+    }
+    if (friendlyName != null) {
+      _json["friendlyName"] = friendlyName;
+    }
+    return _json;
+  }
+}
+
 class EncryptionConfiguration {
   /// [Optional] Describes the Cloud KMS encryption key that will be used to
   /// protect destination BigQuery table. The BigQuery Service Account
@@ -2254,6 +2319,9 @@ class ErrorProto {
 }
 
 class ExplainQueryStage {
+  /// Number of parallel input segments completed.
+  core.String completedParallelInputs;
+
   /// Milliseconds the average shard spent on CPU-bound tasks.
   core.String computeMsAvg;
 
@@ -2266,11 +2334,20 @@ class ExplainQueryStage {
   /// Relative amount of time the slowest shard spent on CPU-bound tasks.
   core.double computeRatioMax;
 
+  /// Stage end time in milliseconds.
+  core.String endMs;
+
   /// Unique ID for stage within plan.
   core.String id;
 
+  /// IDs for stages that are inputs to this stage.
+  core.List<core.String> inputStages;
+
   /// Human-readable name for stage.
   core.String name;
+
+  /// Number of parallel input segments to be processed.
+  core.String parallelInputs;
 
   /// Milliseconds the average shard spent reading input.
   core.String readMsAvg;
@@ -2295,6 +2372,9 @@ class ExplainQueryStage {
 
   /// Total number of bytes written to shuffle and spilled to disk.
   core.String shuffleOutputBytesSpilled;
+
+  /// Stage start time in milliseconds.
+  core.String startMs;
 
   /// Current status for the stage.
   core.String status;
@@ -2330,6 +2410,9 @@ class ExplainQueryStage {
   ExplainQueryStage();
 
   ExplainQueryStage.fromJson(core.Map _json) {
+    if (_json.containsKey("completedParallelInputs")) {
+      completedParallelInputs = _json["completedParallelInputs"];
+    }
     if (_json.containsKey("computeMsAvg")) {
       computeMsAvg = _json["computeMsAvg"];
     }
@@ -2342,11 +2425,20 @@ class ExplainQueryStage {
     if (_json.containsKey("computeRatioMax")) {
       computeRatioMax = _json["computeRatioMax"];
     }
+    if (_json.containsKey("endMs")) {
+      endMs = _json["endMs"];
+    }
     if (_json.containsKey("id")) {
       id = _json["id"];
     }
+    if (_json.containsKey("inputStages")) {
+      inputStages = _json["inputStages"];
+    }
     if (_json.containsKey("name")) {
       name = _json["name"];
+    }
+    if (_json.containsKey("parallelInputs")) {
+      parallelInputs = _json["parallelInputs"];
     }
     if (_json.containsKey("readMsAvg")) {
       readMsAvg = _json["readMsAvg"];
@@ -2371,6 +2463,9 @@ class ExplainQueryStage {
     }
     if (_json.containsKey("shuffleOutputBytesSpilled")) {
       shuffleOutputBytesSpilled = _json["shuffleOutputBytesSpilled"];
+    }
+    if (_json.containsKey("startMs")) {
+      startMs = _json["startMs"];
     }
     if (_json.containsKey("status")) {
       status = _json["status"];
@@ -2409,6 +2504,9 @@ class ExplainQueryStage {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (completedParallelInputs != null) {
+      _json["completedParallelInputs"] = completedParallelInputs;
+    }
     if (computeMsAvg != null) {
       _json["computeMsAvg"] = computeMsAvg;
     }
@@ -2421,11 +2519,20 @@ class ExplainQueryStage {
     if (computeRatioMax != null) {
       _json["computeRatioMax"] = computeRatioMax;
     }
+    if (endMs != null) {
+      _json["endMs"] = endMs;
+    }
     if (id != null) {
       _json["id"] = id;
     }
+    if (inputStages != null) {
+      _json["inputStages"] = inputStages;
+    }
     if (name != null) {
       _json["name"] = name;
+    }
+    if (parallelInputs != null) {
+      _json["parallelInputs"] = parallelInputs;
     }
     if (readMsAvg != null) {
       _json["readMsAvg"] = readMsAvg;
@@ -2450,6 +2557,9 @@ class ExplainQueryStage {
     }
     if (shuffleOutputBytesSpilled != null) {
       _json["shuffleOutputBytesSpilled"] = shuffleOutputBytesSpilled;
+    }
+    if (startMs != null) {
+      _json["startMs"] = startMs;
     }
     if (status != null) {
       _json["status"] = status;
@@ -2992,9 +3102,13 @@ class JobConfiguration {
   /// [Pick one] Configures an extract job.
   JobConfigurationExtract extract;
 
-  /// [Experimental] The labels associated with this job. You can use these to
-  /// organize and group your jobs. Label keys and values can be no longer than
-  /// 63 characters, can only contain lowercase letters, numeric characters,
+  /// [Optional] Job timeout in milliseconds. If this time limit is exceeded,
+  /// BigQuery may attempt to terminate the job.
+  core.String jobTimeoutMs;
+
+  /// The labels associated with this job. You can use these to organize and
+  /// group your jobs. Label keys and values can be no longer than 63
+  /// characters, can only contain lowercase letters, numeric characters,
   /// underscores and dashes. International characters are allowed. Label values
   /// are optional. Label keys must start with a letter and each label in the
   /// list must have a different key.
@@ -3017,6 +3131,9 @@ class JobConfiguration {
     }
     if (_json.containsKey("extract")) {
       extract = new JobConfigurationExtract.fromJson(_json["extract"]);
+    }
+    if (_json.containsKey("jobTimeoutMs")) {
+      jobTimeoutMs = _json["jobTimeoutMs"];
     }
     if (_json.containsKey("labels")) {
       labels = _json["labels"];
@@ -3041,6 +3158,9 @@ class JobConfiguration {
     if (extract != null) {
       _json["extract"] = (extract).toJson();
     }
+    if (jobTimeoutMs != null) {
+      _json["jobTimeoutMs"] = jobTimeoutMs;
+    }
     if (labels != null) {
       _json["labels"] = labels;
     }
@@ -3056,7 +3176,8 @@ class JobConfiguration {
 
 class JobConfigurationExtract {
   /// [Optional] The compression type to use for exported files. Possible values
-  /// include GZIP and NONE. The default value is NONE.
+  /// include GZIP, DEFLATE, SNAPPY, and NONE. The default value is NONE.
+  /// DEFLATE and SNAPPY are only supported for Avro.
   core.String compression;
 
   /// [Optional] The exported file format. Possible values include CSV,
@@ -3162,11 +3283,15 @@ class JobConfigurationLoad {
   /// actions occur as one atomic update upon job completion.
   core.String createDisposition;
 
-  /// [Experimental] Custom encryption configuration (e.g., Cloud KMS keys).
+  /// Custom encryption configuration (e.g., Cloud KMS keys).
   EncryptionConfiguration destinationEncryptionConfiguration;
 
   /// [Required] The destination table to load the data into.
   TableReference destinationTable;
+
+  /// [Experimental] [Optional] Properties with which to create the destination
+  /// table if it is new.
+  DestinationTableProperties destinationTableProperties;
 
   /// [Optional] The character encoding of the data. The supported values are
   /// UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data
@@ -3237,7 +3362,7 @@ class JobConfigurationLoad {
   /// [Deprecated] The format of the schemaInline property.
   core.String schemaInlineFormat;
 
-  /// Allows the schema of the desitination table to be updated as a side effect
+  /// Allows the schema of the destination table to be updated as a side effect
   /// of the load job if a schema is autodetected or supplied in the job
   /// configuration. Schema update options are supported in two cases: when
   /// writeDisposition is WRITE_APPEND; when writeDisposition is WRITE_TRUNCATE
@@ -3256,8 +3381,8 @@ class JobConfigurationLoad {
 
   /// [Optional] The format of the data files. For CSV files, specify "CSV". For
   /// datastore backups, specify "DATASTORE_BACKUP". For newline-delimited JSON,
-  /// specify "NEWLINE_DELIMITED_JSON". For Avro, specify "AVRO". The default
-  /// value is CSV.
+  /// specify "NEWLINE_DELIMITED_JSON". For Avro, specify "AVRO". For parquet,
+  /// specify "PARQUET". For orc, specify "ORC". The default value is CSV.
   core.String sourceFormat;
 
   /// [Required] The fully-qualified URIs that point to your data in Google
@@ -3306,6 +3431,10 @@ class JobConfigurationLoad {
     }
     if (_json.containsKey("destinationTable")) {
       destinationTable = new TableReference.fromJson(_json["destinationTable"]);
+    }
+    if (_json.containsKey("destinationTableProperties")) {
+      destinationTableProperties = new DestinationTableProperties.fromJson(
+          _json["destinationTableProperties"]);
     }
     if (_json.containsKey("encoding")) {
       encoding = _json["encoding"];
@@ -3380,6 +3509,10 @@ class JobConfigurationLoad {
     if (destinationTable != null) {
       _json["destinationTable"] = (destinationTable).toJson();
     }
+    if (destinationTableProperties != null) {
+      _json["destinationTableProperties"] =
+          (destinationTableProperties).toJson();
+    }
     if (encoding != null) {
       _json["encoding"] = encoding;
     }
@@ -3453,7 +3586,7 @@ class JobConfigurationQuery {
   /// names in the query.
   DatasetReference defaultDataset;
 
-  /// [Experimental] Custom encryption configuration (e.g., Cloud KMS keys).
+  /// Custom encryption configuration (e.g., Cloud KMS keys).
   EncryptionConfiguration destinationEncryptionConfiguration;
 
   /// [Optional] Describes the table where the query results should be stored.
@@ -3704,7 +3837,7 @@ class JobConfigurationTableCopy {
   /// actions occur as one atomic update upon job completion.
   core.String createDisposition;
 
-  /// [Experimental] Custom encryption configuration (e.g., Cloud KMS keys).
+  /// Custom encryption configuration (e.g., Cloud KMS keys).
   EncryptionConfiguration destinationEncryptionConfiguration;
 
   /// [Required] The destination table
@@ -3933,6 +4066,10 @@ class JobReference {
   /// characters.
   core.String jobId;
 
+  /// [Experimental] The geographic location of the job. Required except for US
+  /// and EU.
+  core.String location;
+
   /// [Required] The ID of the project containing this job.
   core.String projectId;
 
@@ -3941,6 +4078,9 @@ class JobReference {
   JobReference.fromJson(core.Map _json) {
     if (_json.containsKey("jobId")) {
       jobId = _json["jobId"];
+    }
+    if (_json.containsKey("location")) {
+      location = _json["location"];
     }
     if (_json.containsKey("projectId")) {
       projectId = _json["projectId"];
@@ -3953,6 +4093,9 @@ class JobReference {
     if (jobId != null) {
       _json["jobId"] = jobId;
     }
+    if (location != null) {
+      _json["location"] = location;
+    }
     if (projectId != null) {
       _json["projectId"] = projectId;
     }
@@ -3961,6 +4104,10 @@ class JobReference {
 }
 
 class JobStatistics {
+  /// [Experimental] [Output-only] Job progress (0.0 -> 1.0) for LOAD and
+  /// EXTRACT jobs.
+  core.double completionRatio;
+
   /// [Output-only] Creation time of this job, in milliseconds since the epoch.
   /// This field will be present on all jobs.
   core.String creationTime;
@@ -3990,6 +4137,9 @@ class JobStatistics {
   JobStatistics();
 
   JobStatistics.fromJson(core.Map _json) {
+    if (_json.containsKey("completionRatio")) {
+      completionRatio = _json["completionRatio"];
+    }
     if (_json.containsKey("creationTime")) {
       creationTime = _json["creationTime"];
     }
@@ -4016,6 +4166,9 @@ class JobStatistics {
   core.Map<core.String, core.Object> toJson() {
     final core.Map<core.String, core.Object> _json =
         new core.Map<core.String, core.Object>();
+    if (completionRatio != null) {
+      _json["completionRatio"] = completionRatio;
+    }
     if (creationTime != null) {
       _json["creationTime"] = creationTime;
     }
@@ -4048,6 +4201,23 @@ class JobStatistics2 {
   /// [Output-only] Whether the query result was fetched from the query cache.
   core.bool cacheHit;
 
+  /// [Output-only, Experimental] The DDL operation performed, possibly
+  /// dependent on the pre-existence of the DDL target. Possible values (new
+  /// values might be added in the future): "CREATE": The query created the DDL
+  /// target. "SKIP": No-op. Example cases: the query is CREATE TABLE IF NOT
+  /// EXISTS while the table already exists, or the query is DROP TABLE IF
+  /// EXISTS while the table does not exist. "REPLACE": The query replaced the
+  /// DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the
+  /// table already exists. "DROP": The query deleted the DDL target.
+  core.String ddlOperationPerformed;
+
+  /// [Output-only, Experimental] The DDL target table. Present only for
+  /// CREATE/DROP TABLE/VIEW queries.
+  TableReference ddlTargetTable;
+
+  /// [Output-only] The original estimate of bytes processed for the job.
+  core.String estimatedBytesProcessed;
+
   /// [Output-only] The number of rows affected by a DML statement. Present only
   /// for DML statements INSERT, UPDATE or DELETE.
   core.String numDmlAffectedRows;
@@ -4055,16 +4225,30 @@ class JobStatistics2 {
   /// [Output-only] Describes execution plan for the query.
   core.List<ExplainQueryStage> queryPlan;
 
-  /// [Output-only, Experimental] Referenced tables for the job. Queries that
-  /// reference more than 50 tables will not have a complete list.
+  /// [Output-only] Referenced tables for the job. Queries that reference more
+  /// than 50 tables will not have a complete list.
   core.List<TableReference> referencedTables;
 
-  /// [Output-only, Experimental] The schema of the results. Present only for
-  /// successful dry run of non-legacy SQL queries.
+  /// [Output-only] The schema of the results. Present only for successful dry
+  /// run of non-legacy SQL queries.
   TableSchema schema;
 
   /// [Output-only, Experimental] The type of query statement, if valid.
+  /// Possible values (new values might be added in the future): "SELECT":
+  /// SELECT query. "INSERT": INSERT query; see
+  /// https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language
+  /// "UPDATE": UPDATE query; see
+  /// https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language
+  /// "DELETE": DELETE query; see
+  /// https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language
+  /// "CREATE_TABLE": CREATE [OR REPLACE] TABLE without AS SELECT.
+  /// "CREATE_TABLE_AS_SELECT": CREATE [OR REPLACE] TABLE ... AS SELECT ...
+  /// "DROP_TABLE": DROP TABLE query. "CREATE_VIEW": CREATE [OR REPLACE] VIEW
+  /// ... AS SELECT ... "DROP_VIEW": DROP VIEW query.
   core.String statementType;
+
+  /// [Output-only] [Experimental] Describes a timeline of job execution.
+  core.List<QueryTimelineSample> timeline;
 
   /// [Output-only] Total bytes billed for the job.
   core.String totalBytesBilled;
@@ -4088,6 +4272,15 @@ class JobStatistics2 {
     if (_json.containsKey("cacheHit")) {
       cacheHit = _json["cacheHit"];
     }
+    if (_json.containsKey("ddlOperationPerformed")) {
+      ddlOperationPerformed = _json["ddlOperationPerformed"];
+    }
+    if (_json.containsKey("ddlTargetTable")) {
+      ddlTargetTable = new TableReference.fromJson(_json["ddlTargetTable"]);
+    }
+    if (_json.containsKey("estimatedBytesProcessed")) {
+      estimatedBytesProcessed = _json["estimatedBytesProcessed"];
+    }
     if (_json.containsKey("numDmlAffectedRows")) {
       numDmlAffectedRows = _json["numDmlAffectedRows"];
     }
@@ -4106,6 +4299,11 @@ class JobStatistics2 {
     }
     if (_json.containsKey("statementType")) {
       statementType = _json["statementType"];
+    }
+    if (_json.containsKey("timeline")) {
+      timeline = _json["timeline"]
+          .map((value) => new QueryTimelineSample.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("totalBytesBilled")) {
       totalBytesBilled = _json["totalBytesBilled"];
@@ -4132,6 +4330,15 @@ class JobStatistics2 {
     if (cacheHit != null) {
       _json["cacheHit"] = cacheHit;
     }
+    if (ddlOperationPerformed != null) {
+      _json["ddlOperationPerformed"] = ddlOperationPerformed;
+    }
+    if (ddlTargetTable != null) {
+      _json["ddlTargetTable"] = (ddlTargetTable).toJson();
+    }
+    if (estimatedBytesProcessed != null) {
+      _json["estimatedBytesProcessed"] = estimatedBytesProcessed;
+    }
     if (numDmlAffectedRows != null) {
       _json["numDmlAffectedRows"] = numDmlAffectedRows;
     }
@@ -4147,6 +4354,9 @@ class JobStatistics2 {
     }
     if (statementType != null) {
       _json["statementType"] = statementType;
+    }
+    if (timeline != null) {
+      _json["timeline"] = timeline.map((value) => (value).toJson()).toList();
     }
     if (totalBytesBilled != null) {
       _json["totalBytesBilled"] = totalBytesBilled;
@@ -4304,7 +4514,7 @@ class JsonObject extends collection.MapBase<core.String, core.Object> {
 
   JsonObject();
 
-  JsonObject.fromJson(core.Map _json) {
+  JsonObject.fromJson(core.Map<core.String, core.dynamic> _json) {
     _json.forEach((core.String key, value) {
       this[key] = value;
     });
@@ -4667,6 +4877,10 @@ class QueryRequest {
   /// The resource type of the request.
   core.String kind;
 
+  /// [Experimental] The geographic location where the job should run. Required
+  /// except for US and EU.
+  core.String location;
+
   /// [Optional] The maximum number of rows of data to return per page of
   /// results. Setting this flag to a small value such as 1000 and then paging
   /// through results might improve reliability when the query result set is
@@ -4723,6 +4937,9 @@ class QueryRequest {
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
+    if (_json.containsKey("location")) {
+      location = _json["location"];
+    }
     if (_json.containsKey("maxResults")) {
       maxResults = _json["maxResults"];
     }
@@ -4762,6 +4979,9 @@ class QueryRequest {
     }
     if (kind != null) {
       _json["kind"] = kind;
+    }
+    if (location != null) {
+      _json["location"] = location;
     }
     if (maxResults != null) {
       _json["maxResults"] = maxResults;
@@ -4923,6 +5143,65 @@ class QueryResponse {
   }
 }
 
+class QueryTimelineSample {
+  /// Total number of active workers. This does not correspond directly to slot
+  /// usage. This is the largest value observed since the last sample.
+  core.String activeInputs;
+
+  /// Total parallel units of work completed by this query.
+  core.String completedInputs;
+
+  /// Milliseconds elapsed since the start of query execution.
+  core.String elapsedMs;
+
+  /// Total parallel units of work remaining for the active stages.
+  core.String pendingInputs;
+
+  /// Cumulative slot-ms consumed by the query.
+  core.String totalSlotMs;
+
+  QueryTimelineSample();
+
+  QueryTimelineSample.fromJson(core.Map _json) {
+    if (_json.containsKey("activeInputs")) {
+      activeInputs = _json["activeInputs"];
+    }
+    if (_json.containsKey("completedInputs")) {
+      completedInputs = _json["completedInputs"];
+    }
+    if (_json.containsKey("elapsedMs")) {
+      elapsedMs = _json["elapsedMs"];
+    }
+    if (_json.containsKey("pendingInputs")) {
+      pendingInputs = _json["pendingInputs"];
+    }
+    if (_json.containsKey("totalSlotMs")) {
+      totalSlotMs = _json["totalSlotMs"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (activeInputs != null) {
+      _json["activeInputs"] = activeInputs;
+    }
+    if (completedInputs != null) {
+      _json["completedInputs"] = completedInputs;
+    }
+    if (elapsedMs != null) {
+      _json["elapsedMs"] = elapsedMs;
+    }
+    if (pendingInputs != null) {
+      _json["pendingInputs"] = pendingInputs;
+    }
+    if (totalSlotMs != null) {
+      _json["totalSlotMs"] = totalSlotMs;
+    }
+    return _json;
+  }
+}
+
 class Streamingbuffer {
   /// [Output-only] A lower-bound estimate of the number of bytes currently in
   /// the streaming buffer.
@@ -4975,7 +5254,7 @@ class Table {
   /// [Optional] A user-friendly description of this table.
   core.String description;
 
-  /// [Experimental] Custom encryption configuration (e.g., Cloud KMS keys).
+  /// Custom encryption configuration (e.g., Cloud KMS keys).
   EncryptionConfiguration encryptionConfiguration;
 
   /// [Output-only] A hash of this resource.
@@ -4983,7 +5262,9 @@ class Table {
 
   /// [Optional] The time when this table expires, in milliseconds since the
   /// epoch. If not present, the table will persist indefinitely. Expired tables
-  /// will be deleted and their storage reclaimed.
+  /// will be deleted and their storage reclaimed. The defaultTableExpirationMs
+  /// property of the encapsulating dataset can be used to set a default
+  /// expirationTime on newly created tables.
   core.String expirationTime;
 
   /// [Optional] Describes the data format, location, and other properties of a
@@ -5000,12 +5281,12 @@ class Table {
   /// [Output-only] The type of the resource.
   core.String kind;
 
-  /// [Experimental] The labels associated with this table. You can use these to
-  /// organize and group your tables. Label keys and values can be no longer
-  /// than 63 characters, can only contain lowercase letters, numeric
-  /// characters, underscores and dashes. International characters are allowed.
-  /// Label values are optional. Label keys must start with a letter and each
-  /// label in the list must have a different key.
+  /// The labels associated with this table. You can use these to organize and
+  /// group your tables. Label keys and values can be no longer than 63
+  /// characters, can only contain lowercase letters, numeric characters,
+  /// underscores and dashes. International characters are allowed. Label values
+  /// are optional. Label keys must start with a letter and each label in the
+  /// list must have a different key.
   core.Map<core.String, core.String> labels;
 
   /// [Output-only] The time when this table was last modified, in milliseconds
@@ -5567,8 +5848,8 @@ class TableListTables {
   /// The resource type.
   core.String kind;
 
-  /// [Experimental] The labels associated with this table. You can use these to
-  /// organize and group your tables.
+  /// The labels associated with this table. You can use these to organize and
+  /// group your tables.
   core.Map<core.String, core.String> labels;
 
   /// A reference uniquely identifying the table.
@@ -5816,6 +6097,11 @@ class TimePartitioning {
   /// NULLABLE or REQUIRED.
   core.String field;
 
+  /// [Experimental] [Optional] If set to true, queries over this table require
+  /// a partition filter that can be used for partition elimination to be
+  /// specified.
+  core.bool requirePartitionFilter;
+
   /// [Required] The only type supported is DAY, which will generate one
   /// partition per day.
   core.String type;
@@ -5828,6 +6114,9 @@ class TimePartitioning {
     }
     if (_json.containsKey("field")) {
       field = _json["field"];
+    }
+    if (_json.containsKey("requirePartitionFilter")) {
+      requirePartitionFilter = _json["requirePartitionFilter"];
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -5842,6 +6131,9 @@ class TimePartitioning {
     }
     if (field != null) {
       _json["field"] = field;
+    }
+    if (requirePartitionFilter != null) {
+      _json["requirePartitionFilter"] = requirePartitionFilter;
     }
     if (type != null) {
       _json["type"] = type;

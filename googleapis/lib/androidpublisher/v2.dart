@@ -2308,12 +2308,9 @@ class EditsTestersResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - null
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2372,12 +2369,9 @@ class EditsTestersResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - null
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2439,12 +2433,9 @@ class EditsTestersResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - null
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2513,12 +2504,9 @@ class EditsTracksResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - The track type to read or modify.
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2634,12 +2622,9 @@ class EditsTracksResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - The track type to read or modify.
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2705,12 +2690,9 @@ class EditsTracksResourceApi {
   ///
   /// [editId] - Unique identifier for this edit.
   ///
-  /// [track] - The track type to read or modify.
-  /// Possible string values are:
-  /// - "alpha"
-  /// - "beta"
-  /// - "production"
-  /// - "rollout"
+  /// [track] - The track to read or modify. Acceptable values are: "alpha",
+  /// "beta", "production" or "rollout".
+  /// Value must have pattern "(alpha|beta|production|rollout)".
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -2844,49 +2826,6 @@ class InappproductsResourceApi {
   final commons.ApiRequester _requester;
 
   InappproductsResourceApi(commons.ApiRequester client) : _requester = client;
-
-  /// [request] - The metadata request object.
-  ///
-  /// Request parameters:
-  ///
-  /// [$fields] - Selector specifying which fields to include in a partial
-  /// response.
-  ///
-  /// Completes with a [InappproductsBatchResponse].
-  ///
-  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
-  /// error.
-  ///
-  /// If the used [http.Client] completes with an error when making a REST call,
-  /// this method will complete with the same error.
-  async.Future<InappproductsBatchResponse> batch(
-      InappproductsBatchRequest request,
-      {core.String $fields}) {
-    var _url = null;
-    var _queryParams = new core.Map();
-    var _uploadMedia = null;
-    var _uploadOptions = null;
-    var _downloadOptions = commons.DownloadOptions.Metadata;
-    var _body = null;
-
-    if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
-    }
-    if ($fields != null) {
-      _queryParams["fields"] = [$fields];
-    }
-
-    _url = 'inappproducts/batch';
-
-    var _response = _requester.request(_url, "POST",
-        body: _body,
-        queryParams: _queryParams,
-        uploadOptions: _uploadOptions,
-        uploadMedia: _uploadMedia,
-        downloadOptions: _downloadOptions);
-    return _response
-        .then((data) => new InappproductsBatchResponse.fromJson(data));
-  }
 
   /// Delete an in-app product for an app.
   ///
@@ -3667,7 +3606,7 @@ class PurchasesVoidedpurchasesResourceApi {
   PurchasesVoidedpurchasesResourceApi(commons.ApiRequester client)
       : _requester = client;
 
-  /// Lists the purchases that were cancelled, refunded or charged-back.
+  /// Lists the purchases that were canceled, refunded or charged-back.
   ///
   /// Request parameters:
   ///
@@ -5048,189 +4987,6 @@ class InAppProductListing {
   }
 }
 
-class InappproductsBatchRequest {
-  core.List<InappproductsBatchRequestEntry> entrys;
-
-  InappproductsBatchRequest();
-
-  InappproductsBatchRequest.fromJson(core.Map _json) {
-    if (_json.containsKey("entrys")) {
-      entrys = _json["entrys"]
-          .map((value) => new InappproductsBatchRequestEntry.fromJson(value))
-          .toList();
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (entrys != null) {
-      _json["entrys"] = entrys.map((value) => (value).toJson()).toList();
-    }
-    return _json;
-  }
-}
-
-class InappproductsBatchRequestEntry {
-  core.int batchId;
-  InappproductsInsertRequest inappproductsinsertrequest;
-  InappproductsUpdateRequest inappproductsupdaterequest;
-  core.String methodName;
-
-  InappproductsBatchRequestEntry();
-
-  InappproductsBatchRequestEntry.fromJson(core.Map _json) {
-    if (_json.containsKey("batchId")) {
-      batchId = _json["batchId"];
-    }
-    if (_json.containsKey("inappproductsinsertrequest")) {
-      inappproductsinsertrequest = new InappproductsInsertRequest.fromJson(
-          _json["inappproductsinsertrequest"]);
-    }
-    if (_json.containsKey("inappproductsupdaterequest")) {
-      inappproductsupdaterequest = new InappproductsUpdateRequest.fromJson(
-          _json["inappproductsupdaterequest"]);
-    }
-    if (_json.containsKey("methodName")) {
-      methodName = _json["methodName"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (batchId != null) {
-      _json["batchId"] = batchId;
-    }
-    if (inappproductsinsertrequest != null) {
-      _json["inappproductsinsertrequest"] =
-          (inappproductsinsertrequest).toJson();
-    }
-    if (inappproductsupdaterequest != null) {
-      _json["inappproductsupdaterequest"] =
-          (inappproductsupdaterequest).toJson();
-    }
-    if (methodName != null) {
-      _json["methodName"] = methodName;
-    }
-    return _json;
-  }
-}
-
-class InappproductsBatchResponse {
-  core.List<InappproductsBatchResponseEntry> entrys;
-
-  /// Identifies what kind of resource this is. Value: the fixed string
-  /// "androidpublisher#inappproductsBatchResponse".
-  core.String kind;
-
-  InappproductsBatchResponse();
-
-  InappproductsBatchResponse.fromJson(core.Map _json) {
-    if (_json.containsKey("entrys")) {
-      entrys = _json["entrys"]
-          .map((value) => new InappproductsBatchResponseEntry.fromJson(value))
-          .toList();
-    }
-    if (_json.containsKey("kind")) {
-      kind = _json["kind"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (entrys != null) {
-      _json["entrys"] = entrys.map((value) => (value).toJson()).toList();
-    }
-    if (kind != null) {
-      _json["kind"] = kind;
-    }
-    return _json;
-  }
-}
-
-class InappproductsBatchResponseEntry {
-  core.int batchId;
-  InappproductsInsertResponse inappproductsinsertresponse;
-  InappproductsUpdateResponse inappproductsupdateresponse;
-
-  InappproductsBatchResponseEntry();
-
-  InappproductsBatchResponseEntry.fromJson(core.Map _json) {
-    if (_json.containsKey("batchId")) {
-      batchId = _json["batchId"];
-    }
-    if (_json.containsKey("inappproductsinsertresponse")) {
-      inappproductsinsertresponse = new InappproductsInsertResponse.fromJson(
-          _json["inappproductsinsertresponse"]);
-    }
-    if (_json.containsKey("inappproductsupdateresponse")) {
-      inappproductsupdateresponse = new InappproductsUpdateResponse.fromJson(
-          _json["inappproductsupdateresponse"]);
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (batchId != null) {
-      _json["batchId"] = batchId;
-    }
-    if (inappproductsinsertresponse != null) {
-      _json["inappproductsinsertresponse"] =
-          (inappproductsinsertresponse).toJson();
-    }
-    if (inappproductsupdateresponse != null) {
-      _json["inappproductsupdateresponse"] =
-          (inappproductsupdateresponse).toJson();
-    }
-    return _json;
-  }
-}
-
-class InappproductsInsertRequest {
-  InAppProduct inappproduct;
-
-  InappproductsInsertRequest();
-
-  InappproductsInsertRequest.fromJson(core.Map _json) {
-    if (_json.containsKey("inappproduct")) {
-      inappproduct = new InAppProduct.fromJson(_json["inappproduct"]);
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (inappproduct != null) {
-      _json["inappproduct"] = (inappproduct).toJson();
-    }
-    return _json;
-  }
-}
-
-class InappproductsInsertResponse {
-  InAppProduct inappproduct;
-
-  InappproductsInsertResponse();
-
-  InappproductsInsertResponse.fromJson(core.Map _json) {
-    if (_json.containsKey("inappproduct")) {
-      inappproduct = new InAppProduct.fromJson(_json["inappproduct"]);
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (inappproduct != null) {
-      _json["inappproduct"] = (inappproduct).toJson();
-    }
-    return _json;
-  }
-}
-
 class InappproductsListResponse {
   core.List<InAppProduct> inappproduct;
 
@@ -5274,48 +5030,6 @@ class InappproductsListResponse {
     }
     if (tokenPagination != null) {
       _json["tokenPagination"] = (tokenPagination).toJson();
-    }
-    return _json;
-  }
-}
-
-class InappproductsUpdateRequest {
-  InAppProduct inappproduct;
-
-  InappproductsUpdateRequest();
-
-  InappproductsUpdateRequest.fromJson(core.Map _json) {
-    if (_json.containsKey("inappproduct")) {
-      inappproduct = new InAppProduct.fromJson(_json["inappproduct"]);
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (inappproduct != null) {
-      _json["inappproduct"] = (inappproduct).toJson();
-    }
-    return _json;
-  }
-}
-
-class InappproductsUpdateResponse {
-  InAppProduct inappproduct;
-
-  InappproductsUpdateResponse();
-
-  InappproductsUpdateResponse.fromJson(core.Map _json) {
-    if (_json.containsKey("inappproduct")) {
-      inappproduct = new InAppProduct.fromJson(_json["inappproduct"]);
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (inappproduct != null) {
-      _json["inappproduct"] = (inappproduct).toJson();
     }
     return _json;
   }
@@ -5531,12 +5245,19 @@ class ProductPurchase {
 
   /// The purchase state of the order. Possible values are:
   /// - Purchased
-  /// - Cancelled
+  /// - Canceled
   core.int purchaseState;
 
   /// The time the product was purchased, in milliseconds since the epoch (Jan
   /// 1, 1970).
   core.String purchaseTimeMillis;
+
+  /// The type of purchase of the inapp product. This field is only set if this
+  /// purchase was not made using the standard in-app billing flow. Possible
+  /// values are:
+  /// - Test (i.e. purchased from a license testing account)
+  /// - Promo (i.e. purchased using a promo code)
+  core.int purchaseType;
 
   ProductPurchase();
 
@@ -5558,6 +5279,9 @@ class ProductPurchase {
     }
     if (_json.containsKey("purchaseTimeMillis")) {
       purchaseTimeMillis = _json["purchaseTimeMillis"];
+    }
+    if (_json.containsKey("purchaseType")) {
+      purchaseType = _json["purchaseType"];
     }
   }
 
@@ -5581,6 +5305,9 @@ class ProductPurchase {
     }
     if (purchaseTimeMillis != null) {
       _json["purchaseTimeMillis"] = purchaseTimeMillis;
+    }
+    if (purchaseType != null) {
+      _json["purchaseType"] = purchaseType;
     }
     return _json;
   }
@@ -5863,12 +5590,13 @@ class SubscriptionPurchase {
   /// current expiry time.
   core.bool autoRenewing;
 
-  /// The reason why a subscription was cancelled or is not auto-renewing.
+  /// The reason why a subscription was canceled or is not auto-renewing.
   /// Possible values are:
-  /// - User cancelled the subscription
-  /// - Subscription was cancelled by the system, for example because of a
+  /// - User canceled the subscription
+  /// - Subscription was canceled by the system, for example because of a
   /// billing problem
   /// - Subscription was replaced with a new subscription
+  /// - Subscription was canceled by the developer
   core.int cancelReason;
 
   /// ISO 3166-1 alpha-2 billing country/region code of the user at the time the
@@ -5886,6 +5614,19 @@ class SubscriptionPurchase {
   /// This kind represents a subscriptionPurchase object in the androidpublisher
   /// service.
   core.String kind;
+
+  /// The purchase token of the originating purchase if this subscription is one
+  /// of the following:
+  /// - Re-signup of a canceled but non-lapsed subscription
+  /// - Upgrade/downgrade from a previous subscription  For example, suppose a
+  /// user originally signs up and you receive purchase token X, then the user
+  /// cancels and goes through the resignup flow (before their subscription
+  /// lapses) and you receive purchase token Y, and finally the user upgrades
+  /// their subscription and you receive purchase token Z. If you call this API
+  /// with purchase token Z, this field will be set to Y. If you call this API
+  /// with purchase token Y, this field will be set to X. If you call this API
+  /// with purchase token X, this field will not be set.
+  core.String linkedPurchaseToken;
 
   /// The order id of the latest recurring order associated with the purchase of
   /// the subscription.
@@ -5907,6 +5648,12 @@ class SubscriptionPurchase {
   /// price is specified in British pounds sterling, price_currency_code is
   /// "GBP".
   core.String priceCurrencyCode;
+
+  /// The type of purchase of the subscription. This field is only set if this
+  /// purchase was not made using the standard in-app billing flow. Possible
+  /// values are:
+  /// - Test (i.e. purchased from a license testing account)
+  core.int purchaseType;
 
   /// Time at which the subscription was granted, in milliseconds since the
   /// Epoch.
@@ -5937,6 +5684,9 @@ class SubscriptionPurchase {
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
+    if (_json.containsKey("linkedPurchaseToken")) {
+      linkedPurchaseToken = _json["linkedPurchaseToken"];
+    }
     if (_json.containsKey("orderId")) {
       orderId = _json["orderId"];
     }
@@ -5948,6 +5698,9 @@ class SubscriptionPurchase {
     }
     if (_json.containsKey("priceCurrencyCode")) {
       priceCurrencyCode = _json["priceCurrencyCode"];
+    }
+    if (_json.containsKey("purchaseType")) {
+      purchaseType = _json["purchaseType"];
     }
     if (_json.containsKey("startTimeMillis")) {
       startTimeMillis = _json["startTimeMillis"];
@@ -5978,6 +5731,9 @@ class SubscriptionPurchase {
     if (kind != null) {
       _json["kind"] = kind;
     }
+    if (linkedPurchaseToken != null) {
+      _json["linkedPurchaseToken"] = linkedPurchaseToken;
+    }
     if (orderId != null) {
       _json["orderId"] = orderId;
     }
@@ -5989,6 +5745,9 @@ class SubscriptionPurchase {
     }
     if (priceCurrencyCode != null) {
       _json["priceCurrencyCode"] = priceCurrencyCode;
+    }
+    if (purchaseType != null) {
+      _json["purchaseType"] = purchaseType;
     }
     if (startTimeMillis != null) {
       _json["startTimeMillis"] = startTimeMillis;
@@ -6130,6 +5889,8 @@ class TokenPagination {
 }
 
 class Track {
+  /// Identifier for this track. One of "alpha", "beta", "production" or
+  /// "rollout".
   core.String track;
   core.double userFraction;
   core.List<core.int> versionCodes;
@@ -6325,7 +6086,7 @@ class UserComment {
 }
 
 /// A VoidedPurchase resource indicates a purchase that was either
-/// cancelled/refunded/charged-back.
+/// canceled/refunded/charged-back.
 class VoidedPurchase {
   /// This kind represents a voided purchase object in the androidpublisher
   /// service.
@@ -6339,7 +6100,7 @@ class VoidedPurchase {
   /// identifies a purchase.
   core.String purchaseToken;
 
-  /// The time at which the purchase was cancelled/refunded/charged-back, in
+  /// The time at which the purchase was canceled/refunded/charged-back, in
   /// milliseconds since the epoch (Jan 1, 1970).
   core.String voidedTimeMillis;
 

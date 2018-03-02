@@ -483,14 +483,14 @@ class LiensResourceApi {
   ///
   /// Request parameters:
   ///
+  /// [parent] - The name of the resource to list all attached Liens.
+  /// For example, `projects/1234`.
+  ///
   /// [pageToken] - The `next_page_token` value returned from a previous List
   /// request, if any.
   ///
   /// [pageSize] - The maximum number of items to return. This is a suggestion
   /// for the server.
-  ///
-  /// [parent] - The name of the resource to list all attached Liens.
-  /// For example, `projects/1234`.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -503,9 +503,9 @@ class LiensResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListLiensResponse> list(
-      {core.String pageToken,
+      {core.String parent,
+      core.String pageToken,
       core.int pageSize,
-      core.String parent,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -514,14 +514,14 @@ class LiensResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
+    if (parent != null) {
+      _queryParams["parent"] = [parent];
+    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
-    }
-    if (parent != null) {
-      _queryParams["parent"] = [parent];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1538,7 +1538,10 @@ class ProjectsResourceApi {
   /// Permission is denied if the policy or the resource does not exist.
   ///
   /// Authorization requires the Google IAM permission
-  /// `resourcemanager.projects.getIamPolicy` on the project
+  /// `resourcemanager.projects.getIamPolicy` on the project.
+  ///
+  /// For additional information about resource structure and identification,
+  /// see [Resource Names](/apis/design/resource_names).
   ///
   /// [request] - The metadata request object.
   ///
@@ -1650,9 +1653,25 @@ class ProjectsResourceApi {
 
   /// Lists Projects that are visible to the user and satisfy the
   /// specified filter. This method returns Projects in an unspecified order.
-  /// New Projects do not necessarily appear at the end of the list.
+  /// This method is eventually consistent with project mutations; this means
+  /// that a newly created project may not appear in the results or recent
+  /// updates to an existing project may not be reflected in the results. To
+  /// retrieve the latest state of a project, use the
+  /// GetProject method.
   ///
   /// Request parameters:
+  ///
+  /// [pageToken] - A pagination token returned from a previous call to
+  /// ListProjects
+  /// that indicates from where listing should continue.
+  ///
+  /// Optional.
+  ///
+  /// [pageSize] - The maximum number of Projects to return in the response.
+  /// The server can return fewer Projects than requested.
+  /// If unspecified, server picks an appropriate default.
+  ///
+  /// Optional.
   ///
   /// [filter] - An expression for filtering the results of the request.  Filter
   /// rules are
@@ -1687,18 +1706,6 @@ class ProjectsResourceApi {
   ///
   /// Optional.
   ///
-  /// [pageToken] - A pagination token returned from a previous call to
-  /// ListProjects
-  /// that indicates from where listing should continue.
-  ///
-  /// Optional.
-  ///
-  /// [pageSize] - The maximum number of Projects to return in the response.
-  /// The server can return fewer Projects than requested.
-  /// If unspecified, server picks an appropriate default.
-  ///
-  /// Optional.
-  ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
   ///
@@ -1710,9 +1717,9 @@ class ProjectsResourceApi {
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
   async.Future<ListProjectsResponse> list(
-      {core.String filter,
-      core.String pageToken,
+      {core.String pageToken,
       core.int pageSize,
+      core.String filter,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1721,14 +1728,14 @@ class ProjectsResourceApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
-    if (filter != null) {
-      _queryParams["filter"] = [filter];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
+    }
+    if (filter != null) {
+      _queryParams["filter"] = [filter];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1852,7 +1859,7 @@ class ProjectsResourceApi {
     return _response.then((data) => new ListOrgPoliciesResponse.fromJson(data));
   }
 
-  /// Sets the IAM access control policy for the specified Project. Replaces
+  /// Sets the IAM access control policy for the specified Project. Overwrites
   /// any existing policy.
   ///
   /// The following constraints apply when using `setIamPolicy()`:
@@ -1885,7 +1892,8 @@ class ProjectsResourceApi {
   /// IAM policies will be rejected until the lack of a ToS-accepting owner is
   /// rectified.
   ///
-  /// + Calling this method requires enabling the App Engine Admin API.
+  /// + This method will replace the existing policy, and cannot be used to
+  /// append additional IAM settings.
   ///
   /// Note: Removing service accounts from policies or changing their roles
   /// can render services completely inoperable. It is important to understand
@@ -2203,7 +2211,7 @@ class Ancestor {
 /// If there are AuditConfigs for both `allServices` and a specific service,
 /// the union of the two AuditConfigs is used for that service: the log_types
 /// specified in each AuditConfig are enabled, and the exempted_members in each
-/// AuditConfig are exempted.
+/// AuditLogConfig are exempted.
 ///
 /// Example Policy with multiple AuditConfigs:
 ///
@@ -3549,9 +3557,10 @@ class Organization {
   /// @OutputOnly
   core.String creationTime;
 
-  /// A friendly string to be used to refer to the Organization in the UI.
-  /// Assigned by the server, set to the primary domain of the G Suite
-  /// customer that owns the organization.
+  /// A human-readable string that refers to the Organization in the
+  /// GCP Console UI. This string is set by the server and cannot be
+  /// changed. The string will be set to the primary domain (for example,
+  /// "google.com") of the G Suite customer that owns the organization.
   /// @OutputOnly
   core.String displayName;
 
@@ -3676,7 +3685,7 @@ class OrganizationOwner {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
   /// Specifies cloud audit logging configuration for this policy.
   core.List<AuditConfig> auditConfigs;
@@ -3706,7 +3715,7 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();
@@ -3805,8 +3814,8 @@ class Project {
 
   /// An optional reference to a parent Resource.
   ///
-  /// The only supported parent type is "organization". Once set, the parent
-  /// cannot be modified. The `parent` can be set on creation or using the
+  /// Supported parent types include "organization" and "folder". Once set, the
+  /// parent cannot be cleared. The `parent` can be set on creation or using the
   /// `UpdateProject` method; the end user must have the
   /// `resourcemanager.projects.create` permission on the parent.
   ///

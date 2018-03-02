@@ -68,6 +68,12 @@ void main() {
 The following is a list of APIs that are currently available inside this
 package.
 
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Abusive Experience Report API - abusiveexperiencereport v1
+
+View Abusive Experience Report data, and get a list of sites that have a significant number of abusive experiences.
+
+Official API documentation: https://developers.google.com/abusive-experience-report/
+
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Accelerated Mobile Pages (AMP) URL API - acceleratedmobilepageurl v1
 
 Retrieves the list of AMP URLs (and equivalent AMP Cache URLs) for a given list of public URL(s).
@@ -149,7 +155,7 @@ Official API documentation: https://developers.google.com/analytics/devguides/re
 
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Android Device Provisioning Partner API - androiddeviceprovisioning v1
 
-Automates reseller integration into zero-touch enrollment by assigning devices to customers and creating device reports.
+Automates Android zero-touch enrollment for device resellers, customers, and EMMs.
 
 Official API documentation: https://developers.google.com/zero-touch/
 
@@ -282,16 +288,23 @@ The Google Cloud Resource Manager API provides methods for creating, reading, an
 
 Official API documentation: https://cloud.google.com/resource-manager
 
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Cloud Shell API - cloudshell v1
+
+Allows users to start, configure, and connect to interactive shell sessions running in the cloud.
+
+
+Official API documentation: https://cloud.google.com/shell/docs/
+
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Stackdriver Trace API - cloudtrace v1
 
-Send and retrieve trace data from Stackdriver Trace. Data is generated and available by default for all App Engine applications. Data from other applications can be written to Stackdriver Trace for display, reporting, and analysis.
+Sends application trace data to Stackdriver Trace for viewing. Trace data is collected for all App Engine applications by default. Trace data from other applications can be provided using this API.
 
 
 Official API documentation: https://cloud.google.com/trace
 
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Stackdriver Trace API - cloudtrace v2
 
-Send and retrieve trace data from Stackdriver Trace. Data is generated and available by default for all App Engine applications. Data from other applications can be written to Stackdriver Trace for display, reporting, and analysis.
+Sends application trace data to Stackdriver Trace for viewing. Trace data is collected for all App Engine applications by default. Trace data from other applications can be provided using this API.
 
 
 Official API documentation: https://cloud.google.com/trace
@@ -302,13 +315,9 @@ Creates and runs virtual machines on Google Cloud Platform.
 
 Official API documentation: https://developers.google.com/compute/docs/reference/latest/
 
-#### ![Logo](https://www.gstatic.com/images/branding/product/1x/googleg_16dp.png) Consumer Surveys API - consumersurveys v2
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Kubernetes Engine API - container v1
 
-Creates and conducts surveys, lists the surveys that an authenticated user owns, and retrieves survey results and information about specified surveys.
-
-#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Container Engine API - container v1
-
-The Google Container Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
+The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
 
 Official API documentation: https://cloud.google.com/container-engine/
 
@@ -354,6 +363,18 @@ Official API documentation: https://cloud.google.com/deployment-manager/
 Manages your DoubleClick Campaign Manager ad campaigns and reports.
 
 Official API documentation: https://developers.google.com/doubleclick-advertisers/
+
+#### ![Logo](https://www.google.com/images/icons/product/doubleclick-16.gif) DCM/DFA Reporting And Trafficking API - dfareporting v3.0
+
+Manages your DoubleClick Campaign Manager ad campaigns and reports.
+
+Official API documentation: https://developers.google.com/doubleclick-advertisers/
+
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Digital Asset Links API - digitalassetlinks v1
+
+API for discovering relationships between online assets such as web sites or mobile apps.
+
+Official API documentation: https://developers.google.com/digital-asset-links/
 
 #### ![Logo](http://www.google.com/images/icons/feature/filing_cabinet_search-g16.png) APIs Discovery Service - discovery v1
 
@@ -536,6 +557,12 @@ Obtains end-user authorization grants for use with other Google APIs.
 
 Official API documentation: https://developers.google.com/accounts/docs/OAuth2
 
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Cloud OS Login API - oslogin v1
+
+Manages OS login configuration for Google account users.
+
+Official API documentation: https://cloud.google.com/compute/docs/oslogin/rest/
+
 #### ![Logo](https://www.google.com/images/icons/product/pagespeed-16.png) PageSpeed Insights API - pagespeedonline v1
 
 Analyzes the performance of a web page and provides tailored suggestions to make that page faster.
@@ -566,12 +593,6 @@ An API to publish custom Android apps.
 
 Official API documentation: https://developers.google.com/android/work/play/custom-app-api
 
-#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Play Movies Partner API - playmoviespartner v1
-
-Gets the delivery status of titles for Google Play Movies Partners.
-
-Official API documentation: https://developers.google.com/playmoviespartner/
-
 #### ![Logo](http://www.google.com/images/icons/product/gplus-16.png) Google+ API - plus v1
 
 Builds on top of the Google+ platform.
@@ -583,6 +604,13 @@ Official API documentation: https://developers.google.com/+/api/
 Builds on top of the Google+ platform for Google Apps Domains.
 
 Official API documentation: https://developers.google.com/+/domains/
+
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Poly API - poly v1
+
+The Poly API provides read-only access to assets hosted on <a href="https://poly.google.com">poly.google.com</a>.
+
+
+Official API documentation: https://developers.google.com/poly/
 
 #### ![Logo](https://www.google.com/images/icons/feature/predictionapi-16.png) Prediction API - prediction v1.6
 
@@ -615,17 +643,23 @@ Enables client applications to check web resources (most commonly URLs) against 
 
 Official API documentation: https://developers.google.com/safe-browsing/
 
-#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Apps Script Execution API - script v1
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Apps Script API - script v1
 
 An API for managing and executing Google Apps Script projects.
 
-Official API documentation: https://developers.google.com/apps-script/execution/rest/v1/scripts/run
+Official API documentation: https://developers.google.com/apps-script/api/
 
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Search Console URL Testing Tools API - searchconsole v1
 
 Provides tools for running validation tests against single URLs
 
 Official API documentation: https://developers.google.com/webmaster-tools/search-console-api/
+
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Service Consumer Management API - serviceconsumermanagement v1
+
+Provides management methods for configuring service producer resources on Google Cloud.
+
+Official API documentation: https://cloud.google.com/service-consumer-management/docs/overview
 
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Service Control API - servicecontrol v1
 
@@ -638,6 +672,12 @@ Official API documentation: https://cloud.google.com/service-control/
 Google Service Management allows service producers to publish their services on Google Cloud Platform so that they can be discovered and used by service consumers.
 
 Official API documentation: https://cloud.google.com/service-management/
+
+#### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Service Usage API - serviceusage v1
+
+Enables services that service consumers want to use on Google Cloud Platform, lists the available or enabled services, or disables services that service consumers no longer use.
+
+Official API documentation: https://cloud.google.com/service-usage/
 
 #### ![Logo](http://www.google.com/images/icons/product/search-16.gif) Google Service User API - serviceuser v1
 

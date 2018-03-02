@@ -122,9 +122,9 @@ class OperationsResourceApi {
   /// * `serviceName={some-service}.googleapis.com AND (status=done OR
   /// startTime>="2017-02-01")`
   ///
-  /// [pageToken] - The standard list page token.
-  ///
   /// [name] - Not used.
+  ///
+  /// [pageToken] - The standard list page token.
   ///
   /// [pageSize] - The maximum number of operations to return. If unspecified,
   /// defaults to
@@ -142,8 +142,8 @@ class OperationsResourceApi {
   /// call, this method will complete with the same error.
   async.Future<ListOperationsResponse> list(
       {core.String filter,
-      core.String pageToken,
       core.String name,
+      core.String pageToken,
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
@@ -156,11 +156,11 @@ class OperationsResourceApi {
     if (filter != null) {
       _queryParams["filter"] = [filter];
     }
-    if (pageToken != null) {
-      _queryParams["pageToken"] = [pageToken];
-    }
     if (name != null) {
       _queryParams["name"] = [name];
+    }
+    if (pageToken != null) {
+      _queryParams["pageToken"] = [pageToken];
     }
     if (pageSize != null) {
       _queryParams["pageSize"] = ["${pageSize}"];
@@ -1001,9 +1001,9 @@ class ServicesConfigsResourceApi {
   /// [overview](/service-management/overview)
   /// for naming requirements.  For example: `example.googleapis.com`.
   ///
-  /// [pageSize] - The max number of items to include in the response list.
-  ///
   /// [pageToken] - The token of the page to retrieve.
+  ///
+  /// [pageSize] - The max number of items to include in the response list.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1016,7 +1016,7 @@ class ServicesConfigsResourceApi {
   /// If the used [http_1.Client] completes with an error when making a REST
   /// call, this method will complete with the same error.
   async.Future<ListServiceConfigsResponse> list(core.String serviceName,
-      {core.int pageSize, core.String pageToken, core.String $fields}) {
+      {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
@@ -1027,11 +1027,11 @@ class ServicesConfigsResourceApi {
     if (serviceName == null) {
       throw new core.ArgumentError("Parameter serviceName is required.");
     }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
-    }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
+    }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1422,6 +1422,8 @@ class ServicesRolloutsResourceApi {
   /// [overview](/service-management/overview)
   /// for naming requirements.  For example: `example.googleapis.com`.
   ///
+  /// [pageSize] - The max number of items to include in the response list.
+  ///
   /// [filter] - Use `filter` to return subset of rollouts.
   /// The following filters are supported:
   ///   -- To limit the results to only those in
@@ -1432,8 +1434,6 @@ class ServicesRolloutsResourceApi {
   ///      or 'FAILED', use filter='status=CANCELLED OR status=FAILED'
   ///
   /// [pageToken] - The token of the page to retrieve.
-  ///
-  /// [pageSize] - The max number of items to include in the response list.
   ///
   /// [$fields] - Selector specifying which fields to include in a partial
   /// response.
@@ -1446,9 +1446,9 @@ class ServicesRolloutsResourceApi {
   /// If the used [http_1.Client] completes with an error when making a REST
   /// call, this method will complete with the same error.
   async.Future<ListServiceRolloutsResponse> list(core.String serviceName,
-      {core.String filter,
+      {core.int pageSize,
+      core.String filter,
       core.String pageToken,
-      core.int pageSize,
       core.String $fields}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -1460,14 +1460,14 @@ class ServicesRolloutsResourceApi {
     if (serviceName == null) {
       throw new core.ArgumentError("Parameter serviceName is required.");
     }
+    if (pageSize != null) {
+      _queryParams["pageSize"] = ["${pageSize}"];
+    }
     if (filter != null) {
       _queryParams["filter"] = [filter];
     }
     if (pageToken != null) {
       _queryParams["pageToken"] = [pageToken];
-    }
-    if (pageSize != null) {
-      _queryParams["pageSize"] = ["${pageSize}"];
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1634,7 +1634,7 @@ class Api {
 /// If there are AuditConfigs for both `allServices` and a specific service,
 /// the union of the two AuditConfigs is used for that service: the log_types
 /// specified in each AuditConfig are enabled, and the exempted_members in each
-/// AuditConfig are exempted.
+/// AuditLogConfig are exempted.
 ///
 /// Example Policy with multiple AuditConfigs:
 ///
@@ -1681,7 +1681,6 @@ class AuditConfig {
   /// The configuration for logging of each type of permission.
   /// Next ID: 4
   core.List<AuditLogConfig> auditLogConfigs;
-  core.List<core.String> exemptedMembers;
 
   /// Specifies a service that will be enabled for audit logging.
   /// For example, `storage.googleapis.com`, `cloudsql.googleapis.com`.
@@ -1696,9 +1695,6 @@ class AuditConfig {
           .map((value) => new AuditLogConfig.fromJson(value))
           .toList();
     }
-    if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
-    }
     if (_json.containsKey("service")) {
       service = _json["service"];
     }
@@ -1710,9 +1706,6 @@ class AuditConfig {
     if (auditLogConfigs != null) {
       _json["auditLogConfigs"] =
           auditLogConfigs.map((value) => (value).toJson()).toList();
-    }
-    if (exemptedMembers != null) {
-      _json["exemptedMembers"] = exemptedMembers;
     }
     if (service != null) {
       _json["service"] = service;
@@ -2260,7 +2253,7 @@ class Binding {
   /// NOTE: an unsatisfied condition will not allow user access via current
   /// binding. Different bindings, including their conditions, are examined
   /// independently.
-  /// This field is GOOGLE_INTERNAL.
+  /// This field is only visible as GOOGLE_INTERNAL or CONDITION_TRUSTED_TESTER.
   Expr condition;
 
   /// Specifies the identities requesting access for a Cloud Platform resource.
@@ -3156,12 +3149,6 @@ class Endpoint {
   /// allowed to proceed.
   core.bool allowCors;
 
-  /// The list of APIs served by this endpoint.
-  ///
-  /// If no APIs are specified this translates to "all APIs" exported by the
-  /// service, as defined in the top-level service configuration.
-  core.List<core.String> apis;
-
   /// The list of features enabled on this endpoint.
   core.List<core.String> features;
 
@@ -3185,9 +3172,6 @@ class Endpoint {
     if (_json.containsKey("allowCors")) {
       allowCors = _json["allowCors"];
     }
-    if (_json.containsKey("apis")) {
-      apis = _json["apis"];
-    }
     if (_json.containsKey("features")) {
       features = _json["features"];
     }
@@ -3207,9 +3191,6 @@ class Endpoint {
     }
     if (allowCors != null) {
       _json["allowCors"] = allowCors;
-    }
-    if (apis != null) {
-      _json["apis"] = apis;
     }
     if (features != null) {
       _json["features"] = features;
@@ -3544,108 +3525,6 @@ class Field {
     }
     if (typeUrl != null) {
       _json["typeUrl"] = typeUrl;
-    }
-    return _json;
-  }
-}
-
-/// The metadata associated with a long running operation resource.
-class FlowOperationMetadata {
-  /// The state of the operation with respect to cancellation.
-  /// Possible string values are:
-  /// - "RUNNING" : Default state, cancellable but not cancelled.
-  /// - "UNCANCELLABLE" : The operation has proceeded past the point of no
-  /// return and cannot
-  /// be cancelled.
-  /// - "CANCELLED" : The operation has been cancelled, work should cease
-  /// and any needed rollback steps executed.
-  core.String cancelState;
-
-  /// Deadline for the flow to complete, to prevent orphaned Operations.
-  ///
-  /// If the flow has not completed by this time, it may be terminated by
-  /// the engine, or force-failed by Operation lookup.
-  ///
-  /// Note that this is not a hard deadline after which the Flow will
-  /// definitely be failed, rather it is a deadline after which it is reasonable
-  /// to suspect a problem and other parts of the system may kill operation
-  /// to ensure we don't have orphans.
-  /// see also: go/prevent-orphaned-operations
-  core.String deadline;
-
-  /// The name of the top-level flow corresponding to this operation.
-  /// Must be equal to the "name" field for a FlowName enum.
-  core.String flowName;
-
-  /// Operation type which is a flow type and subtype info as that is missing in
-  /// our datastore otherwise. This maps to the ordinal value of the enum:
-  /// jcg/api/tenant/operations/OperationNamespace.java
-  core.int operationType;
-
-  /// The full name of the resources that this flow is directly associated with.
-  core.List<core.String> resourceNames;
-
-  /// The start time of the operation.
-  core.String startTime;
-
-  ///
-  /// Possible string values are:
-  /// - "UNSPECIFIED_OP_SERVICE"
-  /// - "SERVICE_MANAGEMENT"
-  /// - "SERVICE_USAGE"
-  /// - "SERVICE_CONSUMER_MANAGEMENT" : TenancyUnit, ServiceNetworking fall
-  /// under this
-  core.String surface;
-
-  FlowOperationMetadata();
-
-  FlowOperationMetadata.fromJson(core.Map _json) {
-    if (_json.containsKey("cancelState")) {
-      cancelState = _json["cancelState"];
-    }
-    if (_json.containsKey("deadline")) {
-      deadline = _json["deadline"];
-    }
-    if (_json.containsKey("flowName")) {
-      flowName = _json["flowName"];
-    }
-    if (_json.containsKey("operationType")) {
-      operationType = _json["operationType"];
-    }
-    if (_json.containsKey("resourceNames")) {
-      resourceNames = _json["resourceNames"];
-    }
-    if (_json.containsKey("startTime")) {
-      startTime = _json["startTime"];
-    }
-    if (_json.containsKey("surface")) {
-      surface = _json["surface"];
-    }
-  }
-
-  core.Map<core.String, core.Object> toJson() {
-    final core.Map<core.String, core.Object> _json =
-        new core.Map<core.String, core.Object>();
-    if (cancelState != null) {
-      _json["cancelState"] = cancelState;
-    }
-    if (deadline != null) {
-      _json["deadline"] = deadline;
-    }
-    if (flowName != null) {
-      _json["flowName"] = flowName;
-    }
-    if (operationType != null) {
-      _json["operationType"] = operationType;
-    }
-    if (resourceNames != null) {
-      _json["resourceNames"] = resourceNames;
-    }
-    if (startTime != null) {
-      _json["startTime"] = startTime;
-    }
-    if (surface != null) {
-      _json["surface"] = surface;
     }
     return _json;
   }
@@ -4081,13 +3960,6 @@ class HttpRule {
   /// Used for updating a resource.
   core.String put;
 
-  /// The name of the response field whose value is mapped to the HTTP body of
-  /// response. Other response fields are ignored. This field is optional. When
-  /// not set, the response message will be used as HTTP body of response.
-  /// NOTE: the referred field must be not a repeated field and must be present
-  /// at the top-level of response message type.
-  core.String responseBody;
-
   /// Selects methods to which this rule applies.
   ///
   /// Refer to selector for syntax details.
@@ -4128,9 +4000,6 @@ class HttpRule {
     if (_json.containsKey("put")) {
       put = _json["put"];
     }
-    if (_json.containsKey("responseBody")) {
-      responseBody = _json["responseBody"];
-    }
     if (_json.containsKey("selector")) {
       selector = _json["selector"];
     }
@@ -4169,9 +4038,6 @@ class HttpRule {
     }
     if (put != null) {
       _json["put"] = put;
-    }
-    if (responseBody != null) {
-      _json["responseBody"] = responseBody;
     }
     if (selector != null) {
       _json["selector"] = selector;
@@ -4910,8 +4776,6 @@ class MetricDescriptor {
   ///
   /// **Grammar**
   ///
-  /// The grammar includes the dimensionless unit `1`, such as `1/s`.
-  ///
   /// The grammar also includes these connectors:
   ///
   /// * `/`    division (as an infix operator, e.g. `1/s`).
@@ -4921,7 +4785,7 @@ class MetricDescriptor {
   ///
   ///     Expression = Component { "." Component } { "/" Component } ;
   ///
-  ///     Component = [ PREFIX ] UNIT [ Annotation ]
+  ///     Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
   ///               | Annotation
   ///               | "1"
   ///               ;
@@ -4935,6 +4799,9 @@ class MetricDescriptor {
   ///    `{requests}/s == 1/s`, `By{transmitted}/s == By/s`.
   /// * `NAME` is a sequence of non-blank printable ASCII characters not
   ///    containing '{' or '}'.
+  /// * `1` represents dimensionless value 1, such as in `1/s`.
+  /// * `%` represents dimensionless value 1/100, and annotates values giving
+  ///    a percentage.
   core.String unit;
 
   /// Whether the measurement is an integer, a floating-point number, etc.
@@ -5673,7 +5540,7 @@ class Page {
 ///     }
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam).
+/// [IAM developer's guide](https://cloud.google.com/iam/docs).
 class Policy {
   /// Specifies cloud audit logging configuration for this policy.
   core.List<AuditConfig> auditConfigs;
@@ -5703,9 +5570,7 @@ class Policy {
         convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
-  core.bool iamOwned;
-
-  /// Version of the `Policy`. The default version is 0.
+  /// Deprecated.
   core.int version;
 
   Policy();
@@ -5724,9 +5589,6 @@ class Policy {
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
     }
-    if (_json.containsKey("iamOwned")) {
-      iamOwned = _json["iamOwned"];
-    }
     if (_json.containsKey("version")) {
       version = _json["version"];
     }
@@ -5744,9 +5606,6 @@ class Policy {
     }
     if (etag != null) {
       _json["etag"] = etag;
-    }
-    if (iamOwned != null) {
-      _json["iamOwned"] = iamOwned;
     }
     if (version != null) {
       _json["version"] = version;
@@ -7168,7 +7027,8 @@ class Usage {
 ///       - selector: "google.example.library.v1.LibraryService.CreateBook"
 ///         allow_unregistered_calls: true
 class UsageRule {
-  /// True, if the method allows unregistered calls; false otherwise.
+  /// If true, the selected method allows unregistered calls, e.g. calls
+  /// that don't identify any user or application.
   core.bool allowUnregisteredCalls;
 
   /// Selects the methods to which this rule applies. Use '*' to indicate all
@@ -7177,10 +7037,10 @@ class UsageRule {
   /// Refer to selector for syntax details.
   core.String selector;
 
-  /// True, if the method should skip service control. If so, no control plane
-  /// feature (like quota and billing) will be enabled.
-  /// This flag is used by ESP to allow some Endpoints customers to bypass
-  /// Google internal checks.
+  /// If true, the selected method should skip service control and the control
+  /// plane features, such as quota and billing, will not be available.
+  /// This flag is used by Google Cloud Endpoints to bypass checks for internal
+  /// methods, such as service health check methods.
   core.bool skipServiceControl;
 
   UsageRule();

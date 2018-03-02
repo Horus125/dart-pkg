@@ -27,6 +27,8 @@ class TestingApi {
 
   final commons.ApiRequester _requester;
 
+  ApplicationDetailServiceResourceApi get applicationDetailService =>
+      new ApplicationDetailServiceResourceApi(_requester);
   ProjectsResourceApi get projects => new ProjectsResourceApi(_requester);
   TestEnvironmentCatalogResourceApi get testEnvironmentCatalog =>
       new TestEnvironmentCatalogResourceApi(_requester);
@@ -36,6 +38,56 @@ class TestingApi {
       core.String servicePath: ""})
       : _requester =
             new commons.ApiRequester(client, rootUrl, servicePath, USER_AGENT);
+}
+
+class ApplicationDetailServiceResourceApi {
+  final commons.ApiRequester _requester;
+
+  ApplicationDetailServiceResourceApi(commons.ApiRequester client)
+      : _requester = client;
+
+  /// Request the details of an Android application APK.
+  ///
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// [$fields] - Selector specifying which fields to include in a partial
+  /// response.
+  ///
+  /// Completes with a [GetApkDetailsResponse].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<GetApkDetailsResponse> getApkDetails(FileReference request,
+      {core.String $fields}) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode((request).toJson());
+    }
+    if ($fields != null) {
+      _queryParams["fields"] = [$fields];
+    }
+
+    _url = 'v1/applicationDetailService/getApkDetails';
+
+    var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => new GetApkDetailsResponse.fromJson(data));
+  }
 }
 
 class ProjectsResourceApi {
@@ -833,6 +885,12 @@ class AndroidRoboTest {
   /// Optional
   core.List<RoboDirective> roboDirectives;
 
+  /// The intents used to launch the app for the crawl.
+  /// If none are provided, then the main launcher activity is launched.
+  /// If some are provided, then only those provided are launched (the main
+  /// launcher activity must be provided explicitly).
+  core.List<RoboStartingIntent> startingIntents;
+
   AndroidRoboTest();
 
   AndroidRoboTest.fromJson(core.Map _json) {
@@ -854,6 +912,11 @@ class AndroidRoboTest {
     if (_json.containsKey("roboDirectives")) {
       roboDirectives = _json["roboDirectives"]
           .map((value) => new RoboDirective.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("startingIntents")) {
+      startingIntents = _json["startingIntents"]
+          .map((value) => new RoboStartingIntent.fromJson(value))
           .toList();
     }
   }
@@ -879,6 +942,10 @@ class AndroidRoboTest {
     if (roboDirectives != null) {
       _json["roboDirectives"] =
           roboDirectives.map((value) => (value).toJson()).toList();
+    }
+    if (startingIntents != null) {
+      _json["startingIntents"] =
+          startingIntents.map((value) => (value).toJson()).toList();
     }
     return _json;
   }
@@ -1068,6 +1135,91 @@ class AndroidVersion {
     }
     if (versionString != null) {
       _json["versionString"] = versionString;
+    }
+    return _json;
+  }
+}
+
+/// Android application details based on application manifest and apk archive
+/// contents
+class ApkDetail {
+  ApkManifest apkManifest;
+
+  ApkDetail();
+
+  ApkDetail.fromJson(core.Map _json) {
+    if (_json.containsKey("apkManifest")) {
+      apkManifest = new ApkManifest.fromJson(_json["apkManifest"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (apkManifest != null) {
+      _json["apkManifest"] = (apkManifest).toJson();
+    }
+    return _json;
+  }
+}
+
+/// An Android app manifest. See
+/// http://developer.android.com/guide/topics/manifest/manifest-intro.html
+class ApkManifest {
+  /// User-readable name for the application.
+  core.String applicationLabel;
+  core.List<IntentFilter> intentFilters;
+
+  /// Maximum API level on which the application is designed to run.
+  core.int maxSdkVersion;
+
+  /// Minimum API level required for the application to run.
+  core.int minSdkVersion;
+
+  /// Full Java-style package name for this application, e.g.
+  /// "com.example.foo".
+  core.String packageName;
+
+  ApkManifest();
+
+  ApkManifest.fromJson(core.Map _json) {
+    if (_json.containsKey("applicationLabel")) {
+      applicationLabel = _json["applicationLabel"];
+    }
+    if (_json.containsKey("intentFilters")) {
+      intentFilters = _json["intentFilters"]
+          .map((value) => new IntentFilter.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("maxSdkVersion")) {
+      maxSdkVersion = _json["maxSdkVersion"];
+    }
+    if (_json.containsKey("minSdkVersion")) {
+      minSdkVersion = _json["minSdkVersion"];
+    }
+    if (_json.containsKey("packageName")) {
+      packageName = _json["packageName"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (applicationLabel != null) {
+      _json["applicationLabel"] = applicationLabel;
+    }
+    if (intentFilters != null) {
+      _json["intentFilters"] =
+          intentFilters.map((value) => (value).toJson()).toList();
+    }
+    if (maxSdkVersion != null) {
+      _json["maxSdkVersion"] = maxSdkVersion;
+    }
+    if (minSdkVersion != null) {
+      _json["minSdkVersion"] = minSdkVersion;
+    }
+    if (packageName != null) {
+      _json["packageName"] = packageName;
     }
     return _json;
   }
@@ -1434,6 +1586,29 @@ class FileReference {
   }
 }
 
+/// Response containing the details of the specified Android application APK.
+class GetApkDetailsResponse {
+  /// Details of the Android APK.
+  ApkDetail apkDetail;
+
+  GetApkDetailsResponse();
+
+  GetApkDetailsResponse.fromJson(core.Map _json) {
+    if (_json.containsKey("apkDetail")) {
+      apkDetail = new ApkDetail.fromJson(_json["apkDetail"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (apkDetail != null) {
+      _json["apkDetail"] = (apkDetail).toJson();
+    }
+    return _json;
+  }
+}
+
 /// Enables automatic Google account login.
 /// If set, the service will automatically generate a Google test account and
 /// add
@@ -1482,6 +1657,61 @@ class GoogleCloudStorage {
   }
 }
 
+/// The <intent-filter> section of an <activity> tag.
+/// https://developer.android.com/guide/topics/manifest/intent-filter-element.html
+class IntentFilter {
+  /// The android:name value of the <action> tag
+  core.List<core.String> actionNames;
+
+  /// The android:name value of the <category> tag
+  core.List<core.String> categoryNames;
+
+  /// The android:mimeType value of the <data> tag
+  core.String mimeType;
+
+  IntentFilter();
+
+  IntentFilter.fromJson(core.Map _json) {
+    if (_json.containsKey("actionNames")) {
+      actionNames = _json["actionNames"];
+    }
+    if (_json.containsKey("categoryNames")) {
+      categoryNames = _json["categoryNames"];
+    }
+    if (_json.containsKey("mimeType")) {
+      mimeType = _json["mimeType"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (actionNames != null) {
+      _json["actionNames"] = actionNames;
+    }
+    if (categoryNames != null) {
+      _json["categoryNames"] = categoryNames;
+    }
+    if (mimeType != null) {
+      _json["mimeType"] = mimeType;
+    }
+    return _json;
+  }
+}
+
+/// Specifies an intent that starts the main launcher activity.
+class LauncherActivityIntent {
+  LauncherActivityIntent();
+
+  LauncherActivityIntent.fromJson(core.Map _json) {}
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    return _json;
+  }
+}
+
 /// A location/region designation for language.
 class Locale {
   /// The id for this locale.
@@ -1494,7 +1724,7 @@ class Locale {
   /// @OutputOnly
   core.String name;
 
-  /// A human-friendy string representing the region for this locale.
+  /// A human-friendly string representing the region for this locale.
   /// Example: "United States"
   /// Not present for every locale.
   /// @OutputOnly
@@ -1799,6 +2029,80 @@ class RoboDirective {
   }
 }
 
+/// Message for specifying the start activities to crawl
+class RoboStartingIntent {
+  LauncherActivityIntent launcherActivity;
+  StartActivityIntent startActivity;
+
+  RoboStartingIntent();
+
+  RoboStartingIntent.fromJson(core.Map _json) {
+    if (_json.containsKey("launcherActivity")) {
+      launcherActivity =
+          new LauncherActivityIntent.fromJson(_json["launcherActivity"]);
+    }
+    if (_json.containsKey("startActivity")) {
+      startActivity = new StartActivityIntent.fromJson(_json["startActivity"]);
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (launcherActivity != null) {
+      _json["launcherActivity"] = (launcherActivity).toJson();
+    }
+    if (startActivity != null) {
+      _json["startActivity"] = (startActivity).toJson();
+    }
+    return _json;
+  }
+}
+
+/// A starting intent specified by an action, uri, and categories.
+class StartActivityIntent {
+  /// Action name.
+  /// Required for START_ACTIVITY.
+  core.String action;
+
+  /// Intent categories to set on the intent.
+  /// Optional.
+  core.List<core.String> categories;
+
+  /// URI for the action.
+  /// Optional.
+  core.String uri;
+
+  StartActivityIntent();
+
+  StartActivityIntent.fromJson(core.Map _json) {
+    if (_json.containsKey("action")) {
+      action = _json["action"];
+    }
+    if (_json.containsKey("categories")) {
+      categories = _json["categories"];
+    }
+    if (_json.containsKey("uri")) {
+      uri = _json["uri"];
+    }
+  }
+
+  core.Map<core.String, core.Object> toJson() {
+    final core.Map<core.String, core.Object> _json =
+        new core.Map<core.String, core.Object>();
+    if (action != null) {
+      _json["action"] = action;
+    }
+    if (categories != null) {
+      _json["categories"] = categories;
+    }
+    if (uri != null) {
+      _json["uri"] = uri;
+    }
+    return _json;
+  }
+}
+
 /// Additional details about the progress of the running test.
 class TestDetails {
   /// If the TestState is ERROR, then this string will contain human-readable
@@ -2081,6 +2385,10 @@ class TestMatrix {
   /// - "DEVICE_ADMIN_RECEIVER" : Device administrator applications are not
   /// allowed.
   /// - "TEST_ONLY_APK" : The APK is marked as "testOnly".
+  /// NOT USED
+  /// - "NO_CODE_APK" : APK contains no code.
+  /// See also
+  /// https://developer.android.com/guide/topics/manifest/application-element.html#code
   core.String invalidMatrixDetails;
 
   /// The cloud project that owns the test matrix.

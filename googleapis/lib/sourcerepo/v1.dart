@@ -759,7 +759,7 @@ class ListReposResponse {
 }
 
 /// Configuration to automatically mirror a repository from another
-/// hosting service, for example GitHub or BitBucket.
+/// hosting service, for example GitHub or Bitbucket.
 class MirrorConfig {
   /// ID of the SSH deploy key at the other hosting service.
   /// Removing this key from the other service would deauthorize
@@ -922,6 +922,7 @@ class Policy {
 /// A repository (or repo) is a Git repository storing versioned source content.
 class Repo {
   /// How this repository mirrors a repository managed by another service.
+  /// Read-only field.
   MirrorConfig mirrorConfig;
 
   /// Resource name of the repository, of the form
@@ -929,11 +930,12 @@ class Repo {
   /// eg, `projects/myproject/repos/name/with/slash`
   core.String name;
 
-  /// The disk usage of the repo, in bytes.
-  /// Only returned by GetRepo.
+  /// The disk usage of the repo, in bytes. Read-only field. Size is only
+  /// returned by GetRepo.
   core.String size;
 
   /// URL to clone the repository from Google Cloud Source Repositories.
+  /// Read-only field.
   core.String url;
 
   Repo();
