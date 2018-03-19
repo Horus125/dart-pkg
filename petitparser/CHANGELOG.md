@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.6
+
+* More Dart 2 strong mode fixes.
+
+## 1.7.5
+
+* Dart 2.0 strong mode compatibility.
+* Removed deprecated code, and empty beta package.
+* Reformatted all code using dartfmt.
+
 ## 1.7.0
 
 * Dart 2.0 compatibility.

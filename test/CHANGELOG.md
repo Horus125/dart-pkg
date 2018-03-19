@@ -1,8 +1,26 @@
+## 0.12.32+1
+
+* Fix a bug that broke content shell on Dart 1.24.
+
+## 0.12.32
+
+* Add an `include` configuration field which specifies the path to another
+  configuration file whose configuration should be used.
+
+* Add a `google` platform selector variable that's only true on Google's
+  internal infrastructure.
+
+## 0.12.31
+
+* Add a `headless` configuration option for Chrome.
+
+* Re-enable headless mode for Chrome by default.
+
+* Don't hang when a Node.js test fails to compile.
+
 ## 0.12.30+4
 
-* No longer run with headless mode as there are issues with the browser.
-  The headless option will be added in the future when issues are
-  resolved. 
+* Stop running Chrome in headless mode temporarily to work around a browser bug.
 
 ## 0.12.30+3
 

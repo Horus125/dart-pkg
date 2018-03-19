@@ -12,43 +12,41 @@ import 'package:xml/xml/nodes/text.dart' show XmlText;
 import 'package:xml/xml/utils/name.dart' show XmlName;
 import 'package:xml/xml/visitors/visitable.dart' show XmlVisitable;
 
-/// Abstract visitor over [XmlVisitable] nodes.
-abstract class XmlVisitor<E> {
+/// Basic visitor over [XmlVisitable] nodes.
+class XmlVisitor {
+  const XmlVisitor();
+
   /// Helper to visit an [XmlVisitable] using this visitor by dispatching
   /// through the provided [visitable].
-  E visit(XmlVisitable visitable) => visitable.accept(this);
-
-  /// Helper to visit an [Iterable] of [XmlVisitable]s using this visitor
-  /// by dispatching through the provided [visitables].
-  Iterable<E> visitAll(Iterable<XmlVisitable> visitables) => visitables.map(visit);
+  T visit<T>(XmlVisitable visitable) => visitable.accept(this);
 
   /// Visit an [XmlName].
-  E visitName(XmlName name);
+  dynamic visitName(XmlName name) => null;
 
   /// Visit an [XmlAttribute] node.
-  E visitAttribute(XmlAttribute node);
+  dynamic visitAttribute(XmlAttribute node) => null;
 
   /// Visit an [XmlDocument] node.
-  E visitDocument(XmlDocument node);
+  dynamic visitDocument(XmlDocument node) => null;
 
   /// Visit an [XmlDocumentFragment] node.
-  E visitDocumentFragment(XmlDocumentFragment node);
+  dynamic visitDocumentFragment(XmlDocumentFragment node) => null;
 
   /// Visit an [XmlElement] node.
-  E visitElement(XmlElement node);
+  dynamic visitElement(XmlElement node) => null;
 
   /// Visit an [XmlCDATA] node.
-  E visitCDATA(XmlCDATA node);
+  dynamic visitCDATA(XmlCDATA node) => null;
 
   /// Visit an [XmlComment] node.
-  E visitComment(XmlComment node);
+  dynamic visitComment(XmlComment node) => null;
 
   /// Visit an [XmlDoctype] node.
-  E visitDoctype(XmlDoctype node);
+  dynamic visitDoctype(XmlDoctype node) => null;
 
   /// Visit an [XmlProcessing] node.
-  E visitProcessing(XmlProcessing node);
+  dynamic visitProcessing(XmlProcessing node) => null;
 
   /// Visit an [XmlText] node.
-  E visitText(XmlText node);
+  dynamic visitText(XmlText node) => null;
 }

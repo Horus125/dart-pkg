@@ -49,6 +49,3 @@ export 'package:petitparser/src/core/repeaters/possesive.dart' show PossessiveRe
 export 'package:petitparser/src/core/repeaters/repeating.dart' show RepeatingParser;
 export 'package:petitparser/src/core/repeaters/unbounded.dart' show unbounded;
 export 'package:petitparser/src/core/token.dart' show Token;
-
-export 'package:petitparser/src/core/composite/composite.dart' show CompositeParser; // ignore: deprecated_member_use
-export 'package:petitparser/src/core/composite/exceptions.dart' show UndefinedProductionError, RedefinedProductionError, CompletedParserError; // ignore: deprecated_member_use

@@ -33,6 +33,7 @@ tags:
   * [`retry`](#retry)
   * [`test_on`](#test_on)
 * [Runner Configuration](#runner-configuration)
+  * [`include`](#include)
   * [`paths`](#paths)
   * [`filename`](#filename)
   * [`names`](#names)
@@ -55,7 +56,9 @@ tags:
   * [`override_platforms`](#override_platforms)
   * [`define_platforms`](#define_platforms)
   * [Browser/Node.js Settings](#browser-and-node-js-settings)
+    * [`arguments`](#arguments)
     * [`executable`](#executable)
+    * [`headless`](#headless)
 * [Configuration Presets](#configuration-presets)
   * [`presets`](#presets)
   * [`add_preset`](#add_preset)
@@ -192,6 +195,39 @@ This field is not supported in the
 Unlike [test configuration](#test-configuration), runner configuration affects
 the test runner as a whole rather than individual tests. It can only be used at
 the top level of the configuration file.
+
+### `include`
+
+This field loads another configuration file. It's useful for repositories that
+contain multiple packages and want to share configuration among them. It takes a
+(usually relative) `file:` URL.
+
+If you have a repository with the following structure:
+
+```
+repo/
+  dart_test_base.yaml
+  package/
+    test/
+    dart_test.yaml
+    pubspec.yaml
+```
+
+```yaml
+# repo/dart_test_base.yaml
+filename: "test_*.dart"
+```
+
+```yaml
+# repo/package/dart_test.yaml
+include: ../dart_test_base.yaml
+```
+
+...tests in the `package` directory will use configuration from both
+`dart_test_base.yaml` and `dart_test.yaml`.
+
+The local configuration file's fields take precedence over those from an
+included file, so it's possible to override a base configuration.
 
 ### `paths`
 
@@ -690,6 +726,20 @@ define_platforms:
     settings:
       executable: chromium
 ```
+
+#### `headless`
+
+The `headless` field says whether or not to run the browser in headless mode.
+It defaults to `true`. It's currently only supported for Chrome:
+
+```yaml
+override_platforms:
+  chrome:
+    settings:
+      headless: false
+```
+
+Note that headless mode is always disabled when debugging.
 
 ## Configuration Presets
 

@@ -9,7 +9,7 @@ Dart XML
 [![GitHub Stars](https://img.shields.io/github/stars/renggli/dart-xml.svg)](https://github.com/renggli/dart-xml/stargazers)
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/renggli/dart-xml/master/LICENSE)
 
-Dart XML is a lightweight library for parsing, traversing, querying and building XML documents.
+Dart XML is a lightweight library for parsing, traversing, querying, transforming and building XML documents.
 
 This library is open source, stable and well tested. Development happens on [GitHub](http://github.com/renggli/dart-xml). Feel free to report issues or create a pull-request there. General questions are best asked on [StackOverflow](http://stackoverflow.com/questions/tagged/xml+dart).
 
@@ -51,18 +51,21 @@ var document = xml.parse(bookshelfXml);
 
 The resulting object is an instance of `XmlDocument`. In case the document cannot be parsed, a `ParserError` is thrown.
 
-To write back the parsed XML document simply call `toString()`:
+To write back the parsed XML document simply call `toString()`, if you need more control `toXmlString(petty: true, indent: '\t')`:
 
 ```dart
 print(document.toString());
+print(document.toXmlString(pretty: true, indent: '\t'));
 ```
 
 ### Traversing and Querying
 
 Accessors allow to access nodes in the XML tree:
 
-- `attributes` returns an iterable over the attributes of the current node.
-- `children` returns an iterable over the children of the current node.
+- `attributes` returns a list over the attributes of the current node.
+- `children` returns a list over the children of the current node.
+
+Both lists are mutable and support all common `List` methods, such as `add(XmlNode)`, `addAll(Iterable<XmlNode>)`, `insert(int, XmlNode)`, and `insertAll(int, Iterable<XmlNode>)`. Trying to add a `null` value or an unsupported node type throws an `XmlNodeTypeError` error. Nodes that are already part of a tree _are not_ automatically moved, you need to first create a copy as otherwise an `XmlParentError` is thrown. `XmlDocumentFragment` nodes are automatically expanded and copies of their children are added.
 
 There are various methods to traverse the XML tree along its axes:
 
@@ -168,12 +171,14 @@ There are various open source projects using this package:
 
 - [csv2xml](https://github.com/taewony/csv2xml) is a library to convert between CSV and XML.
 - [dart-xrd](https://github.com/stevenroose/dart-xrd) is a library to read Extensible Resource Descriptors.
+- [xml2json](https://github.com/shamblett/xml2json) is an XML to JSON conversion package.
+- [spreadsheet_decoder](https://github.com/sestegra/spreadsheet_decoder) is a library for decoding and updating spreadsheets for ODS and XLSX files.
 
 ### Supports
 
-- Standard well-formed XML and HTML.
+- Standard well-formed XML (and HTML).
 - Decodes and encodes commonly used character entities.
-- Querying and traversing API using Dart iterators.
+- Querying, traversing, and mutating API using Dart principles.
 - Building XML trees using a builder API.
 
 ### Limitations

@@ -12,20 +12,32 @@ class XmlAttribute extends XmlNode implements XmlNamed {
   @override
   final XmlName name;
 
+  String _value;
+
   /// Return the value of the attribute.
-  final String value;
+  String get value => _value;
+
+  /// Update the value of the attribute.
+  set value(String value) {
+    if (value == null) {
+      throw new ArgumentError.notNull('value');
+    }
+    _value = value;
+  }
 
   /// Return the quote type.
   final XmlAttributeType attributeType;
 
   /// Create an attribute with `name` and `value`.
-  XmlAttribute(this.name, this.value, [this.attributeType = XmlAttributeType.DOUBLE_QUOTE]) {
-    name.adoptParent(this);
+  XmlAttribute(this.name, String value,
+      [this.attributeType = XmlAttributeType.DOUBLE_QUOTE]) {
+    name.attachParent(this);
+    this.value = value;
   }
 
   @override
   XmlNodeType get nodeType => XmlNodeType.ATTRIBUTE;
 
   @override
-  E accept<E>(XmlVisitor<E> visitor) => visitor.visitAttribute(this);
+  dynamic accept(XmlVisitor visitor) => visitor.visitAttribute(this);
 }

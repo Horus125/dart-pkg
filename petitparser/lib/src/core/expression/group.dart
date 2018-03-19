@@ -7,11 +7,9 @@ import 'package:petitparser/src/core/parser.dart';
 
 /// Models a group of operators of the same precedence.
 class ExpressionGroup {
-
   /// Defines a new primitive or literal [parser]. Evaluates the optional [action].
-  ExpressionGroup primitive(Parser parser, [action(value)]) { // ignore: avoid_returning_this
+  void primitive(Parser parser, [Function action]) {
     _primitives.add(action != null ? parser.map(action) : parser);
-    return this;
   }
 
   Parser _buildPrimitive(Parser inner) {
@@ -22,17 +20,18 @@ class ExpressionGroup {
 
   /// Adds a prefix operator [parser]. Evaluates the optional [action] with the
   /// parsed `operator` and `value`.
-  ExpressionGroup prefix(Parser parser, [action(operator, value)]) { // ignore: avoid_returning_this
+  void prefix(Parser parser, [Function action]) {
     action ??= (operator, value) => [operator, value];
-    _prefix.add(parser.map((operator) => new ExpressionResult(operator, action)));
-    return this;
+    _prefix
+        .add(parser.map((operator) => new ExpressionResult(operator, action)));
   }
 
   Parser _buildPrefix(Parser inner) {
     if (_prefix.isEmpty) {
       return inner;
     } else {
-      return new SequenceParser([_buildChoice(_prefix).star(), inner]).map((tuple) {
+      return new SequenceParser([_buildChoice(_prefix).star(), inner])
+          .map((tuple) {
         return tuple.first.reversed.fold(tuple.last, (value, result) {
           return result.action(result.operator, value);
         });
@@ -44,17 +43,18 @@ class ExpressionGroup {
 
   /// Adds a postfix operator [parser]. Evaluates the optional [action] with the
   /// parsed `value` and `operator`.
-  ExpressionGroup postfix(Parser parser, [action(value, operator)]) { // ignore: avoid_returning_this
+  void postfix(Parser parser, [Function action]) {
     action ??= (value, operator) => [value, operator];
-    _postfix.add(parser.map((operator) => new ExpressionResult(operator, action)));
-    return this;
+    _postfix
+        .add(parser.map((operator) => new ExpressionResult(operator, action)));
   }
 
   Parser _buildPostfix(Parser inner) {
     if (_postfix.isEmpty) {
       return inner;
     } else {
-      return new SequenceParser([inner, _buildChoice(_postfix).star()]).map((tuple) {
+      return new SequenceParser([inner, _buildChoice(_postfix).star()])
+          .map((tuple) {
         return tuple.last.fold(tuple.first, (value, result) {
           return result.action(value, result.operator);
         });
@@ -66,10 +66,10 @@ class ExpressionGroup {
 
   /// Adds a right-associative operator [parser]. Evaluates the optional [action] with
   /// the parsed `left` term, `operator`, and `right` term.
-  ExpressionGroup right(Parser parser, [action(left, operator, right)]) { // ignore: avoid_returning_this
+  void right(Parser parser, [Function action]) {
     action ??= (left, operator, right) => [left, operator, right];
-    _right.add(parser.map((operator) => new ExpressionResult(operator, action)));
-    return this;
+    _right
+        .add(parser.map((operator) => new ExpressionResult(operator, action)));
   }
 
   Parser _buildRight(Parser inner) {
@@ -79,7 +79,8 @@ class ExpressionGroup {
       return inner.separatedBy(_buildChoice(_right)).map((sequence) {
         var result = sequence.last;
         for (var i = sequence.length - 2; i > 0; i -= 2) {
-          result = sequence[i].action(sequence[i - 1], sequence[i].operator, result);
+          result =
+              sequence[i].action(sequence[i - 1], sequence[i].operator, result);
         }
         return result;
       });
@@ -90,10 +91,9 @@ class ExpressionGroup {
 
   /// Adds a left-associative operator [parser]. Evaluates the optional [action] with
   /// the parsed `left` term, `operator`, and `right` term.
-  ExpressionGroup left(Parser parser, [action(left, operator, right)]) { // ignore: avoid_returning_this
+  void left(Parser parser, [Function action]) {
     action ??= (left, operator, right) => [left, operator, right];
     _left.add(parser.map((operator) => new ExpressionResult(operator, action)));
-    return this;
   }
 
   Parser _buildLeft(Parser inner) {
@@ -103,7 +103,8 @@ class ExpressionGroup {
       return inner.separatedBy(_buildChoice(_left)).map((sequence) {
         var result = sequence.first;
         for (var i = 1; i < sequence.length; i += 2) {
-          result = sequence[i].action(result, sequence[i].operator, sequence[i + 1]);
+          result =
+              sequence[i].action(result, sequence[i].operator, sequence[i + 1]);
         }
         return result;
       });
@@ -125,6 +126,7 @@ class ExpressionGroup {
 
   // helper to build the group of parsers
   Parser build(Parser inner) {
-    return _buildLeft(_buildRight(_buildPostfix(_buildPrefix(_buildPrimitive(inner)))));
+    return _buildLeft(
+        _buildRight(_buildPostfix(_buildPrefix(_buildPrimitive(inner)))));
   }
 }

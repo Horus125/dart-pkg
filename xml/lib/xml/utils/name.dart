@@ -1,7 +1,7 @@
 library xml.utils.name;
 
 import 'package:xml/xml/builder.dart' show NamespaceData;
-import 'package:xml/xml/utils/child.dart' show XmlOwned;
+import 'package:xml/xml/utils/owned.dart' show XmlOwned;
 import 'package:xml/xml/utils/prefix_name.dart' show XmlPrefixName;
 import 'package:xml/xml/utils/simple_name.dart' show XmlSimpleName;
 import 'package:xml/xml/utils/writable.dart' show XmlWritable;
@@ -32,9 +32,10 @@ abstract class XmlName extends Object with XmlVisitable, XmlWritable, XmlOwned {
   String get namespaceUri;
 
   /// Creates a qualified [XmlName] from a `local` name and an optional `prefix`.
-  factory XmlName(String local, [String prefix]) => prefix == null || prefix.isEmpty
-      ? new XmlSimpleName(local)
-      : new XmlPrefixName(prefix, local, '$prefix$separator$local');
+  factory XmlName(String local, [String prefix]) =>
+      prefix == null || prefix.isEmpty
+          ? new XmlSimpleName(local)
+          : new XmlPrefixName(prefix, local, '$prefix$separator$local');
 
   /// Create a [XmlName] by parsing the provided `qualified` name.
   factory XmlName.fromString(String qualified) {
@@ -51,11 +52,13 @@ abstract class XmlName extends Object with XmlVisitable, XmlWritable, XmlOwned {
   XmlName.internal();
 
   @override
-  E accept<E>(XmlVisitor<E> visitor) => visitor.visitName(this);
+  dynamic accept(XmlVisitor visitor) => visitor.visitName(this);
 
   @override
   bool operator ==(Object other) =>
-      other is XmlName && other.local == local && other.namespaceUri == namespaceUri;
+      other is XmlName &&
+      other.local == local &&
+      other.namespaceUri == namespaceUri;
 
   @override
   int get hashCode => qualified.hashCode;
