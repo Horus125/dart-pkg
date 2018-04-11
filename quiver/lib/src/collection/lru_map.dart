@@ -235,11 +235,13 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
         _head = _tail = null;
       } else if (entry == _head) {
         _head = _head.next;
+        _head?.previous = null;
       } else if (entry == _tail) {
-        _tail.previous.next = null;
         _tail = _tail.previous;
+        _tail?.next = null;
       } else {
         entry.previous.next = entry.next;
+        entry.next.previous = entry.previous;
       }
       return entry.value;
     }
@@ -261,7 +263,34 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
   }
 
   @override
-  String toString() => Maps.mapToString(this);
+  // TODO: Use the `MapBase.mapToString()` static method when the minimum SDK
+  // version of this package has been bumped to 2.0.0 or greater.
+  String toString() {
+    // Detect toString() cycles.
+    if (_isToStringVisiting(this)) {
+      return '{...}';
+    }
+
+    var result = new StringBuffer();
+    try {
+      _toStringVisiting.add(this);
+      result.write('{');
+      bool first = true;
+      forEach((k, v) {
+        if (!first) {
+          result.write(', ');
+        }
+        first = false;
+        result.write('$k: $v');
+      });
+      result.write('}');
+    } finally {
+      assert(identical(_toStringVisiting.last, this));
+      _toStringVisiting.removeLast();
+    }
+
+    return result.toString();
+  }
 
   @override
   // TODO: Dart 2.0 requires this method to be implemented.
@@ -338,3 +367,9 @@ class LinkedLruHashMap<K, V> implements LruMap<K, V> {
     _tail.next = null;
   }
 }
+
+/// A collection used to identify cyclic maps during toString() calls.
+final List _toStringVisiting = [];
+
+/// Check if we are currently visiting `o` in a toString() call.
+bool _isToStringVisiting(o) => _toStringVisiting.any((e) => identical(o, e));

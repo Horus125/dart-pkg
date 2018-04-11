@@ -1,3 +1,31 @@
+#### 5.0.0
+
+* Moved `testing` library into a dedicated `package:file_testing` so that
+  libraries don't need to take on a transitive dependency on `package:test`
+  in order to use `package:file`.
+
+#### 4.0.1
+
+* General library cleanup
+* Add `style` support in `MemoryFileSystem`, so that callers can choose to
+  have a memory file system with windows-like paths. [#68]
+  (https://github.com/google/file.dart/issues/68)
+
+#### 4.0.0
+
+* Change method signature for `RecordingRandomAccessFile._close` to return a
+  `Future<void>` instead of `Future<RandomAccessFile>`. This follows a change in
+  dart:io, Dart SDK `2.0.0-dev.40`.
+
+#### 3.0.0
+
+* Import `dart:io` unconditionally. More recent Dart SDK revisions allow
+  `dart:io` to be imported in a browser context, though if methods are actually
+  invoked, they will fail. This matches well with `package:file`, where users
+  can use the `memory` library and get in-memory implementations of the
+  `dart:io` interfaces.
+* Bump minimum Dart SDK to `1.24.0`
+
 #### 2.3.7
 
 * Fix Dart 2 error.

@@ -1,3 +1,24 @@
+# 1.3.6
+
+* Fix a bug where constraints that only allowed pre-release versions would be
+  parsed as empty constraints.
+
+# 1.3.5
+
+* Fix a bug where `VersionRange.intersect()` would return incorrect results for
+  pre-release versions with the same base version number as release versions.
+
+# 1.3.4
+
+* Fix a bug where `VersionRange.allowsAll()`, `VersionRange.allowsAny()`, and
+  `VersionRange.difference()` would return incorrect results for pre-release
+  versions with the same base version number as release versions.
+
+# 1.3.3
+
+* Fix a bug where `VersionRange.difference()` with a union constraint that
+  covered the entire range would crash.
+
 # 1.3.2
 
 * Fix a checked-mode error in `VersionRange.difference()`.

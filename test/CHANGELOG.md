@@ -1,3 +1,24 @@
+## 0.12.34
+
+* Requires at least Dart 1.24.0.
+* The `--precompiled` flag is now supported for the vm platform and the node
+  platform.
+* On browser platforms the `--precompiled` flag now serves all sources directly
+  from the precompiled directory, and will never attempt to do its own
+  compilation.
+
+## 0.12.33
+
+* Pass `--categories=Server` to `dart2js` when compiling tests for Node.js. This
+  tells it that `dart:html` is unavailable.
+
+* Don't crash when attempting to format stack traces when running via
+  `dart path/to/test.dart`.
+
+## 0.12.32+2
+
+* Work around an SDK bug that caused timeouts in asynchronous code.
+
 ## 0.12.32+1
 
 * Fix a bug that broke content shell on Dart 1.24.

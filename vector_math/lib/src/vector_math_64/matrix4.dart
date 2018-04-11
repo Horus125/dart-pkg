@@ -148,6 +148,17 @@ class Matrix4 {
               (a20 * b03 - a21 * b01 + a22 * b00) * bW);
   }
 
+  /// Returns a matrix that is the inverse of [other] if [other] is invertible,
+  /// otherwise `null`.
+  static Matrix4 tryInvert(Matrix4 other) {
+    final Matrix4 r = new Matrix4.zero();
+    final double determinant = r.copyInverse(other);
+    if (determinant == 0.0) {
+      return null;
+    }
+    return r;
+  }
+
   /// Return index in storage for [row], [col] value.
   int index(int row, int col) => (col * 4) + row;
 
@@ -877,8 +888,8 @@ class Matrix4 {
       sz = x.z;
     } else if (x is double) {
       sx = x;
-      sy = y == null ? x : y.toDouble();
-      sz = z == null ? x : z.toDouble();
+      sy = y ?? x;
+      sz = z ?? x;
     }
     _m4storage[0] *= sx;
     _m4storage[1] *= sx;
@@ -900,8 +911,7 @@ class Matrix4 {
 
   /// Create a copy of [this] scaled by a [Vector3], [Vector4] or [x],[y], and
   /// [z].
-  Matrix4 scaled(dynamic x, [double y = null, double z = null]) =>
-      clone()..scale(x, y, z);
+  Matrix4 scaled(dynamic x, [double y, double z]) => clone()..scale(x, y, z);
 
   /// Zeros [this].
   void setZero() {

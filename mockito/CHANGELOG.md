@@ -1,16 +1,18 @@
-## 2.2.3
+## 3.0.0-alpha+3
 
-* Avoid generlized void isses. Fixes Mockito's compliance with Dart SDK
-  2.0.0-dev.23.0.
+* `thenReturn` and `thenAnswer` now support generics and infer the correct
+  types from the `when` call.
+* Completely remove the mirrors implementation of Mockito (`mirrors.dart`).
 
-## 2.2.2
+## 3.0.0-alpha+2
 
-* Remove last violation of `USES_DYNAMIC_AS_BOTTOM` error. This should make
-  Mockito compatible with Dart 2 semantics.
+* Support stubbing of void methods in Dart 2.
 
-## 2.2.1
+## 3.0.0-alpha
 
-* Internal fixes only (stop using comment-based generic method syntax).
+* `thenReturn` now throws an `ArgumentError` if either a `Future` or `Stream`
+  is provided. `thenReturn` calls with futures and streams should be changed to
+  `thenAnswer`. See the README for more information.
 
 ## 2.2.0
 

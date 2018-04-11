@@ -1,3 +1,15 @@
+#### 3.0.1
+
+* General cleanup
+
+#### 3.0.0
+
+* Cleanup getExecutablePath() to better respect the platform
+
+#### 2.0.9
+
+* Bumped `package:file` dependency
+
 ### 2.0.8
 
 * Fixed method getArguments to qualify the map method with the specific

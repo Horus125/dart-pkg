@@ -1,3 +1,22 @@
+#### 0.29.0 - 2018-03-28
+
+   * BREAKING CHANGE: Deleted `createTimer` and `createTimerPeriodic`, which
+     were deprecated in 0.26.0.
+   * BREAKING CHANGE: Deleted `reverse`, which was deprecated in 0.25.0.
+   * BREAKING CHANGE: Deleted `FutureGroup`, which was deprecated in 0.25.0.
+   * BREAKING CHANGE: `InfiniteIterable.singleWhere` now throws
+     `UnsupportedError`.
+
+#### 0.28.2 - 2018-03-24
+
+   * Fix: Eliminate a bug where `LruMap` linkage is incorrectly preserved when
+     items are removed.
+
+#### 0.28.1 - 2018-03-22
+
+   * Remove use of `Maps.mapToString` in `LruMap`.
+   * Add @visibleForTesting annotation in `AvlTreeSet`.
+
 #### 0.28.0 - 2018-01-19
 
    * BREAKING CHANGE: The signature of `MultiMap`'s `update` stub has changed
@@ -36,6 +55,14 @@
      0.25.0.
    * BREAKING CHANGE: eliminated deprecated `repeat`. Deprecated in 0.25.0.
      Callers should use `String`'s `*` operator.
+   * BREAKING CHANGE: `collect`, `concat`, `doWhileAsync`, `enumerate`,
+     `extent`, `forEachAsync`, `max`, `merge`, `min`, `reduceAsync`, and `zip`
+     are now type parameterized. Depending on the inferred value of each type
+     parameter, the return type of each function may change in existing code.
+   * BREAKING CHANGE: `Optional`'s `==` operator now takes into account `T`,
+     the type of the value. This changes, e.g. `Optional<int>.absent()` to no
+     longer be equal to `Optional<String>.absent()`.
+   * BREAKING CHANGE: stronger generics added in `Cache` and `MapCache`.
    * Deprecated: `reverse` in the `strings` library. No replacement is
      provided.
    * Deprecated: `createTimer`, `createTimerPeriodic` in the `async` library.
