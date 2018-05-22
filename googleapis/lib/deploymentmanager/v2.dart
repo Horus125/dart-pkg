@@ -83,14 +83,14 @@ class DeploymentsResourceApi {
       core.String project, core.String deployment,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -145,7 +145,7 @@ class DeploymentsResourceApi {
   async.Future<Operation> delete(core.String project, core.String deployment,
       {core.String deletePolicy, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -201,7 +201,7 @@ class DeploymentsResourceApi {
   async.Future<Deployment> get(core.String project, core.String deployment,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -255,7 +255,7 @@ class DeploymentsResourceApi {
   async.Future<Policy> getIamPolicy(core.String project, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -318,14 +318,14 @@ class DeploymentsResourceApi {
   async.Future<Operation> insert(Deployment request, core.String project,
       {core.bool preview, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -419,7 +419,7 @@ class DeploymentsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -507,14 +507,14 @@ class DeploymentsResourceApi {
       core.bool preview,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -576,14 +576,14 @@ class DeploymentsResourceApi {
       Policy request, core.String project, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -637,14 +637,14 @@ class DeploymentsResourceApi {
       core.String project, core.String deployment,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -697,14 +697,14 @@ class DeploymentsResourceApi {
       TestPermissionsRequest request, core.String project, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -782,14 +782,14 @@ class DeploymentsResourceApi {
       core.bool preview,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -857,7 +857,7 @@ class ManifestsResourceApi {
       core.String project, core.String deployment, core.String manifest,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -966,7 +966,7 @@ class ManifestsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1037,7 +1037,7 @@ class OperationsResourceApi {
   async.Future<Operation> get(core.String project, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1137,7 +1137,7 @@ class OperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1206,7 +1206,7 @@ class ResourcesResourceApi {
       core.String project, core.String deployment, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1315,7 +1315,7 @@ class ResourcesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1434,7 +1434,7 @@ class TypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1507,12 +1507,13 @@ class AuditConfig {
 
   AuditConfig.fromJson(core.Map _json) {
     if (_json.containsKey("auditLogConfigs")) {
-      auditLogConfigs = _json["auditLogConfigs"]
-          .map((value) => new AuditLogConfig.fromJson(value))
+      auditLogConfigs = (_json["auditLogConfigs"] as core.List)
+          .map<AuditLogConfig>((value) => new AuditLogConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
+      exemptedMembers =
+          (_json["exemptedMembers"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("service")) {
       service = _json["service"];
@@ -1555,7 +1556,8 @@ class AuditLogConfig {
 
   AuditLogConfig.fromJson(core.Map _json) {
     if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
+      exemptedMembers =
+          (_json["exemptedMembers"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("logType")) {
       logType = _json["logType"];
@@ -1643,7 +1645,7 @@ class Binding {
       condition = new Expr.fromJson(_json["condition"]);
     }
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -1706,7 +1708,7 @@ class Condition {
       value = _json["value"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List).cast<core.String>();
     }
   }
 
@@ -1772,12 +1774,12 @@ class Deployment {
   /// perform a get() request to a deployment.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Output only. Unique identifier for the resource; defined by the server.
@@ -1839,8 +1841,9 @@ class Deployment {
       insertTime = _json["insertTime"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"]
-          .map((value) => new DeploymentLabelEntry.fromJson(value))
+      labels = (_json["labels"] as core.List)
+          .map<DeploymentLabelEntry>(
+              (value) => new DeploymentLabelEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("manifest")) {
@@ -1955,8 +1958,9 @@ class DeploymentUpdate {
       description = _json["description"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"]
-          .map((value) => new DeploymentUpdateLabelEntry.fromJson(value))
+      labels = (_json["labels"] as core.List)
+          .map<DeploymentUpdateLabelEntry>(
+              (value) => new DeploymentUpdateLabelEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("manifest")) {
@@ -2021,12 +2025,12 @@ class DeploymentsCancelPreviewRequest {
   /// value, perform a get() request on the deployment.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   DeploymentsCancelPreviewRequest();
@@ -2060,8 +2064,8 @@ class DeploymentsListResponse {
 
   DeploymentsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("deployments")) {
-      deployments = _json["deployments"]
-          .map((value) => new Deployment.fromJson(value))
+      deployments = (_json["deployments"] as core.List)
+          .map<Deployment>((value) => new Deployment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2096,12 +2100,12 @@ class DeploymentsStopRequest {
   /// value, perform a get() request on the deployment.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   DeploymentsStopRequest();
@@ -2405,8 +2409,8 @@ class Manifest {
       id = _json["id"];
     }
     if (_json.containsKey("imports")) {
-      imports = _json["imports"]
-          .map((value) => new ImportFile.fromJson(value))
+      imports = (_json["imports"] as core.List)
+          .map<ImportFile>((value) => new ImportFile.fromJson(value))
           .toList();
     }
     if (_json.containsKey("insertTime")) {
@@ -2467,8 +2471,8 @@ class ManifestsListResponse {
 
   ManifestsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("manifests")) {
-      manifests = _json["manifests"]
-          .map((value) => new Manifest.fromJson(value))
+      manifests = (_json["manifests"] as core.List)
+          .map<Manifest>((value) => new Manifest.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2541,8 +2545,9 @@ class OperationError {
 
   OperationError.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new OperationErrorErrors.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<OperationErrorErrors>(
+              (value) => new OperationErrorErrors.fromJson(value))
           .toList();
     }
   }
@@ -2614,8 +2619,9 @@ class OperationWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new OperationWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<OperationWarningsData>(
+              (value) => new OperationWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -2809,8 +2815,9 @@ class Operation {
       user = _json["user"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new OperationWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<OperationWarnings>(
+              (value) => new OperationWarnings.fromJson(value))
           .toList();
     }
     if (_json.containsKey("zone")) {
@@ -2910,8 +2917,8 @@ class OperationsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
   }
@@ -2970,12 +2977,12 @@ class Policy {
   /// policy is overwritten blindly.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   core.bool iamOwned;
@@ -2996,13 +3003,13 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("auditConfigs")) {
-      auditConfigs = _json["auditConfigs"]
-          .map((value) => new AuditConfig.fromJson(value))
+      auditConfigs = (_json["auditConfigs"] as core.List)
+          .map<AuditConfig>((value) => new AuditConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new Binding.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<Binding>((value) => new Binding.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -3012,7 +3019,9 @@ class Policy {
       iamOwned = _json["iamOwned"];
     }
     if (_json.containsKey("rules")) {
-      rules = _json["rules"].map((value) => new Rule.fromJson(value)).toList();
+      rules = (_json["rules"] as core.List)
+          .map<Rule>((value) => new Rule.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("version")) {
       version = _json["version"];
@@ -3102,8 +3111,9 @@ class ResourceWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new ResourceWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<ResourceWarningsData>(
+              (value) => new ResourceWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -3210,8 +3220,9 @@ class Resource {
       url = _json["url"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new ResourceWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<ResourceWarnings>(
+              (value) => new ResourceWarnings.fromJson(value))
           .toList();
     }
   }
@@ -3334,8 +3345,9 @@ class ResourceUpdateError {
 
   ResourceUpdateError.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new ResourceUpdateErrorErrors.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<ResourceUpdateErrorErrors>(
+              (value) => new ResourceUpdateErrorErrors.fromJson(value))
           .toList();
     }
   }
@@ -3407,8 +3419,9 @@ class ResourceUpdateWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new ResourceUpdateWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<ResourceUpdateWarningsData>(
+              (value) => new ResourceUpdateWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -3489,8 +3502,9 @@ class ResourceUpdate {
       state = _json["state"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new ResourceUpdateWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<ResourceUpdateWarnings>(
+              (value) => new ResourceUpdateWarnings.fromJson(value))
           .toList();
     }
   }
@@ -3542,8 +3556,8 @@ class ResourcesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new Resource.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<Resource>((value) => new Resource.fromJson(value))
           .toList();
     }
   }
@@ -3597,26 +3611,26 @@ class Rule {
       action = _json["action"];
     }
     if (_json.containsKey("conditions")) {
-      conditions = _json["conditions"]
-          .map((value) => new Condition.fromJson(value))
+      conditions = (_json["conditions"] as core.List)
+          .map<Condition>((value) => new Condition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
     }
     if (_json.containsKey("ins")) {
-      ins = _json["ins"];
+      ins = (_json["ins"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("logConfigs")) {
-      logConfigs = _json["logConfigs"]
-          .map((value) => new LogConfig.fromJson(value))
+      logConfigs = (_json["logConfigs"] as core.List)
+          .map<LogConfig>((value) => new LogConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("notIns")) {
-      notIns = _json["notIns"];
+      notIns = (_json["notIns"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -3666,8 +3680,8 @@ class TargetConfiguration {
       config = new ConfigFile.fromJson(_json["config"]);
     }
     if (_json.containsKey("imports")) {
-      imports = _json["imports"]
-          .map((value) => new ImportFile.fromJson(value))
+      imports = (_json["imports"] as core.List)
+          .map<ImportFile>((value) => new ImportFile.fromJson(value))
           .toList();
     }
   }
@@ -3694,7 +3708,7 @@ class TestPermissionsRequest {
 
   TestPermissionsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -3717,7 +3731,7 @@ class TestPermissionsResponse {
 
   TestPermissionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -3806,7 +3820,9 @@ class TypesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("types")) {
-      types = _json["types"].map((value) => new Type.fromJson(value)).toList();
+      types = (_json["types"] as core.List)
+          .map<Type>((value) => new Type.fromJson(value))
+          .toList();
     }
   }
 

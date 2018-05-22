@@ -59,14 +59,14 @@ class LineitemsResourceApi {
       DownloadLineItemsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -104,14 +104,14 @@ class LineitemsResourceApi {
       UploadLineItemsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -152,14 +152,14 @@ class QueriesResourceApi {
   /// this method will complete with the same error.
   async.Future<Query> createquery(Query request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -192,7 +192,7 @@ class QueriesResourceApi {
   /// this method will complete with the same error.
   async.Future deletequery(core.String queryId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -236,7 +236,7 @@ class QueriesResourceApi {
   /// this method will complete with the same error.
   async.Future<Query> getquery(core.String queryId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -276,7 +276,7 @@ class QueriesResourceApi {
   /// this method will complete with the same error.
   async.Future<ListQueriesResponse> listqueries({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -316,14 +316,14 @@ class QueriesResourceApi {
   async.Future runquery(RunQueryRequest request, core.String queryId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (queryId == null) {
       throw new core.ArgumentError("Parameter queryId is required.");
@@ -370,7 +370,7 @@ class ReportsResourceApi {
   async.Future<ListReportsResponse> listreports(core.String queryId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -419,14 +419,14 @@ class SdfResourceApi {
   async.Future<DownloadResponse> download(DownloadRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -475,7 +475,7 @@ class DownloadLineItemsRequest {
       fileSpec = _json["fileSpec"];
     }
     if (_json.containsKey("filterIds")) {
-      filterIds = _json["filterIds"];
+      filterIds = (_json["filterIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("filterType")) {
       filterType = _json["filterType"];
@@ -556,10 +556,10 @@ class DownloadRequest {
 
   DownloadRequest.fromJson(core.Map _json) {
     if (_json.containsKey("fileTypes")) {
-      fileTypes = _json["fileTypes"];
+      fileTypes = (_json["fileTypes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("filterIds")) {
-      filterIds = _json["filterIds"];
+      filterIds = (_json["filterIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("filterType")) {
       filterType = _json["filterType"];
@@ -814,8 +814,9 @@ class ListQueriesResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("queries")) {
-      queries =
-          _json["queries"].map((value) => new Query.fromJson(value)).toList();
+      queries = (_json["queries"] as core.List)
+          .map<Query>((value) => new Query.fromJson(value))
+          .toList();
     }
   }
 
@@ -848,8 +849,9 @@ class ListReportsResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("reports")) {
-      reports =
-          _json["reports"].map((value) => new Report.fromJson(value)).toList();
+      reports = (_json["reports"] as core.List)
+          .map<Report>((value) => new Report.fromJson(value))
+          .toList();
     }
   }
 
@@ -920,18 +922,18 @@ class Parameters {
 
   Parameters.fromJson(core.Map _json) {
     if (_json.containsKey("filters")) {
-      filters = _json["filters"]
-          .map((value) => new FilterPair.fromJson(value))
+      filters = (_json["filters"] as core.List)
+          .map<FilterPair>((value) => new FilterPair.fromJson(value))
           .toList();
     }
     if (_json.containsKey("groupBys")) {
-      groupBys = _json["groupBys"];
+      groupBys = (_json["groupBys"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("includeInviteData")) {
       includeInviteData = _json["includeInviteData"];
     }
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"];
+      metrics = (_json["metrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -1151,7 +1153,8 @@ class QueryMetadata {
       sendNotification = _json["sendNotification"];
     }
     if (_json.containsKey("shareEmailAddress")) {
-      shareEmailAddress = _json["shareEmailAddress"];
+      shareEmailAddress =
+          (_json["shareEmailAddress"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("title")) {
       title = _json["title"];
@@ -1516,7 +1519,7 @@ class RowStatus {
       entityName = _json["entityName"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"];
+      errors = (_json["errors"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("persisted")) {
       persisted = _json["persisted"];
@@ -1706,11 +1709,11 @@ class UploadStatus {
 
   UploadStatus.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"];
+      errors = (_json["errors"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("rowStatus")) {
-      rowStatus = _json["rowStatus"]
-          .map((value) => new RowStatus.fromJson(value))
+      rowStatus = (_json["rowStatus"] as core.List)
+          .map<RowStatus>((value) => new RowStatus.fromJson(value))
           .toList();
     }
   }

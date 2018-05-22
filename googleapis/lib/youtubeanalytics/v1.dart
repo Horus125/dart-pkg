@@ -85,7 +85,7 @@ class GroupItemsResourceApi {
   async.Future delete(core.String id,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -147,14 +147,14 @@ class GroupItemsResourceApi {
   async.Future<GroupItem> insert(GroupItem request,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
@@ -207,7 +207,7 @@ class GroupItemsResourceApi {
   async.Future<GroupItemListResponse> list(core.String groupId,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -272,7 +272,7 @@ class GroupsResourceApi {
   async.Future delete(core.String id,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -334,14 +334,14 @@ class GroupsResourceApi {
   async.Future<Group> insert(Group request,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
@@ -408,7 +408,7 @@ class GroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -473,14 +473,14 @@ class GroupsResourceApi {
   async.Future<Group> update(Group request,
       {core.String onBehalfOfContentOwner, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (onBehalfOfContentOwner != null) {
       _queryParams["onBehalfOfContentOwner"] = [onBehalfOfContentOwner];
@@ -592,7 +592,7 @@ class ReportsResourceApi {
       core.int start_index,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -850,8 +850,9 @@ class GroupItemListResponse {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new GroupItem.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<GroupItem>((value) => new GroupItem.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -889,7 +890,9 @@ class GroupListResponse {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Group.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Group>((value) => new Group.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -996,15 +999,19 @@ class ResultTable {
 
   ResultTable.fromJson(core.Map _json) {
     if (_json.containsKey("columnHeaders")) {
-      columnHeaders = _json["columnHeaders"]
-          .map((value) => new ResultTableColumnHeaders.fromJson(value))
+      columnHeaders = (_json["columnHeaders"] as core.List)
+          .map<ResultTableColumnHeaders>(
+              (value) => new ResultTableColumnHeaders.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
   }
 

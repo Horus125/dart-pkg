@@ -88,7 +88,7 @@ class EditsResourceApi {
   async.Future<AppEdit> commit(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -140,7 +140,7 @@ class EditsResourceApi {
   async.Future delete(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -194,7 +194,7 @@ class EditsResourceApi {
   async.Future<AppEdit> get(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -245,14 +245,14 @@ class EditsResourceApi {
   async.Future<AppEdit> insert(AppEdit request, core.String packageName,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -295,7 +295,7 @@ class EditsResourceApi {
   async.Future<AppEdit> validate(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -361,7 +361,7 @@ class EditsApklistingsResourceApi {
       core.int apkVersionCode, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -426,7 +426,7 @@ class EditsApklistingsResourceApi {
       core.String packageName, core.String editId, core.int apkVersionCode,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -494,7 +494,7 @@ class EditsApklistingsResourceApi {
       core.int apkVersionCode, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -559,7 +559,7 @@ class EditsApklistingsResourceApi {
       core.String packageName, core.String editId, core.int apkVersionCode,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -627,14 +627,14 @@ class EditsApklistingsResourceApi {
       core.String editId, core.int apkVersionCode, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -702,14 +702,14 @@ class EditsApklistingsResourceApi {
       core.String editId, core.int apkVersionCode, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -780,14 +780,14 @@ class EditsApksResourceApi {
       core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -835,7 +835,7 @@ class EditsApksResourceApi {
       core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -893,7 +893,7 @@ class EditsApksResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -989,7 +989,7 @@ class EditsDeobfuscationfilesResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1082,7 +1082,7 @@ class EditsDetailsResourceApi {
   async.Future<AppDetails> get(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1137,14 +1137,14 @@ class EditsDetailsResourceApi {
       AppDetails request, core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -1195,14 +1195,14 @@ class EditsDetailsResourceApi {
       AppDetails request, core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -1266,7 +1266,7 @@ class EditsExpansionfilesResourceApi {
       core.int apkVersionCode, core.String expansionFileType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1344,14 +1344,14 @@ class EditsExpansionfilesResourceApi {
       core.String expansionFileType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -1424,14 +1424,14 @@ class EditsExpansionfilesResourceApi {
       core.String expansionFileType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -1508,7 +1508,7 @@ class EditsExpansionfilesResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1617,7 +1617,7 @@ class EditsImagesResourceApi {
       core.String language, core.String imageType, core.String imageId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1702,7 +1702,7 @@ class EditsImagesResourceApi {
       core.String editId, core.String language, core.String imageType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1780,7 +1780,7 @@ class EditsImagesResourceApi {
       core.String editId, core.String language, core.String imageType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1867,7 +1867,7 @@ class EditsImagesResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1960,7 +1960,7 @@ class EditsListingsResourceApi {
       core.String packageName, core.String editId, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2016,7 +2016,7 @@ class EditsListingsResourceApi {
   async.Future deleteall(core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2075,7 +2075,7 @@ class EditsListingsResourceApi {
       core.String packageName, core.String editId, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2132,7 +2132,7 @@ class EditsListingsResourceApi {
       core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2192,14 +2192,14 @@ class EditsListingsResourceApi {
       core.String editId, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2258,14 +2258,14 @@ class EditsListingsResourceApi {
       core.String editId, core.String language,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2326,7 +2326,7 @@ class EditsTestersResourceApi {
       core.String packageName, core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2387,14 +2387,14 @@ class EditsTestersResourceApi {
       core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2451,14 +2451,14 @@ class EditsTestersResourceApi {
       core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2522,7 +2522,7 @@ class EditsTracksResourceApi {
       core.String packageName, core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2579,7 +2579,7 @@ class EditsTracksResourceApi {
       core.String packageName, core.String editId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2640,14 +2640,14 @@ class EditsTracksResourceApi {
       core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2708,14 +2708,14 @@ class EditsTracksResourceApi {
       core.String editId, core.String track,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -2784,7 +2784,7 @@ class EntitlementsResourceApi {
       core.String token,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2847,7 +2847,7 @@ class InappproductsResourceApi {
   async.Future delete(core.String packageName, core.String sku,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2899,7 +2899,7 @@ class InappproductsResourceApi {
   async.Future<InAppProduct> get(core.String packageName, core.String sku,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2956,14 +2956,14 @@ class InappproductsResourceApi {
       InAppProduct request, core.String packageName,
       {core.bool autoConvertMissingPrices, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -3018,7 +3018,7 @@ class InappproductsResourceApi {
       core.String token,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3083,14 +3083,14 @@ class InappproductsResourceApi {
       InAppProduct request, core.String packageName, core.String sku,
       {core.bool autoConvertMissingPrices, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -3150,14 +3150,14 @@ class InappproductsResourceApi {
       InAppProduct request, core.String packageName, core.String sku,
       {core.bool autoConvertMissingPrices, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -3234,7 +3234,7 @@ class PurchasesProductsResourceApi {
       core.String packageName, core.String productId, core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3301,7 +3301,7 @@ class PurchasesSubscriptionsResourceApi {
       core.String packageName, core.String subscriptionId, core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3371,14 +3371,14 @@ class PurchasesSubscriptionsResourceApi {
       core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -3438,7 +3438,7 @@ class PurchasesSubscriptionsResourceApi {
       core.String packageName, core.String subscriptionId, core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3498,7 +3498,7 @@ class PurchasesSubscriptionsResourceApi {
       core.String packageName, core.String subscriptionId, core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3562,7 +3562,7 @@ class PurchasesSubscriptionsResourceApi {
       core.String packageName, core.String subscriptionId, core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3652,7 +3652,7 @@ class PurchasesVoidedpurchasesResourceApi {
       core.String token,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3723,7 +3723,7 @@ class ReviewsResourceApi {
   async.Future<Review> get(core.String packageName, core.String reviewId,
       {core.String translationLanguage, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3787,7 +3787,7 @@ class ReviewsResourceApi {
       core.String translationLanguage,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3848,14 +3848,14 @@ class ReviewsResourceApi {
       core.String packageName, core.String reviewId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (packageName == null) {
       throw new core.ArgumentError("Parameter packageName is required.");
@@ -3991,8 +3991,8 @@ class ApkListingsListResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("listings")) {
-      listings = _json["listings"]
-          .map((value) => new ApkListing.fromJson(value))
+      listings = (_json["listings"] as core.List)
+          .map<ApkListing>((value) => new ApkListing.fromJson(value))
           .toList();
     }
   }
@@ -4067,7 +4067,9 @@ class ApksListResponse {
 
   ApksListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("apks")) {
-      apks = _json["apks"].map((value) => new Apk.fromJson(value)).toList();
+      apks = (_json["apks"] as core.List)
+          .map<Apk>((value) => new Apk.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -4456,8 +4458,8 @@ class EntitlementsListResponse {
       pageInfo = new PageInfo.fromJson(_json["pageInfo"]);
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new Entitlement.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<Entitlement>((value) => new Entitlement.fromJson(value))
           .toList();
     }
     if (_json.containsKey("tokenPagination")) {
@@ -4595,7 +4597,8 @@ class ExternallyHostedApk {
       applicationLabel = _json["applicationLabel"];
     }
     if (_json.containsKey("certificateBase64s")) {
-      certificateBase64s = _json["certificateBase64s"];
+      certificateBase64s =
+          (_json["certificateBase64s"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("externallyHostedUrl")) {
       externallyHostedUrl = _json["externallyHostedUrl"];
@@ -4619,17 +4622,18 @@ class ExternallyHostedApk {
       minimumSdk = _json["minimumSdk"];
     }
     if (_json.containsKey("nativeCodes")) {
-      nativeCodes = _json["nativeCodes"];
+      nativeCodes = (_json["nativeCodes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("packageName")) {
       packageName = _json["packageName"];
     }
     if (_json.containsKey("usesFeatures")) {
-      usesFeatures = _json["usesFeatures"];
+      usesFeatures = (_json["usesFeatures"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("usesPermissions")) {
-      usesPermissions = _json["usesPermissions"]
-          .map((value) => new ExternallyHostedApkUsesPermission.fromJson(value))
+      usesPermissions = (_json["usesPermissions"] as core.List)
+          .map<ExternallyHostedApkUsesPermission>(
+              (value) => new ExternallyHostedApkUsesPermission.fromJson(value))
           .toList();
     }
     if (_json.containsKey("versionCode")) {
@@ -4772,8 +4776,9 @@ class ImagesDeleteAllResponse {
 
   ImagesDeleteAllResponse.fromJson(core.Map _json) {
     if (_json.containsKey("deleted")) {
-      deleted =
-          _json["deleted"].map((value) => new Image.fromJson(value)).toList();
+      deleted = (_json["deleted"] as core.List)
+          .map<Image>((value) => new Image.fromJson(value))
+          .toList();
     }
   }
 
@@ -4794,8 +4799,9 @@ class ImagesListResponse {
 
   ImagesListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("images")) {
-      images =
-          _json["images"].map((value) => new Image.fromJson(value)).toList();
+      images = (_json["images"] as core.List)
+          .map<Image>((value) => new Image.fromJson(value))
+          .toList();
     }
   }
 
@@ -4880,20 +4886,17 @@ class InAppProduct {
       defaultPrice = new Price.fromJson(_json["defaultPrice"]);
     }
     if (_json.containsKey("listings")) {
-      listings = commons
-          .mapMap<core.Map<core.String, core.Object>, InAppProductListing>(
-              _json["listings"],
-              (core.Map<core.String, core.Object> item) =>
-                  new InAppProductListing.fromJson(item));
+      listings = commons.mapMap<core.Map, InAppProductListing>(
+          _json["listings"].cast<core.String, core.Map>(),
+          (core.Map item) => new InAppProductListing.fromJson(item));
     }
     if (_json.containsKey("packageName")) {
       packageName = _json["packageName"];
     }
     if (_json.containsKey("prices")) {
-      prices = commons.mapMap<core.Map<core.String, core.Object>, Price>(
-          _json["prices"],
-          (core.Map<core.String, core.Object> item) =>
-              new Price.fromJson(item));
+      prices = commons.mapMap<core.Map, Price>(
+          _json["prices"].cast<core.String, core.Map>(),
+          (core.Map item) => new Price.fromJson(item));
     }
     if (_json.containsKey("purchaseType")) {
       purchaseType = _json["purchaseType"];
@@ -5000,8 +5003,8 @@ class InappproductsListResponse {
 
   InappproductsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("inappproduct")) {
-      inappproduct = _json["inappproduct"]
-          .map((value) => new InAppProduct.fromJson(value))
+      inappproduct = (_json["inappproduct"] as core.List)
+          .map<InAppProduct>((value) => new InAppProduct.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -5107,8 +5110,8 @@ class ListingsListResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("listings")) {
-      listings = _json["listings"]
-          .map((value) => new Listing.fromJson(value))
+      listings = (_json["listings"] as core.List)
+          .map<Listing>((value) => new Listing.fromJson(value))
           .toList();
     }
   }
@@ -5364,8 +5367,8 @@ class Review {
       authorName = _json["authorName"];
     }
     if (_json.containsKey("comments")) {
-      comments = _json["comments"]
-          .map((value) => new Comment.fromJson(value))
+      comments = (_json["comments"] as core.List)
+          .map<Comment>((value) => new Comment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("reviewId")) {
@@ -5432,8 +5435,9 @@ class ReviewsListResponse {
       pageInfo = new PageInfo.fromJson(_json["pageInfo"]);
     }
     if (_json.containsKey("reviews")) {
-      reviews =
-          _json["reviews"].map((value) => new Review.fromJson(value)).toList();
+      reviews = (_json["reviews"] as core.List)
+          .map<Review>((value) => new Review.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("tokenPagination")) {
       tokenPagination = new TokenPagination.fromJson(_json["tokenPagination"]);
@@ -5520,8 +5524,8 @@ class Season {
       end = new MonthDay.fromJson(_json["end"]);
     }
     if (_json.containsKey("prorations")) {
-      prorations = _json["prorations"]
-          .map((value) => new Prorate.fromJson(value))
+      prorations = (_json["prorations"] as core.List)
+          .map<Prorate>((value) => new Prorate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("start")) {
@@ -5812,10 +5816,11 @@ class Testers {
 
   Testers.fromJson(core.Map _json) {
     if (_json.containsKey("googleGroups")) {
-      googleGroups = _json["googleGroups"];
+      googleGroups = (_json["googleGroups"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("googlePlusCommunities")) {
-      googlePlusCommunities = _json["googlePlusCommunities"];
+      googlePlusCommunities =
+          (_json["googlePlusCommunities"] as core.List).cast<core.String>();
     }
   }
 
@@ -5905,7 +5910,7 @@ class Track {
       userFraction = _json["userFraction"];
     }
     if (_json.containsKey("versionCodes")) {
-      versionCodes = _json["versionCodes"];
+      versionCodes = (_json["versionCodes"] as core.List).cast<core.int>();
     }
   }
 
@@ -5938,8 +5943,9 @@ class TracksListResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("tracks")) {
-      tracks =
-          _json["tracks"].map((value) => new Track.fromJson(value)).toList();
+      tracks = (_json["tracks"] as core.List)
+          .map<Track>((value) => new Track.fromJson(value))
+          .toList();
     }
   }
 
@@ -6155,8 +6161,8 @@ class VoidedPurchasesListResponse {
       tokenPagination = new TokenPagination.fromJson(_json["tokenPagination"]);
     }
     if (_json.containsKey("voidedPurchases")) {
-      voidedPurchases = _json["voidedPurchases"]
-          .map((value) => new VoidedPurchase.fromJson(value))
+      voidedPurchases = (_json["voidedPurchases"] as core.List)
+          .map<VoidedPurchase>((value) => new VoidedPurchase.fromJson(value))
           .toList();
     }
   }

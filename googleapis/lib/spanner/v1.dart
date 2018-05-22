@@ -78,7 +78,7 @@ class ProjectsInstanceConfigsResourceApi {
   /// this method will complete with the same error.
   async.Future<InstanceConfig> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -133,7 +133,7 @@ class ProjectsInstanceConfigsResourceApi {
   async.Future<ListInstanceConfigsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -236,14 +236,14 @@ class ProjectsInstancesResourceApi {
       CreateInstanceRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -295,7 +295,7 @@ class ProjectsInstancesResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -340,7 +340,7 @@ class ProjectsInstancesResourceApi {
   /// this method will complete with the same error.
   async.Future<Instance> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -394,14 +394,14 @@ class ProjectsInstancesResourceApi {
       GetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -477,7 +477,7 @@ class ProjectsInstancesResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -576,14 +576,14 @@ class ProjectsInstancesResourceApi {
   async.Future<Operation> patch(UpdateInstanceRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -633,14 +633,14 @@ class ProjectsInstancesResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -694,14 +694,14 @@ class ProjectsInstancesResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -768,14 +768,14 @@ class ProjectsInstancesDatabasesResourceApi {
       CreateDatabaseRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -817,7 +817,7 @@ class ProjectsInstancesDatabasesResourceApi {
   async.Future<Empty> dropDatabase(core.String database,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -863,7 +863,7 @@ class ProjectsInstancesDatabasesResourceApi {
   /// this method will complete with the same error.
   async.Future<Database> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -911,7 +911,7 @@ class ProjectsInstancesDatabasesResourceApi {
   async.Future<GetDatabaseDdlResponse> getDdl(core.String database,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -966,14 +966,14 @@ class ProjectsInstancesDatabasesResourceApi {
       GetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1024,7 +1024,7 @@ class ProjectsInstancesDatabasesResourceApi {
   async.Future<ListDatabasesResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1086,14 +1086,14 @@ class ProjectsInstancesDatabasesResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1149,14 +1149,14 @@ class ProjectsInstancesDatabasesResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1209,14 +1209,14 @@ class ProjectsInstancesDatabasesResourceApi {
       UpdateDatabaseDdlRequest request, core.String database,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (database == null) {
       throw new core.ArgumentError("Parameter database is required.");
@@ -1272,7 +1272,7 @@ class ProjectsInstancesDatabasesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> cancel(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1319,7 +1319,7 @@ class ProjectsInstancesDatabasesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1365,7 +1365,7 @@ class ProjectsInstancesDatabasesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1429,7 +1429,7 @@ class ProjectsInstancesDatabasesOperationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1496,14 +1496,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       BeginTransactionRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -1557,14 +1557,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       CommitRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -1628,14 +1628,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       CreateSessionRequest request, core.String database,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (database == null) {
       throw new core.ArgumentError("Parameter database is required.");
@@ -1677,7 +1677,7 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1736,14 +1736,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       ExecuteSqlRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -1794,14 +1794,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       ExecuteSqlRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -1845,7 +1845,7 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Session> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1913,7 +1913,7 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       core.String filter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1979,14 +1979,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       PartitionQueryRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -2040,14 +2040,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       PartitionReadRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -2104,14 +2104,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
   async.Future<ResultSet> read(ReadRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -2162,14 +2162,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
   async.Future<Empty> rollback(RollbackRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -2218,14 +2218,14 @@ class ProjectsInstancesDatabasesSessionsResourceApi {
       ReadRequest request, core.String session,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (session == null) {
       throw new core.ArgumentError("Parameter session is required.");
@@ -2283,7 +2283,7 @@ class ProjectsInstancesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> cancel(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2330,7 +2330,7 @@ class ProjectsInstancesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2376,7 +2376,7 @@ class ProjectsInstancesOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2439,7 +2439,7 @@ class ProjectsInstancesOperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2531,7 +2531,7 @@ class Binding {
 
   Binding.fromJson(core.Map _json) {
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -2624,20 +2624,20 @@ class CommitRequest {
   /// Commit a previously-started transaction.
   core.String transactionId;
   core.List<core.int> get transactionIdAsBytes {
-    return convert.BASE64.decode(transactionId);
+    return convert.base64.decode(transactionId);
   }
 
   void set transactionIdAsBytes(core.List<core.int> _bytes) {
     transactionId =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   CommitRequest();
 
   CommitRequest.fromJson(core.Map _json) {
     if (_json.containsKey("mutations")) {
-      mutations = _json["mutations"]
-          .map((value) => new Mutation.fromJson(value))
+      mutations = (_json["mutations"] as core.List)
+          .map<Mutation>((value) => new Mutation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("singleUseTransaction")) {
@@ -2734,7 +2734,8 @@ class CreateDatabaseRequest {
       createStatement = _json["createStatement"];
     }
     if (_json.containsKey("extraStatements")) {
-      extraStatements = _json["extraStatements"];
+      extraStatements =
+          (_json["extraStatements"] as core.List).cast<core.String>();
     }
   }
 
@@ -2997,12 +2998,12 @@ class ExecuteSqlRequest {
   /// PartitionQueryRequest message used to create this partition_token.
   core.String partitionToken;
   core.List<core.int> get partitionTokenAsBytes {
-    return convert.BASE64.decode(partitionToken);
+    return convert.base64.decode(partitionToken);
   }
 
   void set partitionTokenAsBytes(core.List<core.int> _bytes) {
     partitionToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Used to control the amount of debugging information returned in
@@ -3028,12 +3029,12 @@ class ExecuteSqlRequest {
   /// request that yielded this token.
   core.String resumeToken;
   core.List<core.int> get resumeTokenAsBytes {
-    return convert.BASE64.decode(resumeToken);
+    return convert.base64.decode(resumeToken);
   }
 
   void set resumeTokenAsBytes(core.List<core.int> _bytes) {
     resumeToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Required. The SQL query string.
@@ -3047,12 +3048,12 @@ class ExecuteSqlRequest {
 
   ExecuteSqlRequest.fromJson(core.Map _json) {
     if (_json.containsKey("paramTypes")) {
-      paramTypes = commons.mapMap<core.Map<core.String, core.Object>, Type>(
-          _json["paramTypes"],
-          (core.Map<core.String, core.Object> item) => new Type.fromJson(item));
+      paramTypes = commons.mapMap<core.Map, Type>(
+          _json["paramTypes"].cast<core.String, core.Map>(),
+          (core.Map item) => new Type.fromJson(item));
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("partitionToken")) {
       partitionToken = _json["partitionToken"];
@@ -3149,7 +3150,7 @@ class GetDatabaseDdlResponse {
 
   GetDatabaseDdlResponse.fromJson(core.Map _json) {
     if (_json.containsKey("statements")) {
-      statements = _json["statements"];
+      statements = (_json["statements"] as core.List).cast<core.String>();
     }
   }
 
@@ -3250,7 +3251,7 @@ class Instance {
       displayName = _json["displayName"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -3442,16 +3443,16 @@ class KeyRange {
 
   KeyRange.fromJson(core.Map _json) {
     if (_json.containsKey("endClosed")) {
-      endClosed = _json["endClosed"];
+      endClosed = (_json["endClosed"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("endOpen")) {
-      endOpen = _json["endOpen"];
+      endOpen = (_json["endOpen"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("startClosed")) {
-      startClosed = _json["startClosed"];
+      startClosed = (_json["startClosed"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("startOpen")) {
-      startOpen = _json["startOpen"];
+      startOpen = (_json["startOpen"] as core.List).cast<core.Object>();
     }
   }
 
@@ -3507,11 +3508,15 @@ class KeySet {
       all = _json["all"];
     }
     if (_json.containsKey("keys")) {
-      keys = _json["keys"];
+      keys = (_json["keys"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
     if (_json.containsKey("ranges")) {
-      ranges =
-          _json["ranges"].map((value) => new KeyRange.fromJson(value)).toList();
+      ranges = (_json["ranges"] as core.List)
+          .map<KeyRange>((value) => new KeyRange.fromJson(value))
+          .toList();
     }
   }
 
@@ -3545,8 +3550,8 @@ class ListDatabasesResponse {
 
   ListDatabasesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("databases")) {
-      databases = _json["databases"]
-          .map((value) => new Database.fromJson(value))
+      databases = (_json["databases"] as core.List)
+          .map<Database>((value) => new Database.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -3581,8 +3586,8 @@ class ListInstanceConfigsResponse {
 
   ListInstanceConfigsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("instanceConfigs")) {
-      instanceConfigs = _json["instanceConfigs"]
-          .map((value) => new InstanceConfig.fromJson(value))
+      instanceConfigs = (_json["instanceConfigs"] as core.List)
+          .map<InstanceConfig>((value) => new InstanceConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -3618,8 +3623,8 @@ class ListInstancesResponse {
 
   ListInstancesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new Instance.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<Instance>((value) => new Instance.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -3655,8 +3660,8 @@ class ListOperationsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
   }
@@ -3692,8 +3697,8 @@ class ListSessionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("sessions")) {
-      sessions = _json["sessions"]
-          .map((value) => new Session.fromJson(value))
+      sessions = (_json["sessions"] as core.List)
+          .map<Session>((value) => new Session.fromJson(value))
           .toList();
     }
   }
@@ -3829,13 +3834,15 @@ class Operation {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("response")) {
-      response = _json["response"];
+      response =
+          (_json["response"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -3881,12 +3888,12 @@ class PartialResultSet {
   /// same session invalidates the token.
   core.String resumeToken;
   core.List<core.int> get resumeTokenAsBytes {
-    return convert.BASE64.decode(resumeToken);
+    return convert.base64.decode(resumeToken);
   }
 
   void set resumeTokenAsBytes(core.List<core.int> _bytes) {
     resumeToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Query plan and execution statistics for the query that produced this
@@ -3989,7 +3996,7 @@ class PartialResultSet {
       stats = new ResultSetStats.fromJson(_json["stats"]);
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List).cast<core.Object>();
     }
   }
 
@@ -4024,12 +4031,12 @@ class Partition {
   /// this partition token.
   core.String partitionToken;
   core.List<core.int> get partitionTokenAsBytes {
-    return convert.BASE64.decode(partitionToken);
+    return convert.base64.decode(partitionToken);
   }
 
   void set partitionTokenAsBytes(core.List<core.int> _bytes) {
     partitionToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   Partition();
@@ -4139,12 +4146,12 @@ class PartitionQueryRequest {
 
   PartitionQueryRequest.fromJson(core.Map _json) {
     if (_json.containsKey("paramTypes")) {
-      paramTypes = commons.mapMap<core.Map<core.String, core.Object>, Type>(
-          _json["paramTypes"],
-          (core.Map<core.String, core.Object> item) => new Type.fromJson(item));
+      paramTypes = commons.mapMap<core.Map, Type>(
+          _json["paramTypes"].cast<core.String, core.Map>(),
+          (core.Map item) => new Type.fromJson(item));
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("partitionOptions")) {
       partitionOptions =
@@ -4216,7 +4223,7 @@ class PartitionReadRequest {
 
   PartitionReadRequest.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"];
+      columns = (_json["columns"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("index")) {
       index = _json["index"];
@@ -4274,8 +4281,8 @@ class PartitionResponse {
 
   PartitionResponse.fromJson(core.Map _json) {
     if (_json.containsKey("partitions")) {
-      partitions = _json["partitions"]
-          .map((value) => new Partition.fromJson(value))
+      partitions = (_json["partitions"] as core.List)
+          .map<Partition>((value) => new Partition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("transaction")) {
@@ -4355,15 +4362,16 @@ class PlanNode {
 
   PlanNode.fromJson(core.Map _json) {
     if (_json.containsKey("childLinks")) {
-      childLinks = _json["childLinks"]
-          .map((value) => new ChildLink.fromJson(value))
+      childLinks = (_json["childLinks"] as core.List)
+          .map<ChildLink>((value) => new ChildLink.fromJson(value))
           .toList();
     }
     if (_json.containsKey("displayName")) {
       displayName = _json["displayName"];
     }
     if (_json.containsKey("executionStats")) {
-      executionStats = _json["executionStats"];
+      executionStats = (_json["executionStats"] as core.Map)
+          .cast<core.String, core.Object>();
     }
     if (_json.containsKey("index")) {
       index = _json["index"];
@@ -4372,7 +4380,8 @@ class PlanNode {
       kind = _json["kind"];
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("shortRepresentation")) {
       shortRepresentation =
@@ -4460,12 +4469,12 @@ class Policy {
   /// policy is overwritten blindly.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Deprecated.
@@ -4475,8 +4484,8 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new Binding.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<Binding>((value) => new Binding.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -4514,8 +4523,8 @@ class QueryPlan {
 
   QueryPlan.fromJson(core.Map _json) {
     if (_json.containsKey("planNodes")) {
-      planNodes = _json["planNodes"]
-          .map((value) => new PlanNode.fromJson(value))
+      planNodes = (_json["planNodes"] as core.List)
+          .map<PlanNode>((value) => new PlanNode.fromJson(value))
           .toList();
     }
   }
@@ -4679,12 +4688,12 @@ class ReadRequest {
   /// PartitionReadRequest message used to create this partition_token.
   core.String partitionToken;
   core.List<core.int> get partitionTokenAsBytes {
-    return convert.BASE64.decode(partitionToken);
+    return convert.base64.decode(partitionToken);
   }
 
   void set partitionTokenAsBytes(core.List<core.int> _bytes) {
     partitionToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// If this request is resuming a previously interrupted read,
@@ -4695,12 +4704,12 @@ class ReadRequest {
   /// that yielded this token.
   core.String resumeToken;
   core.List<core.int> get resumeTokenAsBytes {
-    return convert.BASE64.decode(resumeToken);
+    return convert.base64.decode(resumeToken);
   }
 
   void set resumeTokenAsBytes(core.List<core.int> _bytes) {
     resumeToken =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Required. The name of the table in the database to be read.
@@ -4714,7 +4723,7 @@ class ReadRequest {
 
   ReadRequest.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"];
+      columns = (_json["columns"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("index")) {
       index = _json["index"];
@@ -4813,7 +4822,10 @@ class ResultSet {
       metadata = new ResultSetMetadata.fromJson(_json["metadata"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
     if (_json.containsKey("stats")) {
       stats = new ResultSetStats.fromJson(_json["stats"]);
@@ -4902,7 +4914,8 @@ class ResultSetStats {
       queryPlan = new QueryPlan.fromJson(_json["queryPlan"]);
     }
     if (_json.containsKey("queryStats")) {
-      queryStats = _json["queryStats"];
+      queryStats =
+          (_json["queryStats"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -4924,12 +4937,12 @@ class RollbackRequest {
   /// Required. The transaction to roll back.
   core.String transactionId;
   core.List<core.int> get transactionIdAsBytes {
-    return convert.BASE64.decode(transactionId);
+    return convert.base64.decode(transactionId);
   }
 
   void set transactionIdAsBytes(core.List<core.int> _bytes) {
     transactionId =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   RollbackRequest();
@@ -4985,7 +4998,7 @@ class Session {
       createTime = _json["createTime"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -5057,7 +5070,8 @@ class ShortRepresentation {
       description = _json["description"];
     }
     if (_json.containsKey("subqueries")) {
-      subqueries = _json["subqueries"];
+      subqueries =
+          (_json["subqueries"] as core.Map).cast<core.String, core.int>();
     }
   }
 
@@ -5153,7 +5167,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -5190,8 +5207,9 @@ class StructType {
 
   StructType.fromJson(core.Map _json) {
     if (_json.containsKey("fields")) {
-      fields =
-          _json["fields"].map((value) => new Field.fromJson(value)).toList();
+      fields = (_json["fields"] as core.List)
+          .map<Field>((value) => new Field.fromJson(value))
+          .toList();
     }
   }
 
@@ -5216,7 +5234,7 @@ class TestIamPermissionsRequest {
 
   TestIamPermissionsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -5240,7 +5258,7 @@ class TestIamPermissionsResponse {
 
   TestIamPermissionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -5266,12 +5284,12 @@ class Transaction {
   /// single-use transactions do not support multiple requests.
   core.String id;
   core.List<core.int> get idAsBytes {
-    return convert.BASE64.decode(id);
+    return convert.base64.decode(id);
   }
 
   void set idAsBytes(core.List<core.int> _bytes) {
     id =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// For snapshot read-only transactions, the read timestamp chosen
@@ -5576,12 +5594,12 @@ class TransactionSelector {
   /// Execute the read or SQL query in a previously-started transaction.
   core.String id;
   core.List<core.int> get idAsBytes {
-    return convert.BASE64.decode(id);
+    return convert.base64.decode(id);
   }
 
   void set idAsBytes(core.List<core.int> _bytes) {
     id =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Execute the read or SQL query in a temporary transaction.
@@ -5702,13 +5720,14 @@ class UpdateDatabaseDdlMetadata {
 
   UpdateDatabaseDdlMetadata.fromJson(core.Map _json) {
     if (_json.containsKey("commitTimestamps")) {
-      commitTimestamps = _json["commitTimestamps"];
+      commitTimestamps =
+          (_json["commitTimestamps"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("database")) {
       database = _json["database"];
     }
     if (_json.containsKey("statements")) {
-      statements = _json["statements"];
+      statements = (_json["statements"] as core.List).cast<core.String>();
     }
   }
 
@@ -5776,7 +5795,7 @@ class UpdateDatabaseDdlRequest {
       operationId = _json["operationId"];
     }
     if (_json.containsKey("statements")) {
-      statements = _json["statements"];
+      statements = (_json["statements"] as core.List).cast<core.String>();
     }
   }
 
@@ -5919,13 +5938,16 @@ class Write {
 
   Write.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"];
+      columns = (_json["columns"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("table")) {
       table = _json["table"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
   }
 

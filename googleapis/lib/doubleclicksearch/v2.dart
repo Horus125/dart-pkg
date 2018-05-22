@@ -105,7 +105,7 @@ class ConversionResourceApi {
       core.String criterionId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -188,14 +188,14 @@ class ConversionResourceApi {
   async.Future<ConversionList> insert(ConversionList request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -260,14 +260,14 @@ class ConversionResourceApi {
       core.int startRow,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (advertiserId == null) {
       throw new core.ArgumentError("Parameter advertiserId is required.");
@@ -331,14 +331,14 @@ class ConversionResourceApi {
   async.Future<ConversionList> update(ConversionList request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -376,14 +376,14 @@ class ConversionResourceApi {
       UpdateAvailabilityRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -426,14 +426,14 @@ class ReportsResourceApi {
   async.Future<Report> generate(ReportRequest request_1,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request_1 != null) {
-      _body = convert.JSON.encode((request_1).toJson());
+      _body = convert.json.encode((request_1).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -468,7 +468,7 @@ class ReportsResourceApi {
   /// this method will complete with the same error.
   async.Future<Report> get(core.String reportId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -517,7 +517,7 @@ class ReportsResourceApi {
       commons.DownloadOptions downloadOptions:
           commons.DownloadOptions.Metadata}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -572,14 +572,14 @@ class ReportsResourceApi {
   /// this method will complete with the same error.
   async.Future<Report> request(ReportRequest request_1, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request_1 != null) {
-      _body = convert.JSON.encode((request_1).toJson());
+      _body = convert.json.encode((request_1).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -624,7 +624,7 @@ class SavedColumnsResourceApi {
       core.String agencyId, core.String advertiserId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -898,13 +898,13 @@ class Conversion {
       currencyCode = _json["currencyCode"];
     }
     if (_json.containsKey("customDimension")) {
-      customDimension = _json["customDimension"]
-          .map((value) => new CustomDimension.fromJson(value))
+      customDimension = (_json["customDimension"] as core.List)
+          .map<CustomDimension>((value) => new CustomDimension.fromJson(value))
           .toList();
     }
     if (_json.containsKey("customMetric")) {
-      customMetric = _json["customMetric"]
-          .map((value) => new CustomMetric.fromJson(value))
+      customMetric = (_json["customMetric"] as core.List)
+          .map<CustomMetric>((value) => new CustomMetric.fromJson(value))
           .toList();
     }
     if (_json.containsKey("deviceType")) {
@@ -1081,8 +1081,8 @@ class ConversionList {
 
   ConversionList.fromJson(core.Map _json) {
     if (_json.containsKey("conversion")) {
-      conversion = _json["conversion"]
-          .map((value) => new Conversion.fromJson(value))
+      conversion = (_json["conversion"] as core.List)
+          .map<Conversion>((value) => new Conversion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1242,8 +1242,8 @@ class Report {
 
   Report.fromJson(core.Map _json) {
     if (_json.containsKey("files")) {
-      files = _json["files"]
-          .map((value) => new ReportFiles.fromJson(value))
+      files = (_json["files"] as core.List)
+          .map<ReportFiles>((value) => new ReportFiles.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -1262,8 +1262,9 @@ class Report {
       rowCount = _json["rowCount"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new ReportRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<ReportRow>((value) => new ReportRow.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("statisticsCurrencyCode")) {
       statisticsCurrencyCode = _json["statisticsCurrencyCode"];
@@ -1460,7 +1461,7 @@ class ReportRequestFilters {
       operator = _json["operator"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List).cast<core.Object>();
     }
   }
 
@@ -1719,16 +1720,18 @@ class ReportRequest {
 
   ReportRequest.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"]
-          .map((value) => new ReportApiColumnSpec.fromJson(value))
+      columns = (_json["columns"] as core.List)
+          .map<ReportApiColumnSpec>(
+              (value) => new ReportApiColumnSpec.fromJson(value))
           .toList();
     }
     if (_json.containsKey("downloadFormat")) {
       downloadFormat = _json["downloadFormat"];
     }
     if (_json.containsKey("filters")) {
-      filters = _json["filters"]
-          .map((value) => new ReportRequestFilters.fromJson(value))
+      filters = (_json["filters"] as core.List)
+          .map<ReportRequestFilters>(
+              (value) => new ReportRequestFilters.fromJson(value))
           .toList();
     }
     if (_json.containsKey("includeDeletedEntities")) {
@@ -1741,8 +1744,9 @@ class ReportRequest {
       maxRowsPerFile = _json["maxRowsPerFile"];
     }
     if (_json.containsKey("orderBy")) {
-      orderBy = _json["orderBy"]
-          .map((value) => new ReportRequestOrderBy.fromJson(value))
+      orderBy = (_json["orderBy"] as core.List)
+          .map<ReportRequestOrderBy>(
+              (value) => new ReportRequestOrderBy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("reportScope")) {
@@ -1822,7 +1826,7 @@ class ReportRequest {
 /// Indicates the columns that are represented in this row. That is, each key
 /// corresponds to a column with a non-empty cell in this row.
 class ReportRow extends collection.MapBase<core.String, core.Object> {
-  final core.Map _innerMap = {};
+  final _innerMap = <core.String, core.Object>{};
 
   ReportRow();
 
@@ -1914,8 +1918,8 @@ class SavedColumnList {
 
   SavedColumnList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new SavedColumn.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<SavedColumn>((value) => new SavedColumn.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1945,8 +1949,8 @@ class UpdateAvailabilityRequest {
 
   UpdateAvailabilityRequest.fromJson(core.Map _json) {
     if (_json.containsKey("availabilities")) {
-      availabilities = _json["availabilities"]
-          .map((value) => new Availability.fromJson(value))
+      availabilities = (_json["availabilities"] as core.List)
+          .map<Availability>((value) => new Availability.fromJson(value))
           .toList();
     }
   }
@@ -1971,8 +1975,8 @@ class UpdateAvailabilityResponse {
 
   UpdateAvailabilityResponse.fromJson(core.Map _json) {
     if (_json.containsKey("availabilities")) {
-      availabilities = _json["availabilities"]
-          .map((value) => new Availability.fromJson(value))
+      availabilities = (_json["availabilities"] as core.List)
+          .map<Availability>((value) => new Availability.fromJson(value))
           .toList();
     }
   }

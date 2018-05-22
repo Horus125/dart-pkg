@@ -162,7 +162,7 @@ class DataGaResourceApi {
       core.int start_index,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -302,7 +302,7 @@ class DataMcfResourceApi {
       core.int start_index,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -406,7 +406,7 @@ class DataRealtimeResourceApi {
       core.String sort,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -523,7 +523,7 @@ class ManagementAccountSummariesResourceApi {
   async.Future<AccountSummaries> list(
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -576,7 +576,7 @@ class ManagementAccountUserLinksResourceApi {
   async.Future delete(core.String accountId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -630,14 +630,14 @@ class ManagementAccountUserLinksResourceApi {
       EntityUserLink request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -685,7 +685,7 @@ class ManagementAccountUserLinksResourceApi {
   async.Future<EntityUserLinks> list(core.String accountId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -741,14 +741,14 @@ class ManagementAccountUserLinksResourceApi {
       EntityUserLink request, core.String accountId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -804,7 +804,7 @@ class ManagementAccountsResourceApi {
   async.Future<Accounts> list(
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -869,7 +869,7 @@ class ManagementCustomDataSourcesResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -937,7 +937,7 @@ class ManagementCustomDimensionsResourceApi {
       core.String webPropertyId, core.String customDimensionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -996,14 +996,14 @@ class ManagementCustomDimensionsResourceApi {
       CustomDimension request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1058,7 +1058,7 @@ class ManagementCustomDimensionsResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1131,14 +1131,14 @@ class ManagementCustomDimensionsResourceApi {
       {core.bool ignoreCustomDataSourceLinks,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1209,14 +1209,14 @@ class ManagementCustomDimensionsResourceApi {
       {core.bool ignoreCustomDataSourceLinks,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1283,7 +1283,7 @@ class ManagementCustomMetricsResourceApi {
       core.String webPropertyId, core.String customMetricId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1342,14 +1342,14 @@ class ManagementCustomMetricsResourceApi {
       CustomMetric request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1404,7 +1404,7 @@ class ManagementCustomMetricsResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1471,14 +1471,14 @@ class ManagementCustomMetricsResourceApi {
       core.String webPropertyId, core.String customMetricId,
       {core.bool ignoreCustomDataSourceLinks, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1544,14 +1544,14 @@ class ManagementCustomMetricsResourceApi {
       core.String webPropertyId, core.String customMetricId,
       {core.bool ignoreCustomDataSourceLinks, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1618,7 +1618,7 @@ class ManagementExperimentsResourceApi {
       core.String profileId, core.String experimentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1686,7 +1686,7 @@ class ManagementExperimentsResourceApi {
       core.String profileId, core.String experimentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1752,14 +1752,14 @@ class ManagementExperimentsResourceApi {
       core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1824,7 +1824,7 @@ class ManagementExperimentsResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1898,14 +1898,14 @@ class ManagementExperimentsResourceApi {
       core.String experimentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1973,14 +1973,14 @@ class ManagementExperimentsResourceApi {
       core.String experimentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2044,7 +2044,7 @@ class ManagementFiltersResourceApi {
   async.Future<Filter> delete(core.String accountId, core.String filterId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2095,7 +2095,7 @@ class ManagementFiltersResourceApi {
   async.Future<Filter> get(core.String accountId, core.String filterId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2146,14 +2146,14 @@ class ManagementFiltersResourceApi {
   async.Future<Filter> insert(Filter request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2200,7 +2200,7 @@ class ManagementFiltersResourceApi {
   async.Future<Filters> list(core.String accountId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2256,14 +2256,14 @@ class ManagementFiltersResourceApi {
       Filter request, core.String accountId, core.String filterId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2313,14 +2313,14 @@ class ManagementFiltersResourceApi {
       Filter request, core.String accountId, core.String filterId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2378,7 +2378,7 @@ class ManagementGoalsResourceApi {
       core.String profileId, core.String goalId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2444,14 +2444,14 @@ class ManagementGoalsResourceApi {
       core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2518,7 +2518,7 @@ class ManagementGoalsResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2588,14 +2588,14 @@ class ManagementGoalsResourceApi {
       core.String webPropertyId, core.String profileId, core.String goalId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2659,14 +2659,14 @@ class ManagementGoalsResourceApi {
       core.String webPropertyId, core.String profileId, core.String goalId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2738,7 +2738,7 @@ class ManagementProfileFilterLinksResourceApi {
       core.String profileId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2810,7 +2810,7 @@ class ManagementProfileFilterLinksResourceApi {
       core.String webPropertyId, core.String profileId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2879,14 +2879,14 @@ class ManagementProfileFilterLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2953,7 +2953,7 @@ class ManagementProfileFilterLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3032,14 +3032,14 @@ class ManagementProfileFilterLinksResourceApi {
       core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3111,14 +3111,14 @@ class ManagementProfileFilterLinksResourceApi {
       core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3185,7 +3185,7 @@ class ManagementProfileUserLinksResourceApi {
       core.String profileId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3253,14 +3253,14 @@ class ManagementProfileUserLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3327,7 +3327,7 @@ class ManagementProfileUserLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3401,14 +3401,14 @@ class ManagementProfileUserLinksResourceApi {
       core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3473,7 +3473,7 @@ class ManagementProfilesResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3537,7 +3537,7 @@ class ManagementProfilesResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3596,14 +3596,14 @@ class ManagementProfilesResourceApi {
       Profile request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3661,7 +3661,7 @@ class ManagementProfilesResourceApi {
   async.Future<Profiles> list(core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3724,14 +3724,14 @@ class ManagementProfilesResourceApi {
       core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3788,14 +3788,14 @@ class ManagementProfilesResourceApi {
       core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3856,7 +3856,7 @@ class ManagementRemarketingAudienceResourceApi {
       core.String remarketingAudienceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3919,7 +3919,7 @@ class ManagementRemarketingAudienceResourceApi {
       core.String webPropertyId, core.String remarketingAudienceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3980,14 +3980,14 @@ class ManagementRemarketingAudienceResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -4048,7 +4048,7 @@ class ManagementRemarketingAudienceResourceApi {
       core.String type,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4119,14 +4119,14 @@ class ManagementRemarketingAudienceResourceApi {
       core.String remarketingAudienceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -4188,14 +4188,14 @@ class ManagementRemarketingAudienceResourceApi {
       core.String remarketingAudienceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -4257,7 +4257,7 @@ class ManagementSegmentsResourceApi {
   async.Future<Segments> list(
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4315,7 +4315,7 @@ class ManagementUnsampledReportsResourceApi {
       core.String profileId, core.String unsampledReportId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4386,7 +4386,7 @@ class ManagementUnsampledReportsResourceApi {
       core.String unsampledReportId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4452,14 +4452,14 @@ class ManagementUnsampledReportsResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -4525,7 +4525,7 @@ class ManagementUnsampledReportsResourceApi {
       core.String accountId, core.String webPropertyId, core.String profileId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4605,14 +4605,14 @@ class ManagementUploadsResourceApi {
       core.String customDataSourceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -4676,7 +4676,7 @@ class ManagementUploadsResourceApi {
       core.String customDataSourceId, core.String uploadId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4748,7 +4748,7 @@ class ManagementUploadsResourceApi {
       core.String customDataSourceId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4825,7 +4825,7 @@ class ManagementUploadsResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4911,7 +4911,7 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String webPropertyAdWordsLinkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4973,7 +4973,7 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String webPropertyId, core.String webPropertyAdWordsLinkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5033,14 +5033,14 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5097,7 +5097,7 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5164,14 +5164,14 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String webPropertyAdWordsLinkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5232,14 +5232,14 @@ class ManagementWebPropertyAdWordsLinksResourceApi {
       core.String webPropertyAdWordsLinkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5302,7 +5302,7 @@ class ManagementWebpropertiesResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5355,14 +5355,14 @@ class ManagementWebpropertiesResourceApi {
   async.Future<Webproperty> insert(Webproperty request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5411,7 +5411,7 @@ class ManagementWebpropertiesResourceApi {
   async.Future<Webproperties> list(core.String accountId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5467,14 +5467,14 @@ class ManagementWebpropertiesResourceApi {
       Webproperty request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5524,14 +5524,14 @@ class ManagementWebpropertiesResourceApi {
       Webproperty request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5586,7 +5586,7 @@ class ManagementWebpropertyUserLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5647,14 +5647,14 @@ class ManagementWebpropertyUserLinksResourceApi {
       EntityUserLink request, core.String accountId, core.String webPropertyId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5712,7 +5712,7 @@ class ManagementWebpropertyUserLinksResourceApi {
       core.String accountId, core.String webPropertyId,
       {core.int max_results, core.int start_index, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5775,14 +5775,14 @@ class ManagementWebpropertyUserLinksResourceApi {
       core.String accountId, core.String webPropertyId, core.String linkId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -5848,7 +5848,7 @@ class MetadataColumnsResourceApi {
   /// this method will complete with the same error.
   async.Future<Columns> list(core.String reportType, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5898,14 +5898,14 @@ class ProvisioningResourceApi {
   async.Future<AccountTicket> createAccountTicket(AccountTicket request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -5942,14 +5942,14 @@ class ProvisioningResourceApi {
       AccountTreeRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -6010,7 +6010,7 @@ class AccountPermissions {
 
   AccountPermissions.fromJson(core.Map _json) {
     if (_json.containsKey("effective")) {
-      effective = _json["effective"];
+      effective = (_json["effective"] as core.List).cast<core.String>();
     }
   }
 
@@ -6207,8 +6207,8 @@ class AccountSummaries {
 
   AccountSummaries.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new AccountSummary.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<AccountSummary>((value) => new AccountSummary.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -6299,8 +6299,9 @@ class AccountSummary {
       starred = _json["starred"];
     }
     if (_json.containsKey("webProperties")) {
-      webProperties = _json["webProperties"]
-          .map((value) => new WebPropertySummary.fromJson(value))
+      webProperties = (_json["webProperties"] as core.List)
+          .map<WebPropertySummary>(
+              (value) => new WebPropertySummary.fromJson(value))
           .toList();
     }
   }
@@ -6679,8 +6680,9 @@ class Accounts {
 
   Accounts.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Account.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -6787,7 +6789,8 @@ class AnalyticsDataimportDeleteUploadDataRequest {
 
   AnalyticsDataimportDeleteUploadDataRequest.fromJson(core.Map _json) {
     if (_json.containsKey("customDataImportUids")) {
-      customDataImportUids = _json["customDataImportUids"];
+      customDataImportUids =
+          (_json["customDataImportUids"] as core.List).cast<core.String>();
     }
   }
 
@@ -6816,7 +6819,8 @@ class Column {
 
   Column.fromJson(core.Map _json) {
     if (_json.containsKey("attributes")) {
-      attributes = _json["attributes"];
+      attributes =
+          (_json["attributes"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -6864,14 +6868,16 @@ class Columns {
 
   Columns.fromJson(core.Map _json) {
     if (_json.containsKey("attributeNames")) {
-      attributeNames = _json["attributeNames"];
+      attributeNames =
+          (_json["attributeNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Column.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Column>((value) => new Column.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -7047,10 +7053,11 @@ class CustomDataSource {
       parentLink = new CustomDataSourceParentLink.fromJson(_json["parentLink"]);
     }
     if (_json.containsKey("profilesLinked")) {
-      profilesLinked = _json["profilesLinked"];
+      profilesLinked =
+          (_json["profilesLinked"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("schema")) {
-      schema = _json["schema"];
+      schema = (_json["schema"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
@@ -7161,8 +7168,9 @@ class CustomDataSources {
 
   CustomDataSources.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new CustomDataSource.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<CustomDataSource>(
+              (value) => new CustomDataSource.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -7413,8 +7421,8 @@ class CustomDimensions {
 
   CustomDimensions.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new CustomDimension.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<CustomDimension>((value) => new CustomDimension.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -7692,8 +7700,8 @@ class CustomMetrics {
 
   CustomMetrics.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new CustomMetric.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<CustomMetric>((value) => new CustomMetric.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -7800,8 +7808,8 @@ class EntityAdWordsLink {
 
   EntityAdWordsLink.fromJson(core.Map _json) {
     if (_json.containsKey("adWordsAccounts")) {
-      adWordsAccounts = _json["adWordsAccounts"]
-          .map((value) => new AdWordsAccount.fromJson(value))
+      adWordsAccounts = (_json["adWordsAccounts"] as core.List)
+          .map<AdWordsAccount>((value) => new AdWordsAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("entity")) {
@@ -7817,7 +7825,7 @@ class EntityAdWordsLink {
       name = _json["name"];
     }
     if (_json.containsKey("profileIds")) {
-      profileIds = _json["profileIds"];
+      profileIds = (_json["profileIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
@@ -7886,8 +7894,9 @@ class EntityAdWordsLinks {
 
   EntityAdWordsLinks.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new EntityAdWordsLink.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<EntityAdWordsLink>(
+              (value) => new EntityAdWordsLink.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -7997,10 +8006,10 @@ class EntityUserLinkPermissions {
 
   EntityUserLinkPermissions.fromJson(core.Map _json) {
     if (_json.containsKey("effective")) {
-      effective = _json["effective"];
+      effective = (_json["effective"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("local")) {
-      local = _json["local"];
+      local = (_json["local"] as core.List).cast<core.String>();
     }
   }
 
@@ -8121,8 +8130,8 @@ class EntityUserLinks {
 
   EntityUserLinks.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new EntityUserLink.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<EntityUserLink>((value) => new EntityUserLink.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -8486,8 +8495,9 @@ class Experiment {
       updated = core.DateTime.parse(_json["updated"]);
     }
     if (_json.containsKey("variations")) {
-      variations = _json["variations"]
-          .map((value) => new ExperimentVariations.fromJson(value))
+      variations = (_json["variations"] as core.List)
+          .map<ExperimentVariations>(
+              (value) => new ExperimentVariations.fromJson(value))
           .toList();
     }
     if (_json.containsKey("webPropertyId")) {
@@ -8630,8 +8640,8 @@ class Experiments {
 
   Experiments.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Experiment.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Experiment>((value) => new Experiment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -9390,8 +9400,9 @@ class Filters {
 
   Filters.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Filter.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Filter>((value) => new Filter.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -9552,8 +9563,9 @@ class GaDataDataTableRows {
 
   GaDataDataTableRows.fromJson(core.Map _json) {
     if (_json.containsKey("c")) {
-      c = _json["c"]
-          .map((value) => new GaDataDataTableRowsC.fromJson(value))
+      c = (_json["c"] as core.List)
+          .map<GaDataDataTableRowsC>(
+              (value) => new GaDataDataTableRowsC.fromJson(value))
           .toList();
     }
   }
@@ -9576,13 +9588,15 @@ class GaDataDataTable {
 
   GaDataDataTable.fromJson(core.Map _json) {
     if (_json.containsKey("cols")) {
-      cols = _json["cols"]
-          .map((value) => new GaDataDataTableCols.fromJson(value))
+      cols = (_json["cols"] as core.List)
+          .map<GaDataDataTableCols>(
+              (value) => new GaDataDataTableCols.fromJson(value))
           .toList();
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"]
-          .map((value) => new GaDataDataTableRows.fromJson(value))
+      rows = (_json["rows"] as core.List)
+          .map<GaDataDataTableRows>(
+              (value) => new GaDataDataTableRows.fromJson(value))
           .toList();
     }
   }
@@ -9723,7 +9737,7 @@ class GaDataQuery {
       max_results = _json["max-results"];
     }
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"];
+      metrics = (_json["metrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("samplingLevel")) {
       samplingLevel = _json["samplingLevel"];
@@ -9732,7 +9746,7 @@ class GaDataQuery {
       segment = _json["segment"];
     }
     if (_json.containsKey("sort")) {
-      sort = _json["sort"];
+      sort = (_json["sort"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("start-date")) {
       start_date = _json["start-date"];
@@ -9847,8 +9861,9 @@ class GaData {
 
   GaData.fromJson(core.Map _json) {
     if (_json.containsKey("columnHeaders")) {
-      columnHeaders = _json["columnHeaders"]
-          .map((value) => new GaDataColumnHeaders.fromJson(value))
+      columnHeaders = (_json["columnHeaders"] as core.List)
+          .map<GaDataColumnHeaders>(
+              (value) => new GaDataColumnHeaders.fromJson(value))
           .toList();
     }
     if (_json.containsKey("containsSampledData")) {
@@ -9882,7 +9897,10 @@ class GaData {
       query = new GaDataQuery.fromJson(_json["query"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.String>>(
+              (value) => (value as core.List).cast<core.String>())
+          .toList();
     }
     if (_json.containsKey("sampleSize")) {
       sampleSize = _json["sampleSize"];
@@ -9897,7 +9915,8 @@ class GaData {
       totalResults = _json["totalResults"];
     }
     if (_json.containsKey("totalsForAllResults")) {
-      totalsForAllResults = _json["totalsForAllResults"];
+      totalsForAllResults = (_json["totalsForAllResults"] as core.Map)
+          .cast<core.String, core.String>();
     }
   }
 
@@ -10032,8 +10051,9 @@ class GoalEventDetails {
 
   GoalEventDetails.fromJson(core.Map _json) {
     if (_json.containsKey("eventConditions")) {
-      eventConditions = _json["eventConditions"]
-          .map((value) => new GoalEventDetailsEventConditions.fromJson(value))
+      eventConditions = (_json["eventConditions"] as core.List)
+          .map<GoalEventDetailsEventConditions>(
+              (value) => new GoalEventDetailsEventConditions.fromJson(value))
           .toList();
     }
     if (_json.containsKey("useEventValue")) {
@@ -10159,8 +10179,9 @@ class GoalUrlDestinationDetails {
       matchType = _json["matchType"];
     }
     if (_json.containsKey("steps")) {
-      steps = _json["steps"]
-          .map((value) => new GoalUrlDestinationDetailsSteps.fromJson(value))
+      steps = (_json["steps"] as core.List)
+          .map<GoalUrlDestinationDetailsSteps>(
+              (value) => new GoalUrlDestinationDetailsSteps.fromJson(value))
           .toList();
     }
     if (_json.containsKey("url")) {
@@ -10473,7 +10494,9 @@ class Goals {
 
   Goals.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Goal.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Goal>((value) => new Goal.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -10866,7 +10889,7 @@ class McfDataQuery {
       max_results = _json["max-results"];
     }
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"];
+      metrics = (_json["metrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("samplingLevel")) {
       samplingLevel = _json["samplingLevel"];
@@ -10875,7 +10898,7 @@ class McfDataQuery {
       segment = _json["segment"];
     }
     if (_json.containsKey("sort")) {
-      sort = _json["sort"];
+      sort = (_json["sort"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("start-date")) {
       start_date = _json["start-date"];
@@ -10971,8 +10994,9 @@ class McfDataRows {
 
   McfDataRows.fromJson(core.Map _json) {
     if (_json.containsKey("conversionPathValue")) {
-      conversionPathValue = _json["conversionPathValue"]
-          .map((value) => new McfDataRowsConversionPathValue.fromJson(value))
+      conversionPathValue = (_json["conversionPathValue"] as core.List)
+          .map<McfDataRowsConversionPathValue>(
+              (value) => new McfDataRowsConversionPathValue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("primitiveValue")) {
@@ -11055,8 +11079,9 @@ class McfData {
 
   McfData.fromJson(core.Map _json) {
     if (_json.containsKey("columnHeaders")) {
-      columnHeaders = _json["columnHeaders"]
-          .map((value) => new McfDataColumnHeaders.fromJson(value))
+      columnHeaders = (_json["columnHeaders"] as core.List)
+          .map<McfDataColumnHeaders>(
+              (value) => new McfDataColumnHeaders.fromJson(value))
           .toList();
     }
     if (_json.containsKey("containsSampledData")) {
@@ -11084,9 +11109,10 @@ class McfData {
       query = new McfDataQuery.fromJson(_json["query"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"]
-          .map((value) =>
-              value.map((value) => new McfDataRows.fromJson(value)).toList())
+      rows = (_json["rows"] as core.List)
+          .map<core.List<McfDataRows>>((value) => (value as core.List)
+              .map<McfDataRows>((value) => new McfDataRows.fromJson(value))
+              .toList())
           .toList();
     }
     if (_json.containsKey("sampleSize")) {
@@ -11102,7 +11128,8 @@ class McfData {
       totalResults = _json["totalResults"];
     }
     if (_json.containsKey("totalsForAllResults")) {
-      totalsForAllResults = _json["totalsForAllResults"];
+      totalsForAllResults = (_json["totalsForAllResults"] as core.Map)
+          .cast<core.String, core.String>();
     }
   }
 
@@ -11238,7 +11265,7 @@ class ProfilePermissions {
 
   ProfilePermissions.fromJson(core.Map _json) {
     if (_json.containsKey("effective")) {
-      effective = _json["effective"];
+      effective = (_json["effective"] as core.List).cast<core.String>();
     }
   }
 
@@ -11630,8 +11657,9 @@ class ProfileFilterLinks {
 
   ProfileFilterLinks.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new ProfileFilterLink.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<ProfileFilterLink>(
+              (value) => new ProfileFilterLink.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -11863,8 +11891,9 @@ class Profiles {
 
   Profiles.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Profile.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Profile>((value) => new Profile.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -12067,10 +12096,10 @@ class RealtimeDataQuery {
       max_results = _json["max-results"];
     }
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"];
+      metrics = (_json["metrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sort")) {
-      sort = _json["sort"];
+      sort = (_json["sort"] as core.List).cast<core.String>();
     }
   }
 
@@ -12139,8 +12168,9 @@ class RealtimeData {
 
   RealtimeData.fromJson(core.Map _json) {
     if (_json.containsKey("columnHeaders")) {
-      columnHeaders = _json["columnHeaders"]
-          .map((value) => new RealtimeDataColumnHeaders.fromJson(value))
+      columnHeaders = (_json["columnHeaders"] as core.List)
+          .map<RealtimeDataColumnHeaders>(
+              (value) => new RealtimeDataColumnHeaders.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -12156,7 +12186,10 @@ class RealtimeData {
       query = new RealtimeDataQuery.fromJson(_json["query"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.String>>(
+              (value) => (value as core.List).cast<core.String>())
+          .toList();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
@@ -12165,7 +12198,8 @@ class RealtimeData {
       totalResults = _json["totalResults"];
     }
     if (_json.containsKey("totalsForAllResults")) {
-      totalsForAllResults = _json["totalsForAllResults"];
+      totalsForAllResults = (_json["totalsForAllResults"] as core.Map)
+          .cast<core.String, core.String>();
     }
   }
 
@@ -12378,12 +12412,13 @@ class RemarketingAudience {
       kind = _json["kind"];
     }
     if (_json.containsKey("linkedAdAccounts")) {
-      linkedAdAccounts = _json["linkedAdAccounts"]
-          .map((value) => new LinkedForeignAccount.fromJson(value))
+      linkedAdAccounts = (_json["linkedAdAccounts"] as core.List)
+          .map<LinkedForeignAccount>(
+              (value) => new LinkedForeignAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("linkedViews")) {
-      linkedViews = _json["linkedViews"];
+      linkedViews = (_json["linkedViews"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -12489,8 +12524,9 @@ class RemarketingAudiences {
 
   RemarketingAudiences.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new RemarketingAudience.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<RemarketingAudience>(
+              (value) => new RemarketingAudience.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -12679,8 +12715,9 @@ class Segments {
 
   Segments.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Segment.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Segment>((value) => new Segment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -13023,8 +13060,8 @@ class UnsampledReports {
 
   UnsampledReports.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new UnsampledReport.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<UnsampledReport>((value) => new UnsampledReport.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -13115,7 +13152,7 @@ class Upload {
       customDataSourceId = _json["customDataSourceId"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"];
+      errors = (_json["errors"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -13193,8 +13230,9 @@ class Uploads {
 
   Uploads.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Upload.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Upload>((value) => new Upload.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
       itemsPerPage = _json["itemsPerPage"];
@@ -13397,8 +13435,8 @@ class WebPropertySummary {
       name = _json["name"];
     }
     if (_json.containsKey("profiles")) {
-      profiles = _json["profiles"]
-          .map((value) => new ProfileSummary.fromJson(value))
+      profiles = (_json["profiles"] as core.List)
+          .map<ProfileSummary>((value) => new ProfileSummary.fromJson(value))
           .toList();
     }
     if (_json.containsKey("starred")) {
@@ -13477,8 +13515,8 @@ class Webproperties {
 
   Webproperties.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Webproperty.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Webproperty>((value) => new Webproperty.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsPerPage")) {
@@ -13612,7 +13650,7 @@ class WebpropertyPermissions {
 
   WebpropertyPermissions.fromJson(core.Map _json) {
     if (_json.containsKey("effective")) {
-      effective = _json["effective"];
+      effective = (_json["effective"] as core.List).cast<core.String>();
     }
   }
 

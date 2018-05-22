@@ -81,7 +81,7 @@ class AccountsProductsResourceApi {
   async.Future<Empty> delete(core.String parent, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -152,7 +152,7 @@ class AccountsProductsResourceApi {
   async.Future<Product> get(core.String parent, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -210,7 +210,7 @@ class AccountsProductsResourceApi {
   async.Future<ListProductsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -291,14 +291,14 @@ class AccountsProductsResourceApi {
       Attributes request, core.String parent, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -465,8 +465,8 @@ class Attributes {
 
   Attributes.fromJson(core.Map _json) {
     if (_json.containsKey("additionalImageLink")) {
-      additionalImageLink = _json["additionalImageLink"]
-          .map((value) => new Image.fromJson(value))
+      additionalImageLink = (_json["additionalImageLink"] as core.List)
+          .map<Image>((value) => new Image.fromJson(value))
           .toList();
     }
     if (_json.containsKey("ageGroup")) {
@@ -491,8 +491,9 @@ class Attributes {
       disclosureDate = _json["disclosureDate"];
     }
     if (_json.containsKey("featureDescription")) {
-      featureDescription = _json["featureDescription"]
-          .map((value) => new FeatureDescription.fromJson(value))
+      featureDescription = (_json["featureDescription"] as core.List)
+          .map<FeatureDescription>(
+              (value) => new FeatureDescription.fromJson(value))
           .toList();
     }
     if (_json.containsKey("flavor")) {
@@ -505,7 +506,7 @@ class Attributes {
       gender = _json["gender"];
     }
     if (_json.containsKey("gtin")) {
-      gtin = _json["gtin"];
+      gtin = (_json["gtin"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("imageLink")) {
       imageLink = new Image.fromJson(_json["imageLink"]);
@@ -523,8 +524,8 @@ class Attributes {
       pattern = _json["pattern"];
     }
     if (_json.containsKey("productDetail")) {
-      productDetail = _json["productDetail"]
-          .map((value) => new ProductDetail.fromJson(value))
+      productDetail = (_json["productDetail"] as core.List)
+          .map<ProductDetail>((value) => new ProductDetail.fromJson(value))
           .toList();
     }
     if (_json.containsKey("productLine")) {
@@ -537,7 +538,7 @@ class Attributes {
       productPageUrl = _json["productPageUrl"];
     }
     if (_json.containsKey("productType")) {
-      productType = _json["productType"];
+      productType = (_json["productType"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("releaseDate")) {
       releaseDate = _json["releaseDate"];
@@ -567,7 +568,7 @@ class Attributes {
       title = _json["title"];
     }
     if (_json.containsKey("videoLink")) {
-      videoLink = _json["videoLink"];
+      videoLink = (_json["videoLink"] as core.List).cast<core.String>();
     }
   }
 
@@ -965,8 +966,8 @@ class ListProductsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("products")) {
-      products = _json["products"]
-          .map((value) => new Product.fromJson(value))
+      products = (_json["products"] as core.List)
+          .map<Product>((value) => new Product.fromJson(value))
           .toList();
     }
   }
@@ -1089,11 +1090,13 @@ class Product {
       finalAttributes = new Attributes.fromJson(_json["finalAttributes"]);
     }
     if (_json.containsKey("issues")) {
-      issues =
-          _json["issues"].map((value) => new Issue.fromJson(value)).toList();
+      issues = (_json["issues"] as core.List)
+          .map<Issue>((value) => new Issue.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("manuallyDeletedAttributes")) {
-      manuallyDeletedAttributes = _json["manuallyDeletedAttributes"];
+      manuallyDeletedAttributes =
+          (_json["manuallyDeletedAttributes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("manuallyProvidedAttributes")) {
       manuallyProvidedAttributes =

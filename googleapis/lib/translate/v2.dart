@@ -64,14 +64,14 @@ class DetectionsResourceApi {
   async.Future<DetectionsListResponse> detect(DetectLanguageRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -108,7 +108,7 @@ class DetectionsResourceApi {
   async.Future<DetectionsListResponse> list(core.List<core.String> q,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -162,7 +162,7 @@ class LanguagesResourceApi {
   async.Future<LanguagesListResponse> list(
       {core.String target, core.String model, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -244,7 +244,7 @@ class TranslationsResourceApi {
       core.String source,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -305,14 +305,14 @@ class TranslationsResourceApi {
   async.Future<TranslationsListResponse> translate(TranslateTextRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -341,7 +341,7 @@ class DetectLanguageRequest {
 
   DetectLanguageRequest.fromJson(core.Map _json) {
     if (_json.containsKey("q")) {
-      q = _json["q"];
+      q = (_json["q"] as core.List).cast<core.String>();
     }
   }
 
@@ -363,8 +363,9 @@ class DetectionsListResponse {
 
   DetectionsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("detections")) {
-      detections = _json["detections"]
-          .map((value) => new DetectionsResource.fromJson(value))
+      detections = (_json["detections"] as core.List)
+          .map<DetectionsResource>(
+              (value) => new DetectionsResource.fromJson(value))
           .toList();
     }
   }
@@ -486,8 +487,9 @@ class LanguagesListResponse {
 
   LanguagesListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("languages")) {
-      languages = _json["languages"]
-          .map((value) => new LanguagesResource.fromJson(value))
+      languages = (_json["languages"] as core.List)
+          .map<LanguagesResource>(
+              (value) => new LanguagesResource.fromJson(value))
           .toList();
     }
   }
@@ -570,7 +572,7 @@ class TranslateTextRequest {
       model = _json["model"];
     }
     if (_json.containsKey("q")) {
-      q = _json["q"];
+      q = (_json["q"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("source")) {
       source = _json["source"];
@@ -611,8 +613,9 @@ class TranslationsListResponse {
 
   TranslationsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("translations")) {
-      translations = _json["translations"]
-          .map((value) => new TranslationsResource.fromJson(value))
+      translations = (_json["translations"] as core.List)
+          .map<TranslationsResource>(
+              (value) => new TranslationsResource.fromJson(value))
           .toList();
     }
   }

@@ -97,7 +97,7 @@ class DatasetsResourceApi {
   async.Future delete(core.String projectId, core.String datasetId,
       {core.bool deleteContents, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -153,7 +153,7 @@ class DatasetsResourceApi {
   async.Future<Dataset> get(core.String projectId, core.String datasetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -204,14 +204,14 @@ class DatasetsResourceApi {
   async.Future<Dataset> insert(Dataset request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -269,7 +269,7 @@ class DatasetsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -333,14 +333,14 @@ class DatasetsResourceApi {
       Dataset request, core.String projectId, core.String datasetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -392,14 +392,14 @@ class DatasetsResourceApi {
       Dataset request, core.String projectId, core.String datasetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -458,7 +458,7 @@ class JobsResourceApi {
       core.String projectId, core.String jobId,
       {core.String location, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -518,7 +518,7 @@ class JobsResourceApi {
   async.Future<Job> get(core.String projectId, core.String jobId,
       {core.String location, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -592,7 +592,7 @@ class JobsResourceApi {
       core.int timeoutMs,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -666,14 +666,14 @@ class JobsResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -750,7 +750,7 @@ class JobsResourceApi {
       core.List<core.String> stateFilter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -811,14 +811,14 @@ class JobsResourceApi {
   async.Future<QueryResponse> query(QueryRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -866,7 +866,7 @@ class ProjectsResourceApi {
       core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -915,7 +915,7 @@ class ProjectsResourceApi {
   async.Future<ProjectList> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -978,14 +978,14 @@ class TabledataResourceApi {
       core.String tableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -1057,7 +1057,7 @@ class TabledataResourceApi {
       core.String startIndex,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1134,7 +1134,7 @@ class TablesResourceApi {
       core.String projectId, core.String datasetId, core.String tableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1200,7 +1200,7 @@ class TablesResourceApi {
       core.String projectId, core.String datasetId, core.String tableId,
       {core.String selectedFields, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1262,14 +1262,14 @@ class TablesResourceApi {
       Table request, core.String projectId, core.String datasetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -1323,7 +1323,7 @@ class TablesResourceApi {
   async.Future<TableList> list(core.String projectId, core.String datasetId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1389,14 +1389,14 @@ class TablesResourceApi {
       core.String datasetId, core.String tableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -1455,14 +1455,14 @@ class TablesResourceApi {
       core.String datasetId, core.String tableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -1523,12 +1523,12 @@ class BigtableColumn {
   /// [a-zA-Z][a-zA-Z0-9_]*, a valid identifier must be provided as field_name.
   core.String qualifierEncoded;
   core.List<core.int> get qualifierEncodedAsBytes {
-    return convert.BASE64.decode(qualifierEncoded);
+    return convert.base64.decode(qualifierEncoded);
   }
 
   void set qualifierEncodedAsBytes(core.List<core.int> _bytes) {
     qualifierEncoded =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   core.String qualifierString;
@@ -1625,8 +1625,8 @@ class BigtableColumnFamily {
 
   BigtableColumnFamily.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"]
-          .map((value) => new BigtableColumn.fromJson(value))
+      columns = (_json["columns"] as core.List)
+          .map<BigtableColumn>((value) => new BigtableColumn.fromJson(value))
           .toList();
     }
     if (_json.containsKey("encoding")) {
@@ -1691,8 +1691,9 @@ class BigtableOptions {
 
   BigtableOptions.fromJson(core.Map _json) {
     if (_json.containsKey("columnFamilies")) {
-      columnFamilies = _json["columnFamilies"]
-          .map((value) => new BigtableColumnFamily.fromJson(value))
+      columnFamilies = (_json["columnFamilies"] as core.List)
+          .map<BigtableColumnFamily>(
+              (value) => new BigtableColumnFamily.fromJson(value))
           .toList();
     }
     if (_json.containsKey("ignoreUnspecifiedColumnFamilies")) {
@@ -1957,8 +1958,8 @@ class Dataset {
 
   Dataset.fromJson(core.Map _json) {
     if (_json.containsKey("access")) {
-      access = _json["access"]
-          .map((value) => new DatasetAccess.fromJson(value))
+      access = (_json["access"] as core.List)
+          .map<DatasetAccess>((value) => new DatasetAccess.fromJson(value))
           .toList();
     }
     if (_json.containsKey("creationTime")) {
@@ -1987,7 +1988,7 @@ class Dataset {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("lastModifiedTime")) {
       lastModifiedTime = _json["lastModifiedTime"];
@@ -2085,7 +2086,7 @@ class DatasetListDatasets {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("location")) {
       location = _json["location"];
@@ -2140,8 +2141,9 @@ class DatasetList {
 
   DatasetList.fromJson(core.Map _json) {
     if (_json.containsKey("datasets")) {
-      datasets = _json["datasets"]
-          .map((value) => new DatasetListDatasets.fromJson(value))
+      datasets = (_json["datasets"] as core.List)
+          .map<DatasetListDatasets>(
+              (value) => new DatasetListDatasets.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -2432,7 +2434,7 @@ class ExplainQueryStage {
       id = _json["id"];
     }
     if (_json.containsKey("inputStages")) {
-      inputStages = _json["inputStages"];
+      inputStages = (_json["inputStages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -2471,8 +2473,9 @@ class ExplainQueryStage {
       status = _json["status"];
     }
     if (_json.containsKey("steps")) {
-      steps = _json["steps"]
-          .map((value) => new ExplainQueryStep.fromJson(value))
+      steps = (_json["steps"] as core.List)
+          .map<ExplainQueryStep>(
+              (value) => new ExplainQueryStep.fromJson(value))
           .toList();
     }
     if (_json.containsKey("waitMsAvg")) {
@@ -2609,7 +2612,7 @@ class ExplainQueryStep {
       kind = _json["kind"];
     }
     if (_json.containsKey("substeps")) {
-      substeps = _json["substeps"];
+      substeps = (_json["substeps"] as core.List).cast<core.String>();
     }
   }
 
@@ -2718,7 +2721,7 @@ class ExternalDataConfiguration {
       sourceFormat = _json["sourceFormat"];
     }
     if (_json.containsKey("sourceUris")) {
-      sourceUris = _json["sourceUris"];
+      sourceUris = (_json["sourceUris"] as core.List).cast<core.String>();
     }
   }
 
@@ -2819,8 +2822,8 @@ class GetQueryResultsResponse {
       cacheHit = _json["cacheHit"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new ErrorProto.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<ErrorProto>((value) => new ErrorProto.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -2842,8 +2845,9 @@ class GetQueryResultsResponse {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new TableRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<TableRow>((value) => new TableRow.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("schema")) {
       schema = new TableSchema.fromJson(_json["schema"]);
@@ -3136,7 +3140,7 @@ class JobConfiguration {
       jobTimeoutMs = _json["jobTimeoutMs"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("load")) {
       load = new JobConfigurationLoad.fromJson(_json["load"]);
@@ -3218,7 +3222,8 @@ class JobConfigurationExtract {
       destinationUri = _json["destinationUri"];
     }
     if (_json.containsKey("destinationUris")) {
-      destinationUris = _json["destinationUris"];
+      destinationUris =
+          (_json["destinationUris"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("fieldDelimiter")) {
       fieldDelimiter = _json["fieldDelimiter"];
@@ -3452,7 +3457,8 @@ class JobConfigurationLoad {
       nullMarker = _json["nullMarker"];
     }
     if (_json.containsKey("projectionFields")) {
-      projectionFields = _json["projectionFields"];
+      projectionFields =
+          (_json["projectionFields"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("quote")) {
       quote = _json["quote"];
@@ -3467,7 +3473,8 @@ class JobConfigurationLoad {
       schemaInlineFormat = _json["schemaInlineFormat"];
     }
     if (_json.containsKey("schemaUpdateOptions")) {
-      schemaUpdateOptions = _json["schemaUpdateOptions"];
+      schemaUpdateOptions =
+          (_json["schemaUpdateOptions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("skipLeadingRows")) {
       skipLeadingRows = _json["skipLeadingRows"];
@@ -3476,7 +3483,7 @@ class JobConfigurationLoad {
       sourceFormat = _json["sourceFormat"];
     }
     if (_json.containsKey("sourceUris")) {
-      sourceUris = _json["sourceUris"];
+      sourceUris = (_json["sourceUris"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("timePartitioning")) {
       timePartitioning =
@@ -3721,19 +3728,18 @@ class JobConfigurationQuery {
       query = _json["query"];
     }
     if (_json.containsKey("queryParameters")) {
-      queryParameters = _json["queryParameters"]
-          .map((value) => new QueryParameter.fromJson(value))
+      queryParameters = (_json["queryParameters"] as core.List)
+          .map<QueryParameter>((value) => new QueryParameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("schemaUpdateOptions")) {
-      schemaUpdateOptions = _json["schemaUpdateOptions"];
+      schemaUpdateOptions =
+          (_json["schemaUpdateOptions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("tableDefinitions")) {
-      tableDefinitions = commons.mapMap<core.Map<core.String, core.Object>,
-              ExternalDataConfiguration>(
-          _json["tableDefinitions"],
-          (core.Map<core.String, core.Object> item) =>
-              new ExternalDataConfiguration.fromJson(item));
+      tableDefinitions = commons.mapMap<core.Map, ExternalDataConfiguration>(
+          _json["tableDefinitions"].cast<core.String, core.Map>(),
+          (core.Map item) => new ExternalDataConfiguration.fromJson(item));
     }
     if (_json.containsKey("timePartitioning")) {
       timePartitioning =
@@ -3746,9 +3752,11 @@ class JobConfigurationQuery {
       useQueryCache = _json["useQueryCache"];
     }
     if (_json.containsKey("userDefinedFunctionResources")) {
-      userDefinedFunctionResources = _json["userDefinedFunctionResources"]
-          .map((value) => new UserDefinedFunctionResource.fromJson(value))
-          .toList();
+      userDefinedFunctionResources =
+          (_json["userDefinedFunctionResources"] as core.List)
+              .map<UserDefinedFunctionResource>(
+                  (value) => new UserDefinedFunctionResource.fromJson(value))
+              .toList();
     }
     if (_json.containsKey("writeDisposition")) {
       writeDisposition = _json["writeDisposition"];
@@ -3877,8 +3885,8 @@ class JobConfigurationTableCopy {
       sourceTable = new TableReference.fromJson(_json["sourceTable"]);
     }
     if (_json.containsKey("sourceTables")) {
-      sourceTables = _json["sourceTables"]
-          .map((value) => new TableReference.fromJson(value))
+      sourceTables = (_json["sourceTables"] as core.List)
+          .map<TableReference>((value) => new TableReference.fromJson(value))
           .toList();
     }
     if (_json.containsKey("writeDisposition")) {
@@ -4029,8 +4037,8 @@ class JobList {
       etag = _json["etag"];
     }
     if (_json.containsKey("jobs")) {
-      jobs = _json["jobs"]
-          .map((value) => new JobListJobs.fromJson(value))
+      jobs = (_json["jobs"] as core.List)
+          .map<JobListJobs>((value) => new JobListJobs.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4285,13 +4293,14 @@ class JobStatistics2 {
       numDmlAffectedRows = _json["numDmlAffectedRows"];
     }
     if (_json.containsKey("queryPlan")) {
-      queryPlan = _json["queryPlan"]
-          .map((value) => new ExplainQueryStage.fromJson(value))
+      queryPlan = (_json["queryPlan"] as core.List)
+          .map<ExplainQueryStage>(
+              (value) => new ExplainQueryStage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("referencedTables")) {
-      referencedTables = _json["referencedTables"]
-          .map((value) => new TableReference.fromJson(value))
+      referencedTables = (_json["referencedTables"] as core.List)
+          .map<TableReference>((value) => new TableReference.fromJson(value))
           .toList();
     }
     if (_json.containsKey("schema")) {
@@ -4301,8 +4310,9 @@ class JobStatistics2 {
       statementType = _json["statementType"];
     }
     if (_json.containsKey("timeline")) {
-      timeline = _json["timeline"]
-          .map((value) => new QueryTimelineSample.fromJson(value))
+      timeline = (_json["timeline"] as core.List)
+          .map<QueryTimelineSample>(
+              (value) => new QueryTimelineSample.fromJson(value))
           .toList();
     }
     if (_json.containsKey("totalBytesBilled")) {
@@ -4315,8 +4325,9 @@ class JobStatistics2 {
       totalSlotMs = _json["totalSlotMs"];
     }
     if (_json.containsKey("undeclaredQueryParameters")) {
-      undeclaredQueryParameters = _json["undeclaredQueryParameters"]
-          .map((value) => new QueryParameter.fromJson(value))
+      undeclaredQueryParameters = (_json["undeclaredQueryParameters"]
+              as core.List)
+          .map<QueryParameter>((value) => new QueryParameter.fromJson(value))
           .toList();
     }
   }
@@ -4448,7 +4459,8 @@ class JobStatistics4 {
 
   JobStatistics4.fromJson(core.Map _json) {
     if (_json.containsKey("destinationUriFileCounts")) {
-      destinationUriFileCounts = _json["destinationUriFileCounts"];
+      destinationUriFileCounts =
+          (_json["destinationUriFileCounts"] as core.List).cast<core.String>();
     }
   }
 
@@ -4483,8 +4495,8 @@ class JobStatus {
       errorResult = new ErrorProto.fromJson(_json["errorResult"]);
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new ErrorProto.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<ErrorProto>((value) => new ErrorProto.fromJson(value))
           .toList();
     }
     if (_json.containsKey("state")) {
@@ -4510,7 +4522,7 @@ class JobStatus {
 
 /// Represents a single JSON object.
 class JsonObject extends collection.MapBase<core.String, core.Object> {
-  final core.Map _innerMap = {};
+  final _innerMap = <core.String, core.Object>{};
 
   JsonObject();
 
@@ -4632,8 +4644,9 @@ class ProjectList {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("projects")) {
-      projects = _json["projects"]
-          .map((value) => new ProjectListProjects.fromJson(value))
+      projects = (_json["projects"] as core.List)
+          .map<ProjectListProjects>(
+              (value) => new ProjectListProjects.fromJson(value))
           .toList();
     }
     if (_json.containsKey("totalItems")) {
@@ -4786,8 +4799,9 @@ class QueryParameterType {
       arrayType = new QueryParameterType.fromJson(_json["arrayType"]);
     }
     if (_json.containsKey("structTypes")) {
-      structTypes = _json["structTypes"]
-          .map((value) => new QueryParameterTypeStructTypes.fromJson(value))
+      structTypes = (_json["structTypes"] as core.List)
+          .map<QueryParameterTypeStructTypes>(
+              (value) => new QueryParameterTypeStructTypes.fromJson(value))
           .toList();
     }
     if (_json.containsKey("type")) {
@@ -4827,16 +4841,15 @@ class QueryParameterValue {
 
   QueryParameterValue.fromJson(core.Map _json) {
     if (_json.containsKey("arrayValues")) {
-      arrayValues = _json["arrayValues"]
-          .map((value) => new QueryParameterValue.fromJson(value))
+      arrayValues = (_json["arrayValues"] as core.List)
+          .map<QueryParameterValue>(
+              (value) => new QueryParameterValue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("structValues")) {
-      structValues = commons
-          .mapMap<core.Map<core.String, core.Object>, QueryParameterValue>(
-              _json["structValues"],
-              (core.Map<core.String, core.Object> item) =>
-                  new QueryParameterValue.fromJson(item));
+      structValues = commons.mapMap<core.Map, QueryParameterValue>(
+          _json["structValues"].cast<core.String, core.Map>(),
+          (core.Map item) => new QueryParameterValue.fromJson(item));
     }
     if (_json.containsKey("value")) {
       value = _json["value"];
@@ -4953,8 +4966,8 @@ class QueryRequest {
       query = _json["query"];
     }
     if (_json.containsKey("queryParameters")) {
-      queryParameters = _json["queryParameters"]
-          .map((value) => new QueryParameter.fromJson(value))
+      queryParameters = (_json["queryParameters"] as core.List)
+          .map<QueryParameter>((value) => new QueryParameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("timeoutMs")) {
@@ -5069,8 +5082,8 @@ class QueryResponse {
       cacheHit = _json["cacheHit"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new ErrorProto.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<ErrorProto>((value) => new ErrorProto.fromJson(value))
           .toList();
     }
     if (_json.containsKey("jobComplete")) {
@@ -5089,8 +5102,9 @@ class QueryResponse {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new TableRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<TableRow>((value) => new TableRow.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("schema")) {
       schema = new TableSchema.fromJson(_json["schema"]);
@@ -5369,7 +5383,7 @@ class Table {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("lastModifiedTime")) {
       lastModifiedTime = _json["lastModifiedTime"];
@@ -5576,8 +5590,9 @@ class TableDataInsertAllRequest {
       kind = _json["kind"];
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"]
-          .map((value) => new TableDataInsertAllRequestRows.fromJson(value))
+      rows = (_json["rows"] as core.List)
+          .map<TableDataInsertAllRequestRows>(
+              (value) => new TableDataInsertAllRequestRows.fromJson(value))
           .toList();
     }
     if (_json.containsKey("skipInvalidRows")) {
@@ -5621,8 +5636,8 @@ class TableDataInsertAllResponseInsertErrors {
 
   TableDataInsertAllResponseInsertErrors.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new ErrorProto.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<ErrorProto>((value) => new ErrorProto.fromJson(value))
           .toList();
     }
     if (_json.containsKey("index")) {
@@ -5654,8 +5669,8 @@ class TableDataInsertAllResponse {
 
   TableDataInsertAllResponse.fromJson(core.Map _json) {
     if (_json.containsKey("insertErrors")) {
-      insertErrors = _json["insertErrors"]
-          .map((value) =>
+      insertErrors = (_json["insertErrors"] as core.List)
+          .map<TableDataInsertAllResponseInsertErrors>((value) =>
               new TableDataInsertAllResponseInsertErrors.fromJson(value))
           .toList();
     }
@@ -5709,8 +5724,9 @@ class TableDataList {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new TableRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<TableRow>((value) => new TableRow.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("totalRows")) {
       totalRows = _json["totalRows"];
@@ -5770,8 +5786,9 @@ class TableFieldSchema {
       description = _json["description"];
     }
     if (_json.containsKey("fields")) {
-      fields = _json["fields"]
-          .map((value) => new TableFieldSchema.fromJson(value))
+      fields = (_json["fields"] as core.List)
+          .map<TableFieldSchema>(
+              (value) => new TableFieldSchema.fromJson(value))
           .toList();
     }
     if (_json.containsKey("mode")) {
@@ -5883,7 +5900,7 @@ class TableListTables {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("tableReference")) {
       tableReference = new TableReference.fromJson(_json["tableReference"]);
@@ -5966,8 +5983,8 @@ class TableList {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("tables")) {
-      tables = _json["tables"]
-          .map((value) => new TableListTables.fromJson(value))
+      tables = (_json["tables"] as core.List)
+          .map<TableListTables>((value) => new TableListTables.fromJson(value))
           .toList();
     }
     if (_json.containsKey("totalItems")) {
@@ -6048,7 +6065,9 @@ class TableRow {
 
   TableRow.fromJson(core.Map _json) {
     if (_json.containsKey("f")) {
-      f = _json["f"].map((value) => new TableCell.fromJson(value)).toList();
+      f = (_json["f"] as core.List)
+          .map<TableCell>((value) => new TableCell.fromJson(value))
+          .toList();
     }
   }
 
@@ -6070,8 +6089,9 @@ class TableSchema {
 
   TableSchema.fromJson(core.Map _json) {
     if (_json.containsKey("fields")) {
-      fields = _json["fields"]
-          .map((value) => new TableFieldSchema.fromJson(value))
+      fields = (_json["fields"] as core.List)
+          .map<TableFieldSchema>(
+              (value) => new TableFieldSchema.fromJson(value))
           .toList();
     }
   }
@@ -6199,9 +6219,11 @@ class ViewDefinition {
       useLegacySql = _json["useLegacySql"];
     }
     if (_json.containsKey("userDefinedFunctionResources")) {
-      userDefinedFunctionResources = _json["userDefinedFunctionResources"]
-          .map((value) => new UserDefinedFunctionResource.fromJson(value))
-          .toList();
+      userDefinedFunctionResources =
+          (_json["userDefinedFunctionResources"] as core.List)
+              .map<UserDefinedFunctionResource>(
+                  (value) => new UserDefinedFunctionResource.fromJson(value))
+              .toList();
     }
   }
 

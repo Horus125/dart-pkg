@@ -58,7 +58,7 @@ class WebfontsResourceApi {
   /// this method will complete with the same error.
   async.Future<WebfontList> list({core.String sort, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -119,7 +119,7 @@ class Webfont {
       family = _json["family"];
     }
     if (_json.containsKey("files")) {
-      files = _json["files"];
+      files = (_json["files"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -128,10 +128,10 @@ class Webfont {
       lastModified = core.DateTime.parse(_json["lastModified"]);
     }
     if (_json.containsKey("subsets")) {
-      subsets = _json["subsets"];
+      subsets = (_json["subsets"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("variants")) {
-      variants = _json["variants"];
+      variants = (_json["variants"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("version")) {
       version = _json["version"];
@@ -181,8 +181,9 @@ class WebfontList {
 
   WebfontList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Webfont.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Webfont>((value) => new Webfont.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];

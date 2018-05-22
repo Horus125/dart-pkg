@@ -85,14 +85,14 @@ class ControllerDebuggeesResourceApi {
       RegisterDebuggeeRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -165,7 +165,7 @@ class ControllerDebuggeesBreakpointsResourceApi {
       core.String waitToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -231,14 +231,14 @@ class ControllerDebuggeesBreakpointsResourceApi {
       core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (debuggeeId == null) {
       throw new core.ArgumentError("Parameter debuggeeId is required.");
@@ -314,7 +314,7 @@ class DebuggerDebuggeesResourceApi {
       core.String clientVersion,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -375,7 +375,7 @@ class DebuggerDebuggeesBreakpointsResourceApi {
   async.Future<Empty> delete(core.String debuggeeId, core.String breakpointId,
       {core.String clientVersion, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -433,7 +433,7 @@ class DebuggerDebuggeesBreakpointsResourceApi {
       core.String debuggeeId, core.String breakpointId,
       {core.String clientVersion, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -519,7 +519,7 @@ class DebuggerDebuggeesBreakpointsResourceApi {
       core.bool stripResults,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -588,14 +588,14 @@ class DebuggerDebuggeesBreakpointsResourceApi {
       Breakpoint request, core.String debuggeeId,
       {core.String clientVersion, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (debuggeeId == null) {
       throw new core.ArgumentError("Parameter debuggeeId is required.");
@@ -781,12 +781,12 @@ class Breakpoint {
       createTime = _json["createTime"];
     }
     if (_json.containsKey("evaluatedExpressions")) {
-      evaluatedExpressions = _json["evaluatedExpressions"]
-          .map((value) => new Variable.fromJson(value))
+      evaluatedExpressions = (_json["evaluatedExpressions"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
     if (_json.containsKey("expressions")) {
-      expressions = _json["expressions"];
+      expressions = (_json["expressions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("finalTime")) {
       finalTime = _json["finalTime"];
@@ -798,7 +798,7 @@ class Breakpoint {
       isFinalState = _json["isFinalState"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("location")) {
       location = new SourceLocation.fromJson(_json["location"]);
@@ -810,8 +810,8 @@ class Breakpoint {
       logMessageFormat = _json["logMessageFormat"];
     }
     if (_json.containsKey("stackFrames")) {
-      stackFrames = _json["stackFrames"]
-          .map((value) => new StackFrame.fromJson(value))
+      stackFrames = (_json["stackFrames"] as core.List)
+          .map<StackFrame>((value) => new StackFrame.fromJson(value))
           .toList();
     }
     if (_json.containsKey("status")) {
@@ -821,8 +821,8 @@ class Breakpoint {
       userEmail = _json["userEmail"];
     }
     if (_json.containsKey("variableTable")) {
-      variableTable = _json["variableTable"]
-          .map((value) => new Variable.fromJson(value))
+      variableTable = (_json["variableTable"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
   }
@@ -1070,8 +1070,9 @@ class Debuggee {
       description = _json["description"];
     }
     if (_json.containsKey("extSourceContexts")) {
-      extSourceContexts = _json["extSourceContexts"]
-          .map((value) => new ExtendedSourceContext.fromJson(value))
+      extSourceContexts = (_json["extSourceContexts"] as core.List)
+          .map<ExtendedSourceContext>(
+              (value) => new ExtendedSourceContext.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -1084,14 +1085,14 @@ class Debuggee {
       isInactive = _json["isInactive"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("project")) {
       project = _json["project"];
     }
     if (_json.containsKey("sourceContexts")) {
-      sourceContexts = _json["sourceContexts"]
-          .map((value) => new SourceContext.fromJson(value))
+      sourceContexts = (_json["sourceContexts"] as core.List)
+          .map<SourceContext>((value) => new SourceContext.fromJson(value))
           .toList();
     }
     if (_json.containsKey("status")) {
@@ -1181,7 +1182,7 @@ class ExtendedSourceContext {
       context = new SourceContext.fromJson(_json["context"]);
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
   }
 
@@ -1221,7 +1222,7 @@ class FormatMessage {
       format = _json["format"];
     }
     if (_json.containsKey("parameters")) {
-      parameters = _json["parameters"];
+      parameters = (_json["parameters"] as core.List).cast<core.String>();
     }
   }
 
@@ -1377,8 +1378,8 @@ class ListActiveBreakpointsResponse {
 
   ListActiveBreakpointsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("breakpoints")) {
-      breakpoints = _json["breakpoints"]
-          .map((value) => new Breakpoint.fromJson(value))
+      breakpoints = (_json["breakpoints"] as core.List)
+          .map<Breakpoint>((value) => new Breakpoint.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextWaitToken")) {
@@ -1424,8 +1425,8 @@ class ListBreakpointsResponse {
 
   ListBreakpointsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("breakpoints")) {
-      breakpoints = _json["breakpoints"]
-          .map((value) => new Breakpoint.fromJson(value))
+      breakpoints = (_json["breakpoints"] as core.List)
+          .map<Breakpoint>((value) => new Breakpoint.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextWaitToken")) {
@@ -1459,8 +1460,8 @@ class ListDebuggeesResponse {
 
   ListDebuggeesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("debuggees")) {
-      debuggees = _json["debuggees"]
-          .map((value) => new Debuggee.fromJson(value))
+      debuggees = (_json["debuggees"] as core.List)
+          .map<Debuggee>((value) => new Debuggee.fromJson(value))
           .toList();
     }
   }
@@ -1720,16 +1721,17 @@ class StackFrame {
 
   StackFrame.fromJson(core.Map _json) {
     if (_json.containsKey("arguments")) {
-      arguments = _json["arguments"]
-          .map((value) => new Variable.fromJson(value))
+      arguments = (_json["arguments"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
     if (_json.containsKey("function")) {
       function = _json["function"];
     }
     if (_json.containsKey("locals")) {
-      locals =
-          _json["locals"].map((value) => new Variable.fromJson(value)).toList();
+      locals = (_json["locals"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("location")) {
       location = new SourceLocation.fromJson(_json["location"]);
@@ -2008,8 +2010,8 @@ class Variable {
 
   Variable.fromJson(core.Map _json) {
     if (_json.containsKey("members")) {
-      members = _json["members"]
-          .map((value) => new Variable.fromJson(value))
+      members = (_json["members"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {

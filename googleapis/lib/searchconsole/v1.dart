@@ -63,14 +63,14 @@ class UrlTestingToolsMobileFriendlyTestResourceApi {
       RunMobileFriendlyTestRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -118,12 +118,12 @@ class Image {
   /// will always be "image/png", but this might change in the future.
   core.String data;
   core.List<core.int> get dataAsBytes {
-    return convert.BASE64.decode(data);
+    return convert.base64.decode(data);
   }
 
   void set dataAsBytes(core.List<core.int> _bytes) {
     data =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The mime-type of the image data.
@@ -281,13 +281,14 @@ class RunMobileFriendlyTestResponse {
       mobileFriendliness = _json["mobileFriendliness"];
     }
     if (_json.containsKey("mobileFriendlyIssues")) {
-      mobileFriendlyIssues = _json["mobileFriendlyIssues"]
-          .map((value) => new MobileFriendlyIssue.fromJson(value))
+      mobileFriendlyIssues = (_json["mobileFriendlyIssues"] as core.List)
+          .map<MobileFriendlyIssue>(
+              (value) => new MobileFriendlyIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("resourceIssues")) {
-      resourceIssues = _json["resourceIssues"]
-          .map((value) => new ResourceIssue.fromJson(value))
+      resourceIssues = (_json["resourceIssues"] as core.List)
+          .map<ResourceIssue>((value) => new ResourceIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("screenshot")) {

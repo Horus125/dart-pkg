@@ -54,7 +54,7 @@ class GroupsResourceApi {
   /// this method will complete with the same error.
   async.Future<Groups> get(core.String groupUniqueId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -99,14 +99,14 @@ class GroupsResourceApi {
   async.Future<Groups> patch(Groups request, core.String groupUniqueId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (groupUniqueId == null) {
       throw new core.ArgumentError("Parameter groupUniqueId is required.");
@@ -147,14 +147,14 @@ class GroupsResourceApi {
   async.Future<Groups> update(Groups request, core.String groupUniqueId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (groupUniqueId == null) {
       throw new core.ArgumentError("Parameter groupUniqueId is required.");

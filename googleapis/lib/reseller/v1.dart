@@ -64,7 +64,7 @@ class CustomersResourceApi {
   /// this method will complete with the same error.
   async.Future<Customer> get(core.String customerId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -114,14 +114,14 @@ class CustomersResourceApi {
   async.Future<Customer> insert(Customer request,
       {core.String customerAuthToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerAuthToken != null) {
       _queryParams["customerAuthToken"] = [customerAuthToken];
@@ -166,14 +166,14 @@ class CustomersResourceApi {
   async.Future<Customer> patch(Customer request, core.String customerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -217,14 +217,14 @@ class CustomersResourceApi {
   async.Future<Customer> update(Customer request, core.String customerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -267,7 +267,7 @@ class ResellernotifyResourceApi {
   async.Future<ResellernotifyGetwatchdetailsResponse> getwatchdetails(
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -309,7 +309,7 @@ class ResellernotifyResourceApi {
   async.Future<ResellernotifyResource> register(
       {core.String serviceAccountEmailAddress, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -353,7 +353,7 @@ class ResellernotifyResourceApi {
   async.Future<ResellernotifyResource> unregister(
       {core.String serviceAccountEmailAddress, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -412,7 +412,7 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -476,14 +476,14 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -542,14 +542,14 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -607,14 +607,14 @@ class SubscriptionsResourceApi {
       Seats request, core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -701,7 +701,7 @@ class SubscriptionsResourceApi {
       core.String deletionType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -766,7 +766,7 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -828,14 +828,14 @@ class SubscriptionsResourceApi {
       Subscription request, core.String customerId,
       {core.String customerAuthToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (customerId == null) {
       throw new core.ArgumentError("Parameter customerId is required.");
@@ -912,7 +912,7 @@ class SubscriptionsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -978,7 +978,7 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1038,7 +1038,7 @@ class SubscriptionsResourceApi {
       core.String customerId, core.String subscriptionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1402,7 +1402,9 @@ class ResellernotifyGetwatchdetailsResponse {
 
   ResellernotifyGetwatchdetailsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("serviceAccountEmailAddresses")) {
-      serviceAccountEmailAddresses = _json["serviceAccountEmailAddresses"];
+      serviceAccountEmailAddresses =
+          (_json["serviceAccountEmailAddresses"] as core.List)
+              .cast<core.String>();
     }
     if (_json.containsKey("topicName")) {
       topicName = _json["topicName"];
@@ -1841,7 +1843,8 @@ class Subscription {
       subscriptionId = _json["subscriptionId"];
     }
     if (_json.containsKey("suspensionReasons")) {
-      suspensionReasons = _json["suspensionReasons"];
+      suspensionReasons =
+          (_json["suspensionReasons"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("transferInfo")) {
       transferInfo =
@@ -1937,8 +1940,8 @@ class Subscriptions {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("subscriptions")) {
-      subscriptions = _json["subscriptions"]
-          .map((value) => new Subscription.fromJson(value))
+      subscriptions = (_json["subscriptions"] as core.List)
+          .map<Subscription>((value) => new Subscription.fromJson(value))
           .toList();
     }
   }

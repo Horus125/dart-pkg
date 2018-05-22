@@ -153,14 +153,14 @@ class UsersDataSourcesResourceApi {
   async.Future<DataSource> create(DataSource request, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -203,7 +203,7 @@ class UsersDataSourcesResourceApi {
   async.Future<DataSource> delete(core.String userId, core.String dataSourceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -254,7 +254,7 @@ class UsersDataSourcesResourceApi {
   async.Future<DataSource> get(core.String userId, core.String dataSourceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -309,7 +309,7 @@ class UsersDataSourcesResourceApi {
   async.Future<ListDataSourcesResponse> list(core.String userId,
       {core.List<core.String> dataTypeName, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -366,14 +366,14 @@ class UsersDataSourcesResourceApi {
       DataSource request, core.String userId, core.String dataSourceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -427,14 +427,14 @@ class UsersDataSourcesResourceApi {
       DataSource request, core.String userId, core.String dataSourceId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -497,7 +497,7 @@ class UsersDataSourcesDataPointChangesResourceApi {
       core.String userId, core.String dataSourceId,
       {core.int limit, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -581,7 +581,7 @@ class UsersDataSourcesDatasetsResourceApi {
       core.String modifiedTimeMillis,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -666,7 +666,7 @@ class UsersDataSourcesDatasetsResourceApi {
       core.String userId, core.String dataSourceId, core.String datasetId,
       {core.int limit, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -744,14 +744,14 @@ class UsersDataSourcesDatasetsResourceApi {
       core.String dataSourceId, core.String datasetId,
       {core.String currentTimeMillis, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -816,14 +816,14 @@ class UsersDatasetResourceApi {
       AggregateRequest request, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -872,7 +872,7 @@ class UsersSessionsResourceApi {
   async.Future delete(core.String userId, core.String sessionId,
       {core.String currentTimeMillis, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -944,7 +944,7 @@ class UsersSessionsResourceApi {
       core.String startTime,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1008,14 +1008,14 @@ class UsersSessionsResourceApi {
       Session request, core.String userId, core.String sessionId,
       {core.String currentTimeMillis, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -1079,8 +1079,9 @@ class AggregateBucket {
       activity = _json["activity"];
     }
     if (_json.containsKey("dataset")) {
-      dataset =
-          _json["dataset"].map((value) => new Dataset.fromJson(value)).toList();
+      dataset = (_json["dataset"] as core.List)
+          .map<Dataset>((value) => new Dataset.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("endTimeMillis")) {
       endTimeMillis = _json["endTimeMillis"];
@@ -1207,8 +1208,8 @@ class AggregateRequest {
 
   AggregateRequest.fromJson(core.Map _json) {
     if (_json.containsKey("aggregateBy")) {
-      aggregateBy = _json["aggregateBy"]
-          .map((value) => new AggregateBy.fromJson(value))
+      aggregateBy = (_json["aggregateBy"] as core.List)
+          .map<AggregateBy>((value) => new AggregateBy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bucketByActivitySegment")) {
@@ -1229,7 +1230,9 @@ class AggregateRequest {
       endTimeMillis = _json["endTimeMillis"];
     }
     if (_json.containsKey("filteredDataQualityStandard")) {
-      filteredDataQualityStandard = _json["filteredDataQualityStandard"];
+      filteredDataQualityStandard =
+          (_json["filteredDataQualityStandard"] as core.List)
+              .cast<core.String>();
     }
     if (_json.containsKey("startTimeMillis")) {
       startTimeMillis = _json["startTimeMillis"];
@@ -1276,8 +1279,8 @@ class AggregateResponse {
 
   AggregateResponse.fromJson(core.Map _json) {
     if (_json.containsKey("bucket")) {
-      bucket = _json["bucket"]
-          .map((value) => new AggregateBucket.fromJson(value))
+      bucket = (_json["bucket"] as core.List)
+          .map<AggregateBucket>((value) => new AggregateBucket.fromJson(value))
           .toList();
     }
   }
@@ -1551,7 +1554,9 @@ class DataPoint {
       startTimeNanos = _json["startTimeNanos"];
     }
     if (_json.containsKey("value")) {
-      value = _json["value"].map((value) => new Value.fromJson(value)).toList();
+      value = (_json["value"] as core.List)
+          .map<Value>((value) => new Value.fromJson(value))
+          .toList();
     }
   }
 
@@ -1673,7 +1678,8 @@ class DataSource {
       application = new Application.fromJson(_json["application"]);
     }
     if (_json.containsKey("dataQualityStandard")) {
-      dataQualityStandard = _json["dataQualityStandard"];
+      dataQualityStandard =
+          (_json["dataQualityStandard"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("dataStreamId")) {
       dataStreamId = _json["dataStreamId"];
@@ -1738,8 +1744,8 @@ class DataType {
 
   DataType.fromJson(core.Map _json) {
     if (_json.containsKey("field")) {
-      field = _json["field"]
-          .map((value) => new DataTypeField.fromJson(value))
+      field = (_json["field"] as core.List)
+          .map<DataTypeField>((value) => new DataTypeField.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
@@ -1860,8 +1866,9 @@ class Dataset {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("point")) {
-      point =
-          _json["point"].map((value) => new DataPoint.fromJson(value)).toList();
+      point = (_json["point"] as core.List)
+          .map<DataPoint>((value) => new DataPoint.fromJson(value))
+          .toList();
     }
   }
 
@@ -1991,13 +1998,13 @@ class ListDataPointChangesResponse {
       dataSourceId = _json["dataSourceId"];
     }
     if (_json.containsKey("deletedDataPoint")) {
-      deletedDataPoint = _json["deletedDataPoint"]
-          .map((value) => new DataPoint.fromJson(value))
+      deletedDataPoint = (_json["deletedDataPoint"] as core.List)
+          .map<DataPoint>((value) => new DataPoint.fromJson(value))
           .toList();
     }
     if (_json.containsKey("insertedDataPoint")) {
-      insertedDataPoint = _json["insertedDataPoint"]
-          .map((value) => new DataPoint.fromJson(value))
+      insertedDataPoint = (_json["insertedDataPoint"] as core.List)
+          .map<DataPoint>((value) => new DataPoint.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2034,8 +2041,8 @@ class ListDataSourcesResponse {
 
   ListDataSourcesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("dataSource")) {
-      dataSource = _json["dataSource"]
-          .map((value) => new DataSource.fromJson(value))
+      dataSource = (_json["dataSource"] as core.List)
+          .map<DataSource>((value) => new DataSource.fromJson(value))
           .toList();
     }
   }
@@ -2073,8 +2080,8 @@ class ListSessionsResponse {
 
   ListSessionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("deletedSession")) {
-      deletedSession = _json["deletedSession"]
-          .map((value) => new Session.fromJson(value))
+      deletedSession = (_json["deletedSession"] as core.List)
+          .map<Session>((value) => new Session.fromJson(value))
           .toList();
     }
     if (_json.containsKey("hasMoreData")) {
@@ -2084,8 +2091,9 @@ class ListSessionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("session")) {
-      session =
-          _json["session"].map((value) => new Session.fromJson(value)).toList();
+      session = (_json["session"] as core.List)
+          .map<Session>((value) => new Session.fromJson(value))
+          .toList();
     }
   }
 
@@ -2268,8 +2276,9 @@ class Value {
       intVal = _json["intVal"];
     }
     if (_json.containsKey("mapVal")) {
-      mapVal = _json["mapVal"]
-          .map((value) => new ValueMapValEntry.fromJson(value))
+      mapVal = (_json["mapVal"] as core.List)
+          .map<ValueMapValEntry>(
+              (value) => new ValueMapValEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("stringVal")) {

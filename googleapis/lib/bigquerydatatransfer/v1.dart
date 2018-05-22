@@ -87,14 +87,14 @@ class ProjectsDataSourcesResourceApi {
       CheckValidCredsRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -138,7 +138,7 @@ class ProjectsDataSourcesResourceApi {
   /// this method will complete with the same error.
   async.Future<DataSource> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -195,7 +195,7 @@ class ProjectsDataSourcesResourceApi {
   async.Future<ListDataSourcesResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -258,7 +258,7 @@ class ProjectsLocationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Location> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -311,7 +311,7 @@ class ProjectsLocationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -382,14 +382,14 @@ class ProjectsLocationsDataSourcesResourceApi {
       CheckValidCredsRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -434,7 +434,7 @@ class ProjectsLocationsDataSourcesResourceApi {
   /// this method will complete with the same error.
   async.Future<DataSource> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -491,7 +491,7 @@ class ProjectsLocationsDataSourcesResourceApi {
   async.Future<ListDataSourcesResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -578,14 +578,14 @@ class ProjectsLocationsTransferConfigsResourceApi {
       TransferConfig request, core.String parent,
       {core.String authorizationCode, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -633,7 +633,7 @@ class ProjectsLocationsTransferConfigsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -679,7 +679,7 @@ class ProjectsLocationsTransferConfigsResourceApi {
   /// this method will complete with the same error.
   async.Future<TransferConfig> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -740,7 +740,7 @@ class ProjectsLocationsTransferConfigsResourceApi {
       core.List<core.String> dataSourceIds,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -827,14 +827,14 @@ class ProjectsLocationsTransferConfigsResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -888,14 +888,14 @@ class ProjectsLocationsTransferConfigsResourceApi {
       ScheduleTransferRunsRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -952,7 +952,7 @@ class ProjectsLocationsTransferConfigsRunsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -998,7 +998,7 @@ class ProjectsLocationsTransferConfigsRunsResourceApi {
   /// this method will complete with the same error.
   async.Future<TransferRun> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1068,7 +1068,7 @@ class ProjectsLocationsTransferConfigsRunsResourceApi {
       core.String runAttempt,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1152,7 +1152,7 @@ class ProjectsLocationsTransferConfigsRunsTransferLogsResourceApi {
       core.List<core.String> messageTypes,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1243,14 +1243,14 @@ class ProjectsTransferConfigsResourceApi {
       TransferConfig request, core.String parent,
       {core.String authorizationCode, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -1297,7 +1297,7 @@ class ProjectsTransferConfigsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1342,7 +1342,7 @@ class ProjectsTransferConfigsResourceApi {
   /// this method will complete with the same error.
   async.Future<TransferConfig> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1403,7 +1403,7 @@ class ProjectsTransferConfigsResourceApi {
       core.List<core.String> dataSourceIds,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1489,14 +1489,14 @@ class ProjectsTransferConfigsResourceApi {
       core.String authorizationCode,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1549,14 +1549,14 @@ class ProjectsTransferConfigsResourceApi {
       ScheduleTransferRunsRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -1611,7 +1611,7 @@ class ProjectsTransferConfigsRunsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1657,7 +1657,7 @@ class ProjectsTransferConfigsRunsResourceApi {
   /// this method will complete with the same error.
   async.Future<TransferRun> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1726,7 +1726,7 @@ class ProjectsTransferConfigsRunsResourceApi {
       core.String runAttempt,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1810,7 +1810,7 @@ class ProjectsTransferConfigsRunsTransferLogsResourceApi {
       core.List<core.String> messageTypes,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2030,12 +2030,13 @@ class DataSource {
       name = _json["name"];
     }
     if (_json.containsKey("parameters")) {
-      parameters = _json["parameters"]
-          .map((value) => new DataSourceParameter.fromJson(value))
+      parameters = (_json["parameters"] as core.List)
+          .map<DataSourceParameter>(
+              (value) => new DataSourceParameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("scopes")) {
-      scopes = _json["scopes"];
+      scopes = (_json["scopes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("supportsCustomSchedule")) {
       supportsCustomSchedule = _json["supportsCustomSchedule"];
@@ -2181,7 +2182,7 @@ class DataSourceParameter {
 
   DataSourceParameter.fromJson(core.Map _json) {
     if (_json.containsKey("allowedValues")) {
-      allowedValues = _json["allowedValues"];
+      allowedValues = (_json["allowedValues"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
@@ -2190,8 +2191,9 @@ class DataSourceParameter {
       displayName = _json["displayName"];
     }
     if (_json.containsKey("fields")) {
-      fields = _json["fields"]
-          .map((value) => new DataSourceParameter.fromJson(value))
+      fields = (_json["fields"] as core.List)
+          .map<DataSourceParameter>(
+              (value) => new DataSourceParameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("immutable")) {
@@ -2317,8 +2319,8 @@ class ListDataSourcesResponse {
 
   ListDataSourcesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("dataSources")) {
-      dataSources = _json["dataSources"]
-          .map((value) => new DataSource.fromJson(value))
+      dataSources = (_json["dataSources"] as core.List)
+          .map<DataSource>((value) => new DataSource.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2352,8 +2354,8 @@ class ListLocationsResponse {
 
   ListLocationsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("locations")) {
-      locations = _json["locations"]
-          .map((value) => new Location.fromJson(value))
+      locations = (_json["locations"] as core.List)
+          .map<Location>((value) => new Location.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2392,8 +2394,8 @@ class ListTransferConfigsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("transferConfigs")) {
-      transferConfigs = _json["transferConfigs"]
-          .map((value) => new TransferConfig.fromJson(value))
+      transferConfigs = (_json["transferConfigs"] as core.List)
+          .map<TransferConfig>((value) => new TransferConfig.fromJson(value))
           .toList();
     }
   }
@@ -2430,8 +2432,8 @@ class ListTransferLogsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("transferMessages")) {
-      transferMessages = _json["transferMessages"]
-          .map((value) => new TransferMessage.fromJson(value))
+      transferMessages = (_json["transferMessages"] as core.List)
+          .map<TransferMessage>((value) => new TransferMessage.fromJson(value))
           .toList();
     }
   }
@@ -2468,8 +2470,8 @@ class ListTransferRunsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("transferRuns")) {
-      transferRuns = _json["transferRuns"]
-          .map((value) => new TransferRun.fromJson(value))
+      transferRuns = (_json["transferRuns"] as core.List)
+          .map<TransferRun>((value) => new TransferRun.fromJson(value))
           .toList();
     }
   }
@@ -2513,13 +2515,14 @@ class Location {
 
   Location.fromJson(core.Map _json) {
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("locationId")) {
       locationId = _json["locationId"];
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -2588,8 +2591,8 @@ class ScheduleTransferRunsResponse {
 
   ScheduleTransferRunsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("runs")) {
-      runs = _json["runs"]
-          .map((value) => new TransferRun.fromJson(value))
+      runs = (_json["runs"] as core.List)
+          .map<TransferRun>((value) => new TransferRun.fromJson(value))
           .toList();
     }
   }
@@ -2683,7 +2686,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -2819,7 +2825,7 @@ class TransferConfig {
       nextRunTime = _json["nextRunTime"];
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("schedule")) {
       schedule = _json["schedule"];
@@ -3013,7 +3019,7 @@ class TransferRun {
       name = _json["name"];
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("runTime")) {
       runTime = _json["runTime"];

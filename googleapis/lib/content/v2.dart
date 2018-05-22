@@ -65,7 +65,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<AccountsAuthInfoResponse> authinfo({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -115,7 +115,7 @@ class AccountsResourceApi {
       core.String merchantId, core.String accountId,
       {core.bool overwrite, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -173,14 +173,14 @@ class AccountsResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -226,7 +226,7 @@ class AccountsResourceApi {
   async.Future delete(core.String merchantId, core.String accountId,
       {core.bool dryRun, core.bool force, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -286,7 +286,7 @@ class AccountsResourceApi {
   async.Future<Account> get(core.String merchantId, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -339,14 +339,14 @@ class AccountsResourceApi {
   async.Future<Account> insert(Account request, core.String merchantId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -394,7 +394,7 @@ class AccountsResourceApi {
   async.Future<AccountsListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -452,14 +452,14 @@ class AccountsResourceApi {
       Account request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -515,14 +515,14 @@ class AccountsResourceApi {
       Account request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -574,14 +574,14 @@ class AccountstatusesResourceApi {
       AccountstatusesCustomBatchRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -622,7 +622,7 @@ class AccountstatusesResourceApi {
   async.Future<AccountStatus> get(core.String merchantId, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -676,7 +676,7 @@ class AccountstatusesResourceApi {
   async.Future<AccountstatusesListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -737,14 +737,14 @@ class AccounttaxResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -789,7 +789,7 @@ class AccounttaxResourceApi {
   async.Future<AccountTax> get(core.String merchantId, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -844,7 +844,7 @@ class AccounttaxResourceApi {
   async.Future<AccounttaxListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -904,14 +904,14 @@ class AccounttaxResourceApi {
       AccountTax request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -968,14 +968,14 @@ class AccounttaxResourceApi {
       AccountTax request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1030,14 +1030,14 @@ class DatafeedsResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -1080,7 +1080,7 @@ class DatafeedsResourceApi {
   async.Future delete(core.String merchantId, core.String datafeedId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1136,7 +1136,7 @@ class DatafeedsResourceApi {
   async.Future<Datafeed> get(core.String merchantId, core.String datafeedId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1189,14 +1189,14 @@ class DatafeedsResourceApi {
   async.Future<Datafeed> insert(Datafeed request, core.String merchantId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1244,7 +1244,7 @@ class DatafeedsResourceApi {
   async.Future<DatafeedsListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1302,14 +1302,14 @@ class DatafeedsResourceApi {
       Datafeed request, core.String merchantId, core.String datafeedId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1364,14 +1364,14 @@ class DatafeedsResourceApi {
       Datafeed request, core.String merchantId, core.String datafeedId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1424,14 +1424,14 @@ class DatafeedstatusesResourceApi {
       DatafeedstatusesCustomBatchRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1482,7 +1482,7 @@ class DatafeedstatusesResourceApi {
       core.String merchantId, core.String datafeedId,
       {core.String country, core.String language, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1542,7 +1542,7 @@ class DatafeedstatusesResourceApi {
   async.Future<DatafeedstatusesListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1604,14 +1604,14 @@ class InventoryResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -1665,14 +1665,14 @@ class InventoryResourceApi {
       core.String merchantId, core.String storeCode, core.String productId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1738,14 +1738,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1796,7 +1796,7 @@ class OrdersResourceApi {
       core.String merchantId, core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1852,14 +1852,14 @@ class OrdersResourceApi {
       OrdersCancelRequest request, core.String merchantId, core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1912,14 +1912,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -1969,14 +1969,14 @@ class OrdersResourceApi {
       OrdersCreateTestOrderRequest request, core.String merchantId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2017,14 +2017,14 @@ class OrdersResourceApi {
       OrdersCustomBatchRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2064,7 +2064,7 @@ class OrdersResourceApi {
   async.Future<Order> get(core.String merchantId, core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2116,7 +2116,7 @@ class OrdersResourceApi {
       core.String merchantId, core.String merchantOrderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2175,7 +2175,7 @@ class OrdersResourceApi {
       core.String merchantId, core.String templateName,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2232,14 +2232,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2329,7 +2329,7 @@ class OrdersResourceApi {
       core.List<core.String> statuses,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2399,14 +2399,14 @@ class OrdersResourceApi {
       OrdersRefundRequest request, core.String merchantId, core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2459,14 +2459,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2520,14 +2520,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2582,14 +2582,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2643,14 +2643,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2704,14 +2704,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2766,14 +2766,14 @@ class OrdersResourceApi {
           core.String orderId,
           {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2827,14 +2827,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2888,14 +2888,14 @@ class OrdersResourceApi {
       core.String orderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -2951,14 +2951,14 @@ class ProductsResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -3001,7 +3001,7 @@ class ProductsResourceApi {
   async.Future delete(core.String merchantId, core.String productId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3057,7 +3057,7 @@ class ProductsResourceApi {
   async.Future<Product> get(core.String merchantId, core.String productId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3112,14 +3112,14 @@ class ProductsResourceApi {
   async.Future<Product> insert(Product request, core.String merchantId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -3174,7 +3174,7 @@ class ProductsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3239,14 +3239,14 @@ class ProductstatusesResourceApi {
       {core.bool includeAttributes,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (includeAttributes != null) {
       _queryParams["includeAttributes"] = ["${includeAttributes}"];
@@ -3292,7 +3292,7 @@ class ProductstatusesResourceApi {
   async.Future<ProductStatus> get(core.String merchantId, core.String productId,
       {core.bool includeAttributes, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3360,7 +3360,7 @@ class ProductstatusesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3430,14 +3430,14 @@ class ShippingsettingsResourceApi {
       {core.bool dryRun,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (dryRun != null) {
       _queryParams["dryRun"] = ["${dryRun}"];
@@ -3483,7 +3483,7 @@ class ShippingsettingsResourceApi {
       core.String merchantId, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3532,7 +3532,7 @@ class ShippingsettingsResourceApi {
   async.Future<ShippingsettingsGetSupportedCarriersResponse>
       getsupportedcarriers(core.String merchantId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3577,7 +3577,7 @@ class ShippingsettingsResourceApi {
   async.Future<ShippingsettingsGetSupportedHolidaysResponse>
       getsupportedholidays(core.String merchantId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3628,7 +3628,7 @@ class ShippingsettingsResourceApi {
   async.Future<ShippingsettingsListResponse> list(core.String merchantId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3689,14 +3689,14 @@ class ShippingsettingsResourceApi {
       ShippingSettings request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -3753,14 +3753,14 @@ class ShippingsettingsResourceApi {
       ShippingSettings request, core.String merchantId, core.String accountId,
       {core.bool dryRun, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (merchantId == null) {
       throw new core.ArgumentError("Parameter merchantId is required.");
@@ -3842,8 +3842,9 @@ class Account {
       adultContent = _json["adultContent"];
     }
     if (_json.containsKey("adwordsLinks")) {
-      adwordsLinks = _json["adwordsLinks"]
-          .map((value) => new AccountAdwordsLink.fromJson(value))
+      adwordsLinks = (_json["adwordsLinks"] as core.List)
+          .map<AccountAdwordsLink>(
+              (value) => new AccountAdwordsLink.fromJson(value))
           .toList();
     }
     if (_json.containsKey("googleMyBusinessLink")) {
@@ -3866,16 +3867,17 @@ class Account {
       sellerId = _json["sellerId"];
     }
     if (_json.containsKey("users")) {
-      users = _json["users"]
-          .map((value) => new AccountUser.fromJson(value))
+      users = (_json["users"] as core.List)
+          .map<AccountUser>((value) => new AccountUser.fromJson(value))
           .toList();
     }
     if (_json.containsKey("websiteUrl")) {
       websiteUrl = _json["websiteUrl"];
     }
     if (_json.containsKey("youtubeChannelLinks")) {
-      youtubeChannelLinks = _json["youtubeChannelLinks"]
-          .map((value) => new AccountYouTubeChannelLink.fromJson(value))
+      youtubeChannelLinks = (_json["youtubeChannelLinks"] as core.List)
+          .map<AccountYouTubeChannelLink>(
+              (value) => new AccountYouTubeChannelLink.fromJson(value))
           .toList();
     }
   }
@@ -4052,13 +4054,15 @@ class AccountStatus {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("accountLevelIssues")) {
-      accountLevelIssues = _json["accountLevelIssues"]
-          .map((value) => new AccountStatusAccountLevelIssue.fromJson(value))
+      accountLevelIssues = (_json["accountLevelIssues"] as core.List)
+          .map<AccountStatusAccountLevelIssue>(
+              (value) => new AccountStatusAccountLevelIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dataQualityIssues")) {
-      dataQualityIssues = _json["dataQualityIssues"]
-          .map((value) => new AccountStatusDataQualityIssue.fromJson(value))
+      dataQualityIssues = (_json["dataQualityIssues"] as core.List)
+          .map<AccountStatusDataQualityIssue>(
+              (value) => new AccountStatusDataQualityIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4195,8 +4199,9 @@ class AccountStatusDataQualityIssue {
       displayedValue = _json["displayedValue"];
     }
     if (_json.containsKey("exampleItems")) {
-      exampleItems = _json["exampleItems"]
-          .map((value) => new AccountStatusExampleItem.fromJson(value))
+      exampleItems = (_json["exampleItems"] as core.List)
+          .map<AccountStatusExampleItem>(
+              (value) => new AccountStatusExampleItem.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -4340,8 +4345,9 @@ class AccountTax {
       kind = _json["kind"];
     }
     if (_json.containsKey("rules")) {
-      rules = _json["rules"]
-          .map((value) => new AccountTaxTaxRule.fromJson(value))
+      rules = (_json["rules"] as core.List)
+          .map<AccountTaxTaxRule>(
+              (value) => new AccountTaxTaxRule.fromJson(value))
           .toList();
     }
   }
@@ -4511,8 +4517,9 @@ class AccountsAuthInfoResponse {
 
   AccountsAuthInfoResponse.fromJson(core.Map _json) {
     if (_json.containsKey("accountIdentifiers")) {
-      accountIdentifiers = _json["accountIdentifiers"]
-          .map((value) => new AccountIdentifier.fromJson(value))
+      accountIdentifiers = (_json["accountIdentifiers"] as core.List)
+          .map<AccountIdentifier>(
+              (value) => new AccountIdentifier.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4565,8 +4572,9 @@ class AccountsCustomBatchRequest {
 
   AccountsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new AccountsCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<AccountsCustomBatchRequestEntry>(
+              (value) => new AccountsCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -4672,8 +4680,9 @@ class AccountsCustomBatchResponse {
 
   AccountsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new AccountsCustomBatchResponseEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<AccountsCustomBatchResponseEntry>(
+              (value) => new AccountsCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4765,8 +4774,8 @@ class AccountsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new Account.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
           .toList();
     }
   }
@@ -4795,8 +4804,8 @@ class AccountstatusesCustomBatchRequest {
 
   AccountstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<AccountstatusesCustomBatchRequestEntry>((value) =>
               new AccountstatusesCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
@@ -4874,8 +4883,8 @@ class AccountstatusesCustomBatchResponse {
 
   AccountstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<AccountstatusesCustomBatchResponseEntry>((value) =>
               new AccountstatusesCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
@@ -4958,8 +4967,8 @@ class AccountstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new AccountStatus.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<AccountStatus>((value) => new AccountStatus.fromJson(value))
           .toList();
     }
   }
@@ -4988,8 +4997,9 @@ class AccounttaxCustomBatchRequest {
 
   AccounttaxCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new AccounttaxCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<AccounttaxCustomBatchRequestEntry>(
+              (value) => new AccounttaxCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -5073,8 +5083,8 @@ class AccounttaxCustomBatchResponse {
 
   AccounttaxCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map(
+      entries = (_json["entries"] as core.List)
+          .map<AccounttaxCustomBatchResponseEntry>(
               (value) => new AccounttaxCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
@@ -5166,8 +5176,8 @@ class AccounttaxListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new AccountTax.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<AccountTax>((value) => new AccountTax.fromJson(value))
           .toList();
     }
   }
@@ -5283,7 +5293,7 @@ class CarriersCarrier {
       name = _json["name"];
     }
     if (_json.containsKey("services")) {
-      services = _json["services"];
+      services = (_json["services"] as core.List).cast<core.String>();
     }
   }
 
@@ -5376,7 +5386,8 @@ class Datafeed {
       id = _json["id"];
     }
     if (_json.containsKey("intendedDestinations")) {
-      intendedDestinations = _json["intendedDestinations"];
+      intendedDestinations =
+          (_json["intendedDestinations"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -5388,8 +5399,8 @@ class Datafeed {
       targetCountry = _json["targetCountry"];
     }
     if (_json.containsKey("targets")) {
-      targets = _json["targets"]
-          .map((value) => new DatafeedTarget.fromJson(value))
+      targets = (_json["targets"] as core.List)
+          .map<DatafeedTarget>((value) => new DatafeedTarget.fromJson(value))
           .toList();
     }
   }
@@ -5627,8 +5638,9 @@ class DatafeedStatus {
       datafeedId = _json["datafeedId"];
     }
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new DatafeedStatusError.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<DatafeedStatusError>(
+              (value) => new DatafeedStatusError.fromJson(value))
           .toList();
     }
     if (_json.containsKey("itemsTotal")) {
@@ -5650,8 +5662,9 @@ class DatafeedStatus {
       processingStatus = _json["processingStatus"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new DatafeedStatusError.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<DatafeedStatusError>(
+              (value) => new DatafeedStatusError.fromJson(value))
           .toList();
     }
   }
@@ -5717,8 +5730,9 @@ class DatafeedStatusError {
       count = _json["count"];
     }
     if (_json.containsKey("examples")) {
-      examples = _json["examples"]
-          .map((value) => new DatafeedStatusExample.fromJson(value))
+      examples = (_json["examples"] as core.List)
+          .map<DatafeedStatusExample>(
+              (value) => new DatafeedStatusExample.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -5811,10 +5825,12 @@ class DatafeedTarget {
       country = _json["country"];
     }
     if (_json.containsKey("excludedDestinations")) {
-      excludedDestinations = _json["excludedDestinations"];
+      excludedDestinations =
+          (_json["excludedDestinations"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("includedDestinations")) {
-      includedDestinations = _json["includedDestinations"];
+      includedDestinations =
+          (_json["includedDestinations"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("language")) {
       language = _json["language"];
@@ -5848,8 +5864,9 @@ class DatafeedsCustomBatchRequest {
 
   DatafeedsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new DatafeedsCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<DatafeedsCustomBatchRequestEntry>(
+              (value) => new DatafeedsCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -5933,8 +5950,9 @@ class DatafeedsCustomBatchResponse {
 
   DatafeedsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new DatafeedsCustomBatchResponseEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<DatafeedsCustomBatchResponseEntry>(
+              (value) => new DatafeedsCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -6016,8 +6034,8 @@ class DatafeedsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new Datafeed.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<Datafeed>((value) => new Datafeed.fromJson(value))
           .toList();
     }
   }
@@ -6046,8 +6064,8 @@ class DatafeedstatusesCustomBatchRequest {
 
   DatafeedstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<DatafeedstatusesCustomBatchRequestEntry>((value) =>
               new DatafeedstatusesCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
@@ -6145,8 +6163,8 @@ class DatafeedstatusesCustomBatchResponse {
 
   DatafeedstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<DatafeedstatusesCustomBatchResponseEntry>((value) =>
               new DatafeedstatusesCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
@@ -6229,8 +6247,8 @@ class DatafeedstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new DatafeedStatus.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<DatafeedStatus>((value) => new DatafeedStatus.fromJson(value))
           .toList();
     }
   }
@@ -6269,8 +6287,8 @@ class DeliveryTime {
 
   DeliveryTime.fromJson(core.Map _json) {
     if (_json.containsKey("holidayCutoffs")) {
-      holidayCutoffs = _json["holidayCutoffs"]
-          .map((value) => new HolidayCutoff.fromJson(value))
+      holidayCutoffs = (_json["holidayCutoffs"] as core.List)
+          .map<HolidayCutoff>((value) => new HolidayCutoff.fromJson(value))
           .toList();
     }
     if (_json.containsKey("maxTransitTimeInDays")) {
@@ -6357,8 +6375,9 @@ class Errors {
       code = _json["code"];
     }
     if (_json.containsKey("errors")) {
-      errors =
-          _json["errors"].map((value) => new Error.fromJson(value)).toList();
+      errors = (_json["errors"] as core.List)
+          .map<Error>((value) => new Error.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -6419,23 +6438,26 @@ class Headers {
 
   Headers.fromJson(core.Map _json) {
     if (_json.containsKey("locations")) {
-      locations = _json["locations"]
-          .map((value) => new LocationIdSet.fromJson(value))
+      locations = (_json["locations"] as core.List)
+          .map<LocationIdSet>((value) => new LocationIdSet.fromJson(value))
           .toList();
     }
     if (_json.containsKey("numberOfItems")) {
-      numberOfItems = _json["numberOfItems"];
+      numberOfItems = (_json["numberOfItems"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("postalCodeGroupNames")) {
-      postalCodeGroupNames = _json["postalCodeGroupNames"];
+      postalCodeGroupNames =
+          (_json["postalCodeGroupNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("prices")) {
-      prices =
-          _json["prices"].map((value) => new Price.fromJson(value)).toList();
+      prices = (_json["prices"] as core.List)
+          .map<Price>((value) => new Price.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("weights")) {
-      weights =
-          _json["weights"].map((value) => new Weight.fromJson(value)).toList();
+      weights = (_json["weights"] as core.List)
+          .map<Weight>((value) => new Weight.fromJson(value))
+          .toList();
     }
   }
 
@@ -6748,8 +6770,9 @@ class InventoryCustomBatchRequest {
 
   InventoryCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new InventoryCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<InventoryCustomBatchRequestEntry>(
+              (value) => new InventoryCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -6836,8 +6859,9 @@ class InventoryCustomBatchResponse {
 
   InventoryCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new InventoryCustomBatchResponseEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<InventoryCustomBatchResponseEntry>(
+              (value) => new InventoryCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -7069,7 +7093,7 @@ class LocationIdSet {
 
   LocationIdSet.fromJson(core.Map _json) {
     if (_json.containsKey("locationIds")) {
-      locationIds = _json["locationIds"];
+      locationIds = (_json["locationIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -7212,8 +7236,8 @@ class Order {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"]
-          .map((value) => new OrderLineItem.fromJson(value))
+      lineItems = (_json["lineItems"] as core.List)
+          .map<OrderLineItem>((value) => new OrderLineItem.fromJson(value))
           .toList();
     }
     if (_json.containsKey("merchantId")) {
@@ -7235,18 +7259,18 @@ class Order {
       placedDate = _json["placedDate"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"]
-          .map((value) => new OrderPromotion.fromJson(value))
+      promotions = (_json["promotions"] as core.List)
+          .map<OrderPromotion>((value) => new OrderPromotion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("refunds")) {
-      refunds = _json["refunds"]
-          .map((value) => new OrderRefund.fromJson(value))
+      refunds = (_json["refunds"] as core.List)
+          .map<OrderRefund>((value) => new OrderRefund.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shipments")) {
-      shipments = _json["shipments"]
-          .map((value) => new OrderShipment.fromJson(value))
+      shipments = (_json["shipments"] as core.List)
+          .map<OrderShipment>((value) => new OrderShipment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shippingCost")) {
@@ -7369,7 +7393,7 @@ class OrderAddress {
       country = _json["country"];
     }
     if (_json.containsKey("fullAddress")) {
-      fullAddress = _json["fullAddress"];
+      fullAddress = (_json["fullAddress"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("isPostOfficeBox")) {
       isPostOfficeBox = _json["isPostOfficeBox"];
@@ -7387,7 +7411,7 @@ class OrderAddress {
       region = _json["region"];
     }
     if (_json.containsKey("streetAddress")) {
-      streetAddress = _json["streetAddress"];
+      streetAddress = (_json["streetAddress"] as core.List).cast<core.String>();
     }
   }
 
@@ -7610,13 +7634,15 @@ class OrderLineItem {
 
   OrderLineItem.fromJson(core.Map _json) {
     if (_json.containsKey("annotations")) {
-      annotations = _json["annotations"]
-          .map((value) => new OrderMerchantProvidedAnnotation.fromJson(value))
+      annotations = (_json["annotations"] as core.List)
+          .map<OrderMerchantProvidedAnnotation>(
+              (value) => new OrderMerchantProvidedAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("cancellations")) {
-      cancellations = _json["cancellations"]
-          .map((value) => new OrderCancellation.fromJson(value))
+      cancellations = (_json["cancellations"] as core.List)
+          .map<OrderCancellation>(
+              (value) => new OrderCancellation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -7650,8 +7676,8 @@ class OrderLineItem {
       returnInfo = new OrderLineItemReturnInfo.fromJson(_json["returnInfo"]);
     }
     if (_json.containsKey("returns")) {
-      returns = _json["returns"]
-          .map((value) => new OrderReturn.fromJson(value))
+      returns = (_json["returns"] as core.List)
+          .map<OrderReturn>((value) => new OrderReturn.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shippingDetails")) {
@@ -7811,8 +7837,8 @@ class OrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"]
-          .map((value) =>
+      variantAttributes = (_json["variantAttributes"] as core.List)
+          .map<OrderLineItemProductVariantAttribute>((value) =>
               new OrderLineItemProductVariantAttribute.fromJson(value))
           .toList();
     }
@@ -8175,8 +8201,9 @@ class OrderPromotion {
 
   OrderPromotion.fromJson(core.Map _json) {
     if (_json.containsKey("benefits")) {
-      benefits = _json["benefits"]
-          .map((value) => new OrderPromotionBenefit.fromJson(value))
+      benefits = (_json["benefits"] as core.List)
+          .map<OrderPromotionBenefit>(
+              (value) => new OrderPromotionBenefit.fromJson(value))
           .toList();
     }
     if (_json.containsKey("effectiveDates")) {
@@ -8253,7 +8280,7 @@ class OrderPromotionBenefit {
       discount = new Price.fromJson(_json["discount"]);
     }
     if (_json.containsKey("offerIds")) {
-      offerIds = _json["offerIds"];
+      offerIds = (_json["offerIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("subType")) {
       subType = _json["subType"];
@@ -8461,8 +8488,9 @@ class OrderShipment {
       id = _json["id"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"]
-          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+      lineItems = (_json["lineItems"] as core.List)
+          .map<OrderShipmentLineItemShipment>(
+              (value) => new OrderShipmentLineItemShipment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("status")) {
@@ -8897,8 +8925,9 @@ class OrdersCustomBatchRequest {
 
   OrdersCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new OrdersCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<OrdersCustomBatchRequestEntry>(
+              (value) => new OrdersCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -9572,8 +9601,9 @@ class OrdersCustomBatchRequestEntrySetLineItemMetadata {
 
   OrdersCustomBatchRequestEntrySetLineItemMetadata.fromJson(core.Map _json) {
     if (_json.containsKey("annotations")) {
-      annotations = _json["annotations"]
-          .map((value) => new OrderMerchantProvidedAnnotation.fromJson(value))
+      annotations = (_json["annotations"] as core.List)
+          .map<OrderMerchantProvidedAnnotation>(
+              (value) => new OrderMerchantProvidedAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("lineItemId")) {
@@ -9629,18 +9659,20 @@ class OrdersCustomBatchRequestEntryShipLineItems {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"]
-          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+      lineItems = (_json["lineItems"] as core.List)
+          .map<OrderShipmentLineItemShipment>(
+              (value) => new OrderShipmentLineItemShipment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shipmentId")) {
       shipmentId = _json["shipmentId"];
     }
     if (_json.containsKey("shipmentInfos")) {
-      shipmentInfos = _json["shipmentInfos"]
-          .map((value) =>
-              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
-                  .fromJson(value))
+      shipmentInfos = (_json["shipmentInfos"] as core.List)
+          .map<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>(
+              (value) =>
+                  new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("trackingId")) {
@@ -9830,8 +9862,9 @@ class OrdersCustomBatchResponse {
 
   OrdersCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new OrdersCustomBatchResponseEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<OrdersCustomBatchResponseEntry>(
+              (value) => new OrdersCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -10115,8 +10148,9 @@ class OrdersListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources =
-          _json["resources"].map((value) => new Order.fromJson(value)).toList();
+      resources = (_json["resources"] as core.List)
+          .map<Order>((value) => new Order.fromJson(value))
+          .toList();
     }
   }
 
@@ -10576,8 +10610,9 @@ class OrdersSetLineItemMetadataRequest {
 
   OrdersSetLineItemMetadataRequest.fromJson(core.Map _json) {
     if (_json.containsKey("annotations")) {
-      annotations = _json["annotations"]
-          .map((value) => new OrderMerchantProvidedAnnotation.fromJson(value))
+      annotations = (_json["annotations"] as core.List)
+          .map<OrderMerchantProvidedAnnotation>(
+              (value) => new OrderMerchantProvidedAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("lineItemId")) {
@@ -10674,8 +10709,9 @@ class OrdersShipLineItemsRequest {
       carrier = _json["carrier"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"]
-          .map((value) => new OrderShipmentLineItemShipment.fromJson(value))
+      lineItems = (_json["lineItems"] as core.List)
+          .map<OrderShipmentLineItemShipment>(
+              (value) => new OrderShipmentLineItemShipment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("operationId")) {
@@ -10685,10 +10721,11 @@ class OrdersShipLineItemsRequest {
       shipmentId = _json["shipmentId"];
     }
     if (_json.containsKey("shipmentInfos")) {
-      shipmentInfos = _json["shipmentInfos"]
-          .map((value) =>
-              new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
-                  .fromJson(value))
+      shipmentInfos = (_json["shipmentInfos"] as core.List)
+          .map<OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo>(
+              (value) =>
+                  new OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("trackingId")) {
@@ -11025,8 +11062,8 @@ class PostalCodeGroup {
       name = _json["name"];
     }
     if (_json.containsKey("postalCodeRanges")) {
-      postalCodeRanges = _json["postalCodeRanges"]
-          .map((value) => new PostalCodeRange.fromJson(value))
+      postalCodeRanges = (_json["postalCodeRanges"] as core.List)
+          .map<PostalCodeRange>((value) => new PostalCodeRange.fromJson(value))
           .toList();
     }
   }
@@ -11372,10 +11409,12 @@ class Product {
 
   Product.fromJson(core.Map _json) {
     if (_json.containsKey("additionalImageLinks")) {
-      additionalImageLinks = _json["additionalImageLinks"];
+      additionalImageLinks =
+          (_json["additionalImageLinks"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("additionalProductTypes")) {
-      additionalProductTypes = _json["additionalProductTypes"];
+      additionalProductTypes =
+          (_json["additionalProductTypes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("adult")) {
       adult = _json["adult"];
@@ -11384,7 +11423,7 @@ class Product {
       adwordsGrouping = _json["adwordsGrouping"];
     }
     if (_json.containsKey("adwordsLabels")) {
-      adwordsLabels = _json["adwordsLabels"];
+      adwordsLabels = (_json["adwordsLabels"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("adwordsRedirect")) {
       adwordsRedirect = _json["adwordsRedirect"];
@@ -11393,8 +11432,8 @@ class Product {
       ageGroup = _json["ageGroup"];
     }
     if (_json.containsKey("aspects")) {
-      aspects = _json["aspects"]
-          .map((value) => new ProductAspect.fromJson(value))
+      aspects = (_json["aspects"] as core.List)
+          .map<ProductAspect>((value) => new ProductAspect.fromJson(value))
           .toList();
     }
     if (_json.containsKey("availability")) {
@@ -11419,13 +11458,15 @@ class Product {
       contentLanguage = _json["contentLanguage"];
     }
     if (_json.containsKey("customAttributes")) {
-      customAttributes = _json["customAttributes"]
-          .map((value) => new ProductCustomAttribute.fromJson(value))
+      customAttributes = (_json["customAttributes"] as core.List)
+          .map<ProductCustomAttribute>(
+              (value) => new ProductCustomAttribute.fromJson(value))
           .toList();
     }
     if (_json.containsKey("customGroups")) {
-      customGroups = _json["customGroups"]
-          .map((value) => new ProductCustomGroup.fromJson(value))
+      customGroups = (_json["customGroups"] as core.List)
+          .map<ProductCustomGroup>(
+              (value) => new ProductCustomGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("customLabel0")) {
@@ -11447,8 +11488,9 @@ class Product {
       description = _json["description"];
     }
     if (_json.containsKey("destinations")) {
-      destinations = _json["destinations"]
-          .map((value) => new ProductDestination.fromJson(value))
+      destinations = (_json["destinations"] as core.List)
+          .map<ProductDestination>(
+              (value) => new ProductDestination.fromJson(value))
           .toList();
     }
     if (_json.containsKey("displayAdsId")) {
@@ -11458,7 +11500,8 @@ class Product {
       displayAdsLink = _json["displayAdsLink"];
     }
     if (_json.containsKey("displayAdsSimilarIds")) {
-      displayAdsSimilarIds = _json["displayAdsSimilarIds"];
+      displayAdsSimilarIds =
+          (_json["displayAdsSimilarIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("displayAdsTitle")) {
       displayAdsTitle = _json["displayAdsTitle"];
@@ -11542,7 +11585,7 @@ class Product {
       productType = _json["productType"];
     }
     if (_json.containsKey("promotionIds")) {
-      promotionIds = _json["promotionIds"];
+      promotionIds = (_json["promotionIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("salePrice")) {
       salePrice = new Price.fromJson(_json["salePrice"]);
@@ -11554,8 +11597,8 @@ class Product {
       sellOnGoogleQuantity = _json["sellOnGoogleQuantity"];
     }
     if (_json.containsKey("shipping")) {
-      shipping = _json["shipping"]
-          .map((value) => new ProductShipping.fromJson(value))
+      shipping = (_json["shipping"] as core.List)
+          .map<ProductShipping>((value) => new ProductShipping.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shippingHeight")) {
@@ -11584,14 +11627,14 @@ class Product {
       sizeType = _json["sizeType"];
     }
     if (_json.containsKey("sizes")) {
-      sizes = _json["sizes"];
+      sizes = (_json["sizes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("targetCountry")) {
       targetCountry = _json["targetCountry"];
     }
     if (_json.containsKey("taxes")) {
-      taxes = _json["taxes"]
-          .map((value) => new ProductTax.fromJson(value))
+      taxes = (_json["taxes"] as core.List)
+          .map<ProductTax>((value) => new ProductTax.fromJson(value))
           .toList();
     }
     if (_json.containsKey("title")) {
@@ -11606,11 +11649,13 @@ class Product {
           new ProductUnitPricingMeasure.fromJson(_json["unitPricingMeasure"]);
     }
     if (_json.containsKey("validatedDestinations")) {
-      validatedDestinations = _json["validatedDestinations"];
+      validatedDestinations =
+          (_json["validatedDestinations"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("warnings")) {
-      warnings =
-          _json["warnings"].map((value) => new Error.fromJson(value)).toList();
+      warnings = (_json["warnings"] as core.List)
+          .map<Error>((value) => new Error.fromJson(value))
+          .toList();
     }
   }
 
@@ -11949,8 +11994,9 @@ class ProductCustomGroup {
 
   ProductCustomGroup.fromJson(core.Map _json) {
     if (_json.containsKey("attributes")) {
-      attributes = _json["attributes"]
-          .map((value) => new ProductCustomAttribute.fromJson(value))
+      attributes = (_json["attributes"] as core.List)
+          .map<ProductCustomAttribute>(
+              (value) => new ProductCustomAttribute.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
@@ -12194,21 +12240,24 @@ class ProductStatus {
       creationDate = _json["creationDate"];
     }
     if (_json.containsKey("dataQualityIssues")) {
-      dataQualityIssues = _json["dataQualityIssues"]
-          .map((value) => new ProductStatusDataQualityIssue.fromJson(value))
+      dataQualityIssues = (_json["dataQualityIssues"] as core.List)
+          .map<ProductStatusDataQualityIssue>(
+              (value) => new ProductStatusDataQualityIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("destinationStatuses")) {
-      destinationStatuses = _json["destinationStatuses"]
-          .map((value) => new ProductStatusDestinationStatus.fromJson(value))
+      destinationStatuses = (_json["destinationStatuses"] as core.List)
+          .map<ProductStatusDestinationStatus>(
+              (value) => new ProductStatusDestinationStatus.fromJson(value))
           .toList();
     }
     if (_json.containsKey("googleExpirationDate")) {
       googleExpirationDate = _json["googleExpirationDate"];
     }
     if (_json.containsKey("itemLevelIssues")) {
-      itemLevelIssues = _json["itemLevelIssues"]
-          .map((value) => new ProductStatusItemLevelIssue.fromJson(value))
+      itemLevelIssues = (_json["itemLevelIssues"] as core.List)
+          .map<ProductStatusItemLevelIssue>(
+              (value) => new ProductStatusItemLevelIssue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -12608,8 +12657,9 @@ class ProductsCustomBatchRequest {
 
   ProductsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new ProductsCustomBatchRequestEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<ProductsCustomBatchRequestEntry>(
+              (value) => new ProductsCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
   }
@@ -12694,8 +12744,9 @@ class ProductsCustomBatchResponse {
 
   ProductsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new ProductsCustomBatchResponseEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<ProductsCustomBatchResponseEntry>(
+              (value) => new ProductsCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -12787,8 +12838,8 @@ class ProductsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new Product.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<Product>((value) => new Product.fromJson(value))
           .toList();
     }
   }
@@ -12817,8 +12868,8 @@ class ProductstatusesCustomBatchRequest {
 
   ProductstatusesCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<ProductstatusesCustomBatchRequestEntry>((value) =>
               new ProductstatusesCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
@@ -12901,8 +12952,8 @@ class ProductstatusesCustomBatchResponse {
 
   ProductstatusesCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<ProductstatusesCustomBatchResponseEntry>((value) =>
               new ProductstatusesCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
@@ -12994,8 +13045,8 @@ class ProductstatusesListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new ProductStatus.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<ProductStatus>((value) => new ProductStatus.fromJson(value))
           .toList();
     }
   }
@@ -13043,11 +13094,12 @@ class RateGroup {
 
   RateGroup.fromJson(core.Map _json) {
     if (_json.containsKey("applicableShippingLabels")) {
-      applicableShippingLabels = _json["applicableShippingLabels"];
+      applicableShippingLabels =
+          (_json["applicableShippingLabels"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("carrierRates")) {
-      carrierRates = _json["carrierRates"]
-          .map((value) => new CarrierRate.fromJson(value))
+      carrierRates = (_json["carrierRates"] as core.List)
+          .map<CarrierRate>((value) => new CarrierRate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("mainTable")) {
@@ -13057,8 +13109,9 @@ class RateGroup {
       singleValue = new Value.fromJson(_json["singleValue"]);
     }
     if (_json.containsKey("subtables")) {
-      subtables =
-          _json["subtables"].map((value) => new Table.fromJson(value)).toList();
+      subtables = (_json["subtables"] as core.List)
+          .map<Table>((value) => new Table.fromJson(value))
+          .toList();
     }
   }
 
@@ -13095,7 +13148,9 @@ class Row {
 
   Row.fromJson(core.Map _json) {
     if (_json.containsKey("cells")) {
-      cells = _json["cells"].map((value) => new Value.fromJson(value)).toList();
+      cells = (_json["cells"] as core.List)
+          .map<Value>((value) => new Value.fromJson(value))
+          .toList();
     }
   }
 
@@ -13161,8 +13216,8 @@ class Service {
       name = _json["name"];
     }
     if (_json.containsKey("rateGroups")) {
-      rateGroups = _json["rateGroups"]
-          .map((value) => new RateGroup.fromJson(value))
+      rateGroups = (_json["rateGroups"] as core.List)
+          .map<RateGroup>((value) => new RateGroup.fromJson(value))
           .toList();
     }
   }
@@ -13216,13 +13271,13 @@ class ShippingSettings {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("postalCodeGroups")) {
-      postalCodeGroups = _json["postalCodeGroups"]
-          .map((value) => new PostalCodeGroup.fromJson(value))
+      postalCodeGroups = (_json["postalCodeGroups"] as core.List)
+          .map<PostalCodeGroup>((value) => new PostalCodeGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("services")) {
-      services = _json["services"]
-          .map((value) => new Service.fromJson(value))
+      services = (_json["services"] as core.List)
+          .map<Service>((value) => new Service.fromJson(value))
           .toList();
     }
   }
@@ -13252,8 +13307,8 @@ class ShippingsettingsCustomBatchRequest {
 
   ShippingsettingsCustomBatchRequest.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<ShippingsettingsCustomBatchRequestEntry>((value) =>
               new ShippingsettingsCustomBatchRequestEntry.fromJson(value))
           .toList();
     }
@@ -13340,8 +13395,8 @@ class ShippingsettingsCustomBatchResponse {
 
   ShippingsettingsCustomBatchResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) =>
+      entries = (_json["entries"] as core.List)
+          .map<ShippingsettingsCustomBatchResponseEntry>((value) =>
               new ShippingsettingsCustomBatchResponseEntry.fromJson(value))
           .toList();
     }
@@ -13427,8 +13482,8 @@ class ShippingsettingsGetSupportedCarriersResponse {
 
   ShippingsettingsGetSupportedCarriersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("carriers")) {
-      carriers = _json["carriers"]
-          .map((value) => new CarriersCarrier.fromJson(value))
+      carriers = (_json["carriers"] as core.List)
+          .map<CarriersCarrier>((value) => new CarriersCarrier.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -13461,8 +13516,8 @@ class ShippingsettingsGetSupportedHolidaysResponse {
 
   ShippingsettingsGetSupportedHolidaysResponse.fromJson(core.Map _json) {
     if (_json.containsKey("holidays")) {
-      holidays = _json["holidays"]
-          .map((value) => new HolidaysHoliday.fromJson(value))
+      holidays = (_json["holidays"] as core.List)
+          .map<HolidaysHoliday>((value) => new HolidaysHoliday.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -13502,8 +13557,9 @@ class ShippingsettingsListResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new ShippingSettings.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<ShippingSettings>(
+              (value) => new ShippingSettings.fromJson(value))
           .toList();
     }
   }
@@ -13552,7 +13608,9 @@ class Table {
       rowHeaders = new Headers.fromJson(_json["rowHeaders"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"].map((value) => new Row.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<Row>((value) => new Row.fromJson(value))
+          .toList();
     }
   }
 
@@ -13619,8 +13677,9 @@ class TestOrder {
       kind = _json["kind"];
     }
     if (_json.containsKey("lineItems")) {
-      lineItems = _json["lineItems"]
-          .map((value) => new TestOrderLineItem.fromJson(value))
+      lineItems = (_json["lineItems"] as core.List)
+          .map<TestOrderLineItem>(
+              (value) => new TestOrderLineItem.fromJson(value))
           .toList();
     }
     if (_json.containsKey("notificationMode")) {
@@ -13634,8 +13693,8 @@ class TestOrder {
       predefinedDeliveryAddress = _json["predefinedDeliveryAddress"];
     }
     if (_json.containsKey("promotions")) {
-      promotions = _json["promotions"]
-          .map((value) => new OrderPromotion.fromJson(value))
+      promotions = (_json["promotions"] as core.List)
+          .map<OrderPromotion>((value) => new OrderPromotion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("shippingCost")) {
@@ -13870,8 +13929,8 @@ class TestOrderLineItemProduct {
       title = _json["title"];
     }
     if (_json.containsKey("variantAttributes")) {
-      variantAttributes = _json["variantAttributes"]
-          .map((value) =>
+      variantAttributes = (_json["variantAttributes"] as core.List)
+          .map<OrderLineItemProductVariantAttribute>((value) =>
               new OrderLineItemProductVariantAttribute.fromJson(value))
           .toList();
     }

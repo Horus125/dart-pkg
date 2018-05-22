@@ -12,8 +12,6 @@ import 'package:typed_data/typed_data.dart';
 import '../../utils.dart';
 import '../application_exception.dart';
 
-typedef Future<Process> StartBrowserFn();
-
 /// An interface for running browser instances.
 ///
 /// This is intentionally coarse-grained: browsers are controlled primary from
@@ -99,7 +97,7 @@ abstract class Browser {
       }
 
       if (!_closed && exitCode != 0) {
-        var outputString = UTF8.decode(output);
+        var outputString = utf8.decode(output);
         var message = "$name failed with exit code $exitCode.";
         if (outputString.isNotEmpty) {
           message += "\nStandard output:\n$outputString";

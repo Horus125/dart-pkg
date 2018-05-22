@@ -72,7 +72,7 @@ class GoogleServiceAccountsResourceApi {
   async.Future<GoogleServiceAccount> get(core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -121,14 +121,14 @@ class TransferJobsResourceApi {
   /// this method will complete with the same error.
   async.Future<TransferJob> create(TransferJob request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -170,7 +170,7 @@ class TransferJobsResourceApi {
   async.Future<TransferJob> get(core.String jobName,
       {core.String projectId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -232,7 +232,7 @@ class TransferJobsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -289,14 +289,14 @@ class TransferJobsResourceApi {
       UpdateTransferJobRequest request, core.String jobName,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (jobName == null) {
       throw new core.ArgumentError("Parameter jobName is required.");
@@ -343,7 +343,7 @@ class TransferOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> cancel(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -386,7 +386,7 @@ class TransferOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -431,7 +431,7 @@ class TransferOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -500,7 +500,7 @@ class TransferOperationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -557,14 +557,14 @@ class TransferOperationsResourceApi {
       PauseTransferOperationRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -608,14 +608,14 @@ class TransferOperationsResourceApi {
       ResumeTransferOperationRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -796,7 +796,7 @@ class ErrorLogEntry {
 
   ErrorLogEntry.fromJson(core.Map _json) {
     if (_json.containsKey("errorDetails")) {
-      errorDetails = _json["errorDetails"];
+      errorDetails = (_json["errorDetails"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("url")) {
       url = _json["url"];
@@ -972,8 +972,8 @@ class ErrorSummary {
       errorCount = _json["errorCount"];
     }
     if (_json.containsKey("errorLogEntries")) {
-      errorLogEntries = _json["errorLogEntries"]
-          .map((value) => new ErrorLogEntry.fromJson(value))
+      errorLogEntries = (_json["errorLogEntries"] as core.List)
+          .map<ErrorLogEntry>((value) => new ErrorLogEntry.fromJson(value))
           .toList();
     }
   }
@@ -1131,8 +1131,8 @@ class ListOperationsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
   }
@@ -1166,8 +1166,8 @@ class ListTransferJobsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("transferJobs")) {
-      transferJobs = _json["transferJobs"]
-          .map((value) => new TransferJob.fromJson(value))
+      transferJobs = (_json["transferJobs"] as core.List)
+          .map<TransferJob>((value) => new TransferJob.fromJson(value))
           .toList();
     }
   }
@@ -1247,10 +1247,12 @@ class ObjectConditions {
 
   ObjectConditions.fromJson(core.Map _json) {
     if (_json.containsKey("excludePrefixes")) {
-      excludePrefixes = _json["excludePrefixes"];
+      excludePrefixes =
+          (_json["excludePrefixes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("includePrefixes")) {
-      includePrefixes = _json["includePrefixes"];
+      includePrefixes =
+          (_json["includePrefixes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("maxTimeElapsedSinceLastModification")) {
       maxTimeElapsedSinceLastModification =
@@ -1328,13 +1330,15 @@ class Operation {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("response")) {
-      response = _json["response"];
+      response =
+          (_json["response"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -1517,7 +1521,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -1925,8 +1932,8 @@ class TransferOperation {
       endTime = _json["endTime"];
     }
     if (_json.containsKey("errorBreakdowns")) {
-      errorBreakdowns = _json["errorBreakdowns"]
-          .map((value) => new ErrorSummary.fromJson(value))
+      errorBreakdowns = (_json["errorBreakdowns"] as core.List)
+          .map<ErrorSummary>((value) => new ErrorSummary.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {

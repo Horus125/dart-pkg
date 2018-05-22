@@ -69,7 +69,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<Account> get(core.String accountId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -112,7 +112,7 @@ class AccountsResourceApi {
   async.Future<Accounts> list(core.List<core.String> filterAdClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -166,7 +166,7 @@ class AccountsAdclientsResourceApi {
   async.Future<AdClient> get(core.String accountId, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -223,7 +223,7 @@ class AccountsAdclientsResourceApi {
   async.Future<AdClients> list(core.String accountId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -285,7 +285,7 @@ class AccountsAdunitsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -344,7 +344,7 @@ class AccountsAdunitsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -406,7 +406,7 @@ class AccountsAdunitsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.List<core.String> hostCustomChannelId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -469,14 +469,14 @@ class AccountsAdunitsResourceApi {
       AdUnit request, core.String accountId, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -537,7 +537,7 @@ class AccountsAdunitsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -604,14 +604,14 @@ class AccountsAdunitsResourceApi {
       core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -666,14 +666,14 @@ class AccountsAdunitsResourceApi {
       AdUnit request, core.String accountId, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -769,7 +769,7 @@ class AccountsReportsResourceApi {
       core.int startIndex,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -847,7 +847,7 @@ class AdclientsResourceApi {
   /// this method will complete with the same error.
   async.Future<AdClient> get(core.String adClientId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -896,7 +896,7 @@ class AdclientsResourceApi {
   async.Future<AdClients> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -959,7 +959,7 @@ class AssociationsessionsResourceApi {
       core.String websiteLocale,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1014,7 +1014,7 @@ class AssociationsessionsResourceApi {
   async.Future<AssociationSession> verify(core.String token,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1067,7 +1067,7 @@ class CustomchannelsResourceApi {
       core.String adClientId, core.String customChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1119,7 +1119,7 @@ class CustomchannelsResourceApi {
       core.String adClientId, core.String customChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1171,14 +1171,14 @@ class CustomchannelsResourceApi {
       CustomChannel request, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (adClientId == null) {
       throw new core.ArgumentError("Parameter adClientId is required.");
@@ -1227,7 +1227,7 @@ class CustomchannelsResourceApi {
   async.Future<CustomChannels> list(core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1284,14 +1284,14 @@ class CustomchannelsResourceApi {
       core.String adClientId, core.String customChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (adClientId == null) {
       throw new core.ArgumentError("Parameter adClientId is required.");
@@ -1339,14 +1339,14 @@ class CustomchannelsResourceApi {
       CustomChannel request, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (adClientId == null) {
       throw new core.ArgumentError("Parameter adClientId is required.");
@@ -1434,7 +1434,7 @@ class ReportsResourceApi {
       core.int startIndex,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1512,7 +1512,7 @@ class UrlchannelsResourceApi {
       core.String adClientId, core.String urlChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1563,14 +1563,14 @@ class UrlchannelsResourceApi {
   async.Future<UrlChannel> insert(UrlChannel request, core.String adClientId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (adClientId == null) {
       throw new core.ArgumentError("Parameter adClientId is required.");
@@ -1619,7 +1619,7 @@ class UrlchannelsResourceApi {
   async.Future<UrlChannels> list(core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1718,8 +1718,9 @@ class Accounts {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Account.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1822,8 +1823,9 @@ class AdClients {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new AdClient.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<AdClient>((value) => new AdClient.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2282,8 +2284,9 @@ class AdUnits {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new AdUnit.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<AdUnit>((value) => new AdUnit.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2358,7 +2361,7 @@ class AssociationSession {
       kind = _json["kind"];
     }
     if (_json.containsKey("productCodes")) {
-      productCodes = _json["productCodes"];
+      productCodes = (_json["productCodes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("redirectUrl")) {
       redirectUrl = _json["redirectUrl"];
@@ -2483,8 +2486,8 @@ class CustomChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new CustomChannel.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<CustomChannel>((value) => new CustomChannel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -2590,27 +2593,30 @@ class Report {
 
   Report.fromJson(core.Map _json) {
     if (_json.containsKey("averages")) {
-      averages = _json["averages"];
+      averages = (_json["averages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("headers")) {
-      headers = _json["headers"]
-          .map((value) => new ReportHeaders.fromJson(value))
+      headers = (_json["headers"] as core.List)
+          .map<ReportHeaders>((value) => new ReportHeaders.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.String>>(
+              (value) => (value as core.List).cast<core.String>())
+          .toList();
     }
     if (_json.containsKey("totalMatchedRows")) {
       totalMatchedRows = _json["totalMatchedRows"];
     }
     if (_json.containsKey("totals")) {
-      totals = _json["totals"];
+      totals = (_json["totals"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"];
+      warnings = (_json["warnings"] as core.List).cast<core.String>();
     }
   }
 
@@ -2705,8 +2711,8 @@ class UrlChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new UrlChannel.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<UrlChannel>((value) => new UrlChannel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {

@@ -57,7 +57,7 @@ class WebResourceResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -102,7 +102,7 @@ class WebResourceResourceApi {
   async.Future<SiteVerificationWebResourceResource> get(core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -147,14 +147,14 @@ class WebResourceResourceApi {
       SiteVerificationWebResourceGettokenRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -195,14 +195,14 @@ class WebResourceResourceApi {
       core.String verificationMethod,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (verificationMethod == null) {
       throw new core.ArgumentError("Parameter verificationMethod is required.");
@@ -241,7 +241,7 @@ class WebResourceResourceApi {
   async.Future<SiteVerificationWebResourceListResponse> list(
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -286,14 +286,14 @@ class WebResourceResourceApi {
       SiteVerificationWebResourceResource request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -336,14 +336,14 @@ class WebResourceResourceApi {
       SiteVerificationWebResourceResource request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -476,8 +476,8 @@ class SiteVerificationWebResourceListResponse {
 
   SiteVerificationWebResourceListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) =>
+      items = (_json["items"] as core.List)
+          .map<SiteVerificationWebResourceResource>((value) =>
               new SiteVerificationWebResourceResource.fromJson(value))
           .toList();
     }
@@ -544,7 +544,7 @@ class SiteVerificationWebResourceResource {
       id = _json["id"];
     }
     if (_json.containsKey("owners")) {
-      owners = _json["owners"];
+      owners = (_json["owners"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("site")) {
       site =

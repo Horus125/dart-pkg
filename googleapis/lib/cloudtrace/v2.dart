@@ -80,14 +80,14 @@ class ProjectsTracesResourceApi {
       BatchWriteSpansRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -145,14 +145,14 @@ class ProjectsTracesSpansResourceApi {
   async.Future<Span> createSpan(Span request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -269,11 +269,9 @@ class Attributes {
 
   Attributes.fromJson(core.Map _json) {
     if (_json.containsKey("attributeMap")) {
-      attributeMap =
-          commons.mapMap<core.Map<core.String, core.Object>, AttributeValue>(
-              _json["attributeMap"],
-              (core.Map<core.String, core.Object> item) =>
-                  new AttributeValue.fromJson(item));
+      attributeMap = commons.mapMap<core.Map, AttributeValue>(
+          _json["attributeMap"].cast<core.String, core.Map>(),
+          (core.Map item) => new AttributeValue.fromJson(item));
     }
     if (_json.containsKey("droppedAttributesCount")) {
       droppedAttributesCount = _json["droppedAttributesCount"];
@@ -305,7 +303,9 @@ class BatchWriteSpansRequest {
 
   BatchWriteSpansRequest.fromJson(core.Map _json) {
     if (_json.containsKey("spans")) {
-      spans = _json["spans"].map((value) => new Span.fromJson(value)).toList();
+      spans = (_json["spans"] as core.List)
+          .map<Span>((value) => new Span.fromJson(value))
+          .toList();
     }
   }
 
@@ -415,7 +415,9 @@ class Links {
       droppedLinksCount = _json["droppedLinksCount"];
     }
     if (_json.containsKey("link")) {
-      link = _json["link"].map((value) => new Link.fromJson(value)).toList();
+      link = (_json["link"] as core.List)
+          .map<Link>((value) => new Link.fromJson(value))
+          .toList();
     }
   }
 
@@ -786,8 +788,8 @@ class StackFrames {
       droppedFramesCount = _json["droppedFramesCount"];
     }
     if (_json.containsKey("frame")) {
-      frame = _json["frame"]
-          .map((value) => new StackFrame.fromJson(value))
+      frame = (_json["frame"] as core.List)
+          .map<StackFrame>((value) => new StackFrame.fromJson(value))
           .toList();
     }
   }
@@ -924,7 +926,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -1013,8 +1018,8 @@ class TimeEvents {
       droppedMessageEventsCount = _json["droppedMessageEventsCount"];
     }
     if (_json.containsKey("timeEvent")) {
-      timeEvent = _json["timeEvent"]
-          .map((value) => new TimeEvent.fromJson(value))
+      timeEvent = (_json["timeEvent"] as core.List)
+          .map<TimeEvent>((value) => new TimeEvent.fromJson(value))
           .toList();
     }
   }

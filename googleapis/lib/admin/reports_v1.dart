@@ -111,7 +111,7 @@ class ActivitiesResourceApi {
       core.String startTime,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -230,14 +230,14 @@ class ActivitiesResourceApi {
       core.String startTime,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userKey == null) {
       throw new core.ArgumentError("Parameter userKey is required.");
@@ -310,14 +310,14 @@ class ChannelsResourceApi {
   /// this method will complete with the same error.
   async.Future stop(Channel request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -379,7 +379,7 @@ class CustomerUsageReportsResourceApi {
       core.String parameters,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -471,7 +471,7 @@ class EntityUsageReportsResourceApi {
       core.String parameters,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -576,7 +576,7 @@ class UserUsageReportResourceApi {
       core.String parameters,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -643,8 +643,9 @@ class Activities {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Activity.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Activity>((value) => new Activity.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -752,10 +753,10 @@ class ActivityEventsParameters {
       intValue = _json["intValue"];
     }
     if (_json.containsKey("multiIntValue")) {
-      multiIntValue = _json["multiIntValue"];
+      multiIntValue = (_json["multiIntValue"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("multiValue")) {
-      multiValue = _json["multiValue"];
+      multiValue = (_json["multiValue"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -807,8 +808,9 @@ class ActivityEvents {
       name = _json["name"];
     }
     if (_json.containsKey("parameters")) {
-      parameters = _json["parameters"]
-          .map((value) => new ActivityEventsParameters.fromJson(value))
+      parameters = (_json["parameters"] as core.List)
+          .map<ActivityEventsParameters>(
+              (value) => new ActivityEventsParameters.fromJson(value))
           .toList();
     }
     if (_json.containsKey("type")) {
@@ -916,8 +918,8 @@ class Activity {
       etag = _json["etag"];
     }
     if (_json.containsKey("events")) {
-      events = _json["events"]
-          .map((value) => new ActivityEvents.fromJson(value))
+      events = (_json["events"] as core.List)
+          .map<ActivityEvents>((value) => new ActivityEvents.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -1014,7 +1016,7 @@ class Channel {
       kind = _json["kind"];
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("payload")) {
       payload = _json["payload"];
@@ -1165,7 +1167,10 @@ class UsageReportParameters {
       intValue = _json["intValue"];
     }
     if (_json.containsKey("msgValue")) {
-      msgValue = _json["msgValue"];
+      msgValue = (_json["msgValue"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -1233,8 +1238,9 @@ class UsageReport {
       kind = _json["kind"];
     }
     if (_json.containsKey("parameters")) {
-      parameters = _json["parameters"]
-          .map((value) => new UsageReportParameters.fromJson(value))
+      parameters = (_json["parameters"] as core.List)
+          .map<UsageReportParameters>(
+              (value) => new UsageReportParameters.fromJson(value))
           .toList();
     }
   }
@@ -1312,8 +1318,9 @@ class UsageReportsWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new UsageReportsWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<UsageReportsWarningsData>(
+              (value) => new UsageReportsWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -1367,13 +1374,14 @@ class UsageReports {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("usageReports")) {
-      usageReports = _json["usageReports"]
-          .map((value) => new UsageReport.fromJson(value))
+      usageReports = (_json["usageReports"] as core.List)
+          .map<UsageReport>((value) => new UsageReport.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new UsageReportsWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<UsageReportsWarnings>(
+              (value) => new UsageReportsWarnings.fromJson(value))
           .toList();
     }
   }

@@ -21,8 +21,7 @@ class ChunkedCodingDecoder extends Converter<List<int>, List<int>> {
     var output = sink._decode(bytes, 0, bytes.length);
     if (sink._state == _State.end) return output;
 
-    throw new FormatException(
-        "Input ended unexpectedly.", bytes, bytes.length);
+    throw new FormatException("Input ended unexpectedly.", bytes, bytes.length);
   }
 
   ByteConversionSink startChunkedConversion(Sink<List<int>> sink) =>
@@ -140,7 +139,7 @@ class _Sink extends ByteConversionSinkBase {
   }
 
   /// Returns the hex digit (0 through 15) corresponding to the byte at index
-  /// [i] in [bytes].
+  /// [index] in [bytes].
   ///
   /// If the given byte isn't a hexadecimal ASCII character, throws a
   /// [FormatException].
@@ -167,7 +166,8 @@ class _Sink extends ByteConversionSinkBase {
 
     throw new FormatException(
         "Invalid hexadecimal byte 0x${byte.toRadixString(16).toUpperCase()}.",
-        bytes, index);
+        bytes,
+        index);
   }
 }
 

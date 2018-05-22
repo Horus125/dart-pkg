@@ -158,14 +158,14 @@ class CoursesResourceApi {
   /// this method will complete with the same error.
   async.Future<Course> create(Course request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -209,7 +209,7 @@ class CoursesResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -260,7 +260,7 @@ class CoursesResourceApi {
   /// this method will complete with the same error.
   async.Future<Course> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -349,7 +349,7 @@ class CoursesResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -440,14 +440,14 @@ class CoursesResourceApi {
   async.Future<Course> patch(Course request, core.String id,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -502,14 +502,14 @@ class CoursesResourceApi {
   async.Future<Course> update(Course request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -569,14 +569,14 @@ class CoursesAliasesResourceApi {
   async.Future<CourseAlias> create(CourseAlias request, core.String courseId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -631,7 +631,7 @@ class CoursesAliasesResourceApi {
   async.Future<Empty> delete(core.String courseId, core.String alias,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -703,7 +703,7 @@ class CoursesAliasesResourceApi {
   async.Future<ListCourseAliasesResponse> list(core.String courseId,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -776,14 +776,14 @@ class CoursesAnnouncementsResourceApi {
   async.Future<Announcement> create(Announcement request, core.String courseId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -842,7 +842,7 @@ class CoursesAnnouncementsResourceApi {
   async.Future<Empty> delete(core.String courseId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -903,7 +903,7 @@ class CoursesAnnouncementsResourceApi {
   async.Future<Announcement> get(core.String courseId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -993,7 +993,7 @@ class CoursesAnnouncementsResourceApi {
       core.List<core.String> announcementStates,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1071,14 +1071,14 @@ class CoursesAnnouncementsResourceApi {
       core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -1156,14 +1156,14 @@ class CoursesAnnouncementsResourceApi {
       Announcement request, core.String courseId, core.String id,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -1243,14 +1243,14 @@ class CoursesCourseWorkResourceApi {
   async.Future<CourseWork> create(CourseWork request, core.String courseId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -1309,7 +1309,7 @@ class CoursesCourseWorkResourceApi {
   async.Future<Empty> delete(core.String courseId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1370,7 +1370,7 @@ class CoursesCourseWorkResourceApi {
   async.Future<CourseWork> get(core.String courseId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1461,7 +1461,7 @@ class CoursesCourseWorkResourceApi {
       core.List<core.String> courseWorkStates,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1538,14 +1538,14 @@ class CoursesCourseWorkResourceApi {
       core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -1638,14 +1638,14 @@ class CoursesCourseWorkResourceApi {
       CourseWork request, core.String courseId, core.String id,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -1715,7 +1715,7 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String courseId, core.String courseWorkId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1831,7 +1831,7 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String late,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1927,14 +1927,14 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2021,14 +2021,14 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String courseId, core.String courseWorkId, core.String id,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2112,14 +2112,14 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String courseId, core.String courseWorkId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2202,14 +2202,14 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String courseId, core.String courseWorkId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2289,14 +2289,14 @@ class CoursesCourseWorkStudentSubmissionsResourceApi {
       core.String courseId, core.String courseWorkId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2375,14 +2375,14 @@ class CoursesStudentsResourceApi {
   async.Future<Student> create(Student request, core.String courseId,
       {core.String enrollmentCode, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2443,7 +2443,7 @@ class CoursesStudentsResourceApi {
   async.Future<Empty> delete(core.String courseId, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2509,7 +2509,7 @@ class CoursesStudentsResourceApi {
   async.Future<Student> get(core.String courseId, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2578,7 +2578,7 @@ class CoursesStudentsResourceApi {
   async.Future<ListStudentsResponse> list(core.String courseId,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2653,14 +2653,14 @@ class CoursesTeachersResourceApi {
   async.Future<Teacher> create(Teacher request, core.String courseId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (courseId == null) {
       throw new core.ArgumentError("Parameter courseId is required.");
@@ -2720,7 +2720,7 @@ class CoursesTeachersResourceApi {
   async.Future<Empty> delete(core.String courseId, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2786,7 +2786,7 @@ class CoursesTeachersResourceApi {
   async.Future<Teacher> get(core.String courseId, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2855,7 +2855,7 @@ class CoursesTeachersResourceApi {
   async.Future<ListTeachersResponse> list(core.String courseId,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2922,7 +2922,7 @@ class CoursesTopicsResourceApi {
   async.Future<Topic> get(core.String courseId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2994,7 +2994,7 @@ class CoursesTopicsResourceApi {
   async.Future<ListTopicResponse> list(core.String courseId,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3063,7 +3063,7 @@ class InvitationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> accept(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3116,14 +3116,14 @@ class InvitationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Invitation> create(Invitation request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3165,7 +3165,7 @@ class InvitationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3213,7 +3213,7 @@ class InvitationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Invitation> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3290,7 +3290,7 @@ class InvitationsResourceApi {
       core.String courseId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3378,14 +3378,14 @@ class RegistrationsResourceApi {
   async.Future<Registration> create(Registration request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3423,7 +3423,7 @@ class RegistrationsResourceApi {
   async.Future<Empty> delete(core.String registrationId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3489,7 +3489,7 @@ class UserProfilesResourceApi {
   /// this method will complete with the same error.
   async.Future<UserProfile> get(core.String userId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3572,14 +3572,14 @@ class UserProfilesGuardianInvitationsResourceApi {
       GuardianInvitation request, core.String studentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (studentId == null) {
       throw new core.ArgumentError("Parameter studentId is required.");
@@ -3638,7 +3638,7 @@ class UserProfilesGuardianInvitationsResourceApi {
       core.String studentId, core.String invitationId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3737,7 +3737,7 @@ class UserProfilesGuardianInvitationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3831,14 +3831,14 @@ class UserProfilesGuardianInvitationsResourceApi {
       core.String studentId, core.String invitationId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (studentId == null) {
       throw new core.ArgumentError("Parameter studentId is required.");
@@ -3918,7 +3918,7 @@ class UserProfilesGuardiansResourceApi {
   async.Future<Empty> delete(core.String studentId, core.String guardianId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3988,7 +3988,7 @@ class UserProfilesGuardiansResourceApi {
   async.Future<Guardian> get(core.String studentId, core.String guardianId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4085,7 +4085,7 @@ class UserProfilesGuardiansResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4226,8 +4226,8 @@ class Announcement {
           _json["individualStudentsOptions"]);
     }
     if (_json.containsKey("materials")) {
-      materials = _json["materials"]
-          .map((value) => new Material.fromJson(value))
+      materials = (_json["materials"] as core.List)
+          .map<Material>((value) => new Material.fromJson(value))
           .toList();
     }
     if (_json.containsKey("scheduledTime")) {
@@ -4327,8 +4327,8 @@ class AssignmentSubmission {
 
   AssignmentSubmission.fromJson(core.Map _json) {
     if (_json.containsKey("attachments")) {
-      attachments = _json["attachments"]
-          .map((value) => new Attachment.fromJson(value))
+      attachments = (_json["attachments"] as core.List)
+          .map<Attachment>((value) => new Attachment.fromJson(value))
           .toList();
     }
   }
@@ -4588,8 +4588,9 @@ class Course {
       courseGroupEmail = _json["courseGroupEmail"];
     }
     if (_json.containsKey("courseMaterialSets")) {
-      courseMaterialSets = _json["courseMaterialSets"]
-          .map((value) => new CourseMaterialSet.fromJson(value))
+      courseMaterialSets = (_json["courseMaterialSets"] as core.List)
+          .map<CourseMaterialSet>(
+              (value) => new CourseMaterialSet.fromJson(value))
           .toList();
     }
     if (_json.containsKey("courseState")) {
@@ -4808,8 +4809,8 @@ class CourseMaterialSet {
 
   CourseMaterialSet.fromJson(core.Map _json) {
     if (_json.containsKey("materials")) {
-      materials = _json["materials"]
-          .map((value) => new CourseMaterial.fromJson(value))
+      materials = (_json["materials"] as core.List)
+          .map<CourseMaterial>((value) => new CourseMaterial.fromJson(value))
           .toList();
     }
     if (_json.containsKey("title")) {
@@ -5034,8 +5035,8 @@ class CourseWork {
           _json["individualStudentsOptions"]);
     }
     if (_json.containsKey("materials")) {
-      materials = _json["materials"]
-          .map((value) => new Material.fromJson(value))
+      materials = (_json["materials"] as core.List)
+          .map<Material>((value) => new Material.fromJson(value))
           .toList();
     }
     if (_json.containsKey("maxPoints")) {
@@ -5647,7 +5648,7 @@ class IndividualStudentsOptions {
 
   IndividualStudentsOptions.fromJson(core.Map _json) {
     if (_json.containsKey("studentIds")) {
-      studentIds = _json["studentIds"];
+      studentIds = (_json["studentIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -5786,8 +5787,8 @@ class ListAnnouncementsResponse {
 
   ListAnnouncementsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("announcements")) {
-      announcements = _json["announcements"]
-          .map((value) => new Announcement.fromJson(value))
+      announcements = (_json["announcements"] as core.List)
+          .map<Announcement>((value) => new Announcement.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5822,8 +5823,8 @@ class ListCourseAliasesResponse {
 
   ListCourseAliasesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("aliases")) {
-      aliases = _json["aliases"]
-          .map((value) => new CourseAlias.fromJson(value))
+      aliases = (_json["aliases"] as core.List)
+          .map<CourseAlias>((value) => new CourseAlias.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5857,8 +5858,8 @@ class ListCourseWorkResponse {
 
   ListCourseWorkResponse.fromJson(core.Map _json) {
     if (_json.containsKey("courseWork")) {
-      courseWork = _json["courseWork"]
-          .map((value) => new CourseWork.fromJson(value))
+      courseWork = (_json["courseWork"] as core.List)
+          .map<CourseWork>((value) => new CourseWork.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5893,8 +5894,9 @@ class ListCoursesResponse {
 
   ListCoursesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("courses")) {
-      courses =
-          _json["courses"].map((value) => new Course.fromJson(value)).toList();
+      courses = (_json["courses"] as core.List)
+          .map<Course>((value) => new Course.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("nextPageToken")) {
       nextPageToken = _json["nextPageToken"];
@@ -5927,8 +5929,9 @@ class ListGuardianInvitationsResponse {
 
   ListGuardianInvitationsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("guardianInvitations")) {
-      guardianInvitations = _json["guardianInvitations"]
-          .map((value) => new GuardianInvitation.fromJson(value))
+      guardianInvitations = (_json["guardianInvitations"] as core.List)
+          .map<GuardianInvitation>(
+              (value) => new GuardianInvitation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5964,8 +5967,8 @@ class ListGuardiansResponse {
 
   ListGuardiansResponse.fromJson(core.Map _json) {
     if (_json.containsKey("guardians")) {
-      guardians = _json["guardians"]
-          .map((value) => new Guardian.fromJson(value))
+      guardians = (_json["guardians"] as core.List)
+          .map<Guardian>((value) => new Guardian.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5999,8 +6002,8 @@ class ListInvitationsResponse {
 
   ListInvitationsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("invitations")) {
-      invitations = _json["invitations"]
-          .map((value) => new Invitation.fromJson(value))
+      invitations = (_json["invitations"] as core.List)
+          .map<Invitation>((value) => new Invitation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -6038,8 +6041,9 @@ class ListStudentSubmissionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("studentSubmissions")) {
-      studentSubmissions = _json["studentSubmissions"]
-          .map((value) => new StudentSubmission.fromJson(value))
+      studentSubmissions = (_json["studentSubmissions"] as core.List)
+          .map<StudentSubmission>(
+              (value) => new StudentSubmission.fromJson(value))
           .toList();
     }
   }
@@ -6074,8 +6078,8 @@ class ListStudentsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("students")) {
-      students = _json["students"]
-          .map((value) => new Student.fromJson(value))
+      students = (_json["students"] as core.List)
+          .map<Student>((value) => new Student.fromJson(value))
           .toList();
     }
   }
@@ -6109,8 +6113,8 @@ class ListTeachersResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("teachers")) {
-      teachers = _json["teachers"]
-          .map((value) => new Teacher.fromJson(value))
+      teachers = (_json["teachers"] as core.List)
+          .map<Teacher>((value) => new Teacher.fromJson(value))
           .toList();
     }
   }
@@ -6144,7 +6148,9 @@ class ListTopicResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("topic")) {
-      topic = _json["topic"].map((value) => new Topic.fromJson(value)).toList();
+      topic = (_json["topic"] as core.List)
+          .map<Topic>((value) => new Topic.fromJson(value))
+          .toList();
     }
   }
 
@@ -6268,8 +6274,8 @@ class ModifyAttachmentsRequest {
 
   ModifyAttachmentsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("addAttachments")) {
-      addAttachments = _json["addAttachments"]
-          .map((value) => new Attachment.fromJson(value))
+      addAttachments = (_json["addAttachments"] as core.List)
+          .map<Attachment>((value) => new Attachment.fromJson(value))
           .toList();
     }
   }
@@ -6342,10 +6348,11 @@ class ModifyIndividualStudentsOptions {
 
   ModifyIndividualStudentsOptions.fromJson(core.Map _json) {
     if (_json.containsKey("addStudentIds")) {
-      addStudentIds = _json["addStudentIds"];
+      addStudentIds = (_json["addStudentIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("removeStudentIds")) {
-      removeStudentIds = _json["removeStudentIds"];
+      removeStudentIds =
+          (_json["removeStudentIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -6371,7 +6378,7 @@ class MultipleChoiceQuestion {
 
   MultipleChoiceQuestion.fromJson(core.Map _json) {
     if (_json.containsKey("choices")) {
-      choices = _json["choices"];
+      choices = (_json["choices"] as core.List).cast<core.String>();
     }
   }
 
@@ -6885,8 +6892,9 @@ class StudentSubmission {
       state = _json["state"];
     }
     if (_json.containsKey("submissionHistory")) {
-      submissionHistory = _json["submissionHistory"]
-          .map((value) => new SubmissionHistory.fromJson(value))
+      submissionHistory = (_json["submissionHistory"] as core.List)
+          .map<SubmissionHistory>(
+              (value) => new SubmissionHistory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("updateTime")) {
@@ -7215,8 +7223,9 @@ class UserProfile {
       name = new Name.fromJson(_json["name"]);
     }
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"]
-          .map((value) => new GlobalPermission.fromJson(value))
+      permissions = (_json["permissions"] as core.List)
+          .map<GlobalPermission>(
+              (value) => new GlobalPermission.fromJson(value))
           .toList();
     }
     if (_json.containsKey("photoUrl")) {

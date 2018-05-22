@@ -65,14 +65,14 @@ class ApplicationDetailServiceResourceApi {
   async.Future<GetApkDetailsResponse> getApkDetails(FileReference request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -135,7 +135,7 @@ class ProjectsTestMatricesResourceApi {
       core.String projectId, core.String testMatrixId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -203,14 +203,14 @@ class ProjectsTestMatricesResourceApi {
   async.Future<TestMatrix> create(TestMatrix request, core.String projectId,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -262,7 +262,7 @@ class ProjectsTestMatricesResourceApi {
   async.Future<TestMatrix> get(core.String projectId, core.String testMatrixId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -333,7 +333,7 @@ class TestEnvironmentCatalogResourceApi {
   async.Future<TestEnvironmentCatalog> get(core.String environmentType,
       {core.String projectId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -461,8 +461,8 @@ class AndroidDeviceCatalog {
 
   AndroidDeviceCatalog.fromJson(core.Map _json) {
     if (_json.containsKey("models")) {
-      models = _json["models"]
-          .map((value) => new AndroidModel.fromJson(value))
+      models = (_json["models"] as core.List)
+          .map<AndroidModel>((value) => new AndroidModel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("runtimeConfiguration")) {
@@ -470,8 +470,8 @@ class AndroidDeviceCatalog {
           _json["runtimeConfiguration"]);
     }
     if (_json.containsKey("versions")) {
-      versions = _json["versions"]
-          .map((value) => new AndroidVersion.fromJson(value))
+      versions = (_json["versions"] as core.List)
+          .map<AndroidVersion>((value) => new AndroidVersion.fromJson(value))
           .toList();
     }
   }
@@ -502,8 +502,8 @@ class AndroidDeviceList {
 
   AndroidDeviceList.fromJson(core.Map _json) {
     if (_json.containsKey("androidDevices")) {
-      androidDevices = _json["androidDevices"]
-          .map((value) => new AndroidDevice.fromJson(value))
+      androidDevices = (_json["androidDevices"] as core.List)
+          .map<AndroidDevice>((value) => new AndroidDevice.fromJson(value))
           .toList();
     }
   }
@@ -607,7 +607,7 @@ class AndroidInstrumentationTest {
       testRunnerClass = _json["testRunnerClass"];
     }
     if (_json.containsKey("testTargets")) {
-      testTargets = _json["testTargets"];
+      testTargets = (_json["testTargets"] as core.List).cast<core.String>();
     }
   }
 
@@ -670,16 +670,18 @@ class AndroidMatrix {
 
   AndroidMatrix.fromJson(core.Map _json) {
     if (_json.containsKey("androidModelIds")) {
-      androidModelIds = _json["androidModelIds"];
+      androidModelIds =
+          (_json["androidModelIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("androidVersionIds")) {
-      androidVersionIds = _json["androidVersionIds"];
+      androidVersionIds =
+          (_json["androidVersionIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("locales")) {
-      locales = _json["locales"];
+      locales = (_json["locales"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("orientations")) {
-      orientations = _json["orientations"];
+      orientations = (_json["orientations"] as core.List).cast<core.String>();
     }
   }
 
@@ -799,13 +801,14 @@ class AndroidModel {
       screenY = _json["screenY"];
     }
     if (_json.containsKey("supportedAbis")) {
-      supportedAbis = _json["supportedAbis"];
+      supportedAbis = (_json["supportedAbis"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("supportedVersionIds")) {
-      supportedVersionIds = _json["supportedVersionIds"];
+      supportedVersionIds =
+          (_json["supportedVersionIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
   }
 
@@ -910,13 +913,14 @@ class AndroidRoboTest {
       maxSteps = _json["maxSteps"];
     }
     if (_json.containsKey("roboDirectives")) {
-      roboDirectives = _json["roboDirectives"]
-          .map((value) => new RoboDirective.fromJson(value))
+      roboDirectives = (_json["roboDirectives"] as core.List)
+          .map<RoboDirective>((value) => new RoboDirective.fromJson(value))
           .toList();
     }
     if (_json.containsKey("startingIntents")) {
-      startingIntents = _json["startingIntents"]
-          .map((value) => new RoboStartingIntent.fromJson(value))
+      startingIntents = (_json["startingIntents"] as core.List)
+          .map<RoboStartingIntent>(
+              (value) => new RoboStartingIntent.fromJson(value))
           .toList();
     }
   }
@@ -965,12 +969,13 @@ class AndroidRuntimeConfiguration {
 
   AndroidRuntimeConfiguration.fromJson(core.Map _json) {
     if (_json.containsKey("locales")) {
-      locales =
-          _json["locales"].map((value) => new Locale.fromJson(value)).toList();
+      locales = (_json["locales"] as core.List)
+          .map<Locale>((value) => new Locale.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("orientations")) {
-      orientations = _json["orientations"]
-          .map((value) => new Orientation.fromJson(value))
+      orientations = (_json["orientations"] as core.List)
+          .map<Orientation>((value) => new Orientation.fromJson(value))
           .toList();
     }
   }
@@ -1026,10 +1031,11 @@ class AndroidTestLoop {
       appPackageId = _json["appPackageId"];
     }
     if (_json.containsKey("scenarioLabels")) {
-      scenarioLabels = _json["scenarioLabels"];
+      scenarioLabels =
+          (_json["scenarioLabels"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("scenarios")) {
-      scenarios = _json["scenarios"];
+      scenarios = (_json["scenarios"] as core.List).cast<core.int>();
     }
   }
 
@@ -1105,7 +1111,7 @@ class AndroidVersion {
       releaseDate = new Date.fromJson(_json["releaseDate"]);
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("versionString")) {
       versionString = _json["versionString"];
@@ -1187,8 +1193,8 @@ class ApkManifest {
       applicationLabel = _json["applicationLabel"];
     }
     if (_json.containsKey("intentFilters")) {
-      intentFilters = _json["intentFilters"]
-          .map((value) => new IntentFilter.fromJson(value))
+      intentFilters = (_json["intentFilters"] as core.List)
+          .map<IntentFilter>((value) => new IntentFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("maxSdkVersion")) {
@@ -1307,8 +1313,9 @@ class ClientInfo {
 
   ClientInfo.fromJson(core.Map _json) {
     if (_json.containsKey("clientInfoDetails")) {
-      clientInfoDetails = _json["clientInfoDetails"]
-          .map((value) => new ClientInfoDetail.fromJson(value))
+      clientInfoDetails = (_json["clientInfoDetails"] as core.List)
+          .map<ClientInfoDetail>(
+              (value) => new ClientInfoDetail.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
@@ -1673,10 +1680,10 @@ class IntentFilter {
 
   IntentFilter.fromJson(core.Map _json) {
     if (_json.containsKey("actionNames")) {
-      actionNames = _json["actionNames"];
+      actionNames = (_json["actionNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("categoryNames")) {
-      categoryNames = _json["categoryNames"];
+      categoryNames = (_json["categoryNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("mimeType")) {
       mimeType = _json["mimeType"];
@@ -1747,7 +1754,7 @@ class Locale {
       region = _json["region"];
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
   }
 
@@ -1818,8 +1825,9 @@ class NetworkConfigurationCatalog {
 
   NetworkConfigurationCatalog.fromJson(core.Map _json) {
     if (_json.containsKey("configurations")) {
-      configurations = _json["configurations"]
-          .map((value) => new NetworkConfiguration.fromJson(value))
+      configurations = (_json["configurations"] as core.List)
+          .map<NetworkConfiguration>(
+              (value) => new NetworkConfiguration.fromJson(value))
           .toList();
     }
   }
@@ -1900,7 +1908,7 @@ class Orientation {
       name = _json["name"];
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
   }
 
@@ -2080,7 +2088,7 @@ class StartActivityIntent {
       action = _json["action"];
     }
     if (_json.containsKey("categories")) {
-      categories = _json["categories"];
+      categories = (_json["categories"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("uri")) {
       uri = _json["uri"];
@@ -2125,7 +2133,8 @@ class TestDetails {
       errorMessage = _json["errorMessage"];
     }
     if (_json.containsKey("progressMessages")) {
-      progressMessages = _json["progressMessages"];
+      progressMessages =
+          (_json["progressMessages"] as core.List).cast<core.String>();
     }
   }
 
@@ -2486,8 +2495,8 @@ class TestMatrix {
       state = _json["state"];
     }
     if (_json.containsKey("testExecutions")) {
-      testExecutions = _json["testExecutions"]
-          .map((value) => new TestExecution.fromJson(value))
+      testExecutions = (_json["testExecutions"] as core.List)
+          .map<TestExecution>((value) => new TestExecution.fromJson(value))
           .toList();
     }
     if (_json.containsKey("testMatrixId")) {
@@ -2578,16 +2587,18 @@ class TestSetup {
       account = new Account.fromJson(_json["account"]);
     }
     if (_json.containsKey("directoriesToPull")) {
-      directoriesToPull = _json["directoriesToPull"];
+      directoriesToPull =
+          (_json["directoriesToPull"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("environmentVariables")) {
-      environmentVariables = _json["environmentVariables"]
-          .map((value) => new EnvironmentVariable.fromJson(value))
+      environmentVariables = (_json["environmentVariables"] as core.List)
+          .map<EnvironmentVariable>(
+              (value) => new EnvironmentVariable.fromJson(value))
           .toList();
     }
     if (_json.containsKey("filesToPush")) {
-      filesToPush = _json["filesToPush"]
-          .map((value) => new DeviceFile.fromJson(value))
+      filesToPush = (_json["filesToPush"] as core.List)
+          .map<DeviceFile>((value) => new DeviceFile.fromJson(value))
           .toList();
     }
     if (_json.containsKey("networkProfile")) {

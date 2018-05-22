@@ -68,14 +68,14 @@ class OperationsResourceApi {
   async.Future<Empty> cancel(CancelOperationRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -116,7 +116,7 @@ class OperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -179,7 +179,7 @@ class OperationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -253,14 +253,14 @@ class ProjectsBuildsResourceApi {
       CancelBuildRequest request, core.String projectId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -312,14 +312,14 @@ class ProjectsBuildsResourceApi {
   async.Future<Operation> create(Build request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -365,7 +365,7 @@ class ProjectsBuildsResourceApi {
   async.Future<Build> get(core.String projectId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -426,7 +426,7 @@ class ProjectsBuildsResourceApi {
       core.String filter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -513,14 +513,14 @@ class ProjectsBuildsResourceApi {
       RetryBuildRequest request, core.String projectId, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -577,14 +577,14 @@ class ProjectsTriggersResourceApi {
   async.Future<BuildTrigger> create(BuildTrigger request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -629,7 +629,7 @@ class ProjectsTriggersResourceApi {
   async.Future<Empty> delete(core.String projectId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -682,7 +682,7 @@ class ProjectsTriggersResourceApi {
   async.Future<BuildTrigger> get(core.String projectId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -733,7 +733,7 @@ class ProjectsTriggersResourceApi {
   async.Future<ListBuildTriggersResponse> list(core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -786,14 +786,14 @@ class ProjectsTriggersResourceApi {
       BuildTrigger request, core.String projectId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -843,14 +843,14 @@ class ProjectsTriggersResourceApi {
       RepoSource request, core.String projectId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -1023,7 +1023,7 @@ class Build {
       id = _json["id"];
     }
     if (_json.containsKey("images")) {
-      images = _json["images"];
+      images = (_json["images"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("logUrl")) {
       logUrl = _json["logUrl"];
@@ -1041,8 +1041,9 @@ class Build {
       results = new Results.fromJson(_json["results"]);
     }
     if (_json.containsKey("secrets")) {
-      secrets =
-          _json["secrets"].map((value) => new Secret.fromJson(value)).toList();
+      secrets = (_json["secrets"] as core.List)
+          .map<Secret>((value) => new Secret.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("source")) {
       source = new Source.fromJson(_json["source"]);
@@ -1061,23 +1062,24 @@ class Build {
       statusDetail = _json["statusDetail"];
     }
     if (_json.containsKey("steps")) {
-      steps =
-          _json["steps"].map((value) => new BuildStep.fromJson(value)).toList();
+      steps = (_json["steps"] as core.List)
+          .map<BuildStep>((value) => new BuildStep.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("substitutions")) {
-      substitutions = _json["substitutions"];
+      substitutions =
+          (_json["substitutions"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("timeout")) {
       timeout = _json["timeout"];
     }
     if (_json.containsKey("timing")) {
-      timing = commons.mapMap<core.Map<core.String, core.Object>, TimeSpan>(
-          _json["timing"],
-          (core.Map<core.String, core.Object> item) =>
-              new TimeSpan.fromJson(item));
+      timing = commons.mapMap<core.Map, TimeSpan>(
+          _json["timing"].cast<core.String, core.Map>(),
+          (core.Map item) => new TimeSpan.fromJson(item));
     }
   }
 
@@ -1239,7 +1241,8 @@ class BuildOptions {
       requestedVerifyOption = _json["requestedVerifyOption"];
     }
     if (_json.containsKey("sourceProvenanceHash")) {
-      sourceProvenanceHash = _json["sourceProvenanceHash"];
+      sourceProvenanceHash =
+          (_json["sourceProvenanceHash"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("substitutionOption")) {
       substitutionOption = _json["substitutionOption"];
@@ -1359,7 +1362,7 @@ class BuildStep {
 
   BuildStep.fromJson(core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"];
+      args = (_json["args"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("dir")) {
       dir = _json["dir"];
@@ -1368,7 +1371,7 @@ class BuildStep {
       entrypoint = _json["entrypoint"];
     }
     if (_json.containsKey("env")) {
-      env = _json["env"];
+      env = (_json["env"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -1377,17 +1380,18 @@ class BuildStep {
       name = _json["name"];
     }
     if (_json.containsKey("secretEnv")) {
-      secretEnv = _json["secretEnv"];
+      secretEnv = (_json["secretEnv"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("timing")) {
       timing = new TimeSpan.fromJson(_json["timing"]);
     }
     if (_json.containsKey("volumes")) {
-      volumes =
-          _json["volumes"].map((value) => new Volume.fromJson(value)).toList();
+      volumes = (_json["volumes"] as core.List)
+          .map<Volume>((value) => new Volume.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("waitFor")) {
-      waitFor = _json["waitFor"];
+      waitFor = (_json["waitFor"] as core.List).cast<core.String>();
     }
   }
 
@@ -1486,7 +1490,8 @@ class BuildTrigger {
       id = _json["id"];
     }
     if (_json.containsKey("substitutions")) {
-      substitutions = _json["substitutions"];
+      substitutions =
+          (_json["substitutions"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("triggerTemplate")) {
       triggerTemplate = new RepoSource.fromJson(_json["triggerTemplate"]);
@@ -1624,8 +1629,9 @@ class FileHashes {
 
   FileHashes.fromJson(core.Map _json) {
     if (_json.containsKey("fileHash")) {
-      fileHash =
-          _json["fileHash"].map((value) => new Hash.fromJson(value)).toList();
+      fileHash = (_json["fileHash"] as core.List)
+          .map<Hash>((value) => new Hash.fromJson(value))
+          .toList();
     }
   }
 
@@ -1650,12 +1656,12 @@ class Hash {
   /// The hash value.
   core.String value;
   core.List<core.int> get valueAsBytes {
-    return convert.BASE64.decode(value);
+    return convert.base64.decode(value);
   }
 
   void set valueAsBytes(core.List<core.int> _bytes) {
     value =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   Hash();
@@ -1691,8 +1697,8 @@ class ListBuildTriggersResponse {
 
   ListBuildTriggersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("triggers")) {
-      triggers = _json["triggers"]
-          .map((value) => new BuildTrigger.fromJson(value))
+      triggers = (_json["triggers"] as core.List)
+          .map<BuildTrigger>((value) => new BuildTrigger.fromJson(value))
           .toList();
     }
   }
@@ -1719,8 +1725,9 @@ class ListBuildsResponse {
 
   ListBuildsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("builds")) {
-      builds =
-          _json["builds"].map((value) => new Build.fromJson(value)).toList();
+      builds = (_json["builds"] as core.List)
+          .map<Build>((value) => new Build.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("nextPageToken")) {
       nextPageToken = _json["nextPageToken"];
@@ -1755,8 +1762,8 @@ class ListOperationsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
   }
@@ -1824,13 +1831,15 @@ class Operation {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("response")) {
-      response = _json["response"];
+      response =
+          (_json["response"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -1942,11 +1951,12 @@ class Results {
 
   Results.fromJson(core.Map _json) {
     if (_json.containsKey("buildStepImages")) {
-      buildStepImages = _json["buildStepImages"];
+      buildStepImages =
+          (_json["buildStepImages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("images")) {
-      images = _json["images"]
-          .map((value) => new BuiltImage.fromJson(value))
+      images = (_json["images"] as core.List)
+          .map<BuiltImage>((value) => new BuiltImage.fromJson(value))
           .toList();
     }
   }
@@ -1999,7 +2009,8 @@ class Secret {
       kmsKeyName = _json["kmsKeyName"];
     }
     if (_json.containsKey("secretEnv")) {
-      secretEnv = _json["secretEnv"];
+      secretEnv =
+          (_json["secretEnv"] as core.Map).cast<core.String, core.String>();
     }
   }
 
@@ -2077,11 +2088,9 @@ class SourceProvenance {
 
   SourceProvenance.fromJson(core.Map _json) {
     if (_json.containsKey("fileHashes")) {
-      fileHashes =
-          commons.mapMap<core.Map<core.String, core.Object>, FileHashes>(
-              _json["fileHashes"],
-              (core.Map<core.String, core.Object> item) =>
-                  new FileHashes.fromJson(item));
+      fileHashes = commons.mapMap<core.Map, FileHashes>(
+          _json["fileHashes"].cast<core.String, core.Map>(),
+          (core.Map item) => new FileHashes.fromJson(item));
     }
     if (_json.containsKey("resolvedRepoSource")) {
       resolvedRepoSource = new RepoSource.fromJson(_json["resolvedRepoSource"]);
@@ -2189,7 +2198,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];

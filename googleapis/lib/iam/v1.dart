@@ -66,14 +66,14 @@ class IamPoliciesResourceApi {
       QueryAuditableServicesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -132,14 +132,14 @@ class OrganizationsRolesResourceApi {
   async.Future<Role> create(CreateRoleRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -192,7 +192,7 @@ class OrganizationsRolesResourceApi {
   async.Future<Role> delete(core.String name,
       {core.String etag, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -241,7 +241,7 @@ class OrganizationsRolesResourceApi {
   /// this method will complete with the same error.
   async.Future<Role> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -306,7 +306,7 @@ class OrganizationsRolesResourceApi {
       core.String view,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -369,14 +369,14 @@ class OrganizationsRolesResourceApi {
   async.Future<Role> patch(Role request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -423,14 +423,14 @@ class OrganizationsRolesResourceApi {
   async.Future<Role> undelete(UndeleteRoleRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -478,14 +478,14 @@ class PermissionsResourceApi {
       QueryTestablePermissionsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -545,14 +545,14 @@ class ProjectsRolesResourceApi {
   async.Future<Role> create(CreateRoleRequest request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -605,7 +605,7 @@ class ProjectsRolesResourceApi {
   async.Future<Role> delete(core.String name,
       {core.String etag, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -654,7 +654,7 @@ class ProjectsRolesResourceApi {
   /// this method will complete with the same error.
   async.Future<Role> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -719,7 +719,7 @@ class ProjectsRolesResourceApi {
       core.String view,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -782,14 +782,14 @@ class ProjectsRolesResourceApi {
   async.Future<Role> patch(Role request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -836,14 +836,14 @@ class ProjectsRolesResourceApi {
   async.Future<Role> undelete(UndeleteRoleRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -899,14 +899,14 @@ class ProjectsServiceAccountsResourceApi {
       CreateServiceAccountRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -951,7 +951,7 @@ class ProjectsServiceAccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -998,7 +998,7 @@ class ProjectsServiceAccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<ServiceAccount> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1045,7 +1045,7 @@ class ProjectsServiceAccountsResourceApi {
   async.Future<Policy> getIamPolicy(core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1102,7 +1102,7 @@ class ProjectsServiceAccountsResourceApi {
   async.Future<ListServiceAccountsResponse> list(core.String name,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1161,14 +1161,14 @@ class ProjectsServiceAccountsResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1217,14 +1217,14 @@ class ProjectsServiceAccountsResourceApi {
       SignBlobRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1275,14 +1275,14 @@ class ProjectsServiceAccountsResourceApi {
       SignJwtRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1328,14 +1328,14 @@ class ProjectsServiceAccountsResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1392,14 +1392,14 @@ class ProjectsServiceAccountsResourceApi {
   async.Future<ServiceAccount> update(ServiceAccount request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1454,14 +1454,14 @@ class ProjectsServiceAccountsKeysResourceApi {
       CreateServiceAccountKeyRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1506,7 +1506,7 @@ class ProjectsServiceAccountsKeysResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1565,7 +1565,7 @@ class ProjectsServiceAccountsKeysResourceApi {
   async.Future<ServiceAccountKey> get(core.String name,
       {core.String publicKeyType, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1622,7 +1622,7 @@ class ProjectsServiceAccountsKeysResourceApi {
   async.Future<ListServiceAccountKeysResponse> list(core.String name,
       {core.List<core.String> keyTypes, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1678,7 +1678,7 @@ class RolesResourceApi {
   /// this method will complete with the same error.
   async.Future<Role> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1743,7 +1743,7 @@ class RolesResourceApi {
       core.String parent,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1802,14 +1802,14 @@ class RolesResourceApi {
       QueryGrantableRolesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1893,8 +1893,8 @@ class AuditConfig {
 
   AuditConfig.fromJson(core.Map _json) {
     if (_json.containsKey("auditLogConfigs")) {
-      auditLogConfigs = _json["auditLogConfigs"]
-          .map((value) => new AuditLogConfig.fromJson(value))
+      auditLogConfigs = (_json["auditLogConfigs"] as core.List)
+          .map<AuditLogConfig>((value) => new AuditLogConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("service")) {
@@ -1978,7 +1978,8 @@ class AuditLogConfig {
 
   AuditLogConfig.fromJson(core.Map _json) {
     if (_json.containsKey("exemptedMembers")) {
-      exemptedMembers = _json["exemptedMembers"];
+      exemptedMembers =
+          (_json["exemptedMembers"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("logType")) {
       logType = _json["logType"];
@@ -2057,7 +2058,7 @@ class Binding {
 
   Binding.fromJson(core.Map _json) {
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -2281,7 +2282,9 @@ class ListRolesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("roles")) {
-      roles = _json["roles"].map((value) => new Role.fromJson(value)).toList();
+      roles = (_json["roles"] as core.List)
+          .map<Role>((value) => new Role.fromJson(value))
+          .toList();
     }
   }
 
@@ -2307,8 +2310,9 @@ class ListServiceAccountKeysResponse {
 
   ListServiceAccountKeysResponse.fromJson(core.Map _json) {
     if (_json.containsKey("keys")) {
-      keys = _json["keys"]
-          .map((value) => new ServiceAccountKey.fromJson(value))
+      keys = (_json["keys"] as core.List)
+          .map<ServiceAccountKey>(
+              (value) => new ServiceAccountKey.fromJson(value))
           .toList();
     }
   }
@@ -2337,8 +2341,8 @@ class ListServiceAccountsResponse {
 
   ListServiceAccountsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("accounts")) {
-      accounts = _json["accounts"]
-          .map((value) => new ServiceAccount.fromJson(value))
+      accounts = (_json["accounts"] as core.List)
+          .map<ServiceAccount>((value) => new ServiceAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -2500,12 +2504,12 @@ class Policy {
   /// policy is overwritten blindly.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Deprecated.
@@ -2515,13 +2519,13 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("auditConfigs")) {
-      auditConfigs = _json["auditConfigs"]
-          .map((value) => new AuditConfig.fromJson(value))
+      auditConfigs = (_json["auditConfigs"] as core.List)
+          .map<AuditConfig>((value) => new AuditConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new Binding.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<Binding>((value) => new Binding.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -2561,8 +2565,8 @@ class PolicyDelta {
 
   PolicyDelta.fromJson(core.Map _json) {
     if (_json.containsKey("bindingDeltas")) {
-      bindingDeltas = _json["bindingDeltas"]
-          .map((value) => new BindingDelta.fromJson(value))
+      bindingDeltas = (_json["bindingDeltas"] as core.List)
+          .map<BindingDelta>((value) => new BindingDelta.fromJson(value))
           .toList();
     }
   }
@@ -2615,8 +2619,9 @@ class QueryAuditableServicesResponse {
 
   QueryAuditableServicesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("services")) {
-      services = _json["services"]
-          .map((value) => new AuditableService.fromJson(value))
+      services = (_json["services"] as core.List)
+          .map<AuditableService>(
+              (value) => new AuditableService.fromJson(value))
           .toList();
     }
   }
@@ -2707,7 +2712,9 @@ class QueryGrantableRolesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("roles")) {
-      roles = _json["roles"].map((value) => new Role.fromJson(value)).toList();
+      roles = (_json["roles"] as core.List)
+          .map<Role>((value) => new Role.fromJson(value))
+          .toList();
     }
   }
 
@@ -2787,8 +2794,8 @@ class QueryTestablePermissionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"]
-          .map((value) => new Permission.fromJson(value))
+      permissions = (_json["permissions"] as core.List)
+          .map<Permission>((value) => new Permission.fromJson(value))
           .toList();
     }
   }
@@ -2819,12 +2826,12 @@ class Role {
   /// Used to perform a consistent read-modify-write.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The names of the permissions this role grants when bound in an IAM policy.
@@ -2869,7 +2876,8 @@ class Role {
       etag = _json["etag"];
     }
     if (_json.containsKey("includedPermissions")) {
-      includedPermissions = _json["includedPermissions"];
+      includedPermissions =
+          (_json["includedPermissions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -2937,12 +2945,12 @@ class ServiceAccount {
   /// Used to perform a consistent read-modify-write.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The resource name of the service account in the following format:
@@ -3058,12 +3066,12 @@ class ServiceAccountKey {
   /// auth activate-service-account</a>.
   core.String privateKeyData;
   core.List<core.int> get privateKeyDataAsBytes {
-    return convert.BASE64.decode(privateKeyData);
+    return convert.base64.decode(privateKeyData);
   }
 
   void set privateKeyDataAsBytes(core.List<core.int> _bytes) {
     privateKeyData =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The output format for the private key.
@@ -3084,12 +3092,12 @@ class ServiceAccountKey {
   /// The public key data. Only provided in `GetServiceAccountKey` responses.
   core.String publicKeyData;
   core.List<core.int> get publicKeyDataAsBytes {
-    return convert.BASE64.decode(publicKeyData);
+    return convert.base64.decode(publicKeyData);
   }
 
   void set publicKeyDataAsBytes(core.List<core.int> _bytes) {
     publicKeyData =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The key can be used after this timestamp.
@@ -3197,12 +3205,12 @@ class SignBlobRequest {
   /// The bytes to sign.
   core.String bytesToSign;
   core.List<core.int> get bytesToSignAsBytes {
-    return convert.BASE64.decode(bytesToSign);
+    return convert.base64.decode(bytesToSign);
   }
 
   void set bytesToSignAsBytes(core.List<core.int> _bytes) {
     bytesToSign =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   SignBlobRequest();
@@ -3231,12 +3239,12 @@ class SignBlobResponse {
   /// The signed blob.
   core.String signature;
   core.List<core.int> get signatureAsBytes {
-    return convert.BASE64.decode(signature);
+    return convert.base64.decode(signature);
   }
 
   void set signatureAsBytes(core.List<core.int> _bytes) {
     signature =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   SignBlobResponse();
@@ -3330,7 +3338,7 @@ class TestIamPermissionsRequest {
 
   TestIamPermissionsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -3354,7 +3362,7 @@ class TestIamPermissionsResponse {
 
   TestIamPermissionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -3373,12 +3381,12 @@ class UndeleteRoleRequest {
   /// Used to perform a consistent read-modify-write.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   UndeleteRoleRequest();

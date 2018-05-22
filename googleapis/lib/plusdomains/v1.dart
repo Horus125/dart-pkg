@@ -103,7 +103,7 @@ class ActivitiesResourceApi {
   /// this method will complete with the same error.
   async.Future<Activity> get(core.String activityId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -153,14 +153,14 @@ class ActivitiesResourceApi {
   async.Future<Activity> insert(Activity request, core.String userId,
       {core.bool preview, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -218,7 +218,7 @@ class ActivitiesResourceApi {
   async.Future<ActivityFeed> list(core.String userId, core.String collection,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -289,7 +289,7 @@ class AudiencesResourceApi {
   async.Future<AudiencesFeed> list(core.String userId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -353,7 +353,7 @@ class CirclesResourceApi {
       core.List<core.String> userId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -401,7 +401,7 @@ class CirclesResourceApi {
   /// this method will complete with the same error.
   async.Future<Circle> get(core.String circleId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -447,14 +447,14 @@ class CirclesResourceApi {
   async.Future<Circle> insert(Circle request, core.String userId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -503,7 +503,7 @@ class CirclesResourceApi {
   async.Future<CircleFeed> list(core.String userId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -554,14 +554,14 @@ class CirclesResourceApi {
   async.Future<Circle> patch(Circle request, core.String circleId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (circleId == null) {
       throw new core.ArgumentError("Parameter circleId is required.");
@@ -597,7 +597,7 @@ class CirclesResourceApi {
   /// this method will complete with the same error.
   async.Future remove(core.String circleId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -648,7 +648,7 @@ class CirclesResourceApi {
       core.List<core.String> userId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -701,14 +701,14 @@ class CirclesResourceApi {
   async.Future<Circle> update(Circle request, core.String circleId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (circleId == null) {
       throw new core.ArgumentError("Parameter circleId is required.");
@@ -752,7 +752,7 @@ class CommentsResourceApi {
   /// this method will complete with the same error.
   async.Future<Comment> get(core.String commentId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -797,14 +797,14 @@ class CommentsResourceApi {
   async.Future<Comment> insert(Comment request, core.String activityId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (activityId == null) {
       throw new core.ArgumentError("Parameter activityId is required.");
@@ -862,7 +862,7 @@ class CommentsResourceApi {
       core.String sortOrder,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -940,14 +940,14 @@ class MediaResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userId == null) {
       throw new core.ArgumentError("Parameter userId is required.");
@@ -1013,7 +1013,7 @@ class PeopleResourceApi {
   /// this method will complete with the same error.
   async.Future<Person> get(core.String userId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1079,7 +1079,7 @@ class PeopleResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1154,7 +1154,7 @@ class PeopleResourceApi {
       core.String activityId, core.String collection,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1218,7 +1218,7 @@ class PeopleResourceApi {
   async.Future<PeopleFeed> listByCircle(core.String circleId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1273,8 +1273,9 @@ class Acl {
       domainRestricted = _json["domainRestricted"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new PlusDomainsAclentryResource.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<PlusDomainsAclentryResource>(
+              (value) => new PlusDomainsAclentryResource.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1988,14 +1989,14 @@ class ActivityObjectAttachments {
       objectType = _json["objectType"];
     }
     if (_json.containsKey("previewThumbnails")) {
-      previewThumbnails = _json["previewThumbnails"]
-          .map((value) =>
+      previewThumbnails = (_json["previewThumbnails"] as core.List)
+          .map<ActivityObjectAttachmentsPreviewThumbnails>((value) =>
               new ActivityObjectAttachmentsPreviewThumbnails.fromJson(value))
           .toList();
     }
     if (_json.containsKey("thumbnails")) {
-      thumbnails = _json["thumbnails"]
-          .map((value) =>
+      thumbnails = (_json["thumbnails"] as core.List)
+          .map<ActivityObjectAttachmentsThumbnails>((value) =>
               new ActivityObjectAttachmentsThumbnails.fromJson(value))
           .toList();
     }
@@ -2248,8 +2249,9 @@ class ActivityObject {
       actor = new ActivityObjectActor.fromJson(_json["actor"]);
     }
     if (_json.containsKey("attachments")) {
-      attachments = _json["attachments"]
-          .map((value) => new ActivityObjectAttachments.fromJson(value))
+      attachments = (_json["attachments"] as core.List)
+          .map<ActivityObjectAttachments>(
+              (value) => new ActivityObjectAttachments.fromJson(value))
           .toList();
     }
     if (_json.containsKey("content")) {
@@ -2591,8 +2593,9 @@ class ActivityFeed {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Activity.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Activity>((value) => new Activity.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2739,8 +2742,9 @@ class AudiencesFeed {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Audience.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Audience>((value) => new Audience.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2910,8 +2914,9 @@ class CircleFeed {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Circle.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Circle>((value) => new Circle.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3280,8 +3285,9 @@ class Comment {
       id = _json["id"];
     }
     if (_json.containsKey("inReplyTo")) {
-      inReplyTo = _json["inReplyTo"]
-          .map((value) => new CommentInReplyTo.fromJson(value))
+      inReplyTo = (_json["inReplyTo"] as core.List)
+          .map<CommentInReplyTo>(
+              (value) => new CommentInReplyTo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -3386,8 +3392,9 @@ class CommentFeed {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Comment.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Comment>((value) => new Comment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3637,8 +3644,8 @@ class Media {
       sizeBytes = _json["sizeBytes"];
     }
     if (_json.containsKey("streams")) {
-      streams = _json["streams"]
-          .map((value) => new Videostream.fromJson(value))
+      streams = (_json["streams"] as core.List)
+          .map<Videostream>((value) => new Videostream.fromJson(value))
           .toList();
     }
     if (_json.containsKey("summary")) {
@@ -3758,8 +3765,9 @@ class PeopleFeed {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Person.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Person>((value) => new Person.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -4375,8 +4383,8 @@ class Person {
       domain = _json["domain"];
     }
     if (_json.containsKey("emails")) {
-      emails = _json["emails"]
-          .map((value) => new PersonEmails.fromJson(value))
+      emails = (_json["emails"] as core.List)
+          .map<PersonEmails>((value) => new PersonEmails.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -4410,13 +4418,15 @@ class Person {
       occupation = _json["occupation"];
     }
     if (_json.containsKey("organizations")) {
-      organizations = _json["organizations"]
-          .map((value) => new PersonOrganizations.fromJson(value))
+      organizations = (_json["organizations"] as core.List)
+          .map<PersonOrganizations>(
+              (value) => new PersonOrganizations.fromJson(value))
           .toList();
     }
     if (_json.containsKey("placesLived")) {
-      placesLived = _json["placesLived"]
-          .map((value) => new PersonPlacesLived.fromJson(value))
+      placesLived = (_json["placesLived"] as core.List)
+          .map<PersonPlacesLived>(
+              (value) => new PersonPlacesLived.fromJson(value))
           .toList();
     }
     if (_json.containsKey("plusOneCount")) {
@@ -4435,8 +4445,9 @@ class Person {
       url = _json["url"];
     }
     if (_json.containsKey("urls")) {
-      urls =
-          _json["urls"].map((value) => new PersonUrls.fromJson(value)).toList();
+      urls = (_json["urls"] as core.List)
+          .map<PersonUrls>((value) => new PersonUrls.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("verified")) {
       verified = _json["verified"];

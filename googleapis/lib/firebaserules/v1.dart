@@ -100,14 +100,14 @@ class ProjectsResourceApi {
       TestRulesetRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -179,14 +179,14 @@ class ProjectsReleasesResourceApi {
   async.Future<Release> create(Release request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -227,7 +227,7 @@ class ProjectsReleasesResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -272,7 +272,7 @@ class ProjectsReleasesResourceApi {
   /// this method will complete with the same error.
   async.Future<Release> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -326,7 +326,7 @@ class ProjectsReleasesResourceApi {
   async.Future<GetReleaseExecutableResponse> getExecutable(core.String name,
       {core.String executableVersion, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -418,7 +418,7 @@ class ProjectsReleasesResourceApi {
       core.String filter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -479,14 +479,14 @@ class ProjectsReleasesResourceApi {
   async.Future<Release> patch(UpdateReleaseRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -543,14 +543,14 @@ class ProjectsRulesetsResourceApi {
   async.Future<Ruleset> create(Ruleset request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -593,7 +593,7 @@ class ProjectsRulesetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -638,7 +638,7 @@ class ProjectsRulesetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Ruleset> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -709,7 +709,7 @@ class ProjectsRulesetsResourceApi {
       core.String filter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -807,12 +807,12 @@ class File {
   /// Fingerprint (e.g. github sha) associated with the `File`.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// File name.
@@ -864,7 +864,7 @@ class FunctionCall {
 
   FunctionCall.fromJson(core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"];
+      args = (_json["args"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("function")) {
       function = _json["function"];
@@ -912,7 +912,9 @@ class FunctionMock {
 
   FunctionMock.fromJson(core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"].map((value) => new Arg.fromJson(value)).toList();
+      args = (_json["args"] as core.List)
+          .map<Arg>((value) => new Arg.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("function")) {
       function = _json["function"];
@@ -943,12 +945,12 @@ class GetReleaseExecutableResponse {
   /// Executable view of the `Ruleset` referenced by the `Release`.
   core.String executable;
   core.List<core.int> get executableAsBytes {
-    return convert.BASE64.decode(executable);
+    return convert.base64.decode(executable);
   }
 
   void set executableAsBytes(core.List<core.int> _bytes) {
     executable =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The Rules runtime version of the executable.
@@ -1084,8 +1086,8 @@ class ListReleasesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("releases")) {
-      releases = _json["releases"]
-          .map((value) => new Release.fromJson(value))
+      releases = (_json["releases"] as core.List)
+          .map<Release>((value) => new Release.fromJson(value))
           .toList();
     }
   }
@@ -1119,8 +1121,8 @@ class ListRulesetsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("rulesets")) {
-      rulesets = _json["rulesets"]
-          .map((value) => new Ruleset.fromJson(value))
+      rulesets = (_json["rulesets"] as core.List)
+          .map<Ruleset>((value) => new Ruleset.fromJson(value))
           .toList();
     }
   }
@@ -1306,7 +1308,9 @@ class Source {
 
   Source.fromJson(core.Map _json) {
     if (_json.containsKey("files")) {
-      files = _json["files"].map((value) => new File.fromJson(value)).toList();
+      files = (_json["files"] as core.List)
+          .map<File>((value) => new File.fromJson(value))
+          .toList();
     }
   }
 
@@ -1424,8 +1428,8 @@ class TestCase {
       expectation = _json["expectation"];
     }
     if (_json.containsKey("functionMocks")) {
-      functionMocks = _json["functionMocks"]
-          .map((value) => new FunctionMock.fromJson(value))
+      functionMocks = (_json["functionMocks"] as core.List)
+          .map<FunctionMock>((value) => new FunctionMock.fromJson(value))
           .toList();
     }
     if (_json.containsKey("request")) {
@@ -1496,14 +1500,14 @@ class TestResult {
 
   TestResult.fromJson(core.Map _json) {
     if (_json.containsKey("debugMessages")) {
-      debugMessages = _json["debugMessages"];
+      debugMessages = (_json["debugMessages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("errorPosition")) {
       errorPosition = new SourcePosition.fromJson(_json["errorPosition"]);
     }
     if (_json.containsKey("functionCalls")) {
-      functionCalls = _json["functionCalls"]
-          .map((value) => new FunctionCall.fromJson(value))
+      functionCalls = (_json["functionCalls"] as core.List)
+          .map<FunctionCall>((value) => new FunctionCall.fromJson(value))
           .toList();
     }
     if (_json.containsKey("state")) {
@@ -1580,12 +1584,13 @@ class TestRulesetResponse {
 
   TestRulesetResponse.fromJson(core.Map _json) {
     if (_json.containsKey("issues")) {
-      issues =
-          _json["issues"].map((value) => new Issue.fromJson(value)).toList();
+      issues = (_json["issues"] as core.List)
+          .map<Issue>((value) => new Issue.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("testResults")) {
-      testResults = _json["testResults"]
-          .map((value) => new TestResult.fromJson(value))
+      testResults = (_json["testResults"] as core.List)
+          .map<TestResult>((value) => new TestResult.fromJson(value))
           .toList();
     }
   }
@@ -1617,8 +1622,8 @@ class TestSuite {
 
   TestSuite.fromJson(core.Map _json) {
     if (_json.containsKey("testCases")) {
-      testCases = _json["testCases"]
-          .map((value) => new TestCase.fromJson(value))
+      testCases = (_json["testCases"] as core.List)
+          .map<TestCase>((value) => new TestCase.fromJson(value))
           .toList();
     }
   }

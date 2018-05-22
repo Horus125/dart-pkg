@@ -98,14 +98,14 @@ class AnnotationsResourceApi {
       BatchCreateAnnotationsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -162,14 +162,14 @@ class AnnotationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Annotation> create(Annotation request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -205,7 +205,7 @@ class AnnotationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String annotationId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -249,7 +249,7 @@ class AnnotationsResourceApi {
   async.Future<Annotation> get(core.String annotationId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -299,14 +299,14 @@ class AnnotationsResourceApi {
       SearchAnnotationsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -354,14 +354,14 @@ class AnnotationsResourceApi {
   async.Future<Annotation> update(Annotation request, core.String annotationId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (annotationId == null) {
       throw new core.ArgumentError("Parameter annotationId is required.");
@@ -418,14 +418,14 @@ class AnnotationsetsResourceApi {
   async.Future<AnnotationSet> create(AnnotationSet request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -462,7 +462,7 @@ class AnnotationsetsResourceApi {
   async.Future<Empty> delete(core.String annotationSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -507,7 +507,7 @@ class AnnotationsetsResourceApi {
   async.Future<AnnotationSet> get(core.String annotationSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -558,14 +558,14 @@ class AnnotationsetsResourceApi {
       SearchAnnotationSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -615,14 +615,14 @@ class AnnotationsetsResourceApi {
       AnnotationSet request, core.String annotationSetId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (annotationSetId == null) {
       throw new core.ArgumentError("Parameter annotationSetId is required.");
@@ -674,14 +674,14 @@ class CallsetsResourceApi {
   /// this method will complete with the same error.
   async.Future<CallSet> create(CallSet request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -720,7 +720,7 @@ class CallsetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String callSetId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -766,7 +766,7 @@ class CallsetsResourceApi {
   /// this method will complete with the same error.
   async.Future<CallSet> get(core.String callSetId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -823,14 +823,14 @@ class CallsetsResourceApi {
   async.Future<CallSet> patch(CallSet request, core.String callSetId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (callSetId == null) {
       throw new core.ArgumentError("Parameter callSetId is required.");
@@ -879,14 +879,14 @@ class CallsetsResourceApi {
   async.Future<SearchCallSetsResponse> search(SearchCallSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -931,14 +931,14 @@ class DatasetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Dataset> create(Dataset request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -982,7 +982,7 @@ class DatasetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String datasetId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1028,7 +1028,7 @@ class DatasetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Dataset> get(core.String datasetId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1085,14 +1085,14 @@ class DatasetsResourceApi {
       GetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1149,7 +1149,7 @@ class DatasetsResourceApi {
       core.String projectId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1212,14 +1212,14 @@ class DatasetsResourceApi {
   async.Future<Dataset> patch(Dataset request, core.String datasetId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (datasetId == null) {
       throw new core.ArgumentError("Parameter datasetId is required.");
@@ -1275,14 +1275,14 @@ class DatasetsResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1335,14 +1335,14 @@ class DatasetsResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1393,14 +1393,14 @@ class DatasetsResourceApi {
       UndeleteDatasetRequest request, core.String datasetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (datasetId == null) {
       throw new core.ArgumentError("Parameter datasetId is required.");
@@ -1454,14 +1454,14 @@ class OperationsResourceApi {
   async.Future<Empty> cancel(CancelOperationRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1502,7 +1502,7 @@ class OperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Operation> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1575,7 +1575,7 @@ class OperationsResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1642,7 +1642,7 @@ class ReadgroupsetsResourceApi {
   async.Future<Empty> delete(core.String readGroupSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1700,14 +1700,14 @@ class ReadgroupsetsResourceApi {
       ExportReadGroupSetRequest request, core.String readGroupSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (readGroupSetId == null) {
       throw new core.ArgumentError("Parameter readGroupSetId is required.");
@@ -1752,7 +1752,7 @@ class ReadgroupsetsResourceApi {
   async.Future<ReadGroupSet> get(core.String readGroupSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1814,14 +1814,14 @@ class ReadgroupsetsResourceApi {
   async.Future<Operation> import(ImportReadGroupSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1877,14 +1877,14 @@ class ReadgroupsetsResourceApi {
       ReadGroupSet request, core.String readGroupSetId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (readGroupSetId == null) {
       throw new core.ArgumentError("Parameter readGroupSetId is required.");
@@ -1935,14 +1935,14 @@ class ReadgroupsetsResourceApi {
       SearchReadGroupSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2036,7 +2036,7 @@ class ReadgroupsetsCoveragebucketsResourceApi {
       core.String targetBucketWidth,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2132,14 +2132,14 @@ class ReadsResourceApi {
   async.Future<SearchReadsResponse> search(SearchReadsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2190,7 +2190,7 @@ class ReferencesResourceApi {
   /// this method will complete with the same error.
   async.Future<Reference> get(core.String referenceId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2240,14 +2240,14 @@ class ReferencesResourceApi {
   async.Future<SearchReferencesResponse> search(SearchReferencesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2318,7 +2318,7 @@ class ReferencesBasesResourceApi {
       core.String end,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2388,7 +2388,7 @@ class ReferencesetsResourceApi {
   async.Future<ReferenceSet> get(core.String referenceSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2440,14 +2440,14 @@ class ReferencesetsResourceApi {
       SearchReferenceSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2493,14 +2493,14 @@ class VariantsResourceApi {
   /// this method will complete with the same error.
   async.Future<Variant> create(Variant request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2539,7 +2539,7 @@ class VariantsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String variantId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2585,7 +2585,7 @@ class VariantsResourceApi {
   /// this method will complete with the same error.
   async.Future<Variant> get(core.String variantId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2647,14 +2647,14 @@ class VariantsResourceApi {
   async.Future<Operation> import(ImportVariantsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2780,14 +2780,14 @@ class VariantsResourceApi {
   async.Future<Empty> merge(MergeVariantsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2838,14 +2838,14 @@ class VariantsResourceApi {
   async.Future<Variant> patch(Variant request, core.String variantId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (variantId == null) {
       throw new core.ArgumentError("Parameter variantId is required.");
@@ -2894,14 +2894,14 @@ class VariantsResourceApi {
   async.Future<SearchVariantsResponse> search(SearchVariantsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2950,14 +2950,14 @@ class VariantsetsResourceApi {
   /// this method will complete with the same error.
   async.Future<VariantSet> create(VariantSet request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -2997,7 +2997,7 @@ class VariantsetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String variantSetId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3049,14 +3049,14 @@ class VariantsetsResourceApi {
       ExportVariantSetRequest request, core.String variantSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (variantSetId == null) {
       throw new core.ArgumentError("Parameter variantSetId is required.");
@@ -3101,7 +3101,7 @@ class VariantsetsResourceApi {
   async.Future<VariantSet> get(core.String variantSetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3160,14 +3160,14 @@ class VariantsetsResourceApi {
   async.Future<VariantSet> patch(VariantSet request, core.String variantSetId,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (variantSetId == null) {
       throw new core.ArgumentError("Parameter variantSetId is required.");
@@ -3217,14 +3217,14 @@ class VariantsetsResourceApi {
       SearchVariantSetsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -3328,7 +3328,9 @@ class Annotation {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -3455,7 +3457,9 @@ class AnnotationSet {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -3519,8 +3523,8 @@ class BatchCreateAnnotationsRequest {
 
   BatchCreateAnnotationsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("annotations")) {
-      annotations = _json["annotations"]
-          .map((value) => new Annotation.fromJson(value))
+      annotations = (_json["annotations"] as core.List)
+          .map<Annotation>((value) => new Annotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("requestId")) {
@@ -3551,8 +3555,9 @@ class BatchCreateAnnotationsResponse {
 
   BatchCreateAnnotationsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries =
-          _json["entries"].map((value) => new Entry.fromJson(value)).toList();
+      entries = (_json["entries"] as core.List)
+          .map<Entry>((value) => new Entry.fromJson(value))
+          .toList();
     }
   }
 
@@ -3601,7 +3606,7 @@ class Binding {
 
   Binding.fromJson(core.Map _json) {
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -3663,7 +3668,9 @@ class CallSet {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -3672,7 +3679,7 @@ class CallSet {
       sampleId = _json["sampleId"];
     }
     if (_json.containsKey("variantSetIds")) {
-      variantSetIds = _json["variantSetIds"];
+      variantSetIds = (_json["variantSetIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -3826,12 +3833,12 @@ class ClinicalCondition {
       conceptId = _json["conceptId"];
     }
     if (_json.containsKey("externalIds")) {
-      externalIds = _json["externalIds"]
-          .map((value) => new ExternalId.fromJson(value))
+      externalIds = (_json["externalIds"] as core.List)
+          .map<ExternalId>((value) => new ExternalId.fromJson(value))
           .toList();
     }
     if (_json.containsKey("names")) {
-      names = _json["names"];
+      names = (_json["names"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("omimId")) {
       omimId = _json["omimId"];
@@ -3912,7 +3919,7 @@ class ComputeEngine {
 
   ComputeEngine.fromJson(core.Map _json) {
     if (_json.containsKey("diskNames")) {
-      diskNames = _json["diskNames"];
+      diskNames = (_json["diskNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("instanceName")) {
       instanceName = _json["instanceName"];
@@ -4220,7 +4227,8 @@ class ExportReadGroupSetRequest {
       projectId = _json["projectId"];
     }
     if (_json.containsKey("referenceNames")) {
-      referenceNames = _json["referenceNames"];
+      referenceNames =
+          (_json["referenceNames"] as core.List).cast<core.String>();
     }
   }
 
@@ -4277,7 +4285,7 @@ class ExportVariantSetRequest {
       bigqueryTable = _json["bigqueryTable"];
     }
     if (_json.containsKey("callSetIds")) {
-      callSetIds = _json["callSetIds"];
+      callSetIds = (_json["callSetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("format")) {
       format = _json["format"];
@@ -4409,7 +4417,7 @@ class ImportReadGroupSetsRequest {
       referenceSetId = _json["referenceSetId"];
     }
     if (_json.containsKey("sourceUris")) {
-      sourceUris = _json["sourceUris"];
+      sourceUris = (_json["sourceUris"] as core.List).cast<core.String>();
     }
   }
 
@@ -4441,7 +4449,8 @@ class ImportReadGroupSetsResponse {
 
   ImportReadGroupSetsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("readGroupSetIds")) {
-      readGroupSetIds = _json["readGroupSetIds"];
+      readGroupSetIds =
+          (_json["readGroupSetIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -4503,13 +4512,14 @@ class ImportVariantsRequest {
       format = _json["format"];
     }
     if (_json.containsKey("infoMergeConfig")) {
-      infoMergeConfig = _json["infoMergeConfig"];
+      infoMergeConfig = (_json["infoMergeConfig"] as core.Map)
+          .cast<core.String, core.String>();
     }
     if (_json.containsKey("normalizeReferenceNames")) {
       normalizeReferenceNames = _json["normalizeReferenceNames"];
     }
     if (_json.containsKey("sourceUris")) {
-      sourceUris = _json["sourceUris"];
+      sourceUris = (_json["sourceUris"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("variantSetId")) {
       variantSetId = _json["variantSetId"];
@@ -4547,7 +4557,7 @@ class ImportVariantsResponse {
 
   ImportVariantsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("callSetIds")) {
-      callSetIds = _json["callSetIds"];
+      callSetIds = (_json["callSetIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -4583,8 +4593,9 @@ class LinearAlignment {
 
   LinearAlignment.fromJson(core.Map _json) {
     if (_json.containsKey("cigar")) {
-      cigar =
-          _json["cigar"].map((value) => new CigarUnit.fromJson(value)).toList();
+      cigar = (_json["cigar"] as core.List)
+          .map<CigarUnit>((value) => new CigarUnit.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("mappingQuality")) {
       mappingQuality = _json["mappingQuality"];
@@ -4679,8 +4690,8 @@ class ListCoverageBucketsResponse {
       bucketWidth = _json["bucketWidth"];
     }
     if (_json.containsKey("coverageBuckets")) {
-      coverageBuckets = _json["coverageBuckets"]
-          .map((value) => new CoverageBucket.fromJson(value))
+      coverageBuckets = (_json["coverageBuckets"] as core.List)
+          .map<CoverageBucket>((value) => new CoverageBucket.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -4719,8 +4730,8 @@ class ListDatasetsResponse {
 
   ListDatasetsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("datasets")) {
-      datasets = _json["datasets"]
-          .map((value) => new Dataset.fromJson(value))
+      datasets = (_json["datasets"] as core.List)
+          .map<Dataset>((value) => new Dataset.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -4756,8 +4767,8 @@ class ListOperationsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
   }
@@ -4791,14 +4802,15 @@ class MergeVariantsRequest {
 
   MergeVariantsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("infoMergeConfig")) {
-      infoMergeConfig = _json["infoMergeConfig"];
+      infoMergeConfig = (_json["infoMergeConfig"] as core.Map)
+          .cast<core.String, core.String>();
     }
     if (_json.containsKey("variantSetId")) {
       variantSetId = _json["variantSetId"];
     }
     if (_json.containsKey("variants")) {
-      variants = _json["variants"]
-          .map((value) => new Variant.fromJson(value))
+      variants = (_json["variants"] as core.List)
+          .map<Variant>((value) => new Variant.fromJson(value))
           .toList();
     }
   }
@@ -4860,13 +4872,15 @@ class Operation {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("response")) {
-      response = _json["response"];
+      response =
+          (_json["response"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -4989,21 +5003,22 @@ class OperationMetadata {
       endTime = _json["endTime"];
     }
     if (_json.containsKey("events")) {
-      events = _json["events"]
-          .map((value) => new OperationEvent.fromJson(value))
+      events = (_json["events"] as core.List)
+          .map<OperationEvent>((value) => new OperationEvent.fromJson(value))
           .toList();
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("projectId")) {
       projectId = _json["projectId"];
     }
     if (_json.containsKey("request")) {
-      request = _json["request"];
+      request = (_json["request"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("runtimeMetadata")) {
-      runtimeMetadata = _json["runtimeMetadata"];
+      runtimeMetadata = (_json["runtimeMetadata"] as core.Map)
+          .cast<core.String, core.Object>();
     }
     if (_json.containsKey("startTime")) {
       startTime = _json["startTime"];
@@ -5095,12 +5110,12 @@ class Policy {
   /// policy is overwritten blindly.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Deprecated.
@@ -5110,8 +5125,8 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new Binding.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<Binding>((value) => new Binding.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -5471,7 +5486,7 @@ class Read {
 
   Read.fromJson(core.Map _json) {
     if (_json.containsKey("alignedQuality")) {
-      alignedQuality = _json["alignedQuality"];
+      alignedQuality = (_json["alignedQuality"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("alignedSequence")) {
       alignedSequence = _json["alignedSequence"];
@@ -5495,7 +5510,9 @@ class Read {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("nextMatePosition")) {
       nextMatePosition = new Position.fromJson(_json["nextMatePosition"]);
@@ -5640,7 +5657,9 @@ class ReadGroup {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -5649,8 +5668,8 @@ class ReadGroup {
       predictedInsertSize = _json["predictedInsertSize"];
     }
     if (_json.containsKey("programs")) {
-      programs = _json["programs"]
-          .map((value) => new Program.fromJson(value))
+      programs = (_json["programs"] as core.List)
+          .map<Program>((value) => new Program.fromJson(value))
           .toList();
     }
     if (_json.containsKey("referenceSetId")) {
@@ -5750,14 +5769,16 @@ class ReadGroupSet {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("readGroups")) {
-      readGroups = _json["readGroups"]
-          .map((value) => new ReadGroup.fromJson(value))
+      readGroups = (_json["readGroups"] as core.List)
+          .map<ReadGroup>((value) => new ReadGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("referenceSetId")) {
@@ -5846,7 +5867,8 @@ class Reference {
       ncbiTaxonId = _json["ncbiTaxonId"];
     }
     if (_json.containsKey("sourceAccessions")) {
-      sourceAccessions = _json["sourceAccessions"];
+      sourceAccessions =
+          (_json["sourceAccessions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sourceUri")) {
       sourceUri = _json["sourceUri"];
@@ -5978,10 +6000,11 @@ class ReferenceSet {
       ncbiTaxonId = _json["ncbiTaxonId"];
     }
     if (_json.containsKey("referenceIds")) {
-      referenceIds = _json["referenceIds"];
+      referenceIds = (_json["referenceIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sourceAccessions")) {
-      sourceAccessions = _json["sourceAccessions"];
+      sourceAccessions =
+          (_json["sourceAccessions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sourceUri")) {
       sourceUri = _json["sourceUri"];
@@ -6075,7 +6098,7 @@ class SearchAnnotationSetsRequest {
 
   SearchAnnotationSetsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("datasetIds")) {
-      datasetIds = _json["datasetIds"];
+      datasetIds = (_json["datasetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -6090,7 +6113,7 @@ class SearchAnnotationSetsRequest {
       referenceSetId = _json["referenceSetId"];
     }
     if (_json.containsKey("types")) {
-      types = _json["types"];
+      types = (_json["types"] as core.List).cast<core.String>();
     }
   }
 
@@ -6132,8 +6155,8 @@ class SearchAnnotationSetsResponse {
 
   SearchAnnotationSetsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("annotationSets")) {
-      annotationSets = _json["annotationSets"]
-          .map((value) => new AnnotationSet.fromJson(value))
+      annotationSets = (_json["annotationSets"] as core.List)
+          .map<AnnotationSet>((value) => new AnnotationSet.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -6194,7 +6217,8 @@ class SearchAnnotationsRequest {
 
   SearchAnnotationsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("annotationSetIds")) {
-      annotationSetIds = _json["annotationSetIds"];
+      annotationSetIds =
+          (_json["annotationSetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("end")) {
       end = _json["end"];
@@ -6257,8 +6281,8 @@ class SearchAnnotationsResponse {
 
   SearchAnnotationsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("annotations")) {
-      annotations = _json["annotations"]
-          .map((value) => new Annotation.fromJson(value))
+      annotations = (_json["annotations"] as core.List)
+          .map<Annotation>((value) => new Annotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -6313,7 +6337,7 @@ class SearchCallSetsRequest {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("variantSetIds")) {
-      variantSetIds = _json["variantSetIds"];
+      variantSetIds = (_json["variantSetIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -6350,8 +6374,8 @@ class SearchCallSetsResponse {
 
   SearchCallSetsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("callSets")) {
-      callSets = _json["callSets"]
-          .map((value) => new CallSet.fromJson(value))
+      callSets = (_json["callSets"] as core.List)
+          .map<CallSet>((value) => new CallSet.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -6396,7 +6420,7 @@ class SearchReadGroupSetsRequest {
 
   SearchReadGroupSetsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("datasetIds")) {
-      datasetIds = _json["datasetIds"];
+      datasetIds = (_json["datasetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -6445,8 +6469,8 @@ class SearchReadGroupSetsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("readGroupSets")) {
-      readGroupSets = _json["readGroupSets"]
-          .map((value) => new ReadGroupSet.fromJson(value))
+      readGroupSets = (_json["readGroupSets"] as core.List)
+          .map<ReadGroupSet>((value) => new ReadGroupSet.fromJson(value))
           .toList();
     }
   }
@@ -6515,10 +6539,11 @@ class SearchReadsRequest {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("readGroupIds")) {
-      readGroupIds = _json["readGroupIds"];
+      readGroupIds = (_json["readGroupIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("readGroupSetIds")) {
-      readGroupSetIds = _json["readGroupSetIds"];
+      readGroupSetIds =
+          (_json["readGroupSetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("referenceName")) {
       referenceName = _json["referenceName"];
@@ -6573,8 +6598,9 @@ class SearchReadsResponse {
 
   SearchReadsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("alignments")) {
-      alignments =
-          _json["alignments"].map((value) => new Read.fromJson(value)).toList();
+      alignments = (_json["alignments"] as core.List)
+          .map<Read>((value) => new Read.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("nextPageToken")) {
       nextPageToken = _json["nextPageToken"];
@@ -6623,13 +6649,13 @@ class SearchReferenceSetsRequest {
 
   SearchReferenceSetsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("accessions")) {
-      accessions = _json["accessions"];
+      accessions = (_json["accessions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("assemblyId")) {
       assemblyId = _json["assemblyId"];
     }
     if (_json.containsKey("md5checksums")) {
-      md5checksums = _json["md5checksums"];
+      md5checksums = (_json["md5checksums"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("pageSize")) {
       pageSize = _json["pageSize"];
@@ -6677,8 +6703,8 @@ class SearchReferenceSetsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("referenceSets")) {
-      referenceSets = _json["referenceSets"]
-          .map((value) => new ReferenceSet.fromJson(value))
+      referenceSets = (_json["referenceSets"] as core.List)
+          .map<ReferenceSet>((value) => new ReferenceSet.fromJson(value))
           .toList();
     }
   }
@@ -6724,10 +6750,10 @@ class SearchReferencesRequest {
 
   SearchReferencesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("accessions")) {
-      accessions = _json["accessions"];
+      accessions = (_json["accessions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("md5checksums")) {
-      md5checksums = _json["md5checksums"];
+      md5checksums = (_json["md5checksums"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("pageSize")) {
       pageSize = _json["pageSize"];
@@ -6778,8 +6804,8 @@ class SearchReferencesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("references")) {
-      references = _json["references"]
-          .map((value) => new Reference.fromJson(value))
+      references = (_json["references"] as core.List)
+          .map<Reference>((value) => new Reference.fromJson(value))
           .toList();
     }
   }
@@ -6817,7 +6843,7 @@ class SearchVariantSetsRequest {
 
   SearchVariantSetsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("datasetIds")) {
-      datasetIds = _json["datasetIds"];
+      datasetIds = (_json["datasetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("pageSize")) {
       pageSize = _json["pageSize"];
@@ -6860,8 +6886,8 @@ class SearchVariantSetsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("variantSets")) {
-      variantSets = _json["variantSets"]
-          .map((value) => new VariantSet.fromJson(value))
+      variantSets = (_json["variantSets"] as core.List)
+          .map<VariantSet>((value) => new VariantSet.fromJson(value))
           .toList();
     }
   }
@@ -6926,7 +6952,7 @@ class SearchVariantsRequest {
 
   SearchVariantsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("callSetIds")) {
-      callSetIds = _json["callSetIds"];
+      callSetIds = (_json["callSetIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("end")) {
       end = _json["end"];
@@ -6950,7 +6976,7 @@ class SearchVariantsRequest {
       variantName = _json["variantName"];
     }
     if (_json.containsKey("variantSetIds")) {
-      variantSetIds = _json["variantSetIds"];
+      variantSetIds = (_json["variantSetIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -7005,8 +7031,8 @@ class SearchVariantsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("variants")) {
-      variants = _json["variants"]
-          .map((value) => new Variant.fromJson(value))
+      variants = (_json["variants"] as core.List)
+          .map<Variant>((value) => new Variant.fromJson(value))
           .toList();
     }
   }
@@ -7129,7 +7155,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -7171,7 +7200,7 @@ class TestIamPermissionsRequest {
 
   TestIamPermissionsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -7195,7 +7224,7 @@ class TestIamPermissionsResponse {
 
   TestIamPermissionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -7255,7 +7284,9 @@ class Transcript {
       codingSequence = new CodingSequence.fromJson(_json["codingSequence"]);
     }
     if (_json.containsKey("exons")) {
-      exons = _json["exons"].map((value) => new Exon.fromJson(value)).toList();
+      exons = (_json["exons"] as core.List)
+          .map<Exon>((value) => new Exon.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("geneId")) {
       geneId = _json["geneId"];
@@ -7360,11 +7391,12 @@ class Variant {
 
   Variant.fromJson(core.Map _json) {
     if (_json.containsKey("alternateBases")) {
-      alternateBases = _json["alternateBases"];
+      alternateBases =
+          (_json["alternateBases"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("calls")) {
-      calls = _json["calls"]
-          .map((value) => new VariantCall.fromJson(value))
+      calls = (_json["calls"] as core.List)
+          .map<VariantCall>((value) => new VariantCall.fromJson(value))
           .toList();
     }
     if (_json.containsKey("created")) {
@@ -7374,16 +7406,18 @@ class Variant {
       end = _json["end"];
     }
     if (_json.containsKey("filter")) {
-      filter = _json["filter"];
+      filter = (_json["filter"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("names")) {
-      names = _json["names"];
+      names = (_json["names"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("quality")) {
       quality = _json["quality"];
@@ -7548,8 +7582,9 @@ class VariantAnnotation {
       clinicalSignificance = _json["clinicalSignificance"];
     }
     if (_json.containsKey("conditions")) {
-      conditions = _json["conditions"]
-          .map((value) => new ClinicalCondition.fromJson(value))
+      conditions = (_json["conditions"] as core.List)
+          .map<ClinicalCondition>(
+              (value) => new ClinicalCondition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("effect")) {
@@ -7559,7 +7594,7 @@ class VariantAnnotation {
       geneId = _json["geneId"];
     }
     if (_json.containsKey("transcriptIds")) {
-      transcriptIds = _json["transcriptIds"];
+      transcriptIds = (_json["transcriptIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -7652,13 +7687,16 @@ class VariantCall {
       callSetName = _json["callSetName"];
     }
     if (_json.containsKey("genotype")) {
-      genotype = _json["genotype"];
+      genotype = (_json["genotype"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("genotypeLikelihood")) {
-      genotypeLikelihood = _json["genotypeLikelihood"];
+      genotypeLikelihood =
+          (_json["genotypeLikelihood"] as core.List).cast<core.double>();
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("phaseset")) {
       phaseset = _json["phaseset"];
@@ -7741,16 +7779,17 @@ class VariantSet {
       id = _json["id"];
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"]
-          .map((value) => new VariantSetMetadata.fromJson(value))
+      metadata = (_json["metadata"] as core.List)
+          .map<VariantSetMetadata>(
+              (value) => new VariantSetMetadata.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("referenceBounds")) {
-      referenceBounds = _json["referenceBounds"]
-          .map((value) => new ReferenceBound.fromJson(value))
+      referenceBounds = (_json["referenceBounds"] as core.List)
+          .map<ReferenceBound>((value) => new ReferenceBound.fromJson(value))
           .toList();
     }
     if (_json.containsKey("referenceSetId")) {
@@ -7838,7 +7877,9 @@ class VariantSetMetadata {
       id = _json["id"];
     }
     if (_json.containsKey("info")) {
-      info = _json["info"];
+      info = commons.mapMap<core.List, core.List<core.Object>>(
+          _json["info"].cast<core.String, core.List>(),
+          (core.List item) => (item as core.List).cast<core.Object>());
     }
     if (_json.containsKey("key")) {
       key = _json["key"];

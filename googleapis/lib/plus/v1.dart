@@ -65,7 +65,7 @@ class ActivitiesResourceApi {
   /// this method will complete with the same error.
   async.Future<Activity> get(core.String activityId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -123,7 +123,7 @@ class ActivitiesResourceApi {
   async.Future<ActivityFeed> list(core.String userId, core.String collection,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -200,7 +200,7 @@ class ActivitiesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -261,7 +261,7 @@ class CommentsResourceApi {
   /// this method will complete with the same error.
   async.Future<Comment> get(core.String commentId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -321,7 +321,7 @@ class CommentsResourceApi {
       core.String sortOrder,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -383,7 +383,7 @@ class PeopleResourceApi {
   /// this method will complete with the same error.
   async.Future<Person> get(core.String userId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -452,7 +452,7 @@ class PeopleResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -526,7 +526,7 @@ class PeopleResourceApi {
       core.String activityId, core.String collection,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -598,7 +598,7 @@ class PeopleResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -651,8 +651,9 @@ class Acl {
       description = _json["description"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new PlusAclentryResource.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<PlusAclentryResource>(
+              (value) => new PlusAclentryResource.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1336,8 +1337,8 @@ class ActivityObjectAttachments {
       objectType = _json["objectType"];
     }
     if (_json.containsKey("thumbnails")) {
-      thumbnails = _json["thumbnails"]
-          .map((value) =>
+      thumbnails = (_json["thumbnails"] as core.List)
+          .map<ActivityObjectAttachmentsThumbnails>((value) =>
               new ActivityObjectAttachmentsThumbnails.fromJson(value))
           .toList();
     }
@@ -1524,8 +1525,9 @@ class ActivityObject {
       actor = new ActivityObjectActor.fromJson(_json["actor"]);
     }
     if (_json.containsKey("attachments")) {
-      attachments = _json["attachments"]
-          .map((value) => new ActivityObjectAttachments.fromJson(value))
+      attachments = (_json["attachments"] as core.List)
+          .map<ActivityObjectAttachments>(
+              (value) => new ActivityObjectAttachments.fromJson(value))
           .toList();
     }
     if (_json.containsKey("content")) {
@@ -1860,8 +1862,9 @@ class ActivityFeed {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Activity.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Activity>((value) => new Activity.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2233,8 +2236,9 @@ class Comment {
       id = _json["id"];
     }
     if (_json.containsKey("inReplyTo")) {
-      inReplyTo = _json["inReplyTo"]
-          .map((value) => new CommentInReplyTo.fromJson(value))
+      inReplyTo = (_json["inReplyTo"] as core.List)
+          .map<CommentInReplyTo>(
+              (value) => new CommentInReplyTo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -2339,8 +2343,9 @@ class CommentFeed {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Comment.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Comment>((value) => new Comment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2426,8 +2431,9 @@ class PeopleFeed {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Person.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Person>((value) => new Person.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3094,8 +3100,8 @@ class Person {
       domain = _json["domain"];
     }
     if (_json.containsKey("emails")) {
-      emails = _json["emails"]
-          .map((value) => new PersonEmails.fromJson(value))
+      emails = (_json["emails"] as core.List)
+          .map<PersonEmails>((value) => new PersonEmails.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -3132,13 +3138,15 @@ class Person {
       occupation = _json["occupation"];
     }
     if (_json.containsKey("organizations")) {
-      organizations = _json["organizations"]
-          .map((value) => new PersonOrganizations.fromJson(value))
+      organizations = (_json["organizations"] as core.List)
+          .map<PersonOrganizations>(
+              (value) => new PersonOrganizations.fromJson(value))
           .toList();
     }
     if (_json.containsKey("placesLived")) {
-      placesLived = _json["placesLived"]
-          .map((value) => new PersonPlacesLived.fromJson(value))
+      placesLived = (_json["placesLived"] as core.List)
+          .map<PersonPlacesLived>(
+              (value) => new PersonPlacesLived.fromJson(value))
           .toList();
     }
     if (_json.containsKey("plusOneCount")) {
@@ -3157,8 +3165,9 @@ class Person {
       url = _json["url"];
     }
     if (_json.containsKey("urls")) {
-      urls =
-          _json["urls"].map((value) => new PersonUrls.fromJson(value)).toList();
+      urls = (_json["urls"] as core.List)
+          .map<PersonUrls>((value) => new PersonUrls.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("verified")) {
       verified = _json["verified"];

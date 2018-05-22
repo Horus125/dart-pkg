@@ -67,14 +67,14 @@ class ProjectsResourceApi {
       AllocateIdsRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -118,14 +118,14 @@ class ProjectsResourceApi {
       BeginTransactionRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -171,14 +171,14 @@ class ProjectsResourceApi {
       CommitRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -222,14 +222,14 @@ class ProjectsResourceApi {
       LookupRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -274,14 +274,14 @@ class ProjectsResourceApi {
       ReserveIdsRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -325,14 +325,14 @@ class ProjectsResourceApi {
       RollbackRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -376,14 +376,14 @@ class ProjectsResourceApi {
       RunQueryRequest request, core.String projectId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (projectId == null) {
       throw new core.ArgumentError("Parameter projectId is required.");
@@ -440,7 +440,7 @@ class ProjectsOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> cancel(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -486,7 +486,7 @@ class ProjectsOperationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -532,7 +532,7 @@ class ProjectsOperationsResourceApi {
   async.Future<GoogleLongrunningOperation> get(core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -596,7 +596,7 @@ class ProjectsOperationsResourceApi {
       core.String filter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -642,7 +642,9 @@ class AllocateIdsRequest {
 
   AllocateIdsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("keys")) {
-      keys = _json["keys"].map((value) => new Key.fromJson(value)).toList();
+      keys = (_json["keys"] as core.List)
+          .map<Key>((value) => new Key.fromJson(value))
+          .toList();
     }
   }
 
@@ -666,7 +668,9 @@ class AllocateIdsResponse {
 
   AllocateIdsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("keys")) {
-      keys = _json["keys"].map((value) => new Key.fromJson(value)).toList();
+      keys = (_json["keys"] as core.List)
+          .map<Key>((value) => new Key.fromJson(value))
+          .toList();
     }
   }
 
@@ -691,8 +695,9 @@ class ArrayValue {
 
   ArrayValue.fromJson(core.Map _json) {
     if (_json.containsKey("values")) {
-      values =
-          _json["values"].map((value) => new Value.fromJson(value)).toList();
+      values = (_json["values"] as core.List)
+          .map<Value>((value) => new Value.fromJson(value))
+          .toList();
     }
   }
 
@@ -735,12 +740,12 @@ class BeginTransactionResponse {
   /// The transaction identifier (always present).
   core.String transaction;
   core.List<core.int> get transactionAsBytes {
-    return convert.BASE64.decode(transaction);
+    return convert.base64.decode(transaction);
   }
 
   void set transactionAsBytes(core.List<core.int> _bytes) {
     transaction =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   BeginTransactionResponse();
@@ -794,12 +799,12 @@ class CommitRequest {
   /// Datastore.BeginTransaction.
   core.String transaction;
   core.List<core.int> get transactionAsBytes {
-    return convert.BASE64.decode(transaction);
+    return convert.base64.decode(transaction);
   }
 
   void set transactionAsBytes(core.List<core.int> _bytes) {
     transaction =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   CommitRequest();
@@ -809,8 +814,8 @@ class CommitRequest {
       mode = _json["mode"];
     }
     if (_json.containsKey("mutations")) {
-      mutations = _json["mutations"]
-          .map((value) => new Mutation.fromJson(value))
+      mutations = (_json["mutations"] as core.List)
+          .map<Mutation>((value) => new Mutation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("transaction")) {
@@ -852,8 +857,8 @@ class CommitResponse {
       indexUpdates = _json["indexUpdates"];
     }
     if (_json.containsKey("mutationResults")) {
-      mutationResults = _json["mutationResults"]
-          .map((value) => new MutationResult.fromJson(value))
+      mutationResults = (_json["mutationResults"] as core.List)
+          .map<MutationResult>((value) => new MutationResult.fromJson(value))
           .toList();
     }
   }
@@ -889,8 +894,9 @@ class CompositeFilter {
 
   CompositeFilter.fromJson(core.Map _json) {
     if (_json.containsKey("filters")) {
-      filters =
-          _json["filters"].map((value) => new Filter.fromJson(value)).toList();
+      filters = (_json["filters"] as core.List)
+          .map<Filter>((value) => new Filter.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("op")) {
       op = _json["op"];
@@ -960,10 +966,9 @@ class Entity {
       key = new Key.fromJson(_json["key"]);
     }
     if (_json.containsKey("properties")) {
-      properties = commons.mapMap<core.Map<core.String, core.Object>, Value>(
-          _json["properties"],
-          (core.Map<core.String, core.Object> item) =>
-              new Value.fromJson(item));
+      properties = commons.mapMap<core.Map, Value>(
+          _json["properties"].cast<core.String, core.Map>(),
+          (core.Map item) => new Value.fromJson(item));
     }
   }
 
@@ -988,12 +993,12 @@ class EntityResult {
   /// Set only when the `EntityResult` is part of a `QueryResultBatch` message.
   core.String cursor;
   core.List<core.int> get cursorAsBytes {
-    return convert.BASE64.decode(cursor);
+    return convert.base64.decode(cursor);
   }
 
   void set cursorAsBytes(core.List<core.int> _bytes) {
     cursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The resulting entity.
@@ -1116,7 +1121,7 @@ class GoogleDatastoreAdminV1beta1CommonMetadata {
       endTime = _json["endTime"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("operationType")) {
       operationType = _json["operationType"];
@@ -1188,10 +1193,10 @@ class GoogleDatastoreAdminV1beta1EntityFilter {
 
   GoogleDatastoreAdminV1beta1EntityFilter.fromJson(core.Map _json) {
     if (_json.containsKey("kinds")) {
-      kinds = _json["kinds"];
+      kinds = (_json["kinds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("namespaceIds")) {
-      namespaceIds = _json["namespaceIds"];
+      namespaceIds = (_json["namespaceIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -1416,8 +1421,9 @@ class GoogleLongrunningListOperationsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new GoogleLongrunningOperation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<GoogleLongrunningOperation>(
+              (value) => new GoogleLongrunningOperation.fromJson(value))
           .toList();
     }
   }
@@ -1485,13 +1491,15 @@ class GoogleLongrunningOperation {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("response")) {
-      response = _json["response"];
+      response =
+          (_json["response"] as core.Map).cast<core.String, core.Object>();
     }
   }
 
@@ -1553,15 +1561,14 @@ class GqlQuery {
       allowLiterals = _json["allowLiterals"];
     }
     if (_json.containsKey("namedBindings")) {
-      namedBindings =
-          commons.mapMap<core.Map<core.String, core.Object>, GqlQueryParameter>(
-              _json["namedBindings"],
-              (core.Map<core.String, core.Object> item) =>
-                  new GqlQueryParameter.fromJson(item));
+      namedBindings = commons.mapMap<core.Map, GqlQueryParameter>(
+          _json["namedBindings"].cast<core.String, core.Map>(),
+          (core.Map item) => new GqlQueryParameter.fromJson(item));
     }
     if (_json.containsKey("positionalBindings")) {
-      positionalBindings = _json["positionalBindings"]
-          .map((value) => new GqlQueryParameter.fromJson(value))
+      positionalBindings = (_json["positionalBindings"] as core.List)
+          .map<GqlQueryParameter>(
+              (value) => new GqlQueryParameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("queryString")) {
@@ -1597,12 +1604,12 @@ class GqlQueryParameter {
   /// result batches.
   core.String cursor;
   core.List<core.int> get cursorAsBytes {
-    return convert.BASE64.decode(cursor);
+    return convert.base64.decode(cursor);
   }
 
   void set cursorAsBytes(core.List<core.int> _bytes) {
     cursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// A value parameter.
@@ -1667,8 +1674,8 @@ class Key {
       partitionId = new PartitionId.fromJson(_json["partitionId"]);
     }
     if (_json.containsKey("path")) {
-      path = _json["path"]
-          .map((value) => new PathElement.fromJson(value))
+      path = (_json["path"] as core.List)
+          .map<PathElement>((value) => new PathElement.fromJson(value))
           .toList();
     }
   }
@@ -1758,7 +1765,9 @@ class LookupRequest {
 
   LookupRequest.fromJson(core.Map _json) {
     if (_json.containsKey("keys")) {
-      keys = _json["keys"].map((value) => new Key.fromJson(value)).toList();
+      keys = (_json["keys"] as core.List)
+          .map<Key>((value) => new Key.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("readOptions")) {
       readOptions = new ReadOptions.fromJson(_json["readOptions"]);
@@ -1799,17 +1808,18 @@ class LookupResponse {
 
   LookupResponse.fromJson(core.Map _json) {
     if (_json.containsKey("deferred")) {
-      deferred =
-          _json["deferred"].map((value) => new Key.fromJson(value)).toList();
+      deferred = (_json["deferred"] as core.List)
+          .map<Key>((value) => new Key.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("found")) {
-      found = _json["found"]
-          .map((value) => new EntityResult.fromJson(value))
+      found = (_json["found"] as core.List)
+          .map<EntityResult>((value) => new EntityResult.fromJson(value))
           .toList();
     }
     if (_json.containsKey("missing")) {
-      missing = _json["missing"]
-          .map((value) => new EntityResult.fromJson(value))
+      missing = (_json["missing"] as core.List)
+          .map<EntityResult>((value) => new EntityResult.fromJson(value))
           .toList();
     }
   }
@@ -2190,12 +2200,12 @@ class Query {
   /// query](https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets).
   core.String endCursor;
   core.List<core.int> get endCursorAsBytes {
-    return convert.BASE64.decode(endCursor);
+    return convert.base64.decode(endCursor);
   }
 
   void set endCursorAsBytes(core.List<core.int> _bytes) {
     endCursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The filter to apply.
@@ -2227,20 +2237,21 @@ class Query {
   /// query](https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets).
   core.String startCursor;
   core.List<core.int> get startCursorAsBytes {
-    return convert.BASE64.decode(startCursor);
+    return convert.base64.decode(startCursor);
   }
 
   void set startCursorAsBytes(core.List<core.int> _bytes) {
     startCursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   Query();
 
   Query.fromJson(core.Map _json) {
     if (_json.containsKey("distinctOn")) {
-      distinctOn = _json["distinctOn"]
-          .map((value) => new PropertyReference.fromJson(value))
+      distinctOn = (_json["distinctOn"] as core.List)
+          .map<PropertyReference>(
+              (value) => new PropertyReference.fromJson(value))
           .toList();
     }
     if (_json.containsKey("endCursor")) {
@@ -2250,8 +2261,8 @@ class Query {
       filter = new Filter.fromJson(_json["filter"]);
     }
     if (_json.containsKey("kind")) {
-      kind = _json["kind"]
-          .map((value) => new KindExpression.fromJson(value))
+      kind = (_json["kind"] as core.List)
+          .map<KindExpression>((value) => new KindExpression.fromJson(value))
           .toList();
     }
     if (_json.containsKey("limit")) {
@@ -2261,13 +2272,13 @@ class Query {
       offset = _json["offset"];
     }
     if (_json.containsKey("order")) {
-      order = _json["order"]
-          .map((value) => new PropertyOrder.fromJson(value))
+      order = (_json["order"] as core.List)
+          .map<PropertyOrder>((value) => new PropertyOrder.fromJson(value))
           .toList();
     }
     if (_json.containsKey("projection")) {
-      projection = _json["projection"]
-          .map((value) => new Projection.fromJson(value))
+      projection = (_json["projection"] as core.List)
+          .map<Projection>((value) => new Projection.fromJson(value))
           .toList();
     }
     if (_json.containsKey("startCursor")) {
@@ -2316,12 +2327,12 @@ class QueryResultBatch {
   /// A cursor that points to the position after the last result in the batch.
   core.String endCursor;
   core.List<core.int> get endCursorAsBytes {
-    return convert.BASE64.decode(endCursor);
+    return convert.base64.decode(endCursor);
   }
 
   void set endCursorAsBytes(core.List<core.int> _bytes) {
     endCursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The result type for every entity in `entity_results`.
@@ -2354,12 +2365,12 @@ class QueryResultBatch {
   /// Will be set when `skipped_results` != 0.
   core.String skippedCursor;
   core.List<core.int> get skippedCursorAsBytes {
-    return convert.BASE64.decode(skippedCursor);
+    return convert.base64.decode(skippedCursor);
   }
 
   void set skippedCursorAsBytes(core.List<core.int> _bytes) {
     skippedCursor =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The number of results skipped, typically because of an offset.
@@ -2387,8 +2398,8 @@ class QueryResultBatch {
       entityResultType = _json["entityResultType"];
     }
     if (_json.containsKey("entityResults")) {
-      entityResults = _json["entityResults"]
-          .map((value) => new EntityResult.fromJson(value))
+      entityResults = (_json["entityResults"] as core.List)
+          .map<EntityResult>((value) => new EntityResult.fromJson(value))
           .toList();
     }
     if (_json.containsKey("moreResults")) {
@@ -2463,12 +2474,12 @@ class ReadOptions {
   /// Datastore.BeginTransaction.
   core.String transaction;
   core.List<core.int> get transactionAsBytes {
-    return convert.BASE64.decode(transaction);
+    return convert.base64.decode(transaction);
   }
 
   void set transactionAsBytes(core.List<core.int> _bytes) {
     transaction =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   ReadOptions();
@@ -2500,12 +2511,12 @@ class ReadWrite {
   /// The transaction identifier of the transaction being retried.
   core.String previousTransaction;
   core.List<core.int> get previousTransactionAsBytes {
-    return convert.BASE64.decode(previousTransaction);
+    return convert.base64.decode(previousTransaction);
   }
 
   void set previousTransactionAsBytes(core.List<core.int> _bytes) {
     previousTransaction =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   ReadWrite();
@@ -2542,7 +2553,9 @@ class ReserveIdsRequest {
       databaseId = _json["databaseId"];
     }
     if (_json.containsKey("keys")) {
-      keys = _json["keys"].map((value) => new Key.fromJson(value)).toList();
+      keys = (_json["keys"] as core.List)
+          .map<Key>((value) => new Key.fromJson(value))
+          .toList();
     }
   }
 
@@ -2578,12 +2591,12 @@ class RollbackRequest {
   /// Datastore.BeginTransaction.
   core.String transaction;
   core.List<core.int> get transactionAsBytes {
-    return convert.BASE64.decode(transaction);
+    return convert.base64.decode(transaction);
   }
 
   void set transactionAsBytes(core.List<core.int> _bytes) {
     transaction =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   RollbackRequest();
@@ -2782,7 +2795,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -2856,12 +2872,12 @@ class Value {
   /// In JSON requests, must be base64-encoded.
   core.String blobValue;
   core.List<core.int> get blobValueAsBytes {
-    return convert.BASE64.decode(blobValue);
+    return convert.base64.decode(blobValue);
   }
 
   void set blobValueAsBytes(core.List<core.int> _bytes) {
     blobValue =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// A boolean value.

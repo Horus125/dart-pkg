@@ -66,7 +66,7 @@ class BillingAccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<BillingAccount> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -117,7 +117,7 @@ class BillingAccountsResourceApi {
   async.Future<ListBillingAccountsResponse> list(
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -186,7 +186,7 @@ class BillingAccountsProjectsResourceApi {
   async.Future<ListProjectBillingInfoResponse> list(core.String name,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -247,7 +247,7 @@ class ProjectsResourceApi {
   async.Future<ProjectBillingInfo> getBillingInfo(core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -329,14 +329,14 @@ class ProjectsResourceApi {
       ProjectBillingInfo request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -389,7 +389,7 @@ class ServicesResourceApi {
   async.Future<ListServicesResponse> list(
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -476,7 +476,7 @@ class ServicesSkusResourceApi {
       core.int pageSize,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -684,8 +684,8 @@ class ListBillingAccountsResponse {
 
   ListBillingAccountsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("billingAccounts")) {
-      billingAccounts = _json["billingAccounts"]
-          .map((value) => new BillingAccount.fromJson(value))
+      billingAccounts = (_json["billingAccounts"] as core.List)
+          .map<BillingAccount>((value) => new BillingAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -726,8 +726,9 @@ class ListProjectBillingInfoResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("projectBillingInfo")) {
-      projectBillingInfo = _json["projectBillingInfo"]
-          .map((value) => new ProjectBillingInfo.fromJson(value))
+      projectBillingInfo = (_json["projectBillingInfo"] as core.List)
+          .map<ProjectBillingInfo>(
+              (value) => new ProjectBillingInfo.fromJson(value))
           .toList();
     }
   }
@@ -763,8 +764,8 @@ class ListServicesResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("services")) {
-      services = _json["services"]
-          .map((value) => new Service.fromJson(value))
+      services = (_json["services"] as core.List)
+          .map<Service>((value) => new Service.fromJson(value))
           .toList();
     }
   }
@@ -799,7 +800,9 @@ class ListSkusResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("skus")) {
-      skus = _json["skus"].map((value) => new Sku.fromJson(value)).toList();
+      skus = (_json["skus"] as core.List)
+          .map<Sku>((value) => new Sku.fromJson(value))
+          .toList();
     }
   }
 
@@ -929,8 +932,8 @@ class PricingExpression {
       displayQuantity = _json["displayQuantity"];
     }
     if (_json.containsKey("tieredRates")) {
-      tieredRates = _json["tieredRates"]
-          .map((value) => new TierRate.fromJson(value))
+      tieredRates = (_json["tieredRates"] as core.List)
+          .map<TierRate>((value) => new TierRate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("usageUnit")) {
@@ -1189,15 +1192,16 @@ class Sku {
       name = _json["name"];
     }
     if (_json.containsKey("pricingInfo")) {
-      pricingInfo = _json["pricingInfo"]
-          .map((value) => new PricingInfo.fromJson(value))
+      pricingInfo = (_json["pricingInfo"] as core.List)
+          .map<PricingInfo>((value) => new PricingInfo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("serviceProviderName")) {
       serviceProviderName = _json["serviceProviderName"];
     }
     if (_json.containsKey("serviceRegions")) {
-      serviceRegions = _json["serviceRegions"];
+      serviceRegions =
+          (_json["serviceRegions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("skuId")) {
       skuId = _json["skuId"];

@@ -76,14 +76,14 @@ class SearchanalyticsResourceApi {
       SearchAnalyticsQueryRequest request, core.String siteUrl,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (siteUrl == null) {
       throw new core.ArgumentError("Parameter siteUrl is required.");
@@ -133,7 +133,7 @@ class SitemapsResourceApi {
   async.Future delete(core.String siteUrl, core.String feedpath,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -188,7 +188,7 @@ class SitemapsResourceApi {
   async.Future<WmxSitemap> get(core.String siteUrl, core.String feedpath,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -242,7 +242,7 @@ class SitemapsResourceApi {
   async.Future<SitemapsListResponse> list(core.String siteUrl,
       {core.String sitemapIndex, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -290,7 +290,7 @@ class SitemapsResourceApi {
   async.Future submit(core.String siteUrl, core.String feedpath,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -344,7 +344,7 @@ class SitesResourceApi {
   /// this method will complete with the same error.
   async.Future add(core.String siteUrl, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -389,7 +389,7 @@ class SitesResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String siteUrl, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -436,7 +436,7 @@ class SitesResourceApi {
   /// this method will complete with the same error.
   async.Future<WmxSite> get(core.String siteUrl, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -476,7 +476,7 @@ class SitesResourceApi {
   /// this method will complete with the same error.
   async.Future<SitesListResponse> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -550,7 +550,7 @@ class UrlcrawlerrorscountsResourceApi {
       core.String platform,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -638,7 +638,7 @@ class UrlcrawlerrorssamplesResourceApi {
       core.String category, core.String platform,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -717,7 +717,7 @@ class UrlcrawlerrorssamplesResourceApi {
       core.String siteUrl, core.String category, core.String platform,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -796,7 +796,7 @@ class UrlcrawlerrorssamplesResourceApi {
       core.String category, core.String platform,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -857,7 +857,7 @@ class ApiDataRow {
       impressions = _json["impressions"];
     }
     if (_json.containsKey("keys")) {
-      keys = _json["keys"];
+      keys = (_json["keys"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("position")) {
       position = _json["position"];
@@ -929,8 +929,9 @@ class ApiDimensionFilterGroup {
 
   ApiDimensionFilterGroup.fromJson(core.Map _json) {
     if (_json.containsKey("filters")) {
-      filters = _json["filters"]
-          .map((value) => new ApiDimensionFilter.fromJson(value))
+      filters = (_json["filters"] as core.List)
+          .map<ApiDimensionFilter>(
+              (value) => new ApiDimensionFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("groupType")) {
@@ -1008,12 +1009,13 @@ class SearchAnalyticsQueryRequest {
       aggregationType = _json["aggregationType"];
     }
     if (_json.containsKey("dimensionFilterGroups")) {
-      dimensionFilterGroups = _json["dimensionFilterGroups"]
-          .map((value) => new ApiDimensionFilterGroup.fromJson(value))
+      dimensionFilterGroups = (_json["dimensionFilterGroups"] as core.List)
+          .map<ApiDimensionFilterGroup>(
+              (value) => new ApiDimensionFilterGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"];
+      dimensions = (_json["dimensions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("endDate")) {
       endDate = _json["endDate"];
@@ -1081,8 +1083,9 @@ class SearchAnalyticsQueryResponse {
       responseAggregationType = _json["responseAggregationType"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new ApiDataRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<ApiDataRow>((value) => new ApiDataRow.fromJson(value))
+          .toList();
     }
   }
 
@@ -1108,8 +1111,8 @@ class SitemapsListResponse {
 
   SitemapsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("sitemap")) {
-      sitemap = _json["sitemap"]
-          .map((value) => new WmxSitemap.fromJson(value))
+      sitemap = (_json["sitemap"] as core.List)
+          .map<WmxSitemap>((value) => new WmxSitemap.fromJson(value))
           .toList();
     }
   }
@@ -1134,8 +1137,8 @@ class SitesListResponse {
 
   SitesListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("siteEntry")) {
-      siteEntry = _json["siteEntry"]
-          .map((value) => new WmxSite.fromJson(value))
+      siteEntry = (_json["siteEntry"] as core.List)
+          .map<WmxSite>((value) => new WmxSite.fromJson(value))
           .toList();
     }
   }
@@ -1202,8 +1205,9 @@ class UrlCrawlErrorCountsPerType {
       category = _json["category"];
     }
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new UrlCrawlErrorCount.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<UrlCrawlErrorCount>(
+              (value) => new UrlCrawlErrorCount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("platform")) {
@@ -1238,8 +1242,9 @@ class UrlCrawlErrorsCountsQueryResponse {
 
   UrlCrawlErrorsCountsQueryResponse.fromJson(core.Map _json) {
     if (_json.containsKey("countPerTypes")) {
-      countPerTypes = _json["countPerTypes"]
-          .map((value) => new UrlCrawlErrorCountsPerType.fromJson(value))
+      countPerTypes = (_json["countPerTypes"] as core.List)
+          .map<UrlCrawlErrorCountsPerType>(
+              (value) => new UrlCrawlErrorCountsPerType.fromJson(value))
           .toList();
     }
   }
@@ -1323,8 +1328,9 @@ class UrlCrawlErrorsSamplesListResponse {
 
   UrlCrawlErrorsSamplesListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("urlCrawlErrorSample")) {
-      urlCrawlErrorSample = _json["urlCrawlErrorSample"]
-          .map((value) => new UrlCrawlErrorsSample.fromJson(value))
+      urlCrawlErrorSample = (_json["urlCrawlErrorSample"] as core.List)
+          .map<UrlCrawlErrorsSample>(
+              (value) => new UrlCrawlErrorsSample.fromJson(value))
           .toList();
     }
   }
@@ -1352,10 +1358,12 @@ class UrlSampleDetails {
 
   UrlSampleDetails.fromJson(core.Map _json) {
     if (_json.containsKey("containingSitemaps")) {
-      containingSitemaps = _json["containingSitemaps"];
+      containingSitemaps =
+          (_json["containingSitemaps"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("linkedFromUrls")) {
-      linkedFromUrls = _json["linkedFromUrls"];
+      linkedFromUrls =
+          (_json["linkedFromUrls"] as core.List).cast<core.String>();
     }
   }
 
@@ -1442,8 +1450,9 @@ class WmxSitemap {
 
   WmxSitemap.fromJson(core.Map _json) {
     if (_json.containsKey("contents")) {
-      contents = _json["contents"]
-          .map((value) => new WmxSitemapContent.fromJson(value))
+      contents = (_json["contents"] as core.List)
+          .map<WmxSitemapContent>(
+              (value) => new WmxSitemapContent.fromJson(value))
           .toList();
     }
     if (_json.containsKey("errors")) {

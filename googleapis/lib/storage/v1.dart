@@ -97,7 +97,7 @@ class BucketAccessControlsResourceApi {
   async.Future delete(core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -158,7 +158,7 @@ class BucketAccessControlsResourceApi {
   async.Future<BucketAccessControl> get(core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -216,14 +216,14 @@ class BucketAccessControlsResourceApi {
       BucketAccessControl request, core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -268,7 +268,7 @@ class BucketAccessControlsResourceApi {
   async.Future<BucketAccessControls> list(core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -325,14 +325,14 @@ class BucketAccessControlsResourceApi {
       BucketAccessControl request, core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -390,14 +390,14 @@ class BucketAccessControlsResourceApi {
       BucketAccessControl request, core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -461,7 +461,7 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -535,7 +535,7 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -593,7 +593,7 @@ class BucketsResourceApi {
   async.Future<Policy> getIamPolicy(core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -682,14 +682,14 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -761,7 +761,7 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -827,7 +827,7 @@ class BucketsResourceApi {
       core.String bucket, core.String ifMetagenerationMatch,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -934,14 +934,14 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1003,14 +1003,14 @@ class BucketsResourceApi {
   async.Future<Policy> setIamPolicy(Policy request, core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1059,7 +1059,7 @@ class BucketsResourceApi {
       core.String bucket, core.List<core.String> permissions,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1165,14 +1165,14 @@ class BucketsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1232,14 +1232,14 @@ class ChannelsResourceApi {
   /// this method will complete with the same error.
   async.Future stop(Channel request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1290,7 +1290,7 @@ class DefaultObjectAccessControlsResourceApi {
   async.Future delete(core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1352,7 +1352,7 @@ class DefaultObjectAccessControlsResourceApi {
   async.Future<ObjectAccessControl> get(core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1410,14 +1410,14 @@ class DefaultObjectAccessControlsResourceApi {
       ObjectAccessControl request, core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1472,7 +1472,7 @@ class DefaultObjectAccessControlsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1536,14 +1536,14 @@ class DefaultObjectAccessControlsResourceApi {
       ObjectAccessControl request, core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1601,14 +1601,14 @@ class DefaultObjectAccessControlsResourceApi {
       ObjectAccessControl request, core.String bucket, core.String entity,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1665,7 +1665,7 @@ class NotificationsResourceApi {
   async.Future delete(core.String bucket, core.String notification,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1724,7 +1724,7 @@ class NotificationsResourceApi {
   async.Future<Notification> get(core.String bucket, core.String notification,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1781,14 +1781,14 @@ class NotificationsResourceApi {
   async.Future<Notification> insert(Notification request, core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -1835,7 +1835,7 @@ class NotificationsResourceApi {
   async.Future<Notifications> list(core.String bucket,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1903,7 +1903,7 @@ class ObjectAccessControlsResourceApi {
       core.String bucket, core.String object, core.String entity,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1979,7 +1979,7 @@ class ObjectAccessControlsResourceApi {
       core.String bucket, core.String object, core.String entity,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2051,14 +2051,14 @@ class ObjectAccessControlsResourceApi {
       ObjectAccessControl request, core.String bucket, core.String object,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -2120,7 +2120,7 @@ class ObjectAccessControlsResourceApi {
       core.String bucket, core.String object,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2193,14 +2193,14 @@ class ObjectAccessControlsResourceApi {
       core.String bucket, core.String object, core.String entity,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -2272,14 +2272,14 @@ class ObjectAccessControlsResourceApi {
       core.String bucket, core.String object, core.String entity,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -2383,14 +2383,14 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (destinationBucket == null) {
       throw new core.ArgumentError("Parameter destinationBucket is required.");
@@ -2540,14 +2540,14 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sourceBucket == null) {
       throw new core.ArgumentError("Parameter sourceBucket is required.");
@@ -2671,7 +2671,7 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2786,7 +2786,7 @@ class ObjectsResourceApi {
       commons.DownloadOptions downloadOptions:
           commons.DownloadOptions.Metadata}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2872,7 +2872,7 @@ class ObjectsResourceApi {
   async.Future<Policy> getIamPolicy(core.String bucket, core.String object,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3005,14 +3005,14 @@ class ObjectsResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -3128,7 +3128,7 @@ class ObjectsResourceApi {
       core.bool versions,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3247,14 +3247,14 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -3432,14 +3432,14 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sourceBucket == null) {
       throw new core.ArgumentError("Parameter sourceBucket is required.");
@@ -3555,14 +3555,14 @@ class ObjectsResourceApi {
       Policy request, core.String bucket, core.String object,
       {core.String generation, core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -3631,7 +3631,7 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3747,14 +3747,14 @@ class ObjectsResourceApi {
       core.String userProject,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -3859,14 +3859,14 @@ class ObjectsResourceApi {
       core.bool versions,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (bucket == null) {
       throw new core.ArgumentError("Parameter bucket is required.");
@@ -3945,7 +3945,7 @@ class ProjectsServiceAccountResourceApi {
   async.Future<ServiceAccount> get(core.String projectId,
       {core.String userProject, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4023,13 +4023,14 @@ class BucketCors {
       maxAgeSeconds = _json["maxAgeSeconds"];
     }
     if (_json.containsKey("method")) {
-      method = _json["method"];
+      method = (_json["method"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("origin")) {
-      origin = _json["origin"];
+      origin = (_json["origin"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("responseHeader")) {
-      responseHeader = _json["responseHeader"];
+      responseHeader =
+          (_json["responseHeader"] as core.List).cast<core.String>();
     }
   }
 
@@ -4150,7 +4151,8 @@ class BucketLifecycleRuleCondition {
       isLive = _json["isLive"];
     }
     if (_json.containsKey("matchesStorageClass")) {
-      matchesStorageClass = _json["matchesStorageClass"];
+      matchesStorageClass =
+          (_json["matchesStorageClass"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("numNewerVersions")) {
       numNewerVersions = _json["numNewerVersions"];
@@ -4222,8 +4224,9 @@ class BucketLifecycle {
 
   BucketLifecycle.fromJson(core.Map _json) {
     if (_json.containsKey("rule")) {
-      rule = _json["rule"]
-          .map((value) => new BucketLifecycleRule.fromJson(value))
+      rule = (_json["rule"] as core.List)
+          .map<BucketLifecycleRule>(
+              (value) => new BucketLifecycleRule.fromJson(value))
           .toList();
     }
   }
@@ -4527,23 +4530,26 @@ class Bucket {
 
   Bucket.fromJson(core.Map _json) {
     if (_json.containsKey("acl")) {
-      acl = _json["acl"]
-          .map((value) => new BucketAccessControl.fromJson(value))
+      acl = (_json["acl"] as core.List)
+          .map<BucketAccessControl>(
+              (value) => new BucketAccessControl.fromJson(value))
           .toList();
     }
     if (_json.containsKey("billing")) {
       billing = new BucketBilling.fromJson(_json["billing"]);
     }
     if (_json.containsKey("cors")) {
-      cors =
-          _json["cors"].map((value) => new BucketCors.fromJson(value)).toList();
+      cors = (_json["cors"] as core.List)
+          .map<BucketCors>((value) => new BucketCors.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("defaultEventBasedHold")) {
       defaultEventBasedHold = _json["defaultEventBasedHold"];
     }
     if (_json.containsKey("defaultObjectAcl")) {
-      defaultObjectAcl = _json["defaultObjectAcl"]
-          .map((value) => new ObjectAccessControl.fromJson(value))
+      defaultObjectAcl = (_json["defaultObjectAcl"] as core.List)
+          .map<ObjectAccessControl>(
+              (value) => new ObjectAccessControl.fromJson(value))
           .toList();
     }
     if (_json.containsKey("encryption")) {
@@ -4559,7 +4565,7 @@ class Bucket {
       kind = _json["kind"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("lifecycle")) {
       lifecycle = new BucketLifecycle.fromJson(_json["lifecycle"]);
@@ -4859,8 +4865,9 @@ class BucketAccessControls {
 
   BucketAccessControls.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new BucketAccessControl.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<BucketAccessControl>(
+              (value) => new BucketAccessControl.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4898,8 +4905,9 @@ class Buckets {
 
   Buckets.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Bucket.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Bucket>((value) => new Bucket.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -4977,7 +4985,7 @@ class Channel {
       kind = _json["kind"];
     }
     if (_json.containsKey("params")) {
-      params = _json["params"];
+      params = (_json["params"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("payload")) {
       payload = _json["payload"];
@@ -5122,8 +5130,9 @@ class ComposeRequest {
       kind = _json["kind"];
     }
     if (_json.containsKey("sourceObjects")) {
-      sourceObjects = _json["sourceObjects"]
-          .map((value) => new ComposeRequestSourceObjects.fromJson(value))
+      sourceObjects = (_json["sourceObjects"] as core.List)
+          .map<ComposeRequestSourceObjects>(
+              (value) => new ComposeRequestSourceObjects.fromJson(value))
           .toList();
     }
   }
@@ -5183,13 +5192,14 @@ class Notification {
 
   Notification.fromJson(core.Map _json) {
     if (_json.containsKey("custom_attributes")) {
-      customAttributes = _json["custom_attributes"];
+      customAttributes = (_json["custom_attributes"] as core.Map)
+          .cast<core.String, core.String>();
     }
     if (_json.containsKey("etag")) {
       etag = _json["etag"];
     }
     if (_json.containsKey("event_types")) {
-      eventTypes = _json["event_types"];
+      eventTypes = (_json["event_types"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -5258,8 +5268,8 @@ class Notifications {
 
   Notifications.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Notification.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Notification>((value) => new Notification.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -5476,8 +5486,9 @@ class Object {
 
   Object.fromJson(core.Map _json) {
     if (_json.containsKey("acl")) {
-      acl = _json["acl"]
-          .map((value) => new ObjectAccessControl.fromJson(value))
+      acl = (_json["acl"] as core.List)
+          .map<ObjectAccessControl>(
+              (value) => new ObjectAccessControl.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bucket")) {
@@ -5533,7 +5544,8 @@ class Object {
       mediaLink = _json["mediaLink"];
     }
     if (_json.containsKey("metadata")) {
-      metadata = _json["metadata"];
+      metadata =
+          (_json["metadata"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("metageneration")) {
       metageneration = _json["metageneration"];
@@ -5868,8 +5880,9 @@ class ObjectAccessControls {
 
   ObjectAccessControls.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new ObjectAccessControl.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<ObjectAccessControl>(
+              (value) => new ObjectAccessControl.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -5911,8 +5924,9 @@ class Objects {
 
   Objects.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Object.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Object>((value) => new Object.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -5921,7 +5935,7 @@ class Objects {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("prefixes")) {
-      prefixes = _json["prefixes"];
+      prefixes = (_json["prefixes"] as core.List).cast<core.String>();
     }
   }
 
@@ -6008,7 +6022,7 @@ class PolicyBindings {
       condition = _json["condition"];
     }
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -6040,12 +6054,12 @@ class Policy {
   /// HTTP 1.1  Entity tag for the policy.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The kind of item this is. For policies, this is always storage#policy.
@@ -6065,8 +6079,8 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new PolicyBindings.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<PolicyBindings>((value) => new PolicyBindings.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -6237,7 +6251,7 @@ class TestIamPermissionsResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 

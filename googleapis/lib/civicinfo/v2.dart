@@ -61,14 +61,14 @@ class DivisionsResourceApi {
   async.Future<DivisionSearchResponse> search(DivisionSearchRequest request,
       {core.String query, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (query != null) {
       _queryParams["query"] = [query];
@@ -114,14 +114,14 @@ class ElectionsResourceApi {
       ElectionsQueryRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -176,14 +176,14 @@ class ElectionsResourceApi {
       core.bool returnAllAvailableData,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (address == null) {
       throw new core.ArgumentError("Parameter address is required.");
@@ -259,14 +259,14 @@ class RepresentativesResourceApi {
       core.List<core.String> roles,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (address != null) {
       _queryParams["address"] = [address];
@@ -335,14 +335,14 @@ class RepresentativesResourceApi {
       core.List<core.String> roles,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (ocdId == null) {
       throw new core.ArgumentError("Parameter ocdId is required.");
@@ -411,8 +411,9 @@ class AdministrationRegion {
       name = _json["name"];
     }
     if (_json.containsKey("sources")) {
-      sources =
-          _json["sources"].map((value) => new Source.fromJson(value)).toList();
+      sources = (_json["sources"] as core.List)
+          .map<Source>((value) => new Source.fromJson(value))
+          .toList();
     }
   }
 
@@ -495,7 +496,7 @@ class AdministrativeBody {
       absenteeVotingInfoUrl = _json["absenteeVotingInfoUrl"];
     }
     if (_json.containsKey("addressLines")) {
-      addressLines = _json["addressLines"];
+      addressLines = (_json["addressLines"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("ballotInfoUrl")) {
       ballotInfoUrl = _json["ballotInfoUrl"];
@@ -508,8 +509,9 @@ class AdministrativeBody {
       electionInfoUrl = _json["electionInfoUrl"];
     }
     if (_json.containsKey("electionOfficials")) {
-      electionOfficials = _json["electionOfficials"]
-          .map((value) => new ElectionOfficial.fromJson(value))
+      electionOfficials = (_json["electionOfficials"] as core.List)
+          .map<ElectionOfficial>(
+              (value) => new ElectionOfficial.fromJson(value))
           .toList();
     }
     if (_json.containsKey("electionRegistrationConfirmationUrl")) {
@@ -533,7 +535,8 @@ class AdministrativeBody {
           new SimpleAddressType.fromJson(_json["physicalAddress"]);
     }
     if (_json.containsKey("voter_services")) {
-      voterServices = _json["voter_services"];
+      voterServices =
+          (_json["voter_services"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("votingLocationFinderUrl")) {
       votingLocationFinderUrl = _json["votingLocationFinderUrl"];
@@ -626,8 +629,8 @@ class Candidate {
       candidateUrl = _json["candidateUrl"];
     }
     if (_json.containsKey("channels")) {
-      channels = _json["channels"]
-          .map((value) => new Channel.fromJson(value))
+      channels = (_json["channels"] as core.List)
+          .map<Channel>((value) => new Channel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("email")) {
@@ -824,8 +827,8 @@ class Contest {
       ballotPlacement = _json["ballotPlacement"];
     }
     if (_json.containsKey("candidates")) {
-      candidates = _json["candidates"]
-          .map((value) => new Candidate.fromJson(value))
+      candidates = (_json["candidates"] as core.List)
+          .map<Candidate>((value) => new Candidate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("district")) {
@@ -838,7 +841,7 @@ class Contest {
       id = _json["id"];
     }
     if (_json.containsKey("level")) {
-      level = _json["level"];
+      level = (_json["level"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("numberElected")) {
       numberElected = _json["numberElected"];
@@ -853,7 +856,8 @@ class Contest {
       primaryParty = _json["primaryParty"];
     }
     if (_json.containsKey("referendumBallotResponses")) {
-      referendumBallotResponses = _json["referendumBallotResponses"];
+      referendumBallotResponses =
+          (_json["referendumBallotResponses"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("referendumBrief")) {
       referendumBrief = _json["referendumBrief"];
@@ -883,11 +887,12 @@ class Contest {
       referendumUrl = _json["referendumUrl"];
     }
     if (_json.containsKey("roles")) {
-      roles = _json["roles"];
+      roles = (_json["roles"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sources")) {
-      sources =
-          _json["sources"].map((value) => new Source.fromJson(value)).toList();
+      sources = (_json["sources"] as core.List)
+          .map<Source>((value) => new Source.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("special")) {
       special = _json["special"];
@@ -1056,8 +1061,9 @@ class DivisionSearchResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("results")) {
-      results = _json["results"]
-          .map((value) => new DivisionSearchResult.fromJson(value))
+      results = (_json["results"] as core.List)
+          .map<DivisionSearchResult>(
+              (value) => new DivisionSearchResult.fromJson(value))
           .toList();
     }
   }
@@ -1095,7 +1101,7 @@ class DivisionSearchResult {
 
   DivisionSearchResult.fromJson(core.Map _json) {
     if (_json.containsKey("aliases")) {
-      aliases = _json["aliases"];
+      aliases = (_json["aliases"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -1268,8 +1274,8 @@ class ElectionsQueryResponse {
 
   ElectionsQueryResponse.fromJson(core.Map _json) {
     if (_json.containsKey("elections")) {
-      elections = _json["elections"]
-          .map((value) => new Election.fromJson(value))
+      elections = (_json["elections"] as core.List)
+          .map<Election>((value) => new Election.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1370,13 +1376,13 @@ class GeographicDivision {
 
   GeographicDivision.fromJson(core.Map _json) {
     if (_json.containsKey("alsoKnownAs")) {
-      alsoKnownAs = _json["alsoKnownAs"];
+      alsoKnownAs = (_json["alsoKnownAs"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("officeIndices")) {
-      officeIndices = _json["officeIndices"];
+      officeIndices = (_json["officeIndices"] as core.List).cast<core.int>();
     }
   }
 
@@ -1432,20 +1438,22 @@ class Office {
       divisionId = _json["divisionId"];
     }
     if (_json.containsKey("levels")) {
-      levels = _json["levels"];
+      levels = (_json["levels"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
     }
     if (_json.containsKey("officialIndices")) {
-      officialIndices = _json["officialIndices"];
+      officialIndices =
+          (_json["officialIndices"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("roles")) {
-      roles = _json["roles"];
+      roles = (_json["roles"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sources")) {
-      sources =
-          _json["sources"].map((value) => new Source.fromJson(value)).toList();
+      sources = (_json["sources"] as core.List)
+          .map<Source>((value) => new Source.fromJson(value))
+          .toList();
     }
   }
 
@@ -1504,17 +1512,18 @@ class Official {
 
   Official.fromJson(core.Map _json) {
     if (_json.containsKey("address")) {
-      address = _json["address"]
-          .map((value) => new SimpleAddressType.fromJson(value))
+      address = (_json["address"] as core.List)
+          .map<SimpleAddressType>(
+              (value) => new SimpleAddressType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("channels")) {
-      channels = _json["channels"]
-          .map((value) => new Channel.fromJson(value))
+      channels = (_json["channels"] as core.List)
+          .map<Channel>((value) => new Channel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("emails")) {
-      emails = _json["emails"];
+      emails = (_json["emails"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -1523,13 +1532,13 @@ class Official {
       party = _json["party"];
     }
     if (_json.containsKey("phones")) {
-      phones = _json["phones"];
+      phones = (_json["phones"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("photoUrl")) {
       photoUrl = _json["photoUrl"];
     }
     if (_json.containsKey("urls")) {
-      urls = _json["urls"];
+      urls = (_json["urls"] as core.List).cast<core.String>();
     }
   }
 
@@ -1623,8 +1632,9 @@ class PollingLocation {
       pollingHours = _json["pollingHours"];
     }
     if (_json.containsKey("sources")) {
-      sources =
-          _json["sources"].map((value) => new Source.fromJson(value)).toList();
+      sources = (_json["sources"] as core.List)
+          .map<Source>((value) => new Source.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("startDate")) {
       startDate = _json["startDate"];
@@ -1705,7 +1715,7 @@ class PostalAddress {
 
   PostalAddress.fromJson(core.Map _json) {
     if (_json.containsKey("addressLines")) {
-      addressLines = _json["addressLines"];
+      addressLines = (_json["addressLines"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("administrativeAreaName")) {
       administrativeAreaName = _json["administrativeAreaName"];
@@ -1927,19 +1937,18 @@ class RepresentativeInfoData {
 
   RepresentativeInfoData.fromJson(core.Map _json) {
     if (_json.containsKey("divisions")) {
-      divisions = commons
-          .mapMap<core.Map<core.String, core.Object>, GeographicDivision>(
-              _json["divisions"],
-              (core.Map<core.String, core.Object> item) =>
-                  new GeographicDivision.fromJson(item));
+      divisions = commons.mapMap<core.Map, GeographicDivision>(
+          _json["divisions"].cast<core.String, core.Map>(),
+          (core.Map item) => new GeographicDivision.fromJson(item));
     }
     if (_json.containsKey("offices")) {
-      offices =
-          _json["offices"].map((value) => new Office.fromJson(value)).toList();
+      offices = (_json["offices"] as core.List)
+          .map<Office>((value) => new Office.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("officials")) {
-      officials = _json["officials"]
-          .map((value) => new Official.fromJson(value))
+      officials = (_json["officials"] as core.List)
+          .map<Official>((value) => new Official.fromJson(value))
           .toList();
     }
   }
@@ -2009,11 +2018,9 @@ class RepresentativeInfoResponse {
 
   RepresentativeInfoResponse.fromJson(core.Map _json) {
     if (_json.containsKey("divisions")) {
-      divisions = commons
-          .mapMap<core.Map<core.String, core.Object>, GeographicDivision>(
-              _json["divisions"],
-              (core.Map<core.String, core.Object> item) =>
-                  new GeographicDivision.fromJson(item));
+      divisions = commons.mapMap<core.Map, GeographicDivision>(
+          _json["divisions"].cast<core.String, core.Map>(),
+          (core.Map item) => new GeographicDivision.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2023,12 +2030,13 @@ class RepresentativeInfoResponse {
           new SimpleAddressType.fromJson(_json["normalizedInput"]);
     }
     if (_json.containsKey("offices")) {
-      offices =
-          _json["offices"].map((value) => new Office.fromJson(value)).toList();
+      offices = (_json["offices"] as core.List)
+          .map<Office>((value) => new Office.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("officials")) {
-      officials = _json["officials"]
-          .map((value) => new Official.fromJson(value))
+      officials = (_json["officials"] as core.List)
+          .map<Official>((value) => new Official.fromJson(value))
           .toList();
     }
   }
@@ -2243,18 +2251,18 @@ class VoterInfoResponse {
 
   VoterInfoResponse.fromJson(core.Map _json) {
     if (_json.containsKey("contests")) {
-      contests = _json["contests"]
-          .map((value) => new Contest.fromJson(value))
+      contests = (_json["contests"] as core.List)
+          .map<Contest>((value) => new Contest.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dropOffLocations")) {
-      dropOffLocations = _json["dropOffLocations"]
-          .map((value) => new PollingLocation.fromJson(value))
+      dropOffLocations = (_json["dropOffLocations"] as core.List)
+          .map<PollingLocation>((value) => new PollingLocation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("earlyVoteSites")) {
-      earlyVoteSites = _json["earlyVoteSites"]
-          .map((value) => new PollingLocation.fromJson(value))
+      earlyVoteSites = (_json["earlyVoteSites"] as core.List)
+          .map<PollingLocation>((value) => new PollingLocation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("election")) {
@@ -2271,21 +2279,22 @@ class VoterInfoResponse {
           new SimpleAddressType.fromJson(_json["normalizedInput"]);
     }
     if (_json.containsKey("otherElections")) {
-      otherElections = _json["otherElections"]
-          .map((value) => new Election.fromJson(value))
+      otherElections = (_json["otherElections"] as core.List)
+          .map<Election>((value) => new Election.fromJson(value))
           .toList();
     }
     if (_json.containsKey("pollingLocations")) {
-      pollingLocations = _json["pollingLocations"]
-          .map((value) => new PollingLocation.fromJson(value))
+      pollingLocations = (_json["pollingLocations"] as core.List)
+          .map<PollingLocation>((value) => new PollingLocation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("precinctId")) {
       precinctId = _json["precinctId"];
     }
     if (_json.containsKey("state")) {
-      state = _json["state"]
-          .map((value) => new AdministrationRegion.fromJson(value))
+      state = (_json["state"] as core.List)
+          .map<AdministrationRegion>(
+              (value) => new AdministrationRegion.fromJson(value))
           .toList();
     }
   }

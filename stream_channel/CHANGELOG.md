@@ -1,3 +1,14 @@
+## 1.6.6
+
+* Fix a Dart 2 issue with inner stream transformation in `GuaranteeChannel`.
+
+* Fix a Dart 2 issue with `StreamChannelTransformer.fromCodec()`.
+
+## 1.6.5
+
+* Fix an issue with `JsonDocumentTransformer.bind` where it created an internal
+  stream channel which didn't get a properly inferred type for its `sink`.
+
 ## 1.6.4
 
 * Fix a race condition in `MultiChannel` where messages from a remote virtual

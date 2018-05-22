@@ -106,14 +106,14 @@ class BillingAccountsExclusionsResourceApi {
   async.Future<LogExclusion> create(LogExclusion request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -159,7 +159,7 @@ class BillingAccountsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -207,7 +207,7 @@ class BillingAccountsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogExclusion> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -266,7 +266,7 @@ class BillingAccountsExclusionsResourceApi {
   async.Future<ListExclusionsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -332,14 +332,14 @@ class BillingAccountsExclusionsResourceApi {
   async.Future<LogExclusion> patch(LogExclusion request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -398,7 +398,7 @@ class BillingAccountsLogsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String logName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -457,7 +457,7 @@ class BillingAccountsLogsResourceApi {
   async.Future<ListLogsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -535,14 +535,14 @@ class BillingAccountsSinksResourceApi {
   async.Future<LogSink> create(LogSink request, core.String parent,
       {core.bool uniqueWriterIdentity, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -591,7 +591,7 @@ class BillingAccountsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -639,7 +639,7 @@ class BillingAccountsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<LogSink> get(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -697,7 +697,7 @@ class BillingAccountsSinksResourceApi {
   async.Future<ListSinksResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -781,14 +781,14 @@ class BillingAccountsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -868,14 +868,14 @@ class BillingAccountsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -927,14 +927,14 @@ class EntriesResourceApi {
   async.Future<ListLogEntriesResponse> list(ListLogEntriesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -973,14 +973,14 @@ class EntriesResourceApi {
   async.Future<WriteLogEntriesResponse> write(WriteLogEntriesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -1032,14 +1032,14 @@ class ExclusionsResourceApi {
   async.Future<LogExclusion> create(LogExclusion request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -1085,7 +1085,7 @@ class ExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1133,7 +1133,7 @@ class ExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogExclusion> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1192,7 +1192,7 @@ class ExclusionsResourceApi {
   async.Future<ListExclusionsResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1258,14 +1258,14 @@ class ExclusionsResourceApi {
   async.Future<LogExclusion> patch(LogExclusion request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1335,14 +1335,14 @@ class FoldersExclusionsResourceApi {
   async.Future<LogExclusion> create(LogExclusion request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -1388,7 +1388,7 @@ class FoldersExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1436,7 +1436,7 @@ class FoldersExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogExclusion> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1495,7 +1495,7 @@ class FoldersExclusionsResourceApi {
   async.Future<ListExclusionsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1561,14 +1561,14 @@ class FoldersExclusionsResourceApi {
   async.Future<LogExclusion> patch(LogExclusion request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1626,7 +1626,7 @@ class FoldersLogsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String logName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1685,7 +1685,7 @@ class FoldersLogsResourceApi {
   async.Future<ListLogsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1762,14 +1762,14 @@ class FoldersSinksResourceApi {
   async.Future<LogSink> create(LogSink request, core.String parent,
       {core.bool uniqueWriterIdentity, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -1818,7 +1818,7 @@ class FoldersSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1866,7 +1866,7 @@ class FoldersSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<LogSink> get(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1924,7 +1924,7 @@ class FoldersSinksResourceApi {
   async.Future<ListSinksResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2008,14 +2008,14 @@ class FoldersSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -2095,14 +2095,14 @@ class FoldersSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -2163,7 +2163,7 @@ class LogsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String logName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2222,7 +2222,7 @@ class LogsResourceApi {
   async.Future<ListLogsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2286,7 +2286,7 @@ class MonitoredResourceDescriptorsResourceApi {
   async.Future<ListMonitoredResourceDescriptorsResponse> list(
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2363,14 +2363,14 @@ class OrganizationsExclusionsResourceApi {
   async.Future<LogExclusion> create(LogExclusion request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -2416,7 +2416,7 @@ class OrganizationsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2464,7 +2464,7 @@ class OrganizationsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogExclusion> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2523,7 +2523,7 @@ class OrganizationsExclusionsResourceApi {
   async.Future<ListExclusionsResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2589,14 +2589,14 @@ class OrganizationsExclusionsResourceApi {
   async.Future<LogExclusion> patch(LogExclusion request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -2655,7 +2655,7 @@ class OrganizationsLogsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String logName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2714,7 +2714,7 @@ class OrganizationsLogsResourceApi {
   async.Future<ListLogsResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2792,14 +2792,14 @@ class OrganizationsSinksResourceApi {
   async.Future<LogSink> create(LogSink request, core.String parent,
       {core.bool uniqueWriterIdentity, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -2848,7 +2848,7 @@ class OrganizationsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2896,7 +2896,7 @@ class OrganizationsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<LogSink> get(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2954,7 +2954,7 @@ class OrganizationsSinksResourceApi {
   async.Future<ListSinksResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3038,14 +3038,14 @@ class OrganizationsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -3125,14 +3125,14 @@ class OrganizationsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -3208,14 +3208,14 @@ class ProjectsExclusionsResourceApi {
   async.Future<LogExclusion> create(LogExclusion request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -3261,7 +3261,7 @@ class ProjectsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3309,7 +3309,7 @@ class ProjectsExclusionsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogExclusion> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3368,7 +3368,7 @@ class ProjectsExclusionsResourceApi {
   async.Future<ListExclusionsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3434,14 +3434,14 @@ class ProjectsExclusionsResourceApi {
   async.Future<LogExclusion> patch(LogExclusion request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -3499,7 +3499,7 @@ class ProjectsLogsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String logName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3558,7 +3558,7 @@ class ProjectsLogsResourceApi {
   async.Future<ListLogsResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3618,14 +3618,14 @@ class ProjectsMetricsResourceApi {
   async.Future<LogMetric> create(LogMetric request, core.String parent,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -3667,7 +3667,7 @@ class ProjectsMetricsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String metricName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3712,7 +3712,7 @@ class ProjectsMetricsResourceApi {
   /// this method will complete with the same error.
   async.Future<LogMetric> get(core.String metricName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3767,7 +3767,7 @@ class ProjectsMetricsResourceApi {
   async.Future<ListLogMetricsResponse> list(core.String parent,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3824,14 +3824,14 @@ class ProjectsMetricsResourceApi {
   async.Future<LogMetric> update(LogMetric request, core.String metricName,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (metricName == null) {
       throw new core.ArgumentError("Parameter metricName is required.");
@@ -3898,14 +3898,14 @@ class ProjectsSinksResourceApi {
   async.Future<LogSink> create(LogSink request, core.String parent,
       {core.bool uniqueWriterIdentity, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -3954,7 +3954,7 @@ class ProjectsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4002,7 +4002,7 @@ class ProjectsSinksResourceApi {
   /// this method will complete with the same error.
   async.Future<LogSink> get(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4060,7 +4060,7 @@ class ProjectsSinksResourceApi {
   async.Future<ListSinksResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4144,14 +4144,14 @@ class ProjectsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -4231,14 +4231,14 @@ class ProjectsSinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -4311,14 +4311,14 @@ class SinksResourceApi {
   async.Future<LogSink> create(LogSink request, core.String parent,
       {core.bool uniqueWriterIdentity, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -4367,7 +4367,7 @@ class SinksResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4415,7 +4415,7 @@ class SinksResourceApi {
   /// this method will complete with the same error.
   async.Future<LogSink> get(core.String sinkName, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4473,7 +4473,7 @@ class SinksResourceApi {
   async.Future<ListSinksResponse> list(core.String parent,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4557,14 +4557,14 @@ class SinksResourceApi {
       core.String updateMask,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (sinkName == null) {
       throw new core.ArgumentError("Parameter sinkName is required.");
@@ -4678,7 +4678,7 @@ class Explicit {
 
   Explicit.fromJson(core.Map _json) {
     if (_json.containsKey("bounds")) {
-      bounds = _json["bounds"];
+      bounds = (_json["bounds"] as core.List).cast<core.double>();
     }
   }
 
@@ -5007,8 +5007,8 @@ class ListExclusionsResponse {
 
   ListExclusionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("exclusions")) {
-      exclusions = _json["exclusions"]
-          .map((value) => new LogExclusion.fromJson(value))
+      exclusions = (_json["exclusions"] as core.List)
+          .map<LogExclusion>((value) => new LogExclusion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5090,10 +5090,10 @@ class ListLogEntriesRequest {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("projectIds")) {
-      projectIds = _json["projectIds"];
+      projectIds = (_json["projectIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("resourceNames")) {
-      resourceNames = _json["resourceNames"];
+      resourceNames = (_json["resourceNames"] as core.List).cast<core.String>();
     }
   }
 
@@ -5144,8 +5144,8 @@ class ListLogEntriesResponse {
 
   ListLogEntriesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new LogEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<LogEntry>((value) => new LogEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5180,8 +5180,8 @@ class ListLogMetricsResponse {
 
   ListLogMetricsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"]
-          .map((value) => new LogMetric.fromJson(value))
+      metrics = (_json["metrics"] as core.List)
+          .map<LogMetric>((value) => new LogMetric.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -5217,7 +5217,7 @@ class ListLogsResponse {
 
   ListLogsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("logNames")) {
-      logNames = _json["logNames"];
+      logNames = (_json["logNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("nextPageToken")) {
       nextPageToken = _json["nextPageToken"];
@@ -5254,8 +5254,9 @@ class ListMonitoredResourceDescriptorsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resourceDescriptors")) {
-      resourceDescriptors = _json["resourceDescriptors"]
-          .map((value) => new MonitoredResourceDescriptor.fromJson(value))
+      resourceDescriptors = (_json["resourceDescriptors"] as core.List)
+          .map<MonitoredResourceDescriptor>(
+              (value) => new MonitoredResourceDescriptor.fromJson(value))
           .toList();
     }
   }
@@ -5291,8 +5292,9 @@ class ListSinksResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("sinks")) {
-      sinks =
-          _json["sinks"].map((value) => new LogSink.fromJson(value)).toList();
+      sinks = (_json["sinks"] as core.List)
+          .map<LogSink>((value) => new LogSink.fromJson(value))
+          .toList();
     }
   }
 
@@ -5429,10 +5431,11 @@ class LogEntry {
       insertId = _json["insertId"];
     }
     if (_json.containsKey("jsonPayload")) {
-      jsonPayload = _json["jsonPayload"];
+      jsonPayload =
+          (_json["jsonPayload"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("logName")) {
       logName = _json["logName"];
@@ -5441,7 +5444,8 @@ class LogEntry {
       operation = new LogEntryOperation.fromJson(_json["operation"]);
     }
     if (_json.containsKey("protoPayload")) {
-      protoPayload = _json["protoPayload"];
+      protoPayload =
+          (_json["protoPayload"] as core.Map).cast<core.String, core.Object>();
     }
     if (_json.containsKey("receiveTimestamp")) {
       receiveTimestamp = _json["receiveTimestamp"];
@@ -5850,7 +5854,8 @@ class LogMetric {
       filter = _json["filter"];
     }
     if (_json.containsKey("labelExtractors")) {
-      labelExtractors = _json["labelExtractors"];
+      labelExtractors = (_json["labelExtractors"] as core.Map)
+          .cast<core.String, core.String>();
     }
     if (_json.containsKey("metricDescriptor")) {
       metricDescriptor =
@@ -6143,8 +6148,8 @@ class MetricDescriptor {
       displayName = _json["displayName"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"]
-          .map((value) => new LabelDescriptor.fromJson(value))
+      labels = (_json["labels"] as core.List)
+          .map<LabelDescriptor>((value) => new LabelDescriptor.fromJson(value))
           .toList();
     }
     if (_json.containsKey("metricKind")) {
@@ -6222,7 +6227,7 @@ class MonitoredResource {
 
   MonitoredResource.fromJson(core.Map _json) {
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -6288,8 +6293,8 @@ class MonitoredResourceDescriptor {
       displayName = _json["displayName"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"]
-          .map((value) => new LabelDescriptor.fromJson(value))
+      labels = (_json["labels"] as core.List)
+          .map<LabelDescriptor>((value) => new LabelDescriptor.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
@@ -6477,7 +6482,9 @@ class RequestLog {
       latency = _json["latency"];
     }
     if (_json.containsKey("line")) {
-      line = _json["line"].map((value) => new LogLine.fromJson(value)).toList();
+      line = (_json["line"] as core.List)
+          .map<LogLine>((value) => new LogLine.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("megaCycles")) {
       megaCycles = _json["megaCycles"];
@@ -6507,8 +6514,8 @@ class RequestLog {
       responseSize = _json["responseSize"];
     }
     if (_json.containsKey("sourceReference")) {
-      sourceReference = _json["sourceReference"]
-          .map((value) => new SourceReference.fromJson(value))
+      sourceReference = (_json["sourceReference"] as core.List)
+          .map<SourceReference>((value) => new SourceReference.fromJson(value))
           .toList();
     }
     if (_json.containsKey("startTime")) {
@@ -6790,12 +6797,12 @@ class WriteLogEntriesRequest {
       dryRun = _json["dryRun"];
     }
     if (_json.containsKey("entries")) {
-      entries = _json["entries"]
-          .map((value) => new LogEntry.fromJson(value))
+      entries = (_json["entries"] as core.List)
+          .map<LogEntry>((value) => new LogEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("logName")) {
       logName = _json["logName"];

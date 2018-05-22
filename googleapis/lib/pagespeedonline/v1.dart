@@ -78,7 +78,7 @@ class PagespeedapiResourceApi {
       core.String strategy,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -169,10 +169,11 @@ class ResultFormattedResultsRuleResultsValueUrlBlocksHeader {
   ResultFormattedResultsRuleResultsValueUrlBlocksHeader.fromJson(
       core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"]
-          .map((value) =>
-              new ResultFormattedResultsRuleResultsValueUrlBlocksHeaderArgs
-                  .fromJson(value))
+      args = (_json["args"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksHeaderArgs>(
+              (value) =>
+                  new ResultFormattedResultsRuleResultsValueUrlBlocksHeaderArgs
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("format")) {
@@ -241,10 +242,11 @@ class ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetails {
   ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetails.fromJson(
       core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"]
-          .map((value) =>
-              new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetailsArgs
-                  .fromJson(value))
+      args = (_json["args"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetailsArgs>(
+              (value) =>
+                  new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetailsArgs
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("format")) {
@@ -314,10 +316,11 @@ class ResultFormattedResultsRuleResultsValueUrlBlocksUrlsResult {
   ResultFormattedResultsRuleResultsValueUrlBlocksUrlsResult.fromJson(
       core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"]
-          .map((value) =>
-              new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsResultArgs
-                  .fromJson(value))
+      args = (_json["args"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksUrlsResultArgs>(
+              (value) =>
+                  new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsResultArgs
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("format")) {
@@ -351,10 +354,11 @@ class ResultFormattedResultsRuleResultsValueUrlBlocksUrls {
 
   ResultFormattedResultsRuleResultsValueUrlBlocksUrls.fromJson(core.Map _json) {
     if (_json.containsKey("details")) {
-      details = _json["details"]
-          .map((value) =>
-              new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetails
-                  .fromJson(value))
+      details = (_json["details"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetails>(
+              (value) =>
+                  new ResultFormattedResultsRuleResultsValueUrlBlocksUrlsDetails
+                      .fromJson(value))
           .toList();
     }
     if (_json.containsKey("result")) {
@@ -393,8 +397,8 @@ class ResultFormattedResultsRuleResultsValueUrlBlocks {
               _json["header"]);
     }
     if (_json.containsKey("urls")) {
-      urls = _json["urls"]
-          .map((value) =>
+      urls = (_json["urls"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksUrls>((value) =>
               new ResultFormattedResultsRuleResultsValueUrlBlocksUrls.fromJson(
                   value))
           .toList();
@@ -443,8 +447,8 @@ class ResultFormattedResultsRuleResultsValue {
       ruleImpact = _json["ruleImpact"];
     }
     if (_json.containsKey("urlBlocks")) {
-      urlBlocks = _json["urlBlocks"]
-          .map((value) =>
+      urlBlocks = (_json["urlBlocks"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocks>((value) =>
               new ResultFormattedResultsRuleResultsValueUrlBlocks.fromJson(
                   value))
           .toList();
@@ -484,11 +488,11 @@ class ResultFormattedResults {
       locale = _json["locale"];
     }
     if (_json.containsKey("ruleResults")) {
-      ruleResults = commons.mapMap<core.Map<core.String, core.Object>,
-              ResultFormattedResultsRuleResultsValue>(
-          _json["ruleResults"],
-          (core.Map<core.String, core.Object> item) =>
-              new ResultFormattedResultsRuleResultsValue.fromJson(item));
+      ruleResults =
+          commons.mapMap<core.Map, ResultFormattedResultsRuleResultsValue>(
+              _json["ruleResults"].cast<core.String, core.Map>(),
+              (core.Map item) =>
+                  new ResultFormattedResultsRuleResultsValue.fromJson(item));
     }
   }
 
@@ -648,12 +652,12 @@ class ResultScreenshot {
   /// Image data base64 encoded.
   core.String data;
   core.List<core.int> get dataAsBytes {
-    return convert.BASE64.decode(data);
+    return convert.base64.decode(data);
   }
 
   void set dataAsBytes(core.List<core.int> _bytes) {
     data =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Height of screenshot in pixels.
@@ -788,7 +792,7 @@ class Result {
       id = _json["id"];
     }
     if (_json.containsKey("invalidRules")) {
-      invalidRules = _json["invalidRules"];
+      invalidRules = (_json["invalidRules"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];

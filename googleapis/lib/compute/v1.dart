@@ -211,7 +211,7 @@ class AcceleratorTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -278,7 +278,7 @@ class AcceleratorTypesResourceApi {
       core.String project, core.String zone, core.String acceleratorType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -386,7 +386,7 @@ class AcceleratorTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -505,7 +505,7 @@ class AddressesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -582,7 +582,7 @@ class AddressesResourceApi {
       core.String project, core.String region, core.String address,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -647,7 +647,7 @@ class AddressesResourceApi {
       core.String project, core.String region, core.String address,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -722,14 +722,14 @@ class AddressesResourceApi {
       Address request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -832,7 +832,7 @@ class AddressesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -951,7 +951,7 @@ class AutoscalersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1030,7 +1030,7 @@ class AutoscalersResourceApi {
       core.String project, core.String zone, core.String autoscaler,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1096,7 +1096,7 @@ class AutoscalersResourceApi {
       core.String project, core.String zone, core.String autoscaler,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1171,14 +1171,14 @@ class AutoscalersResourceApi {
       Autoscaler request, core.String project, core.String zone,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -1281,7 +1281,7 @@ class AutoscalersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1368,14 +1368,14 @@ class AutoscalersResourceApi {
       Autoscaler request, core.String project, core.String zone,
       {core.String autoscaler, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -1451,14 +1451,14 @@ class AutoscalersResourceApi {
       Autoscaler request, core.String project, core.String zone,
       {core.String autoscaler, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -1533,7 +1533,7 @@ class BackendBucketsResourceApi {
   async.Future<Operation> delete(core.String project, core.String backendBucket,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1591,7 +1591,7 @@ class BackendBucketsResourceApi {
       core.String project, core.String backendBucket,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1657,14 +1657,14 @@ class BackendBucketsResourceApi {
   async.Future<Operation> insert(BackendBucket request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -1759,7 +1759,7 @@ class BackendBucketsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1837,14 +1837,14 @@ class BackendBucketsResourceApi {
       BackendBucket request, core.String project, core.String backendBucket,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -1913,14 +1913,14 @@ class BackendBucketsResourceApi {
       BackendBucket request, core.String project, core.String backendBucket,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -2026,7 +2026,7 @@ class BackendServicesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2102,7 +2102,7 @@ class BackendServicesResourceApi {
       core.String project, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2160,7 +2160,7 @@ class BackendServicesResourceApi {
       core.String project, core.String backendService,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2219,14 +2219,14 @@ class BackendServicesResourceApi {
       core.String backendService,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -2292,14 +2292,14 @@ class BackendServicesResourceApi {
   async.Future<Operation> insert(BackendService request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -2395,7 +2395,7 @@ class BackendServicesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2476,14 +2476,14 @@ class BackendServicesResourceApi {
       BackendService request, core.String project, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -2554,14 +2554,14 @@ class BackendServicesResourceApi {
       BackendService request, core.String project, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -2666,7 +2666,7 @@ class DiskTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2731,7 +2731,7 @@ class DiskTypesResourceApi {
       core.String project, core.String zone, core.String diskType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2839,7 +2839,7 @@ class DiskTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2958,7 +2958,7 @@ class DisksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3039,14 +3039,14 @@ class DisksResourceApi {
       Snapshot request, core.String project, core.String zone, core.String disk,
       {core.bool guestFlush, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -3126,7 +3126,7 @@ class DisksResourceApi {
       core.String project, core.String zone, core.String disk,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3192,7 +3192,7 @@ class DisksResourceApi {
       core.String project, core.String zone, core.String disk,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3272,14 +3272,14 @@ class DisksResourceApi {
       Disk request, core.String project, core.String zone,
       {core.String requestId, core.String sourceImage, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -3385,7 +3385,7 @@ class DisksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3471,14 +3471,14 @@ class DisksResourceApi {
       core.String project, core.String zone, core.String disk,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -3556,14 +3556,14 @@ class DisksResourceApi {
       core.String project, core.String zone, core.String resource,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -3640,7 +3640,7 @@ class FirewallsResourceApi {
   async.Future<Operation> delete(core.String project, core.String firewall,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3696,7 +3696,7 @@ class FirewallsResourceApi {
   async.Future<Firewall> get(core.String project, core.String firewall,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3762,14 +3762,14 @@ class FirewallsResourceApi {
   async.Future<Operation> insert(Firewall request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -3863,7 +3863,7 @@ class FirewallsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3941,14 +3941,14 @@ class FirewallsResourceApi {
       Firewall request, core.String project, core.String firewall,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -4018,14 +4018,14 @@ class FirewallsResourceApi {
       Firewall request, core.String project, core.String firewall,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -4130,7 +4130,7 @@ class ForwardingRulesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4209,7 +4209,7 @@ class ForwardingRulesResourceApi {
       core.String project, core.String region, core.String forwardingRule,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4274,7 +4274,7 @@ class ForwardingRulesResourceApi {
       core.String project, core.String region, core.String forwardingRule,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4349,14 +4349,14 @@ class ForwardingRulesResourceApi {
       ForwardingRule request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -4460,7 +4460,7 @@ class ForwardingRulesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4547,14 +4547,14 @@ class ForwardingRulesResourceApi {
       core.String project, core.String region, core.String forwardingRule,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -4631,7 +4631,7 @@ class GlobalAddressesResourceApi {
   async.Future<Operation> delete(core.String project, core.String address,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4688,7 +4688,7 @@ class GlobalAddressesResourceApi {
   async.Future<Address> get(core.String project, core.String address,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4754,14 +4754,14 @@ class GlobalAddressesResourceApi {
   async.Future<Operation> insert(Address request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -4855,7 +4855,7 @@ class GlobalAddressesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4936,7 +4936,7 @@ class GlobalForwardingRulesResourceApi {
       core.String project, core.String forwardingRule,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -4994,7 +4994,7 @@ class GlobalForwardingRulesResourceApi {
       core.String project, core.String forwardingRule,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5060,14 +5060,14 @@ class GlobalForwardingRulesResourceApi {
   async.Future<Operation> insert(ForwardingRule request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -5163,7 +5163,7 @@ class GlobalForwardingRulesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5242,14 +5242,14 @@ class GlobalForwardingRulesResourceApi {
       TargetReference request, core.String project, core.String forwardingRule,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -5356,7 +5356,7 @@ class GlobalOperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5414,7 +5414,7 @@ class GlobalOperationsResourceApi {
   async.Future delete(core.String project, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5470,7 +5470,7 @@ class GlobalOperationsResourceApi {
   async.Future<Operation> get(core.String project, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5571,7 +5571,7 @@ class GlobalOperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5650,7 +5650,7 @@ class HealthChecksResourceApi {
   async.Future<Operation> delete(core.String project, core.String healthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5707,7 +5707,7 @@ class HealthChecksResourceApi {
   async.Future<HealthCheck> get(core.String project, core.String healthCheck,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5773,14 +5773,14 @@ class HealthChecksResourceApi {
   async.Future<Operation> insert(HealthCheck request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -5875,7 +5875,7 @@ class HealthChecksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -5953,14 +5953,14 @@ class HealthChecksResourceApi {
       HealthCheck request, core.String project, core.String healthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6029,14 +6029,14 @@ class HealthChecksResourceApi {
       HealthCheck request, core.String project, core.String healthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6109,7 +6109,7 @@ class HttpHealthChecksResourceApi {
       core.String project, core.String httpHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6167,7 +6167,7 @@ class HttpHealthChecksResourceApi {
       core.String project, core.String httpHealthCheck,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6233,14 +6233,14 @@ class HttpHealthChecksResourceApi {
   async.Future<Operation> insert(HttpHealthCheck request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6336,7 +6336,7 @@ class HttpHealthChecksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6415,14 +6415,14 @@ class HttpHealthChecksResourceApi {
       HttpHealthCheck request, core.String project, core.String httpHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6491,14 +6491,14 @@ class HttpHealthChecksResourceApi {
       HttpHealthCheck request, core.String project, core.String httpHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6571,7 +6571,7 @@ class HttpsHealthChecksResourceApi {
       core.String project, core.String httpsHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6629,7 +6629,7 @@ class HttpsHealthChecksResourceApi {
       core.String project, core.String httpsHealthCheck,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6695,14 +6695,14 @@ class HttpsHealthChecksResourceApi {
   async.Future<Operation> insert(HttpsHealthCheck request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6798,7 +6798,7 @@ class HttpsHealthChecksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -6877,14 +6877,14 @@ class HttpsHealthChecksResourceApi {
       core.String httpsHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -6953,14 +6953,14 @@ class HttpsHealthChecksResourceApi {
       core.String httpsHealthCheck,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7031,7 +7031,7 @@ class ImagesResourceApi {
   async.Future<Operation> delete(core.String project, core.String image,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7105,14 +7105,14 @@ class ImagesResourceApi {
       DeprecationStatus request, core.String project, core.String image,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7166,7 +7166,7 @@ class ImagesResourceApi {
   async.Future<Image> get(core.String project, core.String image,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7220,7 +7220,7 @@ class ImagesResourceApi {
   async.Future<Image> getFromFamily(core.String project, core.String family,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7288,14 +7288,14 @@ class ImagesResourceApi {
   async.Future<Operation> insert(Image request, core.String project,
       {core.bool forceCreate, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7397,7 +7397,7 @@ class ImagesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7461,14 +7461,14 @@ class ImagesResourceApi {
       GlobalSetLabelsRequest request, core.String project, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7560,14 +7560,14 @@ class InstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7674,7 +7674,7 @@ class InstanceGroupManagersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7753,7 +7753,7 @@ class InstanceGroupManagersResourceApi {
       core.String project, core.String zone, core.String instanceGroupManager,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -7848,14 +7848,14 @@ class InstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -7917,7 +7917,7 @@ class InstanceGroupManagersResourceApi {
       core.String project, core.String zone, core.String instanceGroupManager,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8001,14 +8001,14 @@ class InstanceGroupManagersResourceApi {
       InstanceGroupManager request, core.String project, core.String zone,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -8112,7 +8112,7 @@ class InstanceGroupManagersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8198,7 +8198,7 @@ class InstanceGroupManagersResourceApi {
           core.String pageToken,
           core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8303,14 +8303,14 @@ class InstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -8397,7 +8397,7 @@ class InstanceGroupManagersResourceApi {
       core.String instanceGroupManager, core.int size,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8487,14 +8487,14 @@ class InstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -8579,14 +8579,14 @@ class InstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -8675,14 +8675,14 @@ class InstanceGroupsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -8787,7 +8787,7 @@ class InstanceGroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8866,7 +8866,7 @@ class InstanceGroupsResourceApi {
       core.String project, core.String zone, core.String instanceGroup,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -8930,7 +8930,7 @@ class InstanceGroupsResourceApi {
       core.String project, core.String zone, core.String instanceGroup,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -9004,14 +9004,14 @@ class InstanceGroupsResourceApi {
       InstanceGroup request, core.String project, core.String zone,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9114,7 +9114,7 @@ class InstanceGroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -9238,14 +9238,14 @@ class InstanceGroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9340,14 +9340,14 @@ class InstanceGroupsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9427,14 +9427,14 @@ class InstanceGroupsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9515,7 +9515,7 @@ class InstanceTemplatesResourceApi {
       core.String project, core.String instanceTemplate,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -9573,7 +9573,7 @@ class InstanceTemplatesResourceApi {
       core.String project, core.String instanceTemplate,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -9641,14 +9641,14 @@ class InstanceTemplatesResourceApi {
   async.Future<Operation> insert(InstanceTemplate request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9744,7 +9744,7 @@ class InstanceTemplatesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -9838,14 +9838,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -9954,7 +9954,7 @@ class InstancesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10036,14 +10036,14 @@ class InstancesResourceApi {
       core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -10119,7 +10119,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10206,7 +10206,7 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10295,7 +10295,7 @@ class InstancesResourceApi {
       core.String instance, core.String deviceName,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10366,7 +10366,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10437,7 +10437,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.int port, core.String start_1, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10519,14 +10519,14 @@ class InstancesResourceApi {
       Instance request, core.String project, core.String zone,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -10629,7 +10629,7 @@ class InstancesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10751,7 +10751,7 @@ class InstancesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10840,7 +10840,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -10924,7 +10924,7 @@ class InstancesResourceApi {
       core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -11017,7 +11017,7 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -11107,14 +11107,14 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11196,14 +11196,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11281,14 +11281,14 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11366,14 +11366,14 @@ class InstancesResourceApi {
       core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11456,14 +11456,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11540,14 +11540,14 @@ class InstancesResourceApi {
       core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11629,14 +11629,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11713,14 +11713,14 @@ class InstancesResourceApi {
       Tags request, core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11796,7 +11796,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -11882,14 +11882,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -11969,7 +11969,7 @@ class InstancesResourceApi {
       core.String project, core.String zone, core.String instance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12060,14 +12060,14 @@ class InstancesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -12184,7 +12184,7 @@ class InterconnectAttachmentsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12263,7 +12263,7 @@ class InterconnectAttachmentsResourceApi {
       core.String interconnectAttachment,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12329,7 +12329,7 @@ class InterconnectAttachmentsResourceApi {
       core.String region, core.String interconnectAttachment,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12405,14 +12405,14 @@ class InterconnectAttachmentsResourceApi {
       InterconnectAttachment request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -12517,7 +12517,7 @@ class InterconnectAttachmentsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12593,7 +12593,7 @@ class InterconnectLocationsResourceApi {
       core.String project, core.String interconnectLocation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12695,7 +12695,7 @@ class InterconnectLocationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12776,7 +12776,7 @@ class InterconnectsResourceApi {
   async.Future<Operation> delete(core.String project, core.String interconnect,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12833,7 +12833,7 @@ class InterconnectsResourceApi {
   async.Future<Interconnect> get(core.String project, core.String interconnect,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -12899,14 +12899,14 @@ class InterconnectsResourceApi {
   async.Future<Operation> insert(Interconnect request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -13000,7 +13000,7 @@ class InterconnectsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13078,14 +13078,14 @@ class InterconnectsResourceApi {
       Interconnect request, core.String project, core.String interconnect,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -13143,7 +13143,7 @@ class LicensesResourceApi {
   async.Future<License> get(core.String project, core.String license,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13249,7 +13249,7 @@ class MachineTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13316,7 +13316,7 @@ class MachineTypesResourceApi {
       core.String project, core.String zone, core.String machineType,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13424,7 +13424,7 @@ class MachineTypesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13512,14 +13512,14 @@ class NetworksResourceApi {
       core.String project, core.String network,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -13585,7 +13585,7 @@ class NetworksResourceApi {
   async.Future<Operation> delete(core.String project, core.String network,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13642,7 +13642,7 @@ class NetworksResourceApi {
   async.Future<Network> get(core.String project, core.String network,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13708,14 +13708,14 @@ class NetworksResourceApi {
   async.Future<Operation> insert(Network request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -13809,7 +13809,7 @@ class NetworksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -13886,14 +13886,14 @@ class NetworksResourceApi {
       Network request, core.String project, core.String network,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -13961,14 +13961,14 @@ class NetworksResourceApi {
       core.String project, core.String network,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14035,7 +14035,7 @@ class NetworksResourceApi {
       core.String project, core.String network,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14108,7 +14108,7 @@ class ProjectsResourceApi {
   async.Future<Operation> disableXpnHost(core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14173,14 +14173,14 @@ class ProjectsResourceApi {
       ProjectsDisableXpnResourceRequest request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14237,7 +14237,7 @@ class ProjectsResourceApi {
   async.Future<Operation> enableXpnHost(core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14303,14 +14303,14 @@ class ProjectsResourceApi {
       ProjectsEnableXpnResourceRequest request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14353,7 +14353,7 @@ class ProjectsResourceApi {
   /// this method will complete with the same error.
   async.Future<Project> get(core.String project, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14398,7 +14398,7 @@ class ProjectsResourceApi {
   /// this method will complete with the same error.
   async.Future<Project> getXpnHost(core.String project, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14456,7 +14456,7 @@ class ProjectsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14528,14 +14528,14 @@ class ProjectsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14603,14 +14603,14 @@ class ProjectsResourceApi {
   async.Future<Operation> moveDisk(DiskMoveRequest request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14671,14 +14671,14 @@ class ProjectsResourceApi {
       InstanceMoveRequest request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14739,14 +14739,14 @@ class ProjectsResourceApi {
       Metadata request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14809,14 +14809,14 @@ class ProjectsResourceApi {
       UsageExportLocation request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -14887,7 +14887,7 @@ class RegionAutoscalersResourceApi {
       core.String project, core.String region, core.String autoscaler,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -14952,7 +14952,7 @@ class RegionAutoscalersResourceApi {
       core.String project, core.String region, core.String autoscaler,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -15027,14 +15027,14 @@ class RegionAutoscalersResourceApi {
       Autoscaler request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15138,7 +15138,7 @@ class RegionAutoscalersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -15225,14 +15225,14 @@ class RegionAutoscalersResourceApi {
       Autoscaler request, core.String project, core.String region,
       {core.String autoscaler, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15308,14 +15308,14 @@ class RegionAutoscalersResourceApi {
       Autoscaler request, core.String project, core.String region,
       {core.String autoscaler, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15395,7 +15395,7 @@ class RegionBackendServicesResourceApi {
       core.String project, core.String region, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -15460,7 +15460,7 @@ class RegionBackendServicesResourceApi {
       core.String project, core.String region, core.String backendService,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -15529,14 +15529,14 @@ class RegionBackendServicesResourceApi {
       core.String backendService,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15611,14 +15611,14 @@ class RegionBackendServicesResourceApi {
       BackendService request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15722,7 +15722,7 @@ class RegionBackendServicesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -15811,14 +15811,14 @@ class RegionBackendServicesResourceApi {
       core.String region, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -15897,14 +15897,14 @@ class RegionBackendServicesResourceApi {
       core.String region, core.String backendService,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -16015,7 +16015,7 @@ class RegionCommitmentsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16082,7 +16082,7 @@ class RegionCommitmentsResourceApi {
       core.String project, core.String region, core.String commitment,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16157,14 +16157,14 @@ class RegionCommitmentsResourceApi {
       Commitment request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -16267,7 +16267,7 @@ class RegionCommitmentsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16375,14 +16375,14 @@ class RegionInstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -16457,7 +16457,7 @@ class RegionInstanceGroupManagersResourceApi {
       core.String project, core.String region, core.String instanceGroupManager,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16552,14 +16552,14 @@ class RegionInstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -16620,7 +16620,7 @@ class RegionInstanceGroupManagersResourceApi {
       core.String project, core.String region, core.String instanceGroupManager,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16702,14 +16702,14 @@ class RegionInstanceGroupManagersResourceApi {
       InstanceGroupManager request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -16813,7 +16813,7 @@ class RegionInstanceGroupManagersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -16897,7 +16897,7 @@ class RegionInstanceGroupManagersResourceApi {
           core.String pageToken,
           core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17002,14 +17002,14 @@ class RegionInstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -17096,7 +17096,7 @@ class RegionInstanceGroupManagersResourceApi {
       core.String instanceGroupManager, core.int size,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17185,14 +17185,14 @@ class RegionInstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -17273,14 +17273,14 @@ class RegionInstanceGroupManagersResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -17348,7 +17348,7 @@ class RegionInstanceGroupsResourceApi {
       core.String project, core.String region, core.String instanceGroup,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17457,7 +17457,7 @@ class RegionInstanceGroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17583,14 +17583,14 @@ class RegionInstanceGroupsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -17680,14 +17680,14 @@ class RegionInstanceGroupsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -17754,7 +17754,7 @@ class RegionOperationsResourceApi {
       core.String project, core.String region, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17818,7 +17818,7 @@ class RegionOperationsResourceApi {
       core.String project, core.String region, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -17927,7 +17927,7 @@ class RegionOperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18000,7 +18000,7 @@ class RegionsResourceApi {
   async.Future<Region> get(core.String project, core.String region,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18100,7 +18100,7 @@ class RegionsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18213,7 +18213,7 @@ class RoutersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18290,7 +18290,7 @@ class RoutersResourceApi {
       core.String project, core.String region, core.String router,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18356,7 +18356,7 @@ class RoutersResourceApi {
       core.String project, core.String region, core.String router,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18418,7 +18418,7 @@ class RoutersResourceApi {
       core.String project, core.String region, core.String router,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18494,14 +18494,14 @@ class RoutersResourceApi {
       Router request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -18604,7 +18604,7 @@ class RoutersResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18691,14 +18691,14 @@ class RoutersResourceApi {
       core.String region, core.String router,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -18762,14 +18762,14 @@ class RoutersResourceApi {
       core.String project, core.String region, core.String router,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -18844,14 +18844,14 @@ class RoutersResourceApi {
       core.String region, core.String router,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -18927,7 +18927,7 @@ class RoutesResourceApi {
   async.Future<Operation> delete(core.String project, core.String route,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -18984,7 +18984,7 @@ class RoutesResourceApi {
   async.Future<Route> get(core.String project, core.String route,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19050,14 +19050,14 @@ class RoutesResourceApi {
   async.Future<Operation> insert(Route request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -19151,7 +19151,7 @@ class RoutesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19236,7 +19236,7 @@ class SnapshotsResourceApi {
   async.Future<Operation> delete(core.String project, core.String snapshot,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19293,7 +19293,7 @@ class SnapshotsResourceApi {
   async.Future<Snapshot> get(core.String project, core.String snapshot,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19394,7 +19394,7 @@ class SnapshotsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19458,14 +19458,14 @@ class SnapshotsResourceApi {
       GlobalSetLabelsRequest request, core.String project, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -19535,7 +19535,7 @@ class SslCertificatesResourceApi {
       core.String project, core.String sslCertificate,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19593,7 +19593,7 @@ class SslCertificatesResourceApi {
       core.String project, core.String sslCertificate,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19659,14 +19659,14 @@ class SslCertificatesResourceApi {
   async.Future<Operation> insert(SslCertificate request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -19762,7 +19762,7 @@ class SslCertificatesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19876,7 +19876,7 @@ class SubnetworksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -19955,7 +19955,7 @@ class SubnetworksResourceApi {
       core.String project, core.String region, core.String subnetwork,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20039,14 +20039,14 @@ class SubnetworksResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -20109,7 +20109,7 @@ class SubnetworksResourceApi {
       core.String project, core.String region, core.String subnetwork,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20184,14 +20184,14 @@ class SubnetworksResourceApi {
       Subnetwork request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -20294,7 +20294,7 @@ class SubnetworksResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20384,14 +20384,14 @@ class SubnetworksResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -20470,7 +20470,7 @@ class TargetHttpProxiesResourceApi {
       core.String project, core.String targetHttpProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20528,7 +20528,7 @@ class TargetHttpProxiesResourceApi {
       core.String project, core.String targetHttpProxy,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20594,14 +20594,14 @@ class TargetHttpProxiesResourceApi {
   async.Future<Operation> insert(TargetHttpProxy request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -20697,7 +20697,7 @@ class TargetHttpProxiesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20774,14 +20774,14 @@ class TargetHttpProxiesResourceApi {
       UrlMapReference request, core.String project, core.String targetHttpProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -20855,7 +20855,7 @@ class TargetHttpsProxiesResourceApi {
       core.String project, core.String targetHttpsProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20913,7 +20913,7 @@ class TargetHttpsProxiesResourceApi {
       core.String project, core.String targetHttpsProxy,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -20979,14 +20979,14 @@ class TargetHttpsProxiesResourceApi {
   async.Future<Operation> insert(TargetHttpsProxy request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21082,7 +21082,7 @@ class TargetHttpsProxiesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -21163,14 +21163,14 @@ class TargetHttpsProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21240,14 +21240,14 @@ class TargetHttpsProxiesResourceApi {
       core.String project, core.String targetHttpsProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21353,7 +21353,7 @@ class TargetInstancesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -21432,7 +21432,7 @@ class TargetInstancesResourceApi {
       core.String project, core.String zone, core.String targetInstance,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -21498,7 +21498,7 @@ class TargetInstancesResourceApi {
       core.String project, core.String zone, core.String targetInstance,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -21573,14 +21573,14 @@ class TargetInstancesResourceApi {
       TargetInstance request, core.String project, core.String zone,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21684,7 +21684,7 @@ class TargetInstancesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -21779,14 +21779,14 @@ class TargetPoolsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21863,14 +21863,14 @@ class TargetPoolsResourceApi {
       core.String project, core.String region, core.String targetPool,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -21975,7 +21975,7 @@ class TargetPoolsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22054,7 +22054,7 @@ class TargetPoolsResourceApi {
       core.String project, core.String region, core.String targetPool,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22120,7 +22120,7 @@ class TargetPoolsResourceApi {
       core.String project, core.String region, core.String targetPool,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22186,14 +22186,14 @@ class TargetPoolsResourceApi {
       core.String project, core.String region, core.String targetPool,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22266,14 +22266,14 @@ class TargetPoolsResourceApi {
       TargetPool request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22377,7 +22377,7 @@ class TargetPoolsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22466,14 +22466,14 @@ class TargetPoolsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22554,14 +22554,14 @@ class TargetPoolsResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22640,14 +22640,14 @@ class TargetPoolsResourceApi {
       core.String project, core.String region, core.String targetPool,
       {core.double failoverRatio, core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22729,7 +22729,7 @@ class TargetSslProxiesResourceApi {
       core.String project, core.String targetSslProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22787,7 +22787,7 @@ class TargetSslProxiesResourceApi {
       core.String project, core.String targetSslProxy,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -22853,14 +22853,14 @@ class TargetSslProxiesResourceApi {
   async.Future<Operation> insert(TargetSslProxy request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -22956,7 +22956,7 @@ class TargetSslProxiesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23037,14 +23037,14 @@ class TargetSslProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23117,14 +23117,14 @@ class TargetSslProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23197,14 +23197,14 @@ class TargetSslProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23278,7 +23278,7 @@ class TargetTcpProxiesResourceApi {
       core.String project, core.String targetTcpProxy,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23336,7 +23336,7 @@ class TargetTcpProxiesResourceApi {
       core.String project, core.String targetTcpProxy,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23402,14 +23402,14 @@ class TargetTcpProxiesResourceApi {
   async.Future<Operation> insert(TargetTcpProxy request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23505,7 +23505,7 @@ class TargetTcpProxiesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23586,14 +23586,14 @@ class TargetTcpProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23666,14 +23666,14 @@ class TargetTcpProxiesResourceApi {
       {core.String requestId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -23781,7 +23781,7 @@ class TargetVpnGatewaysResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23860,7 +23860,7 @@ class TargetVpnGatewaysResourceApi {
       core.String project, core.String region, core.String targetVpnGateway,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -23926,7 +23926,7 @@ class TargetVpnGatewaysResourceApi {
       core.String project, core.String region, core.String targetVpnGateway,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24001,14 +24001,14 @@ class TargetVpnGatewaysResourceApi {
       TargetVpnGateway request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24113,7 +24113,7 @@ class TargetVpnGatewaysResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24198,7 +24198,7 @@ class UrlMapsResourceApi {
   async.Future<Operation> delete(core.String project, core.String urlMap,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24255,7 +24255,7 @@ class UrlMapsResourceApi {
   async.Future<UrlMap> get(core.String project, core.String urlMap,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24321,14 +24321,14 @@ class UrlMapsResourceApi {
   async.Future<Operation> insert(UrlMap request, core.String project,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24392,14 +24392,14 @@ class UrlMapsResourceApi {
       CacheInvalidationRule request, core.String project, core.String urlMap,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24499,7 +24499,7 @@ class UrlMapsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24577,14 +24577,14 @@ class UrlMapsResourceApi {
       UrlMap request, core.String project, core.String urlMap,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24653,14 +24653,14 @@ class UrlMapsResourceApi {
       UrlMap request, core.String project, core.String urlMap,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24717,14 +24717,14 @@ class UrlMapsResourceApi {
       UrlMapsValidateRequest request, core.String project, core.String urlMap,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -24827,7 +24827,7 @@ class VpnTunnelsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24904,7 +24904,7 @@ class VpnTunnelsResourceApi {
       core.String project, core.String region, core.String vpnTunnel,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -24970,7 +24970,7 @@ class VpnTunnelsResourceApi {
       core.String project, core.String region, core.String vpnTunnel,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25045,14 +25045,14 @@ class VpnTunnelsResourceApi {
       VpnTunnel request, core.String project, core.String region,
       {core.String requestId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (project == null) {
       throw new core.ArgumentError("Parameter project is required.");
@@ -25156,7 +25156,7 @@ class VpnTunnelsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25230,7 +25230,7 @@ class ZoneOperationsResourceApi {
       core.String project, core.String zone, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25294,7 +25294,7 @@ class ZoneOperationsResourceApi {
       core.String project, core.String zone, core.String operation,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25403,7 +25403,7 @@ class ZoneOperationsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25476,7 +25476,7 @@ class ZonesResourceApi {
   async.Future<Zone> get(core.String project, core.String zone,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25576,7 +25576,7 @@ class ZonesResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -25831,8 +25831,8 @@ class AcceleratorTypeAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<AcceleratorTypeAggregatedListWarningData>((value) =>
               new AcceleratorTypeAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -25889,11 +25889,9 @@ class AcceleratorTypeAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              AcceleratorTypesScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
-              new AcceleratorTypesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, AcceleratorTypesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new AcceleratorTypesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -26019,8 +26017,9 @@ class AcceleratorTypeListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AcceleratorTypeListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AcceleratorTypeListWarningData>(
+              (value) => new AcceleratorTypeListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -26076,8 +26075,8 @@ class AcceleratorTypeList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new AcceleratorType.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<AcceleratorType>((value) => new AcceleratorType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -26202,8 +26201,8 @@ class AcceleratorTypesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<AcceleratorTypesScopedListWarningData>((value) =>
               new AcceleratorTypesScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -26240,8 +26239,8 @@ class AcceleratorTypesScopedList {
 
   AcceleratorTypesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("acceleratorTypes")) {
-      acceleratorTypes = _json["acceleratorTypes"]
-          .map((value) => new AcceleratorType.fromJson(value))
+      acceleratorTypes = (_json["acceleratorTypes"] as core.List)
+          .map<AcceleratorType>((value) => new AcceleratorType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -26458,7 +26457,7 @@ class Address {
       subnetwork = _json["subnetwork"];
     }
     if (_json.containsKey("users")) {
-      users = _json["users"];
+      users = (_json["users"] as core.List).cast<core.String>();
     }
   }
 
@@ -26590,8 +26589,9 @@ class AddressAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AddressAggregatedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AddressAggregatedListWarningData>(
+              (value) => new AddressAggregatedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -26646,11 +26646,9 @@ class AddressAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, AddressesScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new AddressesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, AddressesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new AddressesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -26775,8 +26773,9 @@ class AddressListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AddressListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AddressListWarningData>(
+              (value) => new AddressListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -26832,8 +26831,9 @@ class AddressList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Address.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Address>((value) => new Address.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -26957,8 +26957,9 @@ class AddressesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AddressesScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AddressesScopedListWarningData>(
+              (value) => new AddressesScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -26994,8 +26995,8 @@ class AddressesScopedList {
 
   AddressesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("addresses")) {
-      addresses = _json["addresses"]
-          .map((value) => new Address.fromJson(value))
+      addresses = (_json["addresses"] as core.List)
+          .map<Address>((value) => new Address.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -27180,7 +27181,7 @@ class AttachedDisk {
       kind = _json["kind"];
     }
     if (_json.containsKey("licenses")) {
-      licenses = _json["licenses"];
+      licenses = (_json["licenses"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("mode")) {
       mode = _json["mode"];
@@ -27319,7 +27320,7 @@ class AttachedDiskInitializeParams {
       diskType = _json["diskType"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("sourceImage")) {
       sourceImage = _json["sourceImage"];
@@ -27453,8 +27454,9 @@ class Autoscaler {
       status = _json["status"];
     }
     if (_json.containsKey("statusDetails")) {
-      statusDetails = _json["statusDetails"]
-          .map((value) => new AutoscalerStatusDetails.fromJson(value))
+      statusDetails = (_json["statusDetails"] as core.List)
+          .map<AutoscalerStatusDetails>(
+              (value) => new AutoscalerStatusDetails.fromJson(value))
           .toList();
     }
     if (_json.containsKey("target")) {
@@ -27591,8 +27593,8 @@ class AutoscalerAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<AutoscalerAggregatedListWarningData>((value) =>
               new AutoscalerAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -27648,11 +27650,9 @@ class AutoscalerAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, AutoscalersScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new AutoscalersScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, AutoscalersScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new AutoscalersScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -27777,8 +27777,9 @@ class AutoscalerListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AutoscalerListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AutoscalerListWarningData>(
+              (value) => new AutoscalerListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -27834,8 +27835,8 @@ class AutoscalerList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Autoscaler.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Autoscaler>((value) => new Autoscaler.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -28007,8 +28008,9 @@ class AutoscalersScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new AutoscalersScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<AutoscalersScopedListWarningData>(
+              (value) => new AutoscalersScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -28044,8 +28046,8 @@ class AutoscalersScopedList {
 
   AutoscalersScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("autoscalers")) {
-      autoscalers = _json["autoscalers"]
-          .map((value) => new Autoscaler.fromJson(value))
+      autoscalers = (_json["autoscalers"] as core.List)
+          .map<Autoscaler>((value) => new Autoscaler.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -28111,10 +28113,11 @@ class AutoscalingPolicy {
           new AutoscalingPolicyCpuUtilization.fromJson(_json["cpuUtilization"]);
     }
     if (_json.containsKey("customMetricUtilizations")) {
-      customMetricUtilizations = _json["customMetricUtilizations"]
-          .map((value) =>
-              new AutoscalingPolicyCustomMetricUtilization.fromJson(value))
-          .toList();
+      customMetricUtilizations =
+          (_json["customMetricUtilizations"] as core.List)
+              .map<AutoscalingPolicyCustomMetricUtilization>((value) =>
+                  new AutoscalingPolicyCustomMetricUtilization.fromJson(value))
+              .toList();
     }
     if (_json.containsKey("loadBalancingUtilization")) {
       loadBalancingUtilization =
@@ -28589,8 +28592,9 @@ class BackendBucketListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new BackendBucketListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<BackendBucketListWarningData>(
+              (value) => new BackendBucketListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -28645,8 +28649,8 @@ class BackendBucketList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new BackendBucket.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<BackendBucket>((value) => new BackendBucket.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -28725,12 +28729,12 @@ class BackendService {
   /// provided in order to update the BackendService.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The list of URLs to the HttpHealthCheck or HttpsHealthCheck resource for
@@ -28835,8 +28839,8 @@ class BackendService {
       affinityCookieTtlSec = _json["affinityCookieTtlSec"];
     }
     if (_json.containsKey("backends")) {
-      backends = _json["backends"]
-          .map((value) => new Backend.fromJson(value))
+      backends = (_json["backends"] as core.List)
+          .map<Backend>((value) => new Backend.fromJson(value))
           .toList();
     }
     if (_json.containsKey("cdnPolicy")) {
@@ -28859,7 +28863,7 @@ class BackendService {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("healthChecks")) {
-      healthChecks = _json["healthChecks"];
+      healthChecks = (_json["healthChecks"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("iap")) {
       iap = new BackendServiceIAP.fromJson(_json["iap"]);
@@ -29051,8 +29055,8 @@ class BackendServiceAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<BackendServiceAggregatedListWarningData>((value) =>
               new BackendServiceAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -29108,11 +29112,9 @@ class BackendServiceAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              BackendServicesScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
-              new BackendServicesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, BackendServicesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new BackendServicesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -29190,8 +29192,8 @@ class BackendServiceGroupHealth {
 
   BackendServiceGroupHealth.fromJson(core.Map _json) {
     if (_json.containsKey("healthStatus")) {
-      healthStatus = _json["healthStatus"]
-          .map((value) => new HealthStatus.fromJson(value))
+      healthStatus = (_json["healthStatus"] as core.List)
+          .map<HealthStatus>((value) => new HealthStatus.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -29340,8 +29342,9 @@ class BackendServiceListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new BackendServiceListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<BackendServiceListWarningData>(
+              (value) => new BackendServiceListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -29397,8 +29400,8 @@ class BackendServiceList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new BackendService.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<BackendService>((value) => new BackendService.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -29523,8 +29526,8 @@ class BackendServicesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<BackendServicesScopedListWarningData>((value) =>
               new BackendServicesScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -29561,8 +29564,8 @@ class BackendServicesScopedList {
 
   BackendServicesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("backendServices")) {
-      backendServices = _json["backendServices"]
-          .map((value) => new BackendService.fromJson(value))
+      backendServices = (_json["backendServices"] as core.List)
+          .map<BackendService>((value) => new BackendService.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -29654,10 +29657,12 @@ class CacheKeyPolicy {
       includeQueryString = _json["includeQueryString"];
     }
     if (_json.containsKey("queryStringBlacklist")) {
-      queryStringBlacklist = _json["queryStringBlacklist"];
+      queryStringBlacklist =
+          (_json["queryStringBlacklist"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("queryStringWhitelist")) {
-      queryStringWhitelist = _json["queryStringWhitelist"];
+      queryStringWhitelist =
+          (_json["queryStringWhitelist"] as core.List).cast<core.String>();
     }
   }
 
@@ -29785,8 +29790,9 @@ class Commitment {
       region = _json["region"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new ResourceCommitment.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<ResourceCommitment>(
+              (value) => new ResourceCommitment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
@@ -29931,8 +29937,8 @@ class CommitmentAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<CommitmentAggregatedListWarningData>((value) =>
               new CommitmentAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -29988,11 +29994,9 @@ class CommitmentAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, CommitmentsScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new CommitmentsScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, CommitmentsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new CommitmentsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -30117,8 +30121,9 @@ class CommitmentListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new CommitmentListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<CommitmentListWarningData>(
+              (value) => new CommitmentListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -30174,8 +30179,8 @@ class CommitmentList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Commitment.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Commitment>((value) => new Commitment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -30300,8 +30305,9 @@ class CommitmentsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new CommitmentsScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<CommitmentsScopedListWarningData>(
+              (value) => new CommitmentsScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -30337,8 +30343,8 @@ class CommitmentsScopedList {
 
   CommitmentsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("commitments")) {
-      commitments = _json["commitments"]
-          .map((value) => new Commitment.fromJson(value))
+      commitments = (_json["commitments"] as core.List)
+          .map<Commitment>((value) => new Commitment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -30567,12 +30573,12 @@ class Disk {
   /// To see the latest fingerprint, make a get() request to retrieve a disk.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Labels to apply to this disk. These can be later modified by the setLabels
@@ -30713,7 +30719,7 @@ class Disk {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("lastAttachTimestamp")) {
       lastAttachTimestamp = _json["lastAttachTimestamp"];
@@ -30722,7 +30728,7 @@ class Disk {
       lastDetachTimestamp = _json["lastDetachTimestamp"];
     }
     if (_json.containsKey("licenses")) {
-      licenses = _json["licenses"];
+      licenses = (_json["licenses"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -30763,7 +30769,7 @@ class Disk {
       type = _json["type"];
     }
     if (_json.containsKey("users")) {
-      users = _json["users"];
+      users = (_json["users"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("zone")) {
       zone = _json["zone"];
@@ -30932,8 +30938,9 @@ class DiskAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DiskAggregatedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DiskAggregatedListWarningData>(
+              (value) => new DiskAggregatedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -30988,11 +30995,9 @@ class DiskAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          commons.mapMap<core.Map<core.String, core.Object>, DisksScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new DisksScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, DisksScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new DisksScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -31117,8 +31122,9 @@ class DiskListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DiskListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DiskListWarningData>(
+              (value) => new DiskListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -31174,7 +31180,9 @@ class DiskList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Disk.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Disk>((value) => new Disk.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -31447,8 +31455,9 @@ class DiskTypeAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DiskTypeAggregatedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DiskTypeAggregatedListWarningData>(
+              (value) => new DiskTypeAggregatedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -31502,11 +31511,9 @@ class DiskTypeAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, DiskTypesScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new DiskTypesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, DiskTypesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new DiskTypesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -31631,8 +31638,9 @@ class DiskTypeListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DiskTypeListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DiskTypeListWarningData>(
+              (value) => new DiskTypeListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -31688,8 +31696,9 @@ class DiskTypeList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new DiskType.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<DiskType>((value) => new DiskType.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -31813,8 +31822,9 @@ class DiskTypesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DiskTypesScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DiskTypesScopedListWarningData>(
+              (value) => new DiskTypesScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -31850,8 +31860,8 @@ class DiskTypesScopedList {
 
   DiskTypesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("diskTypes")) {
-      diskTypes = _json["diskTypes"]
-          .map((value) => new DiskType.fromJson(value))
+      diskTypes = (_json["diskTypes"] as core.List)
+          .map<DiskType>((value) => new DiskType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -31977,8 +31987,9 @@ class DisksScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DisksScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DisksScopedListWarningData>(
+              (value) => new DisksScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -32014,7 +32025,9 @@ class DisksScopedList {
 
   DisksScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("disks")) {
-      disks = _json["disks"].map((value) => new Disk.fromJson(value)).toList();
+      disks = (_json["disks"] as core.List)
+          .map<Disk>((value) => new Disk.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("warning")) {
       warning = new DisksScopedListWarning.fromJson(_json["warning"]);
@@ -32056,7 +32069,7 @@ class FirewallAllowed {
       IPProtocol = _json["IPProtocol"];
     }
     if (_json.containsKey("ports")) {
-      ports = _json["ports"];
+      ports = (_json["ports"] as core.List).cast<core.String>();
     }
   }
 
@@ -32095,7 +32108,7 @@ class FirewallDenied {
       IPProtocol = _json["IPProtocol"];
     }
     if (_json.containsKey("ports")) {
-      ports = _json["ports"];
+      ports = (_json["ports"] as core.List).cast<core.String>();
     }
   }
 
@@ -32235,23 +32248,24 @@ class Firewall {
 
   Firewall.fromJson(core.Map _json) {
     if (_json.containsKey("allowed")) {
-      allowed = _json["allowed"]
-          .map((value) => new FirewallAllowed.fromJson(value))
+      allowed = (_json["allowed"] as core.List)
+          .map<FirewallAllowed>((value) => new FirewallAllowed.fromJson(value))
           .toList();
     }
     if (_json.containsKey("creationTimestamp")) {
       creationTimestamp = _json["creationTimestamp"];
     }
     if (_json.containsKey("denied")) {
-      denied = _json["denied"]
-          .map((value) => new FirewallDenied.fromJson(value))
+      denied = (_json["denied"] as core.List)
+          .map<FirewallDenied>((value) => new FirewallDenied.fromJson(value))
           .toList();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
     }
     if (_json.containsKey("destinationRanges")) {
-      destinationRanges = _json["destinationRanges"];
+      destinationRanges =
+          (_json["destinationRanges"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("direction")) {
       direction = _json["direction"];
@@ -32275,19 +32289,21 @@ class Firewall {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("sourceRanges")) {
-      sourceRanges = _json["sourceRanges"];
+      sourceRanges = (_json["sourceRanges"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sourceServiceAccounts")) {
-      sourceServiceAccounts = _json["sourceServiceAccounts"];
+      sourceServiceAccounts =
+          (_json["sourceServiceAccounts"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("sourceTags")) {
-      sourceTags = _json["sourceTags"];
+      sourceTags = (_json["sourceTags"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("targetServiceAccounts")) {
-      targetServiceAccounts = _json["targetServiceAccounts"];
+      targetServiceAccounts =
+          (_json["targetServiceAccounts"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("targetTags")) {
-      targetTags = _json["targetTags"];
+      targetTags = (_json["targetTags"] as core.List).cast<core.String>();
     }
   }
 
@@ -32431,8 +32447,9 @@ class FirewallListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new FirewallListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<FirewallListWarningData>(
+              (value) => new FirewallListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -32488,8 +32505,9 @@ class FirewallList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Firewall.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Firewall>((value) => new Firewall.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -32733,7 +32751,7 @@ class ForwardingRule {
       portRange = _json["portRange"];
     }
     if (_json.containsKey("ports")) {
-      ports = _json["ports"];
+      ports = (_json["ports"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("region")) {
       region = _json["region"];
@@ -32889,8 +32907,8 @@ class ForwardingRuleAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<ForwardingRuleAggregatedListWarningData>((value) =>
               new ForwardingRuleAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -32946,11 +32964,9 @@ class ForwardingRuleAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              ForwardingRulesScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
-              new ForwardingRulesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, ForwardingRulesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new ForwardingRulesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -33076,8 +33092,9 @@ class ForwardingRuleListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new ForwardingRuleListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<ForwardingRuleListWarningData>(
+              (value) => new ForwardingRuleListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -33132,8 +33149,8 @@ class ForwardingRuleList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new ForwardingRule.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<ForwardingRule>((value) => new ForwardingRule.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -33258,8 +33275,8 @@ class ForwardingRulesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<ForwardingRulesScopedListWarningData>((value) =>
               new ForwardingRulesScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -33296,8 +33313,8 @@ class ForwardingRulesScopedList {
 
   ForwardingRulesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("forwardingRules")) {
-      forwardingRules = _json["forwardingRules"]
-          .map((value) => new ForwardingRule.fromJson(value))
+      forwardingRules = (_json["forwardingRules"] as core.List)
+          .map<ForwardingRule>((value) => new ForwardingRule.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -33328,12 +33345,12 @@ class GlobalSetLabelsRequest {
   /// fingerprint.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// A list of labels to apply for this resource. Each label key & value must
@@ -33352,7 +33369,7 @@ class GlobalSetLabelsRequest {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
   }
 
@@ -33778,8 +33795,9 @@ class HealthCheckListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new HealthCheckListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<HealthCheckListWarningData>(
+              (value) => new HealthCheckListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -33834,8 +33852,8 @@ class HealthCheckList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new HealthCheck.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<HealthCheck>((value) => new HealthCheck.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -33979,7 +33997,7 @@ class HostRule {
       description = _json["description"];
     }
     if (_json.containsKey("hosts")) {
-      hosts = _json["hosts"];
+      hosts = (_json["hosts"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("pathMatcher")) {
       pathMatcher = _json["pathMatcher"];
@@ -34233,8 +34251,9 @@ class HttpHealthCheckListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new HttpHealthCheckListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<HttpHealthCheckListWarningData>(
+              (value) => new HttpHealthCheckListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -34289,8 +34308,8 @@ class HttpHealthCheckList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new HttpHealthCheck.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<HttpHealthCheck>((value) => new HttpHealthCheck.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -34563,8 +34582,9 @@ class HttpsHealthCheckListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new HttpsHealthCheckListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<HttpsHealthCheckListWarningData>(
+              (value) => new HttpsHealthCheckListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -34619,8 +34639,9 @@ class HttpsHealthCheckList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new HttpsHealthCheck.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<HttpsHealthCheck>(
+              (value) => new HttpsHealthCheck.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -34770,12 +34791,12 @@ class Image {
   /// To see the latest fingerprint, make a get() request to retrieve an image.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Labels to apply to this image. These can be later modified by the
@@ -34873,8 +34894,8 @@ class Image {
       family = _json["family"];
     }
     if (_json.containsKey("guestOsFeatures")) {
-      guestOsFeatures = _json["guestOsFeatures"]
-          .map((value) => new GuestOsFeature.fromJson(value))
+      guestOsFeatures = (_json["guestOsFeatures"] as core.List)
+          .map<GuestOsFeature>((value) => new GuestOsFeature.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -34891,10 +34912,10 @@ class Image {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("licenses")) {
-      licenses = _json["licenses"];
+      licenses = (_json["licenses"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -35095,8 +35116,9 @@ class ImageListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new ImageListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<ImageListWarningData>(
+              (value) => new ImageListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -35151,7 +35173,9 @@ class ImageList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Image.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Image>((value) => new Image.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -35237,12 +35261,12 @@ class Instance {
   /// To see the latest fingerprint, make get() request to the instance.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Labels to apply to this instance. These can be later modified by the
@@ -35359,13 +35383,14 @@ class Instance {
       description = _json["description"];
     }
     if (_json.containsKey("disks")) {
-      disks = _json["disks"]
-          .map((value) => new AttachedDisk.fromJson(value))
+      disks = (_json["disks"] as core.List)
+          .map<AttachedDisk>((value) => new AttachedDisk.fromJson(value))
           .toList();
     }
     if (_json.containsKey("guestAccelerators")) {
-      guestAccelerators = _json["guestAccelerators"]
-          .map((value) => new AcceleratorConfig.fromJson(value))
+      guestAccelerators = (_json["guestAccelerators"] as core.List)
+          .map<AcceleratorConfig>(
+              (value) => new AcceleratorConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -35378,7 +35403,7 @@ class Instance {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("machineType")) {
       machineType = _json["machineType"];
@@ -35393,8 +35418,9 @@ class Instance {
       name = _json["name"];
     }
     if (_json.containsKey("networkInterfaces")) {
-      networkInterfaces = _json["networkInterfaces"]
-          .map((value) => new NetworkInterface.fromJson(value))
+      networkInterfaces = (_json["networkInterfaces"] as core.List)
+          .map<NetworkInterface>(
+              (value) => new NetworkInterface.fromJson(value))
           .toList();
     }
     if (_json.containsKey("scheduling")) {
@@ -35404,8 +35430,8 @@ class Instance {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("serviceAccounts")) {
-      serviceAccounts = _json["serviceAccounts"]
-          .map((value) => new ServiceAccount.fromJson(value))
+      serviceAccounts = (_json["serviceAccounts"] as core.List)
+          .map<ServiceAccount>((value) => new ServiceAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("startRestricted")) {
@@ -35589,8 +35615,9 @@ class InstanceAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstanceAggregatedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstanceAggregatedListWarningData>(
+              (value) => new InstanceAggregatedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -35645,11 +35672,9 @@ class InstanceAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, InstancesScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new InstancesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, InstancesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new InstancesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -35709,12 +35734,12 @@ class InstanceGroup {
   /// concurrently.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// [Output Only] A unique identifier for this instance group, generated by
@@ -35783,8 +35808,8 @@ class InstanceGroup {
       name = _json["name"];
     }
     if (_json.containsKey("namedPorts")) {
-      namedPorts = _json["namedPorts"]
-          .map((value) => new NamedPort.fromJson(value))
+      namedPorts = (_json["namedPorts"] as core.List)
+          .map<NamedPort>((value) => new NamedPort.fromJson(value))
           .toList();
     }
     if (_json.containsKey("network")) {
@@ -35936,8 +35961,8 @@ class InstanceGroupAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupAggregatedListWarningData>((value) =>
               new InstanceGroupAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -35994,11 +36019,9 @@ class InstanceGroupAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, InstanceGroupsScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new InstanceGroupsScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, InstanceGroupsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new InstanceGroupsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -36124,8 +36147,9 @@ class InstanceGroupListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstanceGroupListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupListWarningData>(
+              (value) => new InstanceGroupListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -36181,8 +36205,8 @@ class InstanceGroupList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceGroup.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceGroup>((value) => new InstanceGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -36251,12 +36275,12 @@ class InstanceGroupManager {
   /// optional field for optimistic locking when you update the resource.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// [Output Only] A unique identifier for this resource type. The server
@@ -36340,8 +36364,8 @@ class InstanceGroupManager {
       name = _json["name"];
     }
     if (_json.containsKey("namedPorts")) {
-      namedPorts = _json["namedPorts"]
-          .map((value) => new NamedPort.fromJson(value))
+      namedPorts = (_json["namedPorts"] as core.List)
+          .map<NamedPort>((value) => new NamedPort.fromJson(value))
           .toList();
     }
     if (_json.containsKey("region")) {
@@ -36351,7 +36375,7 @@ class InstanceGroupManager {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("targetPools")) {
-      targetPools = _json["targetPools"];
+      targetPools = (_json["targetPools"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("targetSize")) {
       targetSize = _json["targetSize"];
@@ -36605,8 +36629,8 @@ class InstanceGroupManagerAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupManagerAggregatedListWarningData>((value) =>
               new InstanceGroupManagerAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -36663,10 +36687,9 @@ class InstanceGroupManagerAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              InstanceGroupManagersScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
+      items = commons.mapMap<core.Map, InstanceGroupManagersScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) =>
               new InstanceGroupManagersScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
@@ -36793,8 +36816,8 @@ class InstanceGroupManagerListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupManagerListWarningData>((value) =>
               new InstanceGroupManagerListWarningData.fromJson(value))
           .toList();
     }
@@ -36851,8 +36874,9 @@ class InstanceGroupManagerList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceGroupManager.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceGroupManager>(
+              (value) => new InstanceGroupManager.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -36903,7 +36927,7 @@ class InstanceGroupManagersAbandonInstancesRequest {
 
   InstanceGroupManagersAbandonInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -36926,7 +36950,7 @@ class InstanceGroupManagersDeleteInstancesRequest {
 
   InstanceGroupManagersDeleteInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -36948,8 +36972,8 @@ class InstanceGroupManagersListManagedInstancesResponse {
 
   InstanceGroupManagersListManagedInstancesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("managedInstances")) {
-      managedInstances = _json["managedInstances"]
-          .map((value) => new ManagedInstance.fromJson(value))
+      managedInstances = (_json["managedInstances"] as core.List)
+          .map<ManagedInstance>((value) => new ManagedInstance.fromJson(value))
           .toList();
     }
   }
@@ -36974,7 +36998,7 @@ class InstanceGroupManagersRecreateInstancesRequest {
 
   InstanceGroupManagersRecreateInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -37071,8 +37095,8 @@ class InstanceGroupManagersScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupManagersScopedListWarningData>((value) =>
               new InstanceGroupManagersScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -37110,8 +37134,9 @@ class InstanceGroupManagersScopedList {
 
   InstanceGroupManagersScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("instanceGroupManagers")) {
-      instanceGroupManagers = _json["instanceGroupManagers"]
-          .map((value) => new InstanceGroupManager.fromJson(value))
+      instanceGroupManagers = (_json["instanceGroupManagers"] as core.List)
+          .map<InstanceGroupManager>(
+              (value) => new InstanceGroupManager.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -37167,12 +37192,12 @@ class InstanceGroupManagersSetTargetPoolsRequest {
   /// another concurrent request.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The list of target pool URLs that instances in this managed instance group
@@ -37188,7 +37213,7 @@ class InstanceGroupManagersSetTargetPoolsRequest {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("targetPools")) {
-      targetPools = _json["targetPools"];
+      targetPools = (_json["targetPools"] as core.List).cast<core.String>();
     }
   }
 
@@ -37213,8 +37238,9 @@ class InstanceGroupsAddInstancesRequest {
 
   InstanceGroupsAddInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new InstanceReference.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<InstanceReference>(
+              (value) => new InstanceReference.fromJson(value))
           .toList();
     }
   }
@@ -37311,8 +37337,8 @@ class InstanceGroupsListInstancesWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupsListInstancesWarningData>((value) =>
               new InstanceGroupsListInstancesWarningData.fromJson(value))
           .toList();
     }
@@ -37369,8 +37395,9 @@ class InstanceGroupsListInstances {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceWithNamedPorts.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceWithNamedPorts>(
+              (value) => new InstanceWithNamedPorts.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -37448,8 +37475,9 @@ class InstanceGroupsRemoveInstancesRequest {
 
   InstanceGroupsRemoveInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new InstanceReference.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<InstanceReference>(
+              (value) => new InstanceReference.fromJson(value))
           .toList();
     }
   }
@@ -37547,8 +37575,8 @@ class InstanceGroupsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InstanceGroupsScopedListWarningData>((value) =>
               new InstanceGroupsScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -37586,8 +37614,8 @@ class InstanceGroupsScopedList {
 
   InstanceGroupsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("instanceGroups")) {
-      instanceGroups = _json["instanceGroups"]
-          .map((value) => new InstanceGroup.fromJson(value))
+      instanceGroups = (_json["instanceGroups"] as core.List)
+          .map<InstanceGroup>((value) => new InstanceGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -37618,12 +37646,12 @@ class InstanceGroupsSetNamedPortsRequest {
   /// concurrent request.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The list of named ports to set for this instance group.
@@ -37636,8 +37664,8 @@ class InstanceGroupsSetNamedPortsRequest {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("namedPorts")) {
-      namedPorts = _json["namedPorts"]
-          .map((value) => new NamedPort.fromJson(value))
+      namedPorts = (_json["namedPorts"] as core.List)
+          .map<NamedPort>((value) => new NamedPort.fromJson(value))
           .toList();
     }
   }
@@ -37738,8 +37766,9 @@ class InstanceListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstanceListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstanceListWarningData>(
+              (value) => new InstanceListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -37795,8 +37824,9 @@ class InstanceList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Instance.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Instance>((value) => new Instance.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -37919,8 +37949,9 @@ class InstanceListReferrersWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstanceListReferrersWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstanceListReferrersWarningData>(
+              (value) => new InstanceListReferrersWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -37976,8 +38007,9 @@ class InstanceListReferrers {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Reference.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Reference>((value) => new Reference.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -38126,17 +38158,18 @@ class InstanceProperties {
       description = _json["description"];
     }
     if (_json.containsKey("disks")) {
-      disks = _json["disks"]
-          .map((value) => new AttachedDisk.fromJson(value))
+      disks = (_json["disks"] as core.List)
+          .map<AttachedDisk>((value) => new AttachedDisk.fromJson(value))
           .toList();
     }
     if (_json.containsKey("guestAccelerators")) {
-      guestAccelerators = _json["guestAccelerators"]
-          .map((value) => new AcceleratorConfig.fromJson(value))
+      guestAccelerators = (_json["guestAccelerators"] as core.List)
+          .map<AcceleratorConfig>(
+              (value) => new AcceleratorConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("machineType")) {
       machineType = _json["machineType"];
@@ -38148,16 +38181,17 @@ class InstanceProperties {
       minCpuPlatform = _json["minCpuPlatform"];
     }
     if (_json.containsKey("networkInterfaces")) {
-      networkInterfaces = _json["networkInterfaces"]
-          .map((value) => new NetworkInterface.fromJson(value))
+      networkInterfaces = (_json["networkInterfaces"] as core.List)
+          .map<NetworkInterface>(
+              (value) => new NetworkInterface.fromJson(value))
           .toList();
     }
     if (_json.containsKey("scheduling")) {
       scheduling = new Scheduling.fromJson(_json["scheduling"]);
     }
     if (_json.containsKey("serviceAccounts")) {
-      serviceAccounts = _json["serviceAccounts"]
-          .map((value) => new ServiceAccount.fromJson(value))
+      serviceAccounts = (_json["serviceAccounts"] as core.List)
+          .map<ServiceAccount>((value) => new ServiceAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("tags")) {
@@ -38404,8 +38438,9 @@ class InstanceTemplateListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstanceTemplateListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstanceTemplateListWarningData>(
+              (value) => new InstanceTemplateListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -38461,8 +38496,9 @@ class InstanceTemplateList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceTemplate.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceTemplate>(
+              (value) => new InstanceTemplate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -38530,8 +38566,8 @@ class InstanceWithNamedPorts {
       instance = _json["instance"];
     }
     if (_json.containsKey("namedPorts")) {
-      namedPorts = _json["namedPorts"]
-          .map((value) => new NamedPort.fromJson(value))
+      namedPorts = (_json["namedPorts"] as core.List)
+          .map<NamedPort>((value) => new NamedPort.fromJson(value))
           .toList();
     }
     if (_json.containsKey("status")) {
@@ -38639,8 +38675,9 @@ class InstancesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InstancesScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InstancesScopedListWarningData>(
+              (value) => new InstancesScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -38676,8 +38713,8 @@ class InstancesScopedList {
 
   InstancesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new Instance.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<Instance>((value) => new Instance.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -38704,12 +38741,12 @@ class InstancesSetLabelsRequest {
   /// request to add or change labels.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   core.Map<core.String, core.String> labels;
@@ -38721,7 +38758,7 @@ class InstancesSetLabelsRequest {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
   }
 
@@ -38746,8 +38783,9 @@ class InstancesSetMachineResourcesRequest {
 
   InstancesSetMachineResourcesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("guestAccelerators")) {
-      guestAccelerators = _json["guestAccelerators"]
-          .map((value) => new AcceleratorConfig.fromJson(value))
+      guestAccelerators = (_json["guestAccelerators"] as core.List)
+          .map<AcceleratorConfig>(
+              (value) => new AcceleratorConfig.fromJson(value))
           .toList();
     }
   }
@@ -38823,7 +38861,7 @@ class InstancesSetServiceAccountRequest {
       email = _json["email"];
     }
     if (_json.containsKey("scopes")) {
-      scopes = _json["scopes"];
+      scopes = (_json["scopes"] as core.List).cast<core.String>();
     }
   }
 
@@ -38855,8 +38893,8 @@ class InstancesStartWithEncryptionKeyRequest {
 
   InstancesStartWithEncryptionKeyRequest.fromJson(core.Map _json) {
     if (_json.containsKey("disks")) {
-      disks = _json["disks"]
-          .map(
+      disks = (_json["disks"] as core.List)
+          .map<CustomerEncryptionKeyProtectedDisk>(
               (value) => new CustomerEncryptionKeyProtectedDisk.fromJson(value))
           .toList();
     }
@@ -38983,8 +39021,9 @@ class Interconnect {
       adminEnabled = _json["adminEnabled"];
     }
     if (_json.containsKey("circuitInfos")) {
-      circuitInfos = _json["circuitInfos"]
-          .map((value) => new InterconnectCircuitInfo.fromJson(value))
+      circuitInfos = (_json["circuitInfos"] as core.List)
+          .map<InterconnectCircuitInfo>(
+              (value) => new InterconnectCircuitInfo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("creationTimestamp")) {
@@ -38997,8 +39036,9 @@ class Interconnect {
       description = _json["description"];
     }
     if (_json.containsKey("expectedOutages")) {
-      expectedOutages = _json["expectedOutages"]
-          .map((value) => new InterconnectOutageNotification.fromJson(value))
+      expectedOutages = (_json["expectedOutages"] as core.List)
+          .map<InterconnectOutageNotification>(
+              (value) => new InterconnectOutageNotification.fromJson(value))
           .toList();
     }
     if (_json.containsKey("googleIpAddress")) {
@@ -39011,7 +39051,8 @@ class Interconnect {
       id = _json["id"];
     }
     if (_json.containsKey("interconnectAttachments")) {
-      interconnectAttachments = _json["interconnectAttachments"];
+      interconnectAttachments =
+          (_json["interconnectAttachments"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("interconnectType")) {
       interconnectType = _json["interconnectType"];
@@ -39369,8 +39410,8 @@ class InterconnectAttachmentAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InterconnectAttachmentAggregatedListWarningData>((value) =>
               new InterconnectAttachmentAggregatedListWarningData.fromJson(
                   value))
           .toList();
@@ -39428,10 +39469,9 @@ class InterconnectAttachmentAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              InterconnectAttachmentsScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
+      items = commons.mapMap<core.Map, InterconnectAttachmentsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) =>
               new InterconnectAttachmentsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
@@ -39558,8 +39598,8 @@ class InterconnectAttachmentListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InterconnectAttachmentListWarningData>((value) =>
               new InterconnectAttachmentListWarningData.fromJson(value))
           .toList();
     }
@@ -39617,8 +39657,9 @@ class InterconnectAttachmentList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InterconnectAttachment.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InterconnectAttachment>(
+              (value) => new InterconnectAttachment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -39769,8 +39810,8 @@ class InterconnectAttachmentsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InterconnectAttachmentsScopedListWarningData>((value) =>
               new InterconnectAttachmentsScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -39807,8 +39848,9 @@ class InterconnectAttachmentsScopedList {
 
   InterconnectAttachmentsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("interconnectAttachments")) {
-      interconnectAttachments = _json["interconnectAttachments"]
-          .map((value) => new InterconnectAttachment.fromJson(value))
+      interconnectAttachments = (_json["interconnectAttachments"] as core.List)
+          .map<InterconnectAttachment>(
+              (value) => new InterconnectAttachment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -39957,8 +39999,9 @@ class InterconnectListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new InterconnectListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<InterconnectListWarningData>(
+              (value) => new InterconnectListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -40014,8 +40057,8 @@ class InterconnectList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Interconnect.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Interconnect>((value) => new Interconnect.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -40165,8 +40208,9 @@ class InterconnectLocation {
       peeringdbFacilityId = _json["peeringdbFacilityId"];
     }
     if (_json.containsKey("regionInfos")) {
-      regionInfos = _json["regionInfos"]
-          .map((value) => new InterconnectLocationRegionInfo.fromJson(value))
+      regionInfos = (_json["regionInfos"] as core.List)
+          .map<InterconnectLocationRegionInfo>(
+              (value) => new InterconnectLocationRegionInfo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
@@ -40306,8 +40350,8 @@ class InterconnectLocationListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<InterconnectLocationListWarningData>((value) =>
               new InterconnectLocationListWarningData.fromJson(value))
           .toList();
     }
@@ -40364,8 +40408,9 @@ class InterconnectLocationList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InterconnectLocation.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InterconnectLocation>(
+              (value) => new InterconnectLocation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -40503,7 +40548,8 @@ class InterconnectOutageNotification {
 
   InterconnectOutageNotification.fromJson(core.Map _json) {
     if (_json.containsKey("affectedCircuits")) {
-      affectedCircuits = _json["affectedCircuits"];
+      affectedCircuits =
+          (_json["affectedCircuits"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
@@ -40728,8 +40774,9 @@ class MachineType {
       name = _json["name"];
     }
     if (_json.containsKey("scratchDisks")) {
-      scratchDisks = _json["scratchDisks"]
-          .map((value) => new MachineTypeScratchDisks.fromJson(value))
+      scratchDisks = (_json["scratchDisks"] as core.List)
+          .map<MachineTypeScratchDisks>(
+              (value) => new MachineTypeScratchDisks.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
@@ -40875,8 +40922,8 @@ class MachineTypeAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<MachineTypeAggregatedListWarningData>((value) =>
               new MachineTypeAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -40932,11 +40979,9 @@ class MachineTypeAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, MachineTypesScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new MachineTypesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, MachineTypesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new MachineTypesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -41061,8 +41106,9 @@ class MachineTypeListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new MachineTypeListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<MachineTypeListWarningData>(
+              (value) => new MachineTypeListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -41118,8 +41164,8 @@ class MachineTypeList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new MachineType.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<MachineType>((value) => new MachineType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -41244,8 +41290,9 @@ class MachineTypesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new MachineTypesScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<MachineTypesScopedListWarningData>(
+              (value) => new MachineTypesScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -41281,8 +41328,8 @@ class MachineTypesScopedList {
 
   MachineTypesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("machineTypes")) {
-      machineTypes = _json["machineTypes"]
-          .map((value) => new MachineType.fromJson(value))
+      machineTypes = (_json["machineTypes"] as core.List)
+          .map<MachineType>((value) => new MachineType.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -41459,8 +41506,8 @@ class ManagedInstanceLastAttemptErrors {
 
   ManagedInstanceLastAttemptErrors.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) =>
+      errors = (_json["errors"] as core.List)
+          .map<ManagedInstanceLastAttemptErrorsErrors>((value) =>
               new ManagedInstanceLastAttemptErrorsErrors.fromJson(value))
           .toList();
     }
@@ -41545,12 +41592,12 @@ class Metadata {
   /// fingerprint hash in order to update or change metadata.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Array of key/value pairs. The total size of all keys and values must be
@@ -41567,8 +41614,8 @@ class Metadata {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new MetadataItems.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<MetadataItems>((value) => new MetadataItems.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -41712,8 +41759,8 @@ class Network {
       name = _json["name"];
     }
     if (_json.containsKey("peerings")) {
-      peerings = _json["peerings"]
-          .map((value) => new NetworkPeering.fromJson(value))
+      peerings = (_json["peerings"] as core.List)
+          .map<NetworkPeering>((value) => new NetworkPeering.fromJson(value))
           .toList();
     }
     if (_json.containsKey("routingConfig")) {
@@ -41723,7 +41770,7 @@ class Network {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("subnetworks")) {
-      subnetworks = _json["subnetworks"];
+      subnetworks = (_json["subnetworks"] as core.List).cast<core.String>();
     }
   }
 
@@ -41826,13 +41873,13 @@ class NetworkInterface {
 
   NetworkInterface.fromJson(core.Map _json) {
     if (_json.containsKey("accessConfigs")) {
-      accessConfigs = _json["accessConfigs"]
-          .map((value) => new AccessConfig.fromJson(value))
+      accessConfigs = (_json["accessConfigs"] as core.List)
+          .map<AccessConfig>((value) => new AccessConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("aliasIpRanges")) {
-      aliasIpRanges = _json["aliasIpRanges"]
-          .map((value) => new AliasIpRange.fromJson(value))
+      aliasIpRanges = (_json["aliasIpRanges"] as core.List)
+          .map<AliasIpRange>((value) => new AliasIpRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -41964,8 +42011,9 @@ class NetworkListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new NetworkListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<NetworkListWarningData>(
+              (value) => new NetworkListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -42021,8 +42069,9 @@ class NetworkList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Network.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Network>((value) => new Network.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -42288,8 +42337,9 @@ class OperationError {
 
   OperationError.fromJson(core.Map _json) {
     if (_json.containsKey("errors")) {
-      errors = _json["errors"]
-          .map((value) => new OperationErrorErrors.fromJson(value))
+      errors = (_json["errors"] as core.List)
+          .map<OperationErrorErrors>(
+              (value) => new OperationErrorErrors.fromJson(value))
           .toList();
     }
   }
@@ -42385,8 +42435,9 @@ class OperationWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new OperationWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<OperationWarningsData>(
+              (value) => new OperationWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -42584,8 +42635,9 @@ class Operation {
       user = _json["user"];
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new OperationWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<OperationWarnings>(
+              (value) => new OperationWarnings.fromJson(value))
           .toList();
     }
     if (_json.containsKey("zone")) {
@@ -42751,8 +42803,8 @@ class OperationAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map(
+      data = (_json["data"] as core.List)
+          .map<OperationAggregatedListWarningData>(
               (value) => new OperationAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -42809,11 +42861,9 @@ class OperationAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, OperationsScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new OperationsScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, OperationsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new OperationsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -42938,8 +42988,9 @@ class OperationListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new OperationListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<OperationListWarningData>(
+              (value) => new OperationListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -42996,8 +43047,9 @@ class OperationList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Operation.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -43121,8 +43173,9 @@ class OperationsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new OperationsScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<OperationsScopedListWarningData>(
+              (value) => new OperationsScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -43158,8 +43211,8 @@ class OperationsScopedList {
 
   OperationsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("operations")) {
-      operations = _json["operations"]
-          .map((value) => new Operation.fromJson(value))
+      operations = (_json["operations"] as core.List)
+          .map<Operation>((value) => new Operation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -43218,8 +43271,8 @@ class PathMatcher {
       name = _json["name"];
     }
     if (_json.containsKey("pathRules")) {
-      pathRules = _json["pathRules"]
-          .map((value) => new PathRule.fromJson(value))
+      pathRules = (_json["pathRules"] as core.List)
+          .map<PathRule>((value) => new PathRule.fromJson(value))
           .toList();
     }
   }
@@ -43259,7 +43312,7 @@ class PathRule {
 
   PathRule.fromJson(core.Map _json) {
     if (_json.containsKey("paths")) {
-      paths = _json["paths"];
+      paths = (_json["paths"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("service")) {
       service = _json["service"];
@@ -43345,7 +43398,8 @@ class Project {
       description = _json["description"];
     }
     if (_json.containsKey("enabledFeatures")) {
-      enabledFeatures = _json["enabledFeatures"];
+      enabledFeatures =
+          (_json["enabledFeatures"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -43357,8 +43411,9 @@ class Project {
       name = _json["name"];
     }
     if (_json.containsKey("quotas")) {
-      quotas =
-          _json["quotas"].map((value) => new Quota.fromJson(value)).toList();
+      quotas = (_json["quotas"] as core.List)
+          .map<Quota>((value) => new Quota.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
@@ -43485,8 +43540,8 @@ class ProjectsGetXpnResources {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("resources")) {
-      resources = _json["resources"]
-          .map((value) => new XpnResourceId.fromJson(value))
+      resources = (_json["resources"] as core.List)
+          .map<XpnResourceId>((value) => new XpnResourceId.fromJson(value))
           .toList();
     }
   }
@@ -43732,8 +43787,9 @@ class Region {
       name = _json["name"];
     }
     if (_json.containsKey("quotas")) {
-      quotas =
-          _json["quotas"].map((value) => new Quota.fromJson(value)).toList();
+      quotas = (_json["quotas"] as core.List)
+          .map<Quota>((value) => new Quota.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
@@ -43742,7 +43798,7 @@ class Region {
       status = _json["status"];
     }
     if (_json.containsKey("zones")) {
-      zones = _json["zones"];
+      zones = (_json["zones"] as core.List).cast<core.String>();
     }
   }
 
@@ -43865,8 +43921,9 @@ class RegionAutoscalerListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RegionAutoscalerListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RegionAutoscalerListWarningData>(
+              (value) => new RegionAutoscalerListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -43921,8 +43978,8 @@ class RegionAutoscalerList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Autoscaler.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Autoscaler>((value) => new Autoscaler.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -44046,8 +44103,8 @@ class RegionInstanceGroupListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map(
+      data = (_json["data"] as core.List)
+          .map<RegionInstanceGroupListWarningData>(
               (value) => new RegionInstanceGroupListWarningData.fromJson(value))
           .toList();
     }
@@ -44103,8 +44160,8 @@ class RegionInstanceGroupList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceGroup.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceGroup>((value) => new InstanceGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -44228,8 +44285,8 @@ class RegionInstanceGroupManagerListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<RegionInstanceGroupManagerListWarningData>((value) =>
               new RegionInstanceGroupManagerListWarningData.fromJson(value))
           .toList();
     }
@@ -44287,8 +44344,9 @@ class RegionInstanceGroupManagerList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceGroupManager.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceGroupManager>(
+              (value) => new InstanceGroupManager.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -44340,7 +44398,7 @@ class RegionInstanceGroupManagersAbandonInstancesRequest {
 
   RegionInstanceGroupManagersAbandonInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -44363,7 +44421,7 @@ class RegionInstanceGroupManagersDeleteInstancesRequest {
 
   RegionInstanceGroupManagersDeleteInstancesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -44385,8 +44443,8 @@ class RegionInstanceGroupManagersListInstancesResponse {
 
   RegionInstanceGroupManagersListInstancesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("managedInstances")) {
-      managedInstances = _json["managedInstances"]
-          .map((value) => new ManagedInstance.fromJson(value))
+      managedInstances = (_json["managedInstances"] as core.List)
+          .map<ManagedInstance>((value) => new ManagedInstance.fromJson(value))
           .toList();
     }
   }
@@ -44411,7 +44469,7 @@ class RegionInstanceGroupManagersRecreateRequest {
 
   RegionInstanceGroupManagersRecreateRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
   }
 
@@ -44431,12 +44489,12 @@ class RegionInstanceGroupManagersSetTargetPoolsRequest {
   /// target pool entries. This field is optional.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The URL of all TargetPool resources to which instances in the
@@ -44451,7 +44509,7 @@ class RegionInstanceGroupManagersSetTargetPoolsRequest {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("targetPools")) {
-      targetPools = _json["targetPools"];
+      targetPools = (_json["targetPools"] as core.List).cast<core.String>();
     }
   }
 
@@ -44573,8 +44631,8 @@ class RegionInstanceGroupsListInstancesWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<RegionInstanceGroupsListInstancesWarningData>((value) =>
               new RegionInstanceGroupsListInstancesWarningData.fromJson(value))
           .toList();
     }
@@ -44629,8 +44687,9 @@ class RegionInstanceGroupsListInstances {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new InstanceWithNamedPorts.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<InstanceWithNamedPorts>(
+              (value) => new InstanceWithNamedPorts.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -44719,12 +44778,12 @@ class RegionInstanceGroupsSetNamedPortsRequest {
   /// concurrent request.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The list of named ports to set for this instance group.
@@ -44737,8 +44796,8 @@ class RegionInstanceGroupsSetNamedPortsRequest {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("namedPorts")) {
-      namedPorts = _json["namedPorts"]
-          .map((value) => new NamedPort.fromJson(value))
+      namedPorts = (_json["namedPorts"] as core.List)
+          .map<NamedPort>((value) => new NamedPort.fromJson(value))
           .toList();
     }
   }
@@ -44839,8 +44898,9 @@ class RegionListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RegionListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RegionListWarningData>(
+              (value) => new RegionListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -44896,8 +44956,9 @@ class RegionList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Region.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Region>((value) => new Region.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -45083,8 +45144,9 @@ class RouteWarnings {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RouteWarningsData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RouteWarningsData>(
+              (value) => new RouteWarningsData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -45246,11 +45308,11 @@ class Route {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("tags")) {
-      tags = _json["tags"];
+      tags = (_json["tags"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"]
-          .map((value) => new RouteWarnings.fromJson(value))
+      warnings = (_json["warnings"] as core.List)
+          .map<RouteWarnings>((value) => new RouteWarnings.fromJson(value))
           .toList();
     }
   }
@@ -45395,8 +45457,9 @@ class RouteListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RouteListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RouteListWarningData>(
+              (value) => new RouteListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -45451,7 +45514,9 @@ class RouteList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Route.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Route>((value) => new Route.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -45548,8 +45613,8 @@ class Router {
       bgp = new RouterBgp.fromJson(_json["bgp"]);
     }
     if (_json.containsKey("bgpPeers")) {
-      bgpPeers = _json["bgpPeers"]
-          .map((value) => new RouterBgpPeer.fromJson(value))
+      bgpPeers = (_json["bgpPeers"] as core.List)
+          .map<RouterBgpPeer>((value) => new RouterBgpPeer.fromJson(value))
           .toList();
     }
     if (_json.containsKey("creationTimestamp")) {
@@ -45562,8 +45627,8 @@ class Router {
       id = _json["id"];
     }
     if (_json.containsKey("interfaces")) {
-      interfaces = _json["interfaces"]
-          .map((value) => new RouterInterface.fromJson(value))
+      interfaces = (_json["interfaces"] as core.List)
+          .map<RouterInterface>((value) => new RouterInterface.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -45706,8 +45771,9 @@ class RouterAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RouterAggregatedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RouterAggregatedListWarningData>(
+              (value) => new RouterAggregatedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -45762,11 +45828,9 @@ class RouterAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          commons.mapMap<core.Map<core.String, core.Object>, RoutersScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new RoutersScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, RoutersScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new RoutersScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -46045,8 +46109,9 @@ class RouterListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RouterListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RouterListWarningData>(
+              (value) => new RouterListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -46101,8 +46166,9 @@ class RouterList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Router.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Router>((value) => new Router.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -46158,18 +46224,19 @@ class RouterStatus {
 
   RouterStatus.fromJson(core.Map _json) {
     if (_json.containsKey("bestRoutes")) {
-      bestRoutes = _json["bestRoutes"]
-          .map((value) => new Route.fromJson(value))
+      bestRoutes = (_json["bestRoutes"] as core.List)
+          .map<Route>((value) => new Route.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bestRoutesForRouter")) {
-      bestRoutesForRouter = _json["bestRoutesForRouter"]
-          .map((value) => new Route.fromJson(value))
+      bestRoutesForRouter = (_json["bestRoutesForRouter"] as core.List)
+          .map<Route>((value) => new Route.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bgpPeerStatus")) {
-      bgpPeerStatus = _json["bgpPeerStatus"]
-          .map((value) => new RouterStatusBgpPeerStatus.fromJson(value))
+      bgpPeerStatus = (_json["bgpPeerStatus"] as core.List)
+          .map<RouterStatusBgpPeerStatus>(
+              (value) => new RouterStatusBgpPeerStatus.fromJson(value))
           .toList();
     }
     if (_json.containsKey("network")) {
@@ -46239,8 +46306,8 @@ class RouterStatusBgpPeerStatus {
 
   RouterStatusBgpPeerStatus.fromJson(core.Map _json) {
     if (_json.containsKey("advertisedRoutes")) {
-      advertisedRoutes = _json["advertisedRoutes"]
-          .map((value) => new Route.fromJson(value))
+      advertisedRoutes = (_json["advertisedRoutes"] as core.List)
+          .map<Route>((value) => new Route.fromJson(value))
           .toList();
     }
     if (_json.containsKey("ipAddress")) {
@@ -46444,8 +46511,9 @@ class RoutersScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new RoutersScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<RoutersScopedListWarningData>(
+              (value) => new RoutersScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -46481,8 +46549,9 @@ class RoutersScopedList {
 
   RoutersScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("routers")) {
-      routers =
-          _json["routers"].map((value) => new Router.fromJson(value)).toList();
+      routers = (_json["routers"] as core.List)
+          .map<Router>((value) => new Router.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("warning")) {
       warning = new RoutersScopedListWarning.fromJson(_json["warning"]);
@@ -46705,7 +46774,7 @@ class ServiceAccount {
       email = _json["email"];
     }
     if (_json.containsKey("scopes")) {
-      scopes = _json["scopes"];
+      scopes = (_json["scopes"] as core.List).cast<core.String>();
     }
   }
 
@@ -46753,12 +46822,12 @@ class Snapshot {
   /// snapshot.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Labels to apply to this snapshot. These can be later modified by the
@@ -46855,10 +46924,10 @@ class Snapshot {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("licenses")) {
-      licenses = _json["licenses"];
+      licenses = (_json["licenses"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -47031,8 +47100,9 @@ class SnapshotListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new SnapshotListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<SnapshotListWarningData>(
+              (value) => new SnapshotListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -47087,8 +47157,9 @@ class SnapshotList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Snapshot.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Snapshot>((value) => new Snapshot.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -47312,8 +47383,9 @@ class SslCertificateListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new SslCertificateListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<SslCertificateListWarningData>(
+              (value) => new SslCertificateListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -47368,8 +47440,8 @@ class SslCertificateList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new SslCertificate.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<SslCertificate>((value) => new SslCertificate.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -47507,8 +47579,9 @@ class Subnetwork {
       region = _json["region"];
     }
     if (_json.containsKey("secondaryIpRanges")) {
-      secondaryIpRanges = _json["secondaryIpRanges"]
-          .map((value) => new SubnetworkSecondaryRange.fromJson(value))
+      secondaryIpRanges = (_json["secondaryIpRanges"] as core.List)
+          .map<SubnetworkSecondaryRange>(
+              (value) => new SubnetworkSecondaryRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
@@ -47642,8 +47715,8 @@ class SubnetworkAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<SubnetworkAggregatedListWarningData>((value) =>
               new SubnetworkAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -47699,11 +47772,9 @@ class SubnetworkAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, SubnetworksScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new SubnetworksScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, SubnetworksScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new SubnetworksScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -47828,8 +47899,9 @@ class SubnetworkListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new SubnetworkListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<SubnetworkListWarningData>(
+              (value) => new SubnetworkListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -47885,8 +47957,8 @@ class SubnetworkList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Subnetwork.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Subnetwork>((value) => new Subnetwork.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -48072,8 +48144,9 @@ class SubnetworksScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new SubnetworksScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<SubnetworksScopedListWarningData>(
+              (value) => new SubnetworksScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -48108,8 +48181,8 @@ class SubnetworksScopedList {
 
   SubnetworksScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("subnetworks")) {
-      subnetworks = _json["subnetworks"]
-          .map((value) => new Subnetwork.fromJson(value))
+      subnetworks = (_json["subnetworks"] as core.List)
+          .map<Subnetwork>((value) => new Subnetwork.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -48232,12 +48305,12 @@ class Tags {
   /// To see the latest fingerprint, make get() request to the instance.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// An array of tags. Each tag must be 1-63 characters long, and comply with
@@ -48251,7 +48324,7 @@ class Tags {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"];
+      items = (_json["items"] as core.List).cast<core.String>();
     }
   }
 
@@ -48439,8 +48512,9 @@ class TargetHttpProxyListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetHttpProxyListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetHttpProxyListWarningData>(
+              (value) => new TargetHttpProxyListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -48496,8 +48570,8 @@ class TargetHttpProxyList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetHttpProxy.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetHttpProxy>((value) => new TargetHttpProxy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -48549,7 +48623,8 @@ class TargetHttpsProxiesSetSslCertificatesRequest {
 
   TargetHttpsProxiesSetSslCertificatesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("sslCertificates")) {
-      sslCertificates = _json["sslCertificates"];
+      sslCertificates =
+          (_json["sslCertificates"] as core.List).cast<core.String>();
     }
   }
 
@@ -48630,7 +48705,8 @@ class TargetHttpsProxy {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("sslCertificates")) {
-      sslCertificates = _json["sslCertificates"];
+      sslCertificates =
+          (_json["sslCertificates"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("urlMap")) {
       urlMap = _json["urlMap"];
@@ -48750,8 +48826,9 @@ class TargetHttpsProxyListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetHttpsProxyListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetHttpsProxyListWarningData>(
+              (value) => new TargetHttpsProxyListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -48807,8 +48884,9 @@ class TargetHttpsProxyList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetHttpsProxy.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetHttpsProxy>(
+              (value) => new TargetHttpsProxy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -49050,8 +49128,8 @@ class TargetInstanceAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<TargetInstanceAggregatedListWarningData>((value) =>
               new TargetInstanceAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -49106,11 +49184,9 @@ class TargetInstanceAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              TargetInstancesScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
-              new TargetInstancesScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, TargetInstancesScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new TargetInstancesScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -49236,8 +49312,9 @@ class TargetInstanceListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetInstanceListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetInstanceListWarningData>(
+              (value) => new TargetInstanceListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -49292,8 +49369,8 @@ class TargetInstanceList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetInstance.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetInstance>((value) => new TargetInstance.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -49418,8 +49495,8 @@ class TargetInstancesScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<TargetInstancesScopedListWarningData>((value) =>
               new TargetInstancesScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -49456,8 +49533,8 @@ class TargetInstancesScopedList {
 
   TargetInstancesScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("targetInstances")) {
-      targetInstances = _json["targetInstances"]
-          .map((value) => new TargetInstance.fromJson(value))
+      targetInstances = (_json["targetInstances"] as core.List)
+          .map<TargetInstance>((value) => new TargetInstance.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -49586,13 +49663,13 @@ class TargetPool {
       failoverRatio = _json["failoverRatio"];
     }
     if (_json.containsKey("healthChecks")) {
-      healthChecks = _json["healthChecks"];
+      healthChecks = (_json["healthChecks"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
     }
     if (_json.containsKey("instances")) {
-      instances = _json["instances"];
+      instances = (_json["instances"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -49736,8 +49813,8 @@ class TargetPoolAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<TargetPoolAggregatedListWarningData>((value) =>
               new TargetPoolAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -49793,11 +49870,9 @@ class TargetPoolAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, TargetPoolsScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new TargetPoolsScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, TargetPoolsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new TargetPoolsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -49851,8 +49926,8 @@ class TargetPoolInstanceHealth {
 
   TargetPoolInstanceHealth.fromJson(core.Map _json) {
     if (_json.containsKey("healthStatus")) {
-      healthStatus = _json["healthStatus"]
-          .map((value) => new HealthStatus.fromJson(value))
+      healthStatus = (_json["healthStatus"] as core.List)
+          .map<HealthStatus>((value) => new HealthStatus.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -49956,8 +50031,9 @@ class TargetPoolListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetPoolListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetPoolListWarningData>(
+              (value) => new TargetPoolListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -50013,8 +50089,8 @@ class TargetPoolList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetPool.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetPool>((value) => new TargetPool.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -50064,8 +50140,9 @@ class TargetPoolsAddHealthCheckRequest {
 
   TargetPoolsAddHealthCheckRequest.fromJson(core.Map _json) {
     if (_json.containsKey("healthChecks")) {
-      healthChecks = _json["healthChecks"]
-          .map((value) => new HealthCheckReference.fromJson(value))
+      healthChecks = (_json["healthChecks"] as core.List)
+          .map<HealthCheckReference>(
+              (value) => new HealthCheckReference.fromJson(value))
           .toList();
     }
   }
@@ -50094,8 +50171,9 @@ class TargetPoolsAddInstanceRequest {
 
   TargetPoolsAddInstanceRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new InstanceReference.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<InstanceReference>(
+              (value) => new InstanceReference.fromJson(value))
           .toList();
     }
   }
@@ -50123,8 +50201,9 @@ class TargetPoolsRemoveHealthCheckRequest {
 
   TargetPoolsRemoveHealthCheckRequest.fromJson(core.Map _json) {
     if (_json.containsKey("healthChecks")) {
-      healthChecks = _json["healthChecks"]
-          .map((value) => new HealthCheckReference.fromJson(value))
+      healthChecks = (_json["healthChecks"] as core.List)
+          .map<HealthCheckReference>(
+              (value) => new HealthCheckReference.fromJson(value))
           .toList();
     }
   }
@@ -50148,8 +50227,9 @@ class TargetPoolsRemoveInstanceRequest {
 
   TargetPoolsRemoveInstanceRequest.fromJson(core.Map _json) {
     if (_json.containsKey("instances")) {
-      instances = _json["instances"]
-          .map((value) => new InstanceReference.fromJson(value))
+      instances = (_json["instances"] as core.List)
+          .map<InstanceReference>(
+              (value) => new InstanceReference.fromJson(value))
           .toList();
     }
   }
@@ -50247,8 +50327,9 @@ class TargetPoolsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetPoolsScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetPoolsScopedListWarningData>(
+              (value) => new TargetPoolsScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -50284,8 +50365,8 @@ class TargetPoolsScopedList {
 
   TargetPoolsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("targetPools")) {
-      targetPools = _json["targetPools"]
-          .map((value) => new TargetPool.fromJson(value))
+      targetPools = (_json["targetPools"] as core.List)
+          .map<TargetPool>((value) => new TargetPool.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -50385,7 +50466,8 @@ class TargetSslProxiesSetSslCertificatesRequest {
 
   TargetSslProxiesSetSslCertificatesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("sslCertificates")) {
-      sslCertificates = _json["sslCertificates"];
+      sslCertificates =
+          (_json["sslCertificates"] as core.List).cast<core.String>();
     }
   }
 
@@ -50472,7 +50554,8 @@ class TargetSslProxy {
       service = _json["service"];
     }
     if (_json.containsKey("sslCertificates")) {
-      sslCertificates = _json["sslCertificates"];
+      sslCertificates =
+          (_json["sslCertificates"] as core.List).cast<core.String>();
     }
   }
 
@@ -50592,8 +50675,9 @@ class TargetSslProxyListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetSslProxyListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetSslProxyListWarningData>(
+              (value) => new TargetSslProxyListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -50648,8 +50732,8 @@ class TargetSslProxyList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetSslProxy.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetSslProxy>((value) => new TargetSslProxy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -50922,8 +51006,9 @@ class TargetTcpProxyListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetTcpProxyListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetTcpProxyListWarningData>(
+              (value) => new TargetTcpProxyListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -50978,8 +51063,8 @@ class TargetTcpProxyList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetTcpProxy.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetTcpProxy>((value) => new TargetTcpProxy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -51088,7 +51173,8 @@ class TargetVpnGateway {
       description = _json["description"];
     }
     if (_json.containsKey("forwardingRules")) {
-      forwardingRules = _json["forwardingRules"];
+      forwardingRules =
+          (_json["forwardingRules"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -51112,7 +51198,7 @@ class TargetVpnGateway {
       status = _json["status"];
     }
     if (_json.containsKey("tunnels")) {
-      tunnels = _json["tunnels"];
+      tunnels = (_json["tunnels"] as core.List).cast<core.String>();
     }
   }
 
@@ -51238,8 +51324,8 @@ class TargetVpnGatewayAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<TargetVpnGatewayAggregatedListWarningData>((value) =>
               new TargetVpnGatewayAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -51295,11 +51381,9 @@ class TargetVpnGatewayAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons.mapMap<core.Map<core.String, core.Object>,
-              TargetVpnGatewaysScopedList>(
-          _json["items"],
-          (core.Map<core.String, core.Object> item) =>
-              new TargetVpnGatewaysScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, TargetVpnGatewaysScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new TargetVpnGatewaysScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -51425,8 +51509,9 @@ class TargetVpnGatewayListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new TargetVpnGatewayListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<TargetVpnGatewayListWarningData>(
+              (value) => new TargetVpnGatewayListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -51482,8 +51567,9 @@ class TargetVpnGatewayList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TargetVpnGateway.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TargetVpnGateway>(
+              (value) => new TargetVpnGateway.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -51608,8 +51694,8 @@ class TargetVpnGatewaysScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) =>
+      data = (_json["data"] as core.List)
+          .map<TargetVpnGatewaysScopedListWarningData>((value) =>
               new TargetVpnGatewaysScopedListWarningData.fromJson(value))
           .toList();
     }
@@ -51646,8 +51732,9 @@ class TargetVpnGatewaysScopedList {
 
   TargetVpnGatewaysScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("targetVpnGateways")) {
-      targetVpnGateways = _json["targetVpnGateways"]
-          .map((value) => new TargetVpnGateway.fromJson(value))
+      targetVpnGateways = (_json["targetVpnGateways"] as core.List)
+          .map<TargetVpnGateway>(
+              (value) => new TargetVpnGateway.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -51732,12 +51819,12 @@ class UrlMap {
   /// provided in order to update the UrlMap.
   core.String fingerprint;
   core.List<core.int> get fingerprintAsBytes {
-    return convert.BASE64.decode(fingerprint);
+    return convert.base64.decode(fingerprint);
   }
 
   void set fingerprintAsBytes(core.List<core.int> _bytes) {
     fingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The list of HostRules to use against the URL.
@@ -51786,8 +51873,8 @@ class UrlMap {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("hostRules")) {
-      hostRules = _json["hostRules"]
-          .map((value) => new HostRule.fromJson(value))
+      hostRules = (_json["hostRules"] as core.List)
+          .map<HostRule>((value) => new HostRule.fromJson(value))
           .toList();
     }
     if (_json.containsKey("id")) {
@@ -51800,16 +51887,16 @@ class UrlMap {
       name = _json["name"];
     }
     if (_json.containsKey("pathMatchers")) {
-      pathMatchers = _json["pathMatchers"]
-          .map((value) => new PathMatcher.fromJson(value))
+      pathMatchers = (_json["pathMatchers"] as core.List)
+          .map<PathMatcher>((value) => new PathMatcher.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
       selfLink = _json["selfLink"];
     }
     if (_json.containsKey("tests")) {
-      tests = _json["tests"]
-          .map((value) => new UrlMapTest.fromJson(value))
+      tests = (_json["tests"] as core.List)
+          .map<UrlMapTest>((value) => new UrlMapTest.fromJson(value))
           .toList();
     }
   }
@@ -51937,8 +52024,9 @@ class UrlMapListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new UrlMapListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<UrlMapListWarningData>(
+              (value) => new UrlMapListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -51993,8 +52081,9 @@ class UrlMapList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new UrlMap.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<UrlMap>((value) => new UrlMap.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -52123,14 +52212,14 @@ class UrlMapValidationResult {
 
   UrlMapValidationResult.fromJson(core.Map _json) {
     if (_json.containsKey("loadErrors")) {
-      loadErrors = _json["loadErrors"];
+      loadErrors = (_json["loadErrors"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("loadSucceeded")) {
       loadSucceeded = _json["loadSucceeded"];
     }
     if (_json.containsKey("testFailures")) {
-      testFailures = _json["testFailures"]
-          .map((value) => new TestFailure.fromJson(value))
+      testFailures = (_json["testFailures"] as core.List)
+          .map<TestFailure>((value) => new TestFailure.fromJson(value))
           .toList();
     }
     if (_json.containsKey("testPassed")) {
@@ -52349,7 +52438,8 @@ class VpnTunnel {
       kind = _json["kind"];
     }
     if (_json.containsKey("localTrafficSelector")) {
-      localTrafficSelector = _json["localTrafficSelector"];
+      localTrafficSelector =
+          (_json["localTrafficSelector"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -52361,7 +52451,8 @@ class VpnTunnel {
       region = _json["region"];
     }
     if (_json.containsKey("remoteTrafficSelector")) {
-      remoteTrafficSelector = _json["remoteTrafficSelector"];
+      remoteTrafficSelector =
+          (_json["remoteTrafficSelector"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("router")) {
       router = _json["router"];
@@ -52523,8 +52614,8 @@ class VpnTunnelAggregatedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map(
+      data = (_json["data"] as core.List)
+          .map<VpnTunnelAggregatedListWarningData>(
               (value) => new VpnTunnelAggregatedListWarningData.fromJson(value))
           .toList();
     }
@@ -52579,11 +52670,9 @@ class VpnTunnelAggregatedList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = commons
-          .mapMap<core.Map<core.String, core.Object>, VpnTunnelsScopedList>(
-              _json["items"],
-              (core.Map<core.String, core.Object> item) =>
-                  new VpnTunnelsScopedList.fromJson(item));
+      items = commons.mapMap<core.Map, VpnTunnelsScopedList>(
+          _json["items"].cast<core.String, core.Map>(),
+          (core.Map item) => new VpnTunnelsScopedList.fromJson(item));
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -52708,8 +52797,9 @@ class VpnTunnelListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new VpnTunnelListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<VpnTunnelListWarningData>(
+              (value) => new VpnTunnelListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -52764,8 +52854,9 @@ class VpnTunnelList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new VpnTunnel.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<VpnTunnel>((value) => new VpnTunnel.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -52889,8 +52980,9 @@ class VpnTunnelsScopedListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new VpnTunnelsScopedListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<VpnTunnelsScopedListWarningData>(
+              (value) => new VpnTunnelsScopedListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -52926,8 +53018,8 @@ class VpnTunnelsScopedList {
 
   VpnTunnelsScopedList.fromJson(core.Map _json) {
     if (_json.containsKey("vpnTunnels")) {
-      vpnTunnels = _json["vpnTunnels"]
-          .map((value) => new VpnTunnel.fromJson(value))
+      vpnTunnels = (_json["vpnTunnels"] as core.List)
+          .map<VpnTunnel>((value) => new VpnTunnel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warning")) {
@@ -53031,8 +53123,9 @@ class XpnHostListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new XpnHostListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<XpnHostListWarningData>(
+              (value) => new XpnHostListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -53087,8 +53180,9 @@ class XpnHostList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Project.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Project>((value) => new Project.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -53207,7 +53301,8 @@ class Zone {
 
   Zone.fromJson(core.Map _json) {
     if (_json.containsKey("availableCpuPlatforms")) {
-      availableCpuPlatforms = _json["availableCpuPlatforms"];
+      availableCpuPlatforms =
+          (_json["availableCpuPlatforms"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("creationTimestamp")) {
       creationTimestamp = _json["creationTimestamp"];
@@ -53357,8 +53452,9 @@ class ZoneListWarning {
       code = _json["code"];
     }
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new ZoneListWarningData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<ZoneListWarningData>(
+              (value) => new ZoneListWarningData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("message")) {
@@ -53413,7 +53509,9 @@ class ZoneList {
       id = _json["id"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Zone.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Zone>((value) => new Zone.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -53463,12 +53561,12 @@ class ZoneSetLabelsRequest {
   /// fingerprint.
   core.String labelFingerprint;
   core.List<core.int> get labelFingerprintAsBytes {
-    return convert.BASE64.decode(labelFingerprint);
+    return convert.base64.decode(labelFingerprint);
   }
 
   void set labelFingerprintAsBytes(core.List<core.int> _bytes) {
     labelFingerprint =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// The labels to set for this resource.
@@ -53481,7 +53579,7 @@ class ZoneSetLabelsRequest {
       labelFingerprint = _json["labelFingerprint"];
     }
     if (_json.containsKey("labels")) {
-      labels = _json["labels"];
+      labels = (_json["labels"] as core.Map).cast<core.String, core.String>();
     }
   }
 

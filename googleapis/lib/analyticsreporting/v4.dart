@@ -58,14 +58,14 @@ class ReportsResourceApi {
   async.Future<GetReportsResponse> batchGet(GetReportsRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -198,8 +198,9 @@ class CohortGroup {
 
   CohortGroup.fromJson(core.Map _json) {
     if (_json.containsKey("cohorts")) {
-      cohorts =
-          _json["cohorts"].map((value) => new Cohort.fromJson(value)).toList();
+      cohorts = (_json["cohorts"] as core.List)
+          .map<Cohort>((value) => new Cohort.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("lifetimeValue")) {
       lifetimeValue = _json["lifetimeValue"];
@@ -231,7 +232,7 @@ class ColumnHeader {
 
   ColumnHeader.fromJson(core.Map _json) {
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"];
+      dimensions = (_json["dimensions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("metricHeader")) {
       metricHeader = new MetricHeader.fromJson(_json["metricHeader"]);
@@ -298,12 +299,13 @@ class DateRangeValues {
 
   DateRangeValues.fromJson(core.Map _json) {
     if (_json.containsKey("pivotValueRegions")) {
-      pivotValueRegions = _json["pivotValueRegions"]
-          .map((value) => new PivotValueRegion.fromJson(value))
+      pivotValueRegions = (_json["pivotValueRegions"] as core.List)
+          .map<PivotValueRegion>(
+              (value) => new PivotValueRegion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List).cast<core.String>();
     }
   }
 
@@ -366,7 +368,8 @@ class Dimension {
 
   Dimension.fromJson(core.Map _json) {
     if (_json.containsKey("histogramBuckets")) {
-      histogramBuckets = _json["histogramBuckets"];
+      histogramBuckets =
+          (_json["histogramBuckets"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -454,7 +457,7 @@ class DimensionFilter {
       dimensionName = _json["dimensionName"];
     }
     if (_json.containsKey("expressions")) {
-      expressions = _json["expressions"];
+      expressions = (_json["expressions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("not")) {
       not = _json["not"];
@@ -505,8 +508,8 @@ class DimensionFilterClause {
 
   DimensionFilterClause.fromJson(core.Map _json) {
     if (_json.containsKey("filters")) {
-      filters = _json["filters"]
-          .map((value) => new DimensionFilter.fromJson(value))
+      filters = (_json["filters"] as core.List)
+          .map<DimensionFilter>((value) => new DimensionFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("operator")) {
@@ -593,8 +596,8 @@ class GetReportsRequest {
 
   GetReportsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("reportRequests")) {
-      reportRequests = _json["reportRequests"]
-          .map((value) => new ReportRequest.fromJson(value))
+      reportRequests = (_json["reportRequests"] as core.List)
+          .map<ReportRequest>((value) => new ReportRequest.fromJson(value))
           .toList();
     }
     if (_json.containsKey("useResourceQuotas")) {
@@ -637,8 +640,9 @@ class GetReportsResponse {
       queryCost = _json["queryCost"];
     }
     if (_json.containsKey("reports")) {
-      reports =
-          _json["reports"].map((value) => new Report.fromJson(value)).toList();
+      reports = (_json["reports"] as core.List)
+          .map<Report>((value) => new Report.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("resourceQuotasRemaining")) {
       resourceQuotasRemaining = new ResourceQuotasRemaining.fromJson(
@@ -810,8 +814,8 @@ class MetricFilterClause {
 
   MetricFilterClause.fromJson(core.Map _json) {
     if (_json.containsKey("filters")) {
-      filters = _json["filters"]
-          .map((value) => new MetricFilter.fromJson(value))
+      filters = (_json["filters"] as core.List)
+          .map<MetricFilter>((value) => new MetricFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("operator")) {
@@ -844,13 +848,14 @@ class MetricHeader {
 
   MetricHeader.fromJson(core.Map _json) {
     if (_json.containsKey("metricHeaderEntries")) {
-      metricHeaderEntries = _json["metricHeaderEntries"]
-          .map((value) => new MetricHeaderEntry.fromJson(value))
+      metricHeaderEntries = (_json["metricHeaderEntries"] as core.List)
+          .map<MetricHeaderEntry>(
+              (value) => new MetricHeaderEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("pivotHeaders")) {
-      pivotHeaders = _json["pivotHeaders"]
-          .map((value) => new PivotHeader.fromJson(value))
+      pivotHeaders = (_json["pivotHeaders"] as core.List)
+          .map<PivotHeader>((value) => new PivotHeader.fromJson(value))
           .toList();
     }
   }
@@ -919,8 +924,9 @@ class OrFiltersForSegment {
 
   OrFiltersForSegment.fromJson(core.Map _json) {
     if (_json.containsKey("segmentFilterClauses")) {
-      segmentFilterClauses = _json["segmentFilterClauses"]
-          .map((value) => new SegmentFilterClause.fromJson(value))
+      segmentFilterClauses = (_json["segmentFilterClauses"] as core.List)
+          .map<SegmentFilterClause>(
+              (value) => new SegmentFilterClause.fromJson(value))
           .toList();
     }
   }
@@ -1054,21 +1060,23 @@ class Pivot {
 
   Pivot.fromJson(core.Map _json) {
     if (_json.containsKey("dimensionFilterClauses")) {
-      dimensionFilterClauses = _json["dimensionFilterClauses"]
-          .map((value) => new DimensionFilterClause.fromJson(value))
+      dimensionFilterClauses = (_json["dimensionFilterClauses"] as core.List)
+          .map<DimensionFilterClause>(
+              (value) => new DimensionFilterClause.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"]
-          .map((value) => new Dimension.fromJson(value))
+      dimensions = (_json["dimensions"] as core.List)
+          .map<Dimension>((value) => new Dimension.fromJson(value))
           .toList();
     }
     if (_json.containsKey("maxGroupCount")) {
       maxGroupCount = _json["maxGroupCount"];
     }
     if (_json.containsKey("metrics")) {
-      metrics =
-          _json["metrics"].map((value) => new Metric.fromJson(value)).toList();
+      metrics = (_json["metrics"] as core.List)
+          .map<Metric>((value) => new Metric.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("startGroup")) {
       startGroup = _json["startGroup"];
@@ -1111,8 +1119,9 @@ class PivotHeader {
 
   PivotHeader.fromJson(core.Map _json) {
     if (_json.containsKey("pivotHeaderEntries")) {
-      pivotHeaderEntries = _json["pivotHeaderEntries"]
-          .map((value) => new PivotHeaderEntry.fromJson(value))
+      pivotHeaderEntries = (_json["pivotHeaderEntries"] as core.List)
+          .map<PivotHeaderEntry>(
+              (value) => new PivotHeaderEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("totalPivotGroupsCount")) {
@@ -1150,10 +1159,12 @@ class PivotHeaderEntry {
 
   PivotHeaderEntry.fromJson(core.Map _json) {
     if (_json.containsKey("dimensionNames")) {
-      dimensionNames = _json["dimensionNames"];
+      dimensionNames =
+          (_json["dimensionNames"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("dimensionValues")) {
-      dimensionValues = _json["dimensionValues"];
+      dimensionValues =
+          (_json["dimensionValues"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("metric")) {
       metric = new MetricHeaderEntry.fromJson(_json["metric"]);
@@ -1185,7 +1196,7 @@ class PivotValueRegion {
 
   PivotValueRegion.fromJson(core.Map _json) {
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List).cast<core.String>();
     }
   }
 
@@ -1304,31 +1315,34 @@ class ReportData {
       isDataGolden = _json["isDataGolden"];
     }
     if (_json.containsKey("maximums")) {
-      maximums = _json["maximums"]
-          .map((value) => new DateRangeValues.fromJson(value))
+      maximums = (_json["maximums"] as core.List)
+          .map<DateRangeValues>((value) => new DateRangeValues.fromJson(value))
           .toList();
     }
     if (_json.containsKey("minimums")) {
-      minimums = _json["minimums"]
-          .map((value) => new DateRangeValues.fromJson(value))
+      minimums = (_json["minimums"] as core.List)
+          .map<DateRangeValues>((value) => new DateRangeValues.fromJson(value))
           .toList();
     }
     if (_json.containsKey("rowCount")) {
       rowCount = _json["rowCount"];
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new ReportRow.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<ReportRow>((value) => new ReportRow.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("samplesReadCounts")) {
-      samplesReadCounts = _json["samplesReadCounts"];
+      samplesReadCounts =
+          (_json["samplesReadCounts"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("samplingSpaceSizes")) {
-      samplingSpaceSizes = _json["samplingSpaceSizes"];
+      samplingSpaceSizes =
+          (_json["samplingSpaceSizes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("totals")) {
-      totals = _json["totals"]
-          .map((value) => new DateRangeValues.fromJson(value))
+      totals = (_json["totals"] as core.List)
+          .map<DateRangeValues>((value) => new DateRangeValues.fromJson(value))
           .toList();
     }
   }
@@ -1495,18 +1509,19 @@ class ReportRequest {
       cohortGroup = new CohortGroup.fromJson(_json["cohortGroup"]);
     }
     if (_json.containsKey("dateRanges")) {
-      dateRanges = _json["dateRanges"]
-          .map((value) => new DateRange.fromJson(value))
+      dateRanges = (_json["dateRanges"] as core.List)
+          .map<DateRange>((value) => new DateRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dimensionFilterClauses")) {
-      dimensionFilterClauses = _json["dimensionFilterClauses"]
-          .map((value) => new DimensionFilterClause.fromJson(value))
+      dimensionFilterClauses = (_json["dimensionFilterClauses"] as core.List)
+          .map<DimensionFilterClause>(
+              (value) => new DimensionFilterClause.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"]
-          .map((value) => new Dimension.fromJson(value))
+      dimensions = (_json["dimensions"] as core.List)
+          .map<Dimension>((value) => new Dimension.fromJson(value))
           .toList();
     }
     if (_json.containsKey("filtersExpression")) {
@@ -1522,17 +1537,19 @@ class ReportRequest {
       includeEmptyRows = _json["includeEmptyRows"];
     }
     if (_json.containsKey("metricFilterClauses")) {
-      metricFilterClauses = _json["metricFilterClauses"]
-          .map((value) => new MetricFilterClause.fromJson(value))
+      metricFilterClauses = (_json["metricFilterClauses"] as core.List)
+          .map<MetricFilterClause>(
+              (value) => new MetricFilterClause.fromJson(value))
           .toList();
     }
     if (_json.containsKey("metrics")) {
-      metrics =
-          _json["metrics"].map((value) => new Metric.fromJson(value)).toList();
+      metrics = (_json["metrics"] as core.List)
+          .map<Metric>((value) => new Metric.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("orderBys")) {
-      orderBys = _json["orderBys"]
-          .map((value) => new OrderBy.fromJson(value))
+      orderBys = (_json["orderBys"] as core.List)
+          .map<OrderBy>((value) => new OrderBy.fromJson(value))
           .toList();
     }
     if (_json.containsKey("pageSize")) {
@@ -1542,15 +1559,16 @@ class ReportRequest {
       pageToken = _json["pageToken"];
     }
     if (_json.containsKey("pivots")) {
-      pivots =
-          _json["pivots"].map((value) => new Pivot.fromJson(value)).toList();
+      pivots = (_json["pivots"] as core.List)
+          .map<Pivot>((value) => new Pivot.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("samplingLevel")) {
       samplingLevel = _json["samplingLevel"];
     }
     if (_json.containsKey("segments")) {
-      segments = _json["segments"]
-          .map((value) => new Segment.fromJson(value))
+      segments = (_json["segments"] as core.List)
+          .map<Segment>((value) => new Segment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("viewId")) {
@@ -1632,11 +1650,11 @@ class ReportRow {
 
   ReportRow.fromJson(core.Map _json) {
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"];
+      dimensions = (_json["dimensions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("metrics")) {
-      metrics = _json["metrics"]
-          .map((value) => new DateRangeValues.fromJson(value))
+      metrics = (_json["metrics"] as core.List)
+          .map<DateRangeValues>((value) => new DateRangeValues.fromJson(value))
           .toList();
     }
   }
@@ -1732,8 +1750,8 @@ class SegmentDefinition {
 
   SegmentDefinition.fromJson(core.Map _json) {
     if (_json.containsKey("segmentFilters")) {
-      segmentFilters = _json["segmentFilters"]
-          .map((value) => new SegmentFilter.fromJson(value))
+      segmentFilters = (_json["segmentFilters"] as core.List)
+          .map<SegmentFilter>((value) => new SegmentFilter.fromJson(value))
           .toList();
     }
   }
@@ -1818,7 +1836,7 @@ class SegmentDimensionFilter {
       dimensionName = _json["dimensionName"];
     }
     if (_json.containsKey("expressions")) {
-      expressions = _json["expressions"];
+      expressions = (_json["expressions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("maxComparisonValue")) {
       maxComparisonValue = _json["maxComparisonValue"];
@@ -2073,8 +2091,9 @@ class SegmentSequenceStep {
       matchType = _json["matchType"];
     }
     if (_json.containsKey("orFiltersForSegment")) {
-      orFiltersForSegment = _json["orFiltersForSegment"]
-          .map((value) => new OrFiltersForSegment.fromJson(value))
+      orFiltersForSegment = (_json["orFiltersForSegment"] as core.List)
+          .map<OrFiltersForSegment>(
+              (value) => new OrFiltersForSegment.fromJson(value))
           .toList();
     }
   }
@@ -2111,8 +2130,9 @@ class SequenceSegment {
       firstStepShouldMatchFirstHit = _json["firstStepShouldMatchFirstHit"];
     }
     if (_json.containsKey("segmentSequenceSteps")) {
-      segmentSequenceSteps = _json["segmentSequenceSteps"]
-          .map((value) => new SegmentSequenceStep.fromJson(value))
+      segmentSequenceSteps = (_json["segmentSequenceSteps"] as core.List)
+          .map<SegmentSequenceStep>(
+              (value) => new SegmentSequenceStep.fromJson(value))
           .toList();
     }
   }
@@ -2142,8 +2162,9 @@ class SimpleSegment {
 
   SimpleSegment.fromJson(core.Map _json) {
     if (_json.containsKey("orFiltersForSegment")) {
-      orFiltersForSegment = _json["orFiltersForSegment"]
-          .map((value) => new OrFiltersForSegment.fromJson(value))
+      orFiltersForSegment = (_json["orFiltersForSegment"] as core.List)
+          .map<OrFiltersForSegment>(
+              (value) => new OrFiltersForSegment.fromJson(value))
           .toList();
     }
   }

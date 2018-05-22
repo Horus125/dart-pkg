@@ -81,14 +81,14 @@ class AccountsResourceApi {
       core.String accountType, core.String accountName,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (userToken == null) {
       throw new core.ArgumentError("Parameter userToken is required.");
@@ -141,7 +141,7 @@ class ContactsResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -185,7 +185,7 @@ class ContactsResourceApi {
   /// this method will complete with the same error.
   async.Future<Contact> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -227,14 +227,14 @@ class ContactsResourceApi {
   /// this method will complete with the same error.
   async.Future<Contact> insert(Contact request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -267,7 +267,7 @@ class ContactsResourceApi {
   /// this method will complete with the same error.
   async.Future<ContactsListResponse> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -309,14 +309,14 @@ class ContactsResourceApi {
   async.Future<Contact> patch(Contact request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -357,14 +357,14 @@ class ContactsResourceApi {
   async.Future<Contact> update(Contact request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -408,7 +408,7 @@ class LocationsResourceApi {
   /// this method will complete with the same error.
   async.Future<Location> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -448,7 +448,7 @@ class LocationsResourceApi {
   /// this method will complete with the same error.
   async.Future<LocationsListResponse> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -497,7 +497,7 @@ class SettingsResourceApi {
   /// this method will complete with the same error.
   async.Future<Setting> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -543,7 +543,7 @@ class SubscriptionsResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -588,14 +588,14 @@ class SubscriptionsResourceApi {
   async.Future<Subscription> insert(Subscription request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -628,7 +628,7 @@ class SubscriptionsResourceApi {
   /// this method will complete with the same error.
   async.Future<SubscriptionsListResponse> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -671,14 +671,14 @@ class SubscriptionsResourceApi {
   async.Future<Subscription> update(Subscription request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -723,7 +723,7 @@ class TimelineResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -767,7 +767,7 @@ class TimelineResourceApi {
   /// this method will complete with the same error.
   async.Future<TimelineItem> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -818,14 +818,14 @@ class TimelineResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -898,7 +898,7 @@ class TimelineResourceApi {
       core.String sourceItemId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -961,14 +961,14 @@ class TimelineResourceApi {
   async.Future<TimelineItem> patch(TimelineItem request, core.String id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -1017,14 +1017,14 @@ class TimelineResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -1081,7 +1081,7 @@ class TimelineAttachmentsResourceApi {
   async.Future delete(core.String itemId, core.String attachmentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1144,7 +1144,7 @@ class TimelineAttachmentsResourceApi {
       commons.DownloadOptions downloadOptions:
           commons.DownloadOptions.Metadata}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1208,7 +1208,7 @@ class TimelineAttachmentsResourceApi {
       commons.UploadOptions uploadOptions: commons.UploadOptions.Default,
       commons.Media uploadMedia}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1266,7 +1266,7 @@ class TimelineAttachmentsResourceApi {
   async.Future<AttachmentsListResponse> list(core.String itemId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1303,19 +1303,19 @@ class Account {
 
   Account.fromJson(core.Map _json) {
     if (_json.containsKey("authTokens")) {
-      authTokens = _json["authTokens"]
-          .map((value) => new AuthToken.fromJson(value))
+      authTokens = (_json["authTokens"] as core.List)
+          .map<AuthToken>((value) => new AuthToken.fromJson(value))
           .toList();
     }
     if (_json.containsKey("features")) {
-      features = _json["features"];
+      features = (_json["features"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("password")) {
       password = _json["password"];
     }
     if (_json.containsKey("userData")) {
-      userData = _json["userData"]
-          .map((value) => new UserData.fromJson(value))
+      userData = (_json["userData"] as core.List)
+          .map<UserData>((value) => new UserData.fromJson(value))
           .toList();
     }
   }
@@ -1406,8 +1406,8 @@ class AttachmentsListResponse {
 
   AttachmentsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Attachment.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Attachment>((value) => new Attachment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1546,12 +1546,12 @@ class Contact {
 
   Contact.fromJson(core.Map _json) {
     if (_json.containsKey("acceptCommands")) {
-      acceptCommands = _json["acceptCommands"]
-          .map((value) => new Command.fromJson(value))
+      acceptCommands = (_json["acceptCommands"] as core.List)
+          .map<Command>((value) => new Command.fromJson(value))
           .toList();
     }
     if (_json.containsKey("acceptTypes")) {
-      acceptTypes = _json["acceptTypes"];
+      acceptTypes = (_json["acceptTypes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("displayName")) {
       displayName = _json["displayName"];
@@ -1560,7 +1560,7 @@ class Contact {
       id = _json["id"];
     }
     if (_json.containsKey("imageUrls")) {
-      imageUrls = _json["imageUrls"];
+      imageUrls = (_json["imageUrls"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1572,7 +1572,8 @@ class Contact {
       priority = _json["priority"];
     }
     if (_json.containsKey("sharingFeatures")) {
-      sharingFeatures = _json["sharingFeatures"];
+      sharingFeatures =
+          (_json["sharingFeatures"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("source")) {
       source = _json["source"];
@@ -1642,8 +1643,9 @@ class ContactsListResponse {
 
   ContactsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Contact.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Contact>((value) => new Contact.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1764,8 +1766,9 @@ class LocationsListResponse {
 
   LocationsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Location.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Location>((value) => new Location.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1874,8 +1877,8 @@ class MenuItem {
       removeWhenSelected = _json["removeWhenSelected"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"]
-          .map((value) => new MenuValue.fromJson(value))
+      values = (_json["values"] as core.List)
+          .map<MenuValue>((value) => new MenuValue.fromJson(value))
           .toList();
     }
   }
@@ -1988,8 +1991,8 @@ class Notification {
       operation = _json["operation"];
     }
     if (_json.containsKey("userActions")) {
-      userActions = _json["userActions"]
-          .map((value) => new UserAction.fromJson(value))
+      userActions = (_json["userActions"] as core.List)
+          .map<UserAction>((value) => new UserAction.fromJson(value))
           .toList();
     }
     if (_json.containsKey("userToken")) {
@@ -2168,7 +2171,7 @@ class Subscription {
       notification = new Notification.fromJson(_json["notification"]);
     }
     if (_json.containsKey("operation")) {
-      operation = _json["operation"];
+      operation = (_json["operation"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("updated")) {
       updated = core.DateTime.parse(_json["updated"]);
@@ -2228,8 +2231,8 @@ class SubscriptionsListResponse {
 
   SubscriptionsListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new Subscription.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<Subscription>((value) => new Subscription.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -2409,8 +2412,8 @@ class TimelineItem {
 
   TimelineItem.fromJson(core.Map _json) {
     if (_json.containsKey("attachments")) {
-      attachments = _json["attachments"]
-          .map((value) => new Attachment.fromJson(value))
+      attachments = (_json["attachments"] as core.List)
+          .map<Attachment>((value) => new Attachment.fromJson(value))
           .toList();
     }
     if (_json.containsKey("bundleId")) {
@@ -2456,8 +2459,8 @@ class TimelineItem {
       location = new Location.fromJson(_json["location"]);
     }
     if (_json.containsKey("menuItems")) {
-      menuItems = _json["menuItems"]
-          .map((value) => new MenuItem.fromJson(value))
+      menuItems = (_json["menuItems"] as core.List)
+          .map<MenuItem>((value) => new MenuItem.fromJson(value))
           .toList();
     }
     if (_json.containsKey("notification")) {
@@ -2467,8 +2470,8 @@ class TimelineItem {
       pinScore = _json["pinScore"];
     }
     if (_json.containsKey("recipients")) {
-      recipients = _json["recipients"]
-          .map((value) => new Contact.fromJson(value))
+      recipients = (_json["recipients"] as core.List)
+          .map<Contact>((value) => new Contact.fromJson(value))
           .toList();
     }
     if (_json.containsKey("selfLink")) {
@@ -2598,8 +2601,8 @@ class TimelineListResponse {
 
   TimelineListResponse.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new TimelineItem.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<TimelineItem>((value) => new TimelineItem.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {

@@ -84,7 +84,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<Account> get(core.String accountId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -124,7 +124,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<ListAccountsResponse> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -169,14 +169,14 @@ class AccountsResourceApi {
   async.Future<Account> update(Account request, core.String accountId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -245,14 +245,14 @@ class AccountsContainersResourceApi {
   async.Future<Container> create(Container request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -293,7 +293,7 @@ class AccountsContainersResourceApi {
   async.Future delete(core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -346,7 +346,7 @@ class AccountsContainersResourceApi {
   async.Future<Container> get(core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -395,7 +395,7 @@ class AccountsContainersResourceApi {
   async.Future<ListContainersResponse> list(core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -448,14 +448,14 @@ class AccountsContainersResourceApi {
       Container request, core.String accountId, core.String containerId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -515,14 +515,14 @@ class AccountsContainersEnvironmentsResourceApi {
       Environment request, core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -571,7 +571,7 @@ class AccountsContainersEnvironmentsResourceApi {
       core.String accountId, core.String containerId, core.String environmentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -632,7 +632,7 @@ class AccountsContainersEnvironmentsResourceApi {
       core.String accountId, core.String containerId, core.String environmentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -689,7 +689,7 @@ class AccountsContainersEnvironmentsResourceApi {
       core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -750,14 +750,14 @@ class AccountsContainersEnvironmentsResourceApi {
       core.String containerId, core.String environmentId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -820,14 +820,14 @@ class AccountsContainersEnvironmentsResourceApi {
       core.String containerId, core.String environmentId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -895,14 +895,14 @@ class AccountsContainersFoldersResourceApi {
       Folder request, core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -951,7 +951,7 @@ class AccountsContainersFoldersResourceApi {
       core.String accountId, core.String containerId, core.String folderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1012,7 +1012,7 @@ class AccountsContainersFoldersResourceApi {
       core.String accountId, core.String containerId, core.String folderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1069,7 +1069,7 @@ class AccountsContainersFoldersResourceApi {
       core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1129,14 +1129,14 @@ class AccountsContainersFoldersResourceApi {
       core.String containerId, core.String folderId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1201,7 +1201,7 @@ class AccountsContainersFoldersEntitiesResourceApi {
       core.String accountId, core.String containerId, core.String folderId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1277,14 +1277,14 @@ class AccountsContainersMoveFoldersResourceApi {
       core.List<core.String> variableId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1360,14 +1360,14 @@ class AccountsContainersReauthorizeEnvironmentsResourceApi {
       core.String containerId, core.String environmentId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1429,14 +1429,14 @@ class AccountsContainersTagsResourceApi {
       Tag request, core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1485,7 +1485,7 @@ class AccountsContainersTagsResourceApi {
       core.String accountId, core.String containerId, core.String tagId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1546,7 +1546,7 @@ class AccountsContainersTagsResourceApi {
       core.String accountId, core.String containerId, core.String tagId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1603,7 +1603,7 @@ class AccountsContainersTagsResourceApi {
       core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1663,14 +1663,14 @@ class AccountsContainersTagsResourceApi {
       core.String containerId, core.String tagId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1735,14 +1735,14 @@ class AccountsContainersTriggersResourceApi {
       Trigger request, core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1791,7 +1791,7 @@ class AccountsContainersTriggersResourceApi {
       core.String accountId, core.String containerId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1852,7 +1852,7 @@ class AccountsContainersTriggersResourceApi {
       core.String accountId, core.String containerId, core.String triggerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1909,7 +1909,7 @@ class AccountsContainersTriggersResourceApi {
       core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1969,14 +1969,14 @@ class AccountsContainersTriggersResourceApi {
       core.String containerId, core.String triggerId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2041,14 +2041,14 @@ class AccountsContainersVariablesResourceApi {
       Variable request, core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2097,7 +2097,7 @@ class AccountsContainersVariablesResourceApi {
       core.String accountId, core.String containerId, core.String variableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2158,7 +2158,7 @@ class AccountsContainersVariablesResourceApi {
       core.String accountId, core.String containerId, core.String variableId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2215,7 +2215,7 @@ class AccountsContainersVariablesResourceApi {
       core.String accountId, core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2275,14 +2275,14 @@ class AccountsContainersVariablesResourceApi {
       core.String containerId, core.String variableId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2349,14 +2349,14 @@ class AccountsContainersVersionsResourceApi {
       core.String containerId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2406,7 +2406,7 @@ class AccountsContainersVersionsResourceApi {
       core.String containerVersionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2468,7 +2468,7 @@ class AccountsContainersVersionsResourceApi {
       core.String containerId, core.String containerVersionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2529,7 +2529,7 @@ class AccountsContainersVersionsResourceApi {
       core.String accountId, core.String containerId,
       {core.bool headers, core.bool includeDeleted, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2594,7 +2594,7 @@ class AccountsContainersVersionsResourceApi {
       core.String containerId, core.String containerVersionId,
       {core.String fingerprint, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2661,7 +2661,7 @@ class AccountsContainersVersionsResourceApi {
       core.String containerId, core.String containerVersionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2721,7 +2721,7 @@ class AccountsContainersVersionsResourceApi {
       core.String containerId, core.String containerVersionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2790,14 +2790,14 @@ class AccountsContainersVersionsResourceApi {
       {core.String fingerprint,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2859,14 +2859,14 @@ class AccountsPermissionsResourceApi {
   async.Future<UserAccess> create(UserAccess request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -2908,7 +2908,7 @@ class AccountsPermissionsResourceApi {
   async.Future delete(core.String accountId, core.String permissionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2961,7 +2961,7 @@ class AccountsPermissionsResourceApi {
   async.Future<UserAccess> get(core.String accountId, core.String permissionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3012,7 +3012,7 @@ class AccountsPermissionsResourceApi {
   async.Future<ListAccountUsersResponse> list(core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -3063,14 +3063,14 @@ class AccountsPermissionsResourceApi {
       UserAccess request, core.String accountId, core.String permissionId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -3158,7 +3158,7 @@ class AccountAccess {
 
   AccountAccess.fromJson(core.Map _json) {
     if (_json.containsKey("permission")) {
-      permission = _json["permission"];
+      permission = (_json["permission"] as core.List).cast<core.String>();
     }
   }
 
@@ -3205,8 +3205,8 @@ class Condition {
 
   Condition.fromJson(core.Map _json) {
     if (_json.containsKey("parameter")) {
-      parameter = _json["parameter"]
-          .map((value) => new Parameter.fromJson(value))
+      parameter = (_json["parameter"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("type")) {
@@ -3279,10 +3279,11 @@ class Container {
       containerId = _json["containerId"];
     }
     if (_json.containsKey("domainName")) {
-      domainName = _json["domainName"];
+      domainName = (_json["domainName"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("enabledBuiltInVariable")) {
-      enabledBuiltInVariable = _json["enabledBuiltInVariable"];
+      enabledBuiltInVariable =
+          (_json["enabledBuiltInVariable"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("fingerprint")) {
       fingerprint = _json["fingerprint"];
@@ -3303,7 +3304,7 @@ class Container {
       timeZoneId = _json["timeZoneId"];
     }
     if (_json.containsKey("usageContext")) {
-      usageContext = _json["usageContext"];
+      usageContext = (_json["usageContext"] as core.List).cast<core.String>();
     }
   }
 
@@ -3363,7 +3364,7 @@ class ContainerAccess {
       containerId = _json["containerId"];
     }
     if (_json.containsKey("permission")) {
-      permission = _json["permission"];
+      permission = (_json["permission"] as core.List).cast<core.String>();
     }
   }
 
@@ -3447,11 +3448,14 @@ class ContainerVersion {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("folder")) {
-      folder =
-          _json["folder"].map((value) => new Folder.fromJson(value)).toList();
+      folder = (_json["folder"] as core.List)
+          .map<Folder>((value) => new Folder.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("macro")) {
-      macro = _json["macro"].map((value) => new Macro.fromJson(value)).toList();
+      macro = (_json["macro"] as core.List)
+          .map<Macro>((value) => new Macro.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -3460,18 +3464,23 @@ class ContainerVersion {
       notes = _json["notes"];
     }
     if (_json.containsKey("rule")) {
-      rule = _json["rule"].map((value) => new Rule.fromJson(value)).toList();
+      rule = (_json["rule"] as core.List)
+          .map<Rule>((value) => new Rule.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("tag")) {
-      tag = _json["tag"].map((value) => new Tag.fromJson(value)).toList();
+      tag = (_json["tag"] as core.List)
+          .map<Tag>((value) => new Tag.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("trigger")) {
-      trigger =
-          _json["trigger"].map((value) => new Trigger.fromJson(value)).toList();
+      trigger = (_json["trigger"] as core.List)
+          .map<Trigger>((value) => new Trigger.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("variable")) {
-      variable = _json["variable"]
-          .map((value) => new Variable.fromJson(value))
+      variable = (_json["variable"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
   }
@@ -3909,15 +3918,18 @@ class FolderEntities {
 
   FolderEntities.fromJson(core.Map _json) {
     if (_json.containsKey("tag")) {
-      tag = _json["tag"].map((value) => new Tag.fromJson(value)).toList();
+      tag = (_json["tag"] as core.List)
+          .map<Tag>((value) => new Tag.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("trigger")) {
-      trigger =
-          _json["trigger"].map((value) => new Trigger.fromJson(value)).toList();
+      trigger = (_json["trigger"] as core.List)
+          .map<Trigger>((value) => new Trigger.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("variable")) {
-      variable = _json["variable"]
-          .map((value) => new Variable.fromJson(value))
+      variable = (_json["variable"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
   }
@@ -3947,8 +3959,8 @@ class ListAccountUsersResponse {
 
   ListAccountUsersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("userAccess")) {
-      userAccess = _json["userAccess"]
-          .map((value) => new UserAccess.fromJson(value))
+      userAccess = (_json["userAccess"] as core.List)
+          .map<UserAccess>((value) => new UserAccess.fromJson(value))
           .toList();
     }
   }
@@ -3973,8 +3985,8 @@ class ListAccountsResponse {
 
   ListAccountsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("accounts")) {
-      accounts = _json["accounts"]
-          .map((value) => new Account.fromJson(value))
+      accounts = (_json["accounts"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
           .toList();
     }
   }
@@ -4001,13 +4013,15 @@ class ListContainerVersionsResponse {
 
   ListContainerVersionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("containerVersion")) {
-      containerVersion = _json["containerVersion"]
-          .map((value) => new ContainerVersion.fromJson(value))
+      containerVersion = (_json["containerVersion"] as core.List)
+          .map<ContainerVersion>(
+              (value) => new ContainerVersion.fromJson(value))
           .toList();
     }
     if (_json.containsKey("containerVersionHeader")) {
-      containerVersionHeader = _json["containerVersionHeader"]
-          .map((value) => new ContainerVersionHeader.fromJson(value))
+      containerVersionHeader = (_json["containerVersionHeader"] as core.List)
+          .map<ContainerVersionHeader>(
+              (value) => new ContainerVersionHeader.fromJson(value))
           .toList();
     }
   }
@@ -4036,8 +4050,8 @@ class ListContainersResponse {
 
   ListContainersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("containers")) {
-      containers = _json["containers"]
-          .map((value) => new Container.fromJson(value))
+      containers = (_json["containers"] as core.List)
+          .map<Container>((value) => new Container.fromJson(value))
           .toList();
     }
   }
@@ -4062,8 +4076,8 @@ class ListEnvironmentsResponse {
 
   ListEnvironmentsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("environments")) {
-      environments = _json["environments"]
-          .map((value) => new Environment.fromJson(value))
+      environments = (_json["environments"] as core.List)
+          .map<Environment>((value) => new Environment.fromJson(value))
           .toList();
     }
   }
@@ -4088,8 +4102,9 @@ class ListFoldersResponse {
 
   ListFoldersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("folders")) {
-      folders =
-          _json["folders"].map((value) => new Folder.fromJson(value)).toList();
+      folders = (_json["folders"] as core.List)
+          .map<Folder>((value) => new Folder.fromJson(value))
+          .toList();
     }
   }
 
@@ -4112,7 +4127,9 @@ class ListTagsResponse {
 
   ListTagsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("tags")) {
-      tags = _json["tags"].map((value) => new Tag.fromJson(value)).toList();
+      tags = (_json["tags"] as core.List)
+          .map<Tag>((value) => new Tag.fromJson(value))
+          .toList();
     }
   }
 
@@ -4135,8 +4152,8 @@ class ListTriggersResponse {
 
   ListTriggersResponse.fromJson(core.Map _json) {
     if (_json.containsKey("triggers")) {
-      triggers = _json["triggers"]
-          .map((value) => new Trigger.fromJson(value))
+      triggers = (_json["triggers"] as core.List)
+          .map<Trigger>((value) => new Trigger.fromJson(value))
           .toList();
     }
   }
@@ -4160,8 +4177,8 @@ class ListVariablesResponse {
 
   ListVariablesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("variables")) {
-      variables = _json["variables"]
-          .map((value) => new Variable.fromJson(value))
+      variables = (_json["variables"] as core.List)
+          .map<Variable>((value) => new Variable.fromJson(value))
           .toList();
     }
   }
@@ -4232,10 +4249,12 @@ class Macro {
       containerId = _json["containerId"];
     }
     if (_json.containsKey("disablingRuleId")) {
-      disablingRuleId = _json["disablingRuleId"];
+      disablingRuleId =
+          (_json["disablingRuleId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("enablingRuleId")) {
-      enablingRuleId = _json["enablingRuleId"];
+      enablingRuleId =
+          (_json["enablingRuleId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("fingerprint")) {
       fingerprint = _json["fingerprint"];
@@ -4250,8 +4269,8 @@ class Macro {
       notes = _json["notes"];
     }
     if (_json.containsKey("parameter")) {
-      parameter = _json["parameter"]
-          .map((value) => new Parameter.fromJson(value))
+      parameter = (_json["parameter"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("parentFolderId")) {
@@ -4353,11 +4372,14 @@ class Parameter {
       key = _json["key"];
     }
     if (_json.containsKey("list")) {
-      list =
-          _json["list"].map((value) => new Parameter.fromJson(value)).toList();
+      list = (_json["list"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("map")) {
-      map = _json["map"].map((value) => new Parameter.fromJson(value)).toList();
+      map = (_json["map"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("type")) {
       type = _json["type"];
@@ -4453,8 +4475,8 @@ class Rule {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("condition")) {
-      condition = _json["condition"]
-          .map((value) => new Condition.fromJson(value))
+      condition = (_json["condition"] as core.List)
+          .map<Condition>((value) => new Condition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("containerId")) {
@@ -4619,10 +4641,12 @@ class Tag {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("blockingRuleId")) {
-      blockingRuleId = _json["blockingRuleId"];
+      blockingRuleId =
+          (_json["blockingRuleId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("blockingTriggerId")) {
-      blockingTriggerId = _json["blockingTriggerId"];
+      blockingTriggerId =
+          (_json["blockingTriggerId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("containerId")) {
       containerId = _json["containerId"];
@@ -4631,10 +4655,11 @@ class Tag {
       fingerprint = _json["fingerprint"];
     }
     if (_json.containsKey("firingRuleId")) {
-      firingRuleId = _json["firingRuleId"];
+      firingRuleId = (_json["firingRuleId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("firingTriggerId")) {
-      firingTriggerId = _json["firingTriggerId"];
+      firingTriggerId =
+          (_json["firingTriggerId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("liveOnly")) {
       liveOnly = _json["liveOnly"];
@@ -4646,8 +4671,8 @@ class Tag {
       notes = _json["notes"];
     }
     if (_json.containsKey("parameter")) {
-      parameter = _json["parameter"]
-          .map((value) => new Parameter.fromJson(value))
+      parameter = (_json["parameter"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("parentFolderId")) {
@@ -4666,8 +4691,8 @@ class Tag {
       scheduleStartMs = _json["scheduleStartMs"];
     }
     if (_json.containsKey("setupTag")) {
-      setupTag = _json["setupTag"]
-          .map((value) => new SetupTag.fromJson(value))
+      setupTag = (_json["setupTag"] as core.List)
+          .map<SetupTag>((value) => new SetupTag.fromJson(value))
           .toList();
     }
     if (_json.containsKey("tagFiringOption")) {
@@ -4677,8 +4702,8 @@ class Tag {
       tagId = _json["tagId"];
     }
     if (_json.containsKey("teardownTag")) {
-      teardownTag = _json["teardownTag"]
-          .map((value) => new TeardownTag.fromJson(value))
+      teardownTag = (_json["teardownTag"] as core.List)
+          .map<TeardownTag>((value) => new TeardownTag.fromJson(value))
           .toList();
     }
     if (_json.containsKey("type")) {
@@ -4931,8 +4956,8 @@ class Trigger {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("autoEventFilter")) {
-      autoEventFilter = _json["autoEventFilter"]
-          .map((value) => new Condition.fromJson(value))
+      autoEventFilter = (_json["autoEventFilter"] as core.List)
+          .map<Condition>((value) => new Condition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("checkValidation")) {
@@ -4946,16 +4971,16 @@ class Trigger {
           new Parameter.fromJson(_json["continuousTimeMinMilliseconds"]);
     }
     if (_json.containsKey("customEventFilter")) {
-      customEventFilter = _json["customEventFilter"]
-          .map((value) => new Condition.fromJson(value))
+      customEventFilter = (_json["customEventFilter"] as core.List)
+          .map<Condition>((value) => new Condition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("eventName")) {
       eventName = new Parameter.fromJson(_json["eventName"]);
     }
     if (_json.containsKey("filter")) {
-      filter = _json["filter"]
-          .map((value) => new Condition.fromJson(value))
+      filter = (_json["filter"] as core.List)
+          .map<Condition>((value) => new Condition.fromJson(value))
           .toList();
     }
     if (_json.containsKey("fingerprint")) {
@@ -4982,8 +5007,8 @@ class Trigger {
       name = _json["name"];
     }
     if (_json.containsKey("parameter")) {
-      parameter = _json["parameter"]
-          .map((value) => new Parameter.fromJson(value))
+      parameter = (_json["parameter"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("parentFolderId")) {
@@ -5151,8 +5176,8 @@ class UserAccess {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("containerAccess")) {
-      containerAccess = _json["containerAccess"]
-          .map((value) => new ContainerAccess.fromJson(value))
+      containerAccess = (_json["containerAccess"] as core.List)
+          .map<ContainerAccess>((value) => new ContainerAccess.fromJson(value))
           .toList();
     }
     if (_json.containsKey("emailAddress")) {
@@ -5243,10 +5268,12 @@ class Variable {
       containerId = _json["containerId"];
     }
     if (_json.containsKey("disablingTriggerId")) {
-      disablingTriggerId = _json["disablingTriggerId"];
+      disablingTriggerId =
+          (_json["disablingTriggerId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("enablingTriggerId")) {
-      enablingTriggerId = _json["enablingTriggerId"];
+      enablingTriggerId =
+          (_json["enablingTriggerId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("fingerprint")) {
       fingerprint = _json["fingerprint"];
@@ -5258,8 +5285,8 @@ class Variable {
       notes = _json["notes"];
     }
     if (_json.containsKey("parameter")) {
-      parameter = _json["parameter"]
-          .map((value) => new Parameter.fromJson(value))
+      parameter = (_json["parameter"] as core.List)
+          .map<Parameter>((value) => new Parameter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("parentFolderId")) {

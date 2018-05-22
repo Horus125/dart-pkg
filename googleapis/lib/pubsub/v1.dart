@@ -98,14 +98,14 @@ class ProjectsSnapshotsResourceApi {
   async.Future<Snapshot> create(CreateSnapshotRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -149,7 +149,7 @@ class ProjectsSnapshotsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String snapshot, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -193,7 +193,7 @@ class ProjectsSnapshotsResourceApi {
   /// this method will complete with the same error.
   async.Future<Snapshot> get(core.String snapshot, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -241,7 +241,7 @@ class ProjectsSnapshotsResourceApi {
   async.Future<Policy> getIamPolicy(core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -295,7 +295,7 @@ class ProjectsSnapshotsResourceApi {
   async.Future<ListSnapshotsResponse> list(core.String project,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -350,14 +350,14 @@ class ProjectsSnapshotsResourceApi {
   async.Future<Snapshot> patch(UpdateSnapshotRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -403,14 +403,14 @@ class ProjectsSnapshotsResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -463,14 +463,14 @@ class ProjectsSnapshotsResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -530,14 +530,14 @@ class ProjectsSubscriptionsResourceApi {
       AcknowledgeRequest request, core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (subscription == null) {
       throw new core.ArgumentError("Parameter subscription is required.");
@@ -597,14 +597,14 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<Subscription> create(Subscription request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -650,7 +650,7 @@ class ProjectsSubscriptionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String subscription, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -695,7 +695,7 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<Subscription> get(core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -743,7 +743,7 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<Policy> getIamPolicy(core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -797,7 +797,7 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<ListSubscriptionsResponse> list(core.String project,
       {core.int pageSize, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -858,14 +858,14 @@ class ProjectsSubscriptionsResourceApi {
       ModifyAckDeadlineRequest request, core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (subscription == null) {
       throw new core.ArgumentError("Parameter subscription is required.");
@@ -916,14 +916,14 @@ class ProjectsSubscriptionsResourceApi {
       ModifyPushConfigRequest request, core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (subscription == null) {
       throw new core.ArgumentError("Parameter subscription is required.");
@@ -974,14 +974,14 @@ class ProjectsSubscriptionsResourceApi {
       UpdateSubscriptionRequest request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1027,14 +1027,14 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<PullResponse> pull(PullRequest request, core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (subscription == null) {
       throw new core.ArgumentError("Parameter subscription is required.");
@@ -1079,14 +1079,14 @@ class ProjectsSubscriptionsResourceApi {
   async.Future<SeekResponse> seek(SeekRequest request, core.String subscription,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (subscription == null) {
       throw new core.ArgumentError("Parameter subscription is required.");
@@ -1134,14 +1134,14 @@ class ProjectsSubscriptionsResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1194,14 +1194,14 @@ class ProjectsSubscriptionsResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1262,14 +1262,14 @@ class ProjectsTopicsResourceApi {
   async.Future<Topic> create(Topic request, core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -1313,7 +1313,7 @@ class ProjectsTopicsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String topic, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1357,7 +1357,7 @@ class ProjectsTopicsResourceApi {
   /// this method will complete with the same error.
   async.Future<Topic> get(core.String topic, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1405,7 +1405,7 @@ class ProjectsTopicsResourceApi {
   async.Future<Policy> getIamPolicy(core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1459,7 +1459,7 @@ class ProjectsTopicsResourceApi {
   async.Future<ListTopicsResponse> list(core.String project,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1516,14 +1516,14 @@ class ProjectsTopicsResourceApi {
       PublishRequest request, core.String topic,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (topic == null) {
       throw new core.ArgumentError("Parameter topic is required.");
@@ -1569,14 +1569,14 @@ class ProjectsTopicsResourceApi {
       SetIamPolicyRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1629,14 +1629,14 @@ class ProjectsTopicsResourceApi {
       TestIamPermissionsRequest request, core.String resource,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (resource == null) {
       throw new core.ArgumentError("Parameter resource is required.");
@@ -1694,7 +1694,7 @@ class ProjectsTopicsSnapshotsResourceApi {
   async.Future<ListTopicSnapshotsResponse> list(core.String topic,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1761,7 +1761,7 @@ class ProjectsTopicsSubscriptionsResourceApi {
   async.Future<ListTopicSubscriptionsResponse> list(core.String topic,
       {core.String pageToken, core.int pageSize, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1806,7 +1806,7 @@ class AcknowledgeRequest {
 
   AcknowledgeRequest.fromJson(core.Map _json) {
     if (_json.containsKey("ackIds")) {
-      ackIds = _json["ackIds"];
+      ackIds = (_json["ackIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -1855,7 +1855,7 @@ class Binding {
 
   Binding.fromJson(core.Map _json) {
     if (_json.containsKey("members")) {
-      members = _json["members"];
+      members = (_json["members"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("role")) {
       role = _json["role"];
@@ -1943,8 +1943,8 @@ class ListSnapshotsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("snapshots")) {
-      snapshots = _json["snapshots"]
-          .map((value) => new Snapshot.fromJson(value))
+      snapshots = (_json["snapshots"] as core.List)
+          .map<Snapshot>((value) => new Snapshot.fromJson(value))
           .toList();
     }
   }
@@ -1979,8 +1979,8 @@ class ListSubscriptionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("subscriptions")) {
-      subscriptions = _json["subscriptions"]
-          .map((value) => new Subscription.fromJson(value))
+      subscriptions = (_json["subscriptions"] as core.List)
+          .map<Subscription>((value) => new Subscription.fromJson(value))
           .toList();
     }
   }
@@ -2016,7 +2016,7 @@ class ListTopicSnapshotsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("snapshots")) {
-      snapshots = _json["snapshots"];
+      snapshots = (_json["snapshots"] as core.List).cast<core.String>();
     }
   }
 
@@ -2050,7 +2050,7 @@ class ListTopicSubscriptionsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("subscriptions")) {
-      subscriptions = _json["subscriptions"];
+      subscriptions = (_json["subscriptions"] as core.List).cast<core.String>();
     }
   }
 
@@ -2083,8 +2083,9 @@ class ListTopicsResponse {
       nextPageToken = _json["nextPageToken"];
     }
     if (_json.containsKey("topics")) {
-      topics =
-          _json["topics"].map((value) => new Topic.fromJson(value)).toList();
+      topics = (_json["topics"] as core.List)
+          .map<Topic>((value) => new Topic.fromJson(value))
+          .toList();
     }
   }
 
@@ -2122,7 +2123,7 @@ class ModifyAckDeadlineRequest {
       ackDeadlineSeconds = _json["ackDeadlineSeconds"];
     }
     if (_json.containsKey("ackIds")) {
-      ackIds = _json["ackIds"];
+      ackIds = (_json["ackIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -2218,12 +2219,12 @@ class Policy {
   /// policy is overwritten blindly.
   core.String etag;
   core.List<core.int> get etagAsBytes {
-    return convert.BASE64.decode(etag);
+    return convert.base64.decode(etag);
   }
 
   void set etagAsBytes(core.List<core.int> _bytes) {
     etag =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Deprecated.
@@ -2233,8 +2234,8 @@ class Policy {
 
   Policy.fromJson(core.Map _json) {
     if (_json.containsKey("bindings")) {
-      bindings = _json["bindings"]
-          .map((value) => new Binding.fromJson(value))
+      bindings = (_json["bindings"] as core.List)
+          .map<Binding>((value) => new Binding.fromJson(value))
           .toList();
     }
     if (_json.containsKey("etag")) {
@@ -2270,8 +2271,8 @@ class PublishRequest {
 
   PublishRequest.fromJson(core.Map _json) {
     if (_json.containsKey("messages")) {
-      messages = _json["messages"]
-          .map((value) => new PubsubMessage.fromJson(value))
+      messages = (_json["messages"] as core.List)
+          .map<PubsubMessage>((value) => new PubsubMessage.fromJson(value))
           .toList();
     }
   }
@@ -2297,7 +2298,7 @@ class PublishResponse {
 
   PublishResponse.fromJson(core.Map _json) {
     if (_json.containsKey("messageIds")) {
-      messageIds = _json["messageIds"];
+      messageIds = (_json["messageIds"] as core.List).cast<core.String>();
     }
   }
 
@@ -2320,12 +2321,12 @@ class PubsubMessage {
   /// The message payload.
   core.String data;
   core.List<core.int> get dataAsBytes {
-    return convert.BASE64.decode(data);
+    return convert.base64.decode(data);
   }
 
   void set dataAsBytes(core.List<core.int> _bytes) {
     data =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// ID of this message, assigned by the server when the message is published.
@@ -2343,7 +2344,8 @@ class PubsubMessage {
 
   PubsubMessage.fromJson(core.Map _json) {
     if (_json.containsKey("attributes")) {
-      attributes = _json["attributes"];
+      attributes =
+          (_json["attributes"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("data")) {
       data = _json["data"];
@@ -2425,8 +2427,8 @@ class PullResponse {
 
   PullResponse.fromJson(core.Map _json) {
     if (_json.containsKey("receivedMessages")) {
-      receivedMessages = _json["receivedMessages"]
-          .map((value) => new ReceivedMessage.fromJson(value))
+      receivedMessages = (_json["receivedMessages"] as core.List)
+          .map<ReceivedMessage>((value) => new ReceivedMessage.fromJson(value))
           .toList();
     }
   }
@@ -2475,7 +2477,8 @@ class PushConfig {
 
   PushConfig.fromJson(core.Map _json) {
     if (_json.containsKey("attributes")) {
-      attributes = _json["attributes"];
+      attributes =
+          (_json["attributes"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("pushEndpoint")) {
       pushEndpoint = _json["pushEndpoint"];
@@ -2784,7 +2787,7 @@ class TestIamPermissionsRequest {
 
   TestIamPermissionsRequest.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 
@@ -2808,7 +2811,7 @@ class TestIamPermissionsResponse {
 
   TestIamPermissionsResponse.fromJson(core.Map _json) {
     if (_json.containsKey("permissions")) {
-      permissions = _json["permissions"];
+      permissions = (_json["permissions"] as core.List).cast<core.String>();
     }
   }
 

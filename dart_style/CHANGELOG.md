@@ -1,3 +1,21 @@
+# 1.0.14
+
+* Support metadata on enum cases (#688).
+
+# 1.0.13
+
+* Support the latest release of `package:analyzer`.
+
+# 1.0.12
+
+* Fix another failure when running in Dart 2.
+
+# 1.0.11
+
+* Fix cast failure when running in Dart 2.
+* Updated SDK version to 2.0.0-dev.17.0.
+* Force split in empty then block in if with an else (#680).
+
 # 1.0.10
 
 * Don't split before `.` if the target expression is an argument list with a

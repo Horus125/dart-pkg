@@ -65,7 +65,7 @@ class UsersResourceApi {
   async.Future<LoginProfile> getLoginProfile(core.String name,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -118,14 +118,14 @@ class UsersResourceApi {
       SshPublicKey request, core.String parent,
       {core.String projectId, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (parent == null) {
       throw new core.ArgumentError("Parameter parent is required.");
@@ -179,7 +179,7 @@ class UsersProjectsResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -232,7 +232,7 @@ class UsersSshPublicKeysResourceApi {
   /// this method will complete with the same error.
   async.Future<Empty> delete(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -278,7 +278,7 @@ class UsersSshPublicKeysResourceApi {
   /// this method will complete with the same error.
   async.Future<SshPublicKey> get(core.String name, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -331,14 +331,14 @@ class UsersSshPublicKeysResourceApi {
   async.Future<SshPublicKey> patch(SshPublicKey request, core.String name,
       {core.String updateMask, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (name == null) {
       throw new core.ArgumentError("Parameter name is required.");
@@ -425,16 +425,14 @@ class LoginProfile {
       name = _json["name"];
     }
     if (_json.containsKey("posixAccounts")) {
-      posixAccounts = _json["posixAccounts"]
-          .map((value) => new PosixAccount.fromJson(value))
+      posixAccounts = (_json["posixAccounts"] as core.List)
+          .map<PosixAccount>((value) => new PosixAccount.fromJson(value))
           .toList();
     }
     if (_json.containsKey("sshPublicKeys")) {
-      sshPublicKeys =
-          commons.mapMap<core.Map<core.String, core.Object>, SshPublicKey>(
-              _json["sshPublicKeys"],
-              (core.Map<core.String, core.Object> item) =>
-                  new SshPublicKey.fromJson(item));
+      sshPublicKeys = commons.mapMap<core.Map, SshPublicKey>(
+          _json["sshPublicKeys"].cast<core.String, core.Map>(),
+          (core.Map item) => new SshPublicKey.fromJson(item));
     }
   }
 

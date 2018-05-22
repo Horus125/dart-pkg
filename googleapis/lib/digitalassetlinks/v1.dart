@@ -229,7 +229,7 @@ class AssetlinksResourceApi {
       core.String target_web_site,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -405,7 +405,7 @@ class StatementsResourceApi {
       core.String source_androidApp_certificate_sha256Fingerprint,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -607,7 +607,7 @@ class CheckResponse {
       debugString = _json["debugString"];
     }
     if (_json.containsKey("errorCode")) {
-      errorCode = _json["errorCode"];
+      errorCode = (_json["errorCode"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("linked")) {
       linked = _json["linked"];
@@ -669,14 +669,14 @@ class ListResponse {
       debugString = _json["debugString"];
     }
     if (_json.containsKey("errorCode")) {
-      errorCode = _json["errorCode"];
+      errorCode = (_json["errorCode"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("maxAge")) {
       maxAge = _json["maxAge"];
     }
     if (_json.containsKey("statements")) {
-      statements = _json["statements"]
-          .map((value) => new Statement.fromJson(value))
+      statements = (_json["statements"] as core.List)
+          .map<Statement>((value) => new Statement.fromJson(value))
           .toList();
     }
   }

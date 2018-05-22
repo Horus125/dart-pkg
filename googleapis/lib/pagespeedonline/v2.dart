@@ -78,7 +78,7 @@ class PagespeedapiResourceApi {
       core.String strategy,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -247,14 +247,14 @@ class PagespeedApiFormatStringV2Args {
       key = _json["key"];
     }
     if (_json.containsKey("rects")) {
-      rects = _json["rects"]
-          .map((value) =>
+      rects = (_json["rects"] as core.List)
+          .map<PagespeedApiFormatStringV2ArgsRects>((value) =>
               new PagespeedApiFormatStringV2ArgsRects.fromJson(value))
           .toList();
     }
     if (_json.containsKey("secondary_rects")) {
-      secondaryRects = _json["secondary_rects"]
-          .map((value) =>
+      secondaryRects = (_json["secondary_rects"] as core.List)
+          .map<PagespeedApiFormatStringV2ArgsSecondaryRects>((value) =>
               new PagespeedApiFormatStringV2ArgsSecondaryRects.fromJson(value))
           .toList();
     }
@@ -303,8 +303,9 @@ class PagespeedApiFormatStringV2 {
 
   PagespeedApiFormatStringV2.fromJson(core.Map _json) {
     if (_json.containsKey("args")) {
-      args = _json["args"]
-          .map((value) => new PagespeedApiFormatStringV2Args.fromJson(value))
+      args = (_json["args"] as core.List)
+          .map<PagespeedApiFormatStringV2Args>(
+              (value) => new PagespeedApiFormatStringV2Args.fromJson(value))
           .toList();
     }
     if (_json.containsKey("format")) {
@@ -380,12 +381,12 @@ class PagespeedApiImageV2 {
   /// Image data base64 encoded.
   core.String data;
   core.List<core.int> get dataAsBytes {
-    return convert.BASE64.decode(data);
+    return convert.base64.decode(data);
   }
 
   void set dataAsBytes(core.List<core.int> _bytes) {
     data =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Height of screenshot in pixels.
@@ -465,8 +466,9 @@ class ResultFormattedResultsRuleResultsValueUrlBlocksUrls {
 
   ResultFormattedResultsRuleResultsValueUrlBlocksUrls.fromJson(core.Map _json) {
     if (_json.containsKey("details")) {
-      details = _json["details"]
-          .map((value) => new PagespeedApiFormatStringV2.fromJson(value))
+      details = (_json["details"] as core.List)
+          .map<PagespeedApiFormatStringV2>(
+              (value) => new PagespeedApiFormatStringV2.fromJson(value))
           .toList();
     }
     if (_json.containsKey("result")) {
@@ -502,8 +504,8 @@ class ResultFormattedResultsRuleResultsValueUrlBlocks {
       header = new PagespeedApiFormatStringV2.fromJson(_json["header"]);
     }
     if (_json.containsKey("urls")) {
-      urls = _json["urls"]
-          .map((value) =>
+      urls = (_json["urls"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocksUrls>((value) =>
               new ResultFormattedResultsRuleResultsValueUrlBlocksUrls.fromJson(
                   value))
           .toList();
@@ -555,7 +557,7 @@ class ResultFormattedResultsRuleResultsValue {
 
   ResultFormattedResultsRuleResultsValue.fromJson(core.Map _json) {
     if (_json.containsKey("groups")) {
-      groups = _json["groups"];
+      groups = (_json["groups"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("localizedRuleName")) {
       localizedRuleName = _json["localizedRuleName"];
@@ -567,8 +569,8 @@ class ResultFormattedResultsRuleResultsValue {
       summary = new PagespeedApiFormatStringV2.fromJson(_json["summary"]);
     }
     if (_json.containsKey("urlBlocks")) {
-      urlBlocks = _json["urlBlocks"]
-          .map((value) =>
+      urlBlocks = (_json["urlBlocks"] as core.List)
+          .map<ResultFormattedResultsRuleResultsValueUrlBlocks>((value) =>
               new ResultFormattedResultsRuleResultsValueUrlBlocks.fromJson(
                   value))
           .toList();
@@ -614,11 +616,11 @@ class ResultFormattedResults {
       locale = _json["locale"];
     }
     if (_json.containsKey("ruleResults")) {
-      ruleResults = commons.mapMap<core.Map<core.String, core.Object>,
-              ResultFormattedResultsRuleResultsValue>(
-          _json["ruleResults"],
-          (core.Map<core.String, core.Object> item) =>
-              new ResultFormattedResultsRuleResultsValue.fromJson(item));
+      ruleResults =
+          commons.mapMap<core.Map, ResultFormattedResultsRuleResultsValue>(
+              _json["ruleResults"].cast<core.String, core.Map>(),
+              (core.Map item) =>
+                  new ResultFormattedResultsRuleResultsValue.fromJson(item));
     }
   }
 
@@ -884,7 +886,7 @@ class Result {
       id = _json["id"];
     }
     if (_json.containsKey("invalidRules")) {
-      invalidRules = _json["invalidRules"];
+      invalidRules = (_json["invalidRules"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -896,11 +898,9 @@ class Result {
       responseCode = _json["responseCode"];
     }
     if (_json.containsKey("ruleGroups")) {
-      ruleGroups = commons
-          .mapMap<core.Map<core.String, core.Object>, ResultRuleGroupsValue>(
-              _json["ruleGroups"],
-              (core.Map<core.String, core.Object> item) =>
-                  new ResultRuleGroupsValue.fromJson(item));
+      ruleGroups = commons.mapMap<core.Map, ResultRuleGroupsValue>(
+          _json["ruleGroups"].cast<core.String, core.Map>(),
+          (core.Map item) => new ResultRuleGroupsValue.fromJson(item));
     }
     if (_json.containsKey("screenshot")) {
       screenshot = new PagespeedApiImageV2.fromJson(_json["screenshot"]);

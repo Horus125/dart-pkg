@@ -4,7 +4,6 @@
 * [Running Tests](#running-tests)
   * [Restricting Tests to Certain Platforms](#restricting-tests-to-certain-platforms)
   * [Platform Selectors](#platform-selectors)
-  * [Running Tests on Dartium](#running-tests-on-dartium)
   * [Running Tests on Node.js](#running-tests-on-nodejs)
 * [Asynchronous Tests](#asynchronous-tests)
   * [Stream Matchers](#stream-matchers)
@@ -204,11 +203,6 @@ identifiers are defined:
 
 * `vm`: Whether the test is running on the command-line Dart VM.
 
-* `dartium`: Whether the test is running on Dartium.
-
-* `content-shell`: Whether the test is running on the headless Dartium content
-  shell.
-
 * `chrome`: Whether the test is running on Google Chrome.
 
 * `phantomjs`: Whether the test is running on
@@ -222,8 +216,8 @@ identifiers are defined:
 
 * `node`: Whether the test is running on Node.js.
 
-* `dart-vm`: Whether the test is running on the Dart VM in any context,
-  including Dartium. It's identical to `!js`.
+* `dart-vm`: Whether the test is running on the Dart VM in any context. It's
+  identical to `!js`.
 
 * `browser`: Whether the test is running in any browser.
 
@@ -255,30 +249,6 @@ identifiers are defined:
 
 For example, if you wanted to run a test on every browser but Chrome, you would
 write `@TestOn("browser && !chrome")`.
-
-### Running Tests on Dartium
-
-Tests can be run on [Dartium][] by passing the `-p dartium` flag. If you're
-using Mac OS, you can [install Dartium using Homebrew][homebrew]. Otherwise,
-make sure there's an executable called `dartium` (on Mac OS or Linux) or
-`dartium.exe` (on Windows) on your system path.
-
-[Dartium]: https://www.dartlang.org/tools/dartium/
-[homebrew]: https://github.com/dart-lang/homebrew-dart
-
-Similarly, tests can be run on the headless Dartium content shell by passing `-p
-content-shell`. The content shell is installed along with Dartium when using
-Homebrew. Otherwise, you can downloaded it manually [from this
-page][content_shell]; if you do, make sure the executable named `content_shell`
-(on Mac OS or Linux) or `content_shell.exe` (on Windows) is on your system path.
-Note content_shell on linux requires the font packages ttf-kochi-mincho and ttf-kochi-gothic.
-
-[content_shell]: http://gsdview.appspot.com/dart-archive/channels/stable/release/latest/dartium/
-
-[In the future][issue 63], there will be a more explicit way to configure the
-location of both the Dartium and content shell executables.
-
-[issue 63]: https://github.com/dart-lang/test/issues/63
 
 ### Running Tests on Node.js
 
@@ -708,14 +678,13 @@ passed as command-line arguments:
 # This package's tests are very slow. Double the default timeout.
 timeout: 2x
 
-# This is a browser-only package, so test on content shell by default.
-platforms: [content-shell]
+# This is a browser-only package, so test on chrome by default.
+platforms: [chrome]
 ```
 
 The configuration file sets new defaults. These defaults can still be overridden
 by command-line arguments, just like the built-in defaults. In the example
-above, you could pass `--platform chrome` to run on Chrome instead of the
-Dartium content shell.
+above, you could pass `--platform firefox` to run on Firefox.
 
 A configuration file can do much more than just set global defaults. See
 [the full documentation][package config] for more details.
@@ -724,18 +693,16 @@ A configuration file can do much more than just set global defaults. See
 
 ## Debugging
 
-Tests can be debugged interactively using browsers' built-in development tools,
-including Observatory when you're using Dartium. Currently there's no support
-for interactively debugging command-line VM tests, but it will be added
-[in the future][issue 50].
+Tests can be debugged interactively using browsers' built-in development tools.
+Currently there's no support for interactively debugging command-line VM tests,
+but it will be added [in the future][issue 50].
 
 [issue 50]: https://github.com/dart-lang/test/issues/50
 
 The first step when debugging is to pass the `--pause-after-load` flag to the
 test runner. This pauses the browser after each test suite has loaded, so that
-you have time to open the development tools and set breakpoints. For Dartium,
-the test runner will print the Observatory URL for you. For PhantomJS, it will
-print the remote debugger URL. For content shell, it'll print both!
+you have time to open the development tools and set breakpoints. For PhantomJS,
+it will print the remote debugger URL.
 
 Once you've set breakpoints, either click the big arrow in the middle of the web
 page or press Enter in your terminal to start the tests running. When you hit a
@@ -825,6 +792,16 @@ void main() {
 
 ## Support for Other Packages
 
+### `build_runner`
+
+If you are using `package:build_runner` to build your package, then you will
+need a dependency on `build_test` in your `dev_dependencies`, and then you can
+use the `pub run build_runner test` command to run tests.
+
+To supply arguments to `package:test`, you need to separate them from your build
+args with a `--` argument. For example, running all web tests in release mode
+would look like this `pub run build_runner test --release -- -p vm`.
+
 ### `term_glyph`
 
 The [`term_glyph`][term_glyph] package provides getters for Unicode glyphs with
@@ -834,58 +811,6 @@ testing libraries can use Unicode on POSIX operating systems without breaking
 Windows users.
 
 [term_glyph]: https://pub.dartlang.org/packages/term_glyph
-
-### `barback`
-
-Packages using the `barback` transformer system may need to test code that's
-created or modified using transformers. The test runner handles this using the
-`--pub-serve` option, which tells it to load the test code from a `pub serve`
-instance rather than from the filesystem.
-
-Before using the `--pub-serve` option, add the `test/pub_serve` transformer to
-your `pubspec.yaml`. This transformer adds the necessary bootstrapping code that
-allows the test runner to load your tests properly:
-
-```yaml
-transformers:
-- test/pub_serve:
-    $include: test/**_test{.*,}.dart
-```
-
-Note that if you're using the test runner along with [`polymer`][polymer], you
-have to make sure that the `test/pub_serve` transformer comes *after* the
-`polymer` transformer:
-
-[polymer]: https://www.dartlang.org/polymer/
-
-```yaml
-transformers:
-- polymer
-- test/pub_serve:
-    $include: test/**_test{.*,}.dart
-```
-
-Then, start up `pub serve`. Make sure to pay attention to which port it's using
-to serve your `test/` directory:
-
-```shell
-$ pub serve
-Loading source assets...
-Loading test/pub_serve transformers...
-Serving my_app web on http://localhost:8080
-Serving my_app test on http://localhost:8081
-Build completed successfully
-```
-
-In this case, the port is `8081`. In another terminal, pass this port to
-`--pub-serve` and otherwise invoke `pub run test` as normal:
-
-```shell
-$ pub run test --pub-serve=8081 -p chrome
-"pub serve" is compiling test/my_app_test.dart...
-"pub serve" is compiling test/utils_test.dart...
-00:00 +42: All tests passed!
-```
 
 ## Further Reading
 

@@ -65,7 +65,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<Account> get(core.int id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -105,7 +105,7 @@ class AccountsResourceApi {
   /// this method will complete with the same error.
   async.Future<AccountsList> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -147,14 +147,14 @@ class AccountsResourceApi {
   async.Future<Account> patch(Account request, core.int id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -195,14 +195,14 @@ class AccountsResourceApi {
   async.Future<Account> update(Account request, core.int id,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
@@ -246,7 +246,7 @@ class BillingInfoResourceApi {
   /// this method will complete with the same error.
   async.Future<BillingInfo> get(core.int accountId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -287,7 +287,7 @@ class BillingInfoResourceApi {
   /// this method will complete with the same error.
   async.Future<BillingInfoList> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -336,7 +336,7 @@ class BudgetResourceApi {
   async.Future<Budget> get(core.String accountId, core.String billingId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -392,14 +392,14 @@ class BudgetResourceApi {
       Budget request, core.String accountId, core.String billingId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -450,14 +450,14 @@ class BudgetResourceApi {
       Budget request, core.String accountId, core.String billingId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -511,7 +511,7 @@ class CreativesResourceApi {
   async.Future<Creative> get(core.int accountId, core.String buyerCreativeId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -559,14 +559,14 @@ class CreativesResourceApi {
   /// this method will complete with the same error.
   async.Future<Creative> insert(Creative request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -627,7 +627,7 @@ class CreativesResourceApi {
       core.String statusFilter,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -687,7 +687,7 @@ class DirectDealsResourceApi {
   /// this method will complete with the same error.
   async.Future<DirectDeal> get(core.String id, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -727,7 +727,7 @@ class DirectDealsResourceApi {
   /// this method will complete with the same error.
   async.Future<DirectDealsList> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -789,7 +789,7 @@ class PerformanceReportResourceApi {
       core.String accountId, core.String endDateTime, core.String startDateTime,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -854,7 +854,7 @@ class PretargetingConfigResourceApi {
   async.Future delete(core.String accountId, core.String configId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -908,7 +908,7 @@ class PretargetingConfigResourceApi {
       core.String accountId, core.String configId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -960,14 +960,14 @@ class PretargetingConfigResourceApi {
       PretargetingConfig request, core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1006,7 +1006,7 @@ class PretargetingConfigResourceApi {
   async.Future<PretargetingConfigList> list(core.String accountId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1055,14 +1055,14 @@ class PretargetingConfigResourceApi {
       PretargetingConfig request, core.String accountId, core.String configId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1112,14 +1112,14 @@ class PretargetingConfigResourceApi {
       PretargetingConfig request, core.String accountId, core.String configId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (accountId == null) {
       throw new core.ArgumentError("Parameter accountId is required.");
@@ -1227,8 +1227,9 @@ class Account {
 
   Account.fromJson(core.Map _json) {
     if (_json.containsKey("bidderLocation")) {
-      bidderLocation = _json["bidderLocation"]
-          .map((value) => new AccountBidderLocation.fromJson(value))
+      bidderLocation = (_json["bidderLocation"] as core.List)
+          .map<AccountBidderLocation>(
+              (value) => new AccountBidderLocation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("cookieMatchingNid")) {
@@ -1299,8 +1300,9 @@ class AccountsList {
 
   AccountsList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Account.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1346,7 +1348,7 @@ class BillingInfo {
       accountName = _json["accountName"];
     }
     if (_json.containsKey("billingId")) {
-      billingId = _json["billingId"];
+      billingId = (_json["billingId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1385,8 +1387,8 @@ class BillingInfoList {
 
   BillingInfoList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new BillingInfo.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<BillingInfo>((value) => new BillingInfo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -1488,7 +1490,7 @@ class CreativeCorrections {
 
   CreativeCorrections.fromJson(core.Map _json) {
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("reason")) {
       reason = _json["reason"];
@@ -1519,7 +1521,7 @@ class CreativeDisapprovalReasons {
 
   CreativeDisapprovalReasons.fromJson(core.Map _json) {
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("reason")) {
       reason = _json["reason"];
@@ -1589,8 +1591,9 @@ class CreativeFilteringReasons {
       date = _json["date"];
     }
     if (_json.containsKey("reasons")) {
-      reasons = _json["reasons"]
-          .map((value) => new CreativeFilteringReasonsReasons.fromJson(value))
+      reasons = (_json["reasons"] as core.List)
+          .map<CreativeFilteringReasonsReasons>(
+              (value) => new CreativeFilteringReasonsReasons.fromJson(value))
           .toList();
     }
   }
@@ -1778,7 +1781,8 @@ class CreativeNativeAd {
       image = new CreativeNativeAdImage.fromJson(_json["image"]);
     }
     if (_json.containsKey("impressionTrackingUrl")) {
-      impressionTrackingUrl = _json["impressionTrackingUrl"];
+      impressionTrackingUrl =
+          (_json["impressionTrackingUrl"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("logo")) {
       logo = new CreativeNativeAdLogo.fromJson(_json["logo"]);
@@ -1936,7 +1940,7 @@ class Creative {
       accountId = _json["accountId"];
     }
     if (_json.containsKey("advertiserId")) {
-      advertiserId = _json["advertiserId"];
+      advertiserId = (_json["advertiserId"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("advertiserName")) {
       advertiserName = _json["advertiserName"];
@@ -1948,22 +1952,25 @@ class Creative {
       apiUploadTimestamp = core.DateTime.parse(_json["apiUploadTimestamp"]);
     }
     if (_json.containsKey("attribute")) {
-      attribute = _json["attribute"];
+      attribute = (_json["attribute"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("buyerCreativeId")) {
       buyerCreativeId = _json["buyerCreativeId"];
     }
     if (_json.containsKey("clickThroughUrl")) {
-      clickThroughUrl = _json["clickThroughUrl"];
+      clickThroughUrl =
+          (_json["clickThroughUrl"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("corrections")) {
-      corrections = _json["corrections"]
-          .map((value) => new CreativeCorrections.fromJson(value))
+      corrections = (_json["corrections"] as core.List)
+          .map<CreativeCorrections>(
+              (value) => new CreativeCorrections.fromJson(value))
           .toList();
     }
     if (_json.containsKey("disapprovalReasons")) {
-      disapprovalReasons = _json["disapprovalReasons"]
-          .map((value) => new CreativeDisapprovalReasons.fromJson(value))
+      disapprovalReasons = (_json["disapprovalReasons"] as core.List)
+          .map<CreativeDisapprovalReasons>(
+              (value) => new CreativeDisapprovalReasons.fromJson(value))
           .toList();
     }
     if (_json.containsKey("filteringReasons")) {
@@ -1974,7 +1981,8 @@ class Creative {
       height = _json["height"];
     }
     if (_json.containsKey("impressionTrackingUrl")) {
-      impressionTrackingUrl = _json["impressionTrackingUrl"];
+      impressionTrackingUrl =
+          (_json["impressionTrackingUrl"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -1983,19 +1991,22 @@ class Creative {
       nativeAd = new CreativeNativeAd.fromJson(_json["nativeAd"]);
     }
     if (_json.containsKey("productCategories")) {
-      productCategories = _json["productCategories"];
+      productCategories =
+          (_json["productCategories"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("restrictedCategories")) {
-      restrictedCategories = _json["restrictedCategories"];
+      restrictedCategories =
+          (_json["restrictedCategories"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("sensitiveCategories")) {
-      sensitiveCategories = _json["sensitiveCategories"];
+      sensitiveCategories =
+          (_json["sensitiveCategories"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("status")) {
       status = _json["status"];
     }
     if (_json.containsKey("vendorType")) {
-      vendorType = _json["vendorType"];
+      vendorType = (_json["vendorType"] as core.List).cast<core.int>();
     }
     if (_json.containsKey("version")) {
       version = _json["version"];
@@ -2107,8 +2118,9 @@ class CreativesList {
 
   CreativesList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Creative.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Creative>((value) => new Creative.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2308,8 +2320,8 @@ class DirectDealsList {
 
   DirectDealsList.fromJson(core.Map _json) {
     if (_json.containsKey("directDeals")) {
-      directDeals = _json["directDeals"]
-          .map((value) => new DirectDeal.fromJson(value))
+      directDeals = (_json["directDeals"] as core.List)
+          .map<DirectDeal>((value) => new DirectDeal.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -2429,19 +2441,23 @@ class PerformanceReport {
       bidRequestRate = _json["bidRequestRate"];
     }
     if (_json.containsKey("calloutStatusRate")) {
-      calloutStatusRate = _json["calloutStatusRate"];
+      calloutStatusRate =
+          (_json["calloutStatusRate"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("cookieMatcherStatusRate")) {
-      cookieMatcherStatusRate = _json["cookieMatcherStatusRate"];
+      cookieMatcherStatusRate =
+          (_json["cookieMatcherStatusRate"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("creativeStatusRate")) {
-      creativeStatusRate = _json["creativeStatusRate"];
+      creativeStatusRate =
+          (_json["creativeStatusRate"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("filteredBidRate")) {
       filteredBidRate = _json["filteredBidRate"];
     }
     if (_json.containsKey("hostedMatchStatusRate")) {
-      hostedMatchStatusRate = _json["hostedMatchStatusRate"];
+      hostedMatchStatusRate =
+          (_json["hostedMatchStatusRate"] as core.List).cast<core.Object>();
     }
     if (_json.containsKey("inventoryMatchRate")) {
       inventoryMatchRate = _json["inventoryMatchRate"];
@@ -2578,8 +2594,9 @@ class PerformanceReportList {
       kind = _json["kind"];
     }
     if (_json.containsKey("performanceReport")) {
-      performanceReport = _json["performanceReport"]
-          .map((value) => new PerformanceReport.fromJson(value))
+      performanceReport = (_json["performanceReport"] as core.List)
+          .map<PerformanceReport>(
+              (value) => new PerformanceReport.fromJson(value))
           .toList();
     }
   }
@@ -2793,33 +2810,39 @@ class PretargetingConfig {
       configName = _json["configName"];
     }
     if (_json.containsKey("creativeType")) {
-      creativeType = _json["creativeType"];
+      creativeType = (_json["creativeType"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("dimensions")) {
-      dimensions = _json["dimensions"]
-          .map((value) => new PretargetingConfigDimensions.fromJson(value))
+      dimensions = (_json["dimensions"] as core.List)
+          .map<PretargetingConfigDimensions>(
+              (value) => new PretargetingConfigDimensions.fromJson(value))
           .toList();
     }
     if (_json.containsKey("excludedContentLabels")) {
-      excludedContentLabels = _json["excludedContentLabels"];
+      excludedContentLabels =
+          (_json["excludedContentLabels"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("excludedGeoCriteriaIds")) {
-      excludedGeoCriteriaIds = _json["excludedGeoCriteriaIds"];
+      excludedGeoCriteriaIds =
+          (_json["excludedGeoCriteriaIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("excludedPlacements")) {
-      excludedPlacements = _json["excludedPlacements"]
-          .map((value) =>
+      excludedPlacements = (_json["excludedPlacements"] as core.List)
+          .map<PretargetingConfigExcludedPlacements>((value) =>
               new PretargetingConfigExcludedPlacements.fromJson(value))
           .toList();
     }
     if (_json.containsKey("excludedUserLists")) {
-      excludedUserLists = _json["excludedUserLists"];
+      excludedUserLists =
+          (_json["excludedUserLists"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("excludedVerticals")) {
-      excludedVerticals = _json["excludedVerticals"];
+      excludedVerticals =
+          (_json["excludedVerticals"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("geoCriteriaIds")) {
-      geoCriteriaIds = _json["geoCriteriaIds"];
+      geoCriteriaIds =
+          (_json["geoCriteriaIds"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("isActive")) {
       isActive = _json["isActive"];
@@ -2828,36 +2851,42 @@ class PretargetingConfig {
       kind = _json["kind"];
     }
     if (_json.containsKey("languages")) {
-      languages = _json["languages"];
+      languages = (_json["languages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("mobileCarriers")) {
-      mobileCarriers = _json["mobileCarriers"];
+      mobileCarriers =
+          (_json["mobileCarriers"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("mobileDevices")) {
-      mobileDevices = _json["mobileDevices"];
+      mobileDevices = (_json["mobileDevices"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("mobileOperatingSystemVersions")) {
-      mobileOperatingSystemVersions = _json["mobileOperatingSystemVersions"];
+      mobileOperatingSystemVersions =
+          (_json["mobileOperatingSystemVersions"] as core.List)
+              .cast<core.String>();
     }
     if (_json.containsKey("placements")) {
-      placements = _json["placements"]
-          .map((value) => new PretargetingConfigPlacements.fromJson(value))
+      placements = (_json["placements"] as core.List)
+          .map<PretargetingConfigPlacements>(
+              (value) => new PretargetingConfigPlacements.fromJson(value))
           .toList();
     }
     if (_json.containsKey("platforms")) {
-      platforms = _json["platforms"];
+      platforms = (_json["platforms"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("supportedCreativeAttributes")) {
-      supportedCreativeAttributes = _json["supportedCreativeAttributes"];
+      supportedCreativeAttributes =
+          (_json["supportedCreativeAttributes"] as core.List)
+              .cast<core.String>();
     }
     if (_json.containsKey("userLists")) {
-      userLists = _json["userLists"];
+      userLists = (_json["userLists"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("vendorTypes")) {
-      vendorTypes = _json["vendorTypes"];
+      vendorTypes = (_json["vendorTypes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("verticals")) {
-      verticals = _json["verticals"];
+      verticals = (_json["verticals"] as core.List).cast<core.String>();
     }
   }
 
@@ -2951,8 +2980,9 @@ class PretargetingConfigList {
 
   PretargetingConfigList.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new PretargetingConfig.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<PretargetingConfig>(
+              (value) => new PretargetingConfig.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {

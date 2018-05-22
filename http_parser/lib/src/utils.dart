@@ -8,7 +8,7 @@ import 'package:source_span/source_span.dart';
 ///
 /// [name] should describe the type of thing being parsed, and [value] should be
 /// its actual value.
-/*=T*/ wrapFormatException/*<T>*/(String name, String value, /*=T*/ body()) {
+T wrapFormatException<T>(String name, String value, T body()) {
   try {
     return body();
   } on SourceSpanFormatException catch (error) {
@@ -16,8 +16,6 @@ import 'package:source_span/source_span.dart';
         'Invalid $name: ${error.message}', error.span, error.source);
   } on FormatException catch (error) {
     throw new FormatException(
-        'Invalid $name "$value": ${error.message}',
-        error.source,
-        error.offset);
+        'Invalid $name "$value": ${error.message}', error.source, error.offset);
   }
 }

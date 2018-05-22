@@ -62,14 +62,14 @@ class ImagesResourceApi {
       BatchAnnotateImagesRequest request,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -104,8 +104,8 @@ class AnnotateImageRequest {
 
   AnnotateImageRequest.fromJson(core.Map _json) {
     if (_json.containsKey("features")) {
-      features = _json["features"]
-          .map((value) => new Feature.fromJson(value))
+      features = (_json["features"] as core.List)
+          .map<Feature>((value) => new Feature.fromJson(value))
           .toList();
     }
     if (_json.containsKey("image")) {
@@ -183,8 +183,8 @@ class AnnotateImageResponse {
       error = new Status.fromJson(_json["error"]);
     }
     if (_json.containsKey("faceAnnotations")) {
-      faceAnnotations = _json["faceAnnotations"]
-          .map((value) => new FaceAnnotation.fromJson(value))
+      faceAnnotations = (_json["faceAnnotations"] as core.List)
+          .map<FaceAnnotation>((value) => new FaceAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("fullTextAnnotation")) {
@@ -196,18 +196,21 @@ class AnnotateImageResponse {
           new ImageProperties.fromJson(_json["imagePropertiesAnnotation"]);
     }
     if (_json.containsKey("labelAnnotations")) {
-      labelAnnotations = _json["labelAnnotations"]
-          .map((value) => new EntityAnnotation.fromJson(value))
+      labelAnnotations = (_json["labelAnnotations"] as core.List)
+          .map<EntityAnnotation>(
+              (value) => new EntityAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("landmarkAnnotations")) {
-      landmarkAnnotations = _json["landmarkAnnotations"]
-          .map((value) => new EntityAnnotation.fromJson(value))
+      landmarkAnnotations = (_json["landmarkAnnotations"] as core.List)
+          .map<EntityAnnotation>(
+              (value) => new EntityAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("logoAnnotations")) {
-      logoAnnotations = _json["logoAnnotations"]
-          .map((value) => new EntityAnnotation.fromJson(value))
+      logoAnnotations = (_json["logoAnnotations"] as core.List)
+          .map<EntityAnnotation>(
+              (value) => new EntityAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("safeSearchAnnotation")) {
@@ -215,8 +218,9 @@ class AnnotateImageResponse {
           new SafeSearchAnnotation.fromJson(_json["safeSearchAnnotation"]);
     }
     if (_json.containsKey("textAnnotations")) {
-      textAnnotations = _json["textAnnotations"]
-          .map((value) => new EntityAnnotation.fromJson(value))
+      textAnnotations = (_json["textAnnotations"] as core.List)
+          .map<EntityAnnotation>(
+              (value) => new EntityAnnotation.fromJson(value))
           .toList();
     }
     if (_json.containsKey("webDetection")) {
@@ -278,8 +282,9 @@ class BatchAnnotateImagesRequest {
 
   BatchAnnotateImagesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("requests")) {
-      requests = _json["requests"]
-          .map((value) => new AnnotateImageRequest.fromJson(value))
+      requests = (_json["requests"] as core.List)
+          .map<AnnotateImageRequest>(
+              (value) => new AnnotateImageRequest.fromJson(value))
           .toList();
     }
   }
@@ -303,8 +308,9 @@ class BatchAnnotateImagesResponse {
 
   BatchAnnotateImagesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("responses")) {
-      responses = _json["responses"]
-          .map((value) => new AnnotateImageResponse.fromJson(value))
+      responses = (_json["responses"] as core.List)
+          .map<AnnotateImageResponse>(
+              (value) => new AnnotateImageResponse.fromJson(value))
           .toList();
     }
   }
@@ -375,8 +381,8 @@ class Block {
       confidence = _json["confidence"];
     }
     if (_json.containsKey("paragraphs")) {
-      paragraphs = _json["paragraphs"]
-          .map((value) => new Paragraph.fromJson(value))
+      paragraphs = (_json["paragraphs"] as core.List)
+          .map<Paragraph>((value) => new Paragraph.fromJson(value))
           .toList();
     }
     if (_json.containsKey("property")) {
@@ -416,8 +422,9 @@ class BoundingPoly {
 
   BoundingPoly.fromJson(core.Map _json) {
     if (_json.containsKey("vertices")) {
-      vertices =
-          _json["vertices"].map((value) => new Vertex.fromJson(value)).toList();
+      vertices = (_json["vertices"] as core.List)
+          .map<Vertex>((value) => new Vertex.fromJson(value))
+          .toList();
     }
   }
 
@@ -699,8 +706,8 @@ class CropHintsAnnotation {
 
   CropHintsAnnotation.fromJson(core.Map _json) {
     if (_json.containsKey("cropHints")) {
-      cropHints = _json["cropHints"]
-          .map((value) => new CropHint.fromJson(value))
+      cropHints = (_json["cropHints"] as core.List)
+          .map<CropHint>((value) => new CropHint.fromJson(value))
           .toList();
     }
   }
@@ -729,7 +736,7 @@ class CropHintsParams {
 
   CropHintsParams.fromJson(core.Map _json) {
     if (_json.containsKey("aspectRatios")) {
-      aspectRatios = _json["aspectRatios"];
+      aspectRatios = (_json["aspectRatios"] as core.List).cast<core.double>();
     }
   }
 
@@ -827,8 +834,8 @@ class DominantColorsAnnotation {
 
   DominantColorsAnnotation.fromJson(core.Map _json) {
     if (_json.containsKey("colors")) {
-      colors = _json["colors"]
-          .map((value) => new ColorInfo.fromJson(value))
+      colors = (_json["colors"] as core.List)
+          .map<ColorInfo>((value) => new ColorInfo.fromJson(value))
           .toList();
     }
   }
@@ -905,16 +912,16 @@ class EntityAnnotation {
       locale = _json["locale"];
     }
     if (_json.containsKey("locations")) {
-      locations = _json["locations"]
-          .map((value) => new LocationInfo.fromJson(value))
+      locations = (_json["locations"] as core.List)
+          .map<LocationInfo>((value) => new LocationInfo.fromJson(value))
           .toList();
     }
     if (_json.containsKey("mid")) {
       mid = _json["mid"];
     }
     if (_json.containsKey("properties")) {
-      properties = _json["properties"]
-          .map((value) => new Property.fromJson(value))
+      properties = (_json["properties"] as core.List)
+          .map<Property>((value) => new Property.fromJson(value))
           .toList();
     }
     if (_json.containsKey("score")) {
@@ -1136,8 +1143,8 @@ class FaceAnnotation {
       landmarkingConfidence = _json["landmarkingConfidence"];
     }
     if (_json.containsKey("landmarks")) {
-      landmarks = _json["landmarks"]
-          .map((value) => new Landmark.fromJson(value))
+      landmarks = (_json["landmarks"] as core.List)
+          .map<Landmark>((value) => new Landmark.fromJson(value))
           .toList();
     }
     if (_json.containsKey("panAngle")) {
@@ -1284,12 +1291,12 @@ class Image {
   /// representation, whereas JSON representations use base64.
   core.String content;
   core.List<core.int> get contentAsBytes {
-    return convert.BASE64.decode(content);
+    return convert.base64.decode(content);
   }
 
   void set contentAsBytes(core.List<core.int> _bytes) {
     content =
-        convert.BASE64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
+        convert.base64.encode(_bytes).replaceAll("/", "_").replaceAll("+", "-");
   }
 
   /// Google Cloud Storage image location, or publicly-accessible image
@@ -1350,7 +1357,7 @@ class ImageContext {
       cropHintsParams = new CropHintsParams.fromJson(_json["cropHintsParams"]);
     }
     if (_json.containsKey("languageHints")) {
-      languageHints = _json["languageHints"];
+      languageHints = (_json["languageHints"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("latLongRect")) {
       latLongRect = new LatLongRect.fromJson(_json["latLongRect"]);
@@ -1639,8 +1646,9 @@ class Page {
 
   Page.fromJson(core.Map _json) {
     if (_json.containsKey("blocks")) {
-      blocks =
-          _json["blocks"].map((value) => new Block.fromJson(value)).toList();
+      blocks = (_json["blocks"] as core.List)
+          .map<Block>((value) => new Block.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("confidence")) {
       confidence = _json["confidence"];
@@ -1719,7 +1727,9 @@ class Paragraph {
       property = new TextProperty.fromJson(_json["property"]);
     }
     if (_json.containsKey("words")) {
-      words = _json["words"].map((value) => new Word.fromJson(value)).toList();
+      words = (_json["words"] as core.List)
+          .map<Word>((value) => new Word.fromJson(value))
+          .toList();
     }
   }
 
@@ -2033,7 +2043,10 @@ class Status {
       code = _json["code"];
     }
     if (_json.containsKey("details")) {
-      details = _json["details"];
+      details = (_json["details"] as core.List)
+          .map<core.Map<core.String, core.Object>>(
+              (value) => (value as core.Map).cast<core.String, core.Object>())
+          .toList();
     }
     if (_json.containsKey("message")) {
       message = _json["message"];
@@ -2139,7 +2152,9 @@ class TextAnnotation {
 
   TextAnnotation.fromJson(core.Map _json) {
     if (_json.containsKey("pages")) {
-      pages = _json["pages"].map((value) => new Page.fromJson(value)).toList();
+      pages = (_json["pages"] as core.List)
+          .map<Page>((value) => new Page.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("text")) {
       text = _json["text"];
@@ -2174,8 +2189,9 @@ class TextProperty {
       detectedBreak = new DetectedBreak.fromJson(_json["detectedBreak"]);
     }
     if (_json.containsKey("detectedLanguages")) {
-      detectedLanguages = _json["detectedLanguages"]
-          .map((value) => new DetectedLanguage.fromJson(value))
+      detectedLanguages = (_json["detectedLanguages"] as core.List)
+          .map<DetectedLanguage>(
+              (value) => new DetectedLanguage.fromJson(value))
           .toList();
     }
   }
@@ -2254,33 +2270,33 @@ class WebDetection {
 
   WebDetection.fromJson(core.Map _json) {
     if (_json.containsKey("bestGuessLabels")) {
-      bestGuessLabels = _json["bestGuessLabels"]
-          .map((value) => new WebLabel.fromJson(value))
+      bestGuessLabels = (_json["bestGuessLabels"] as core.List)
+          .map<WebLabel>((value) => new WebLabel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("fullMatchingImages")) {
-      fullMatchingImages = _json["fullMatchingImages"]
-          .map((value) => new WebImage.fromJson(value))
+      fullMatchingImages = (_json["fullMatchingImages"] as core.List)
+          .map<WebImage>((value) => new WebImage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("pagesWithMatchingImages")) {
-      pagesWithMatchingImages = _json["pagesWithMatchingImages"]
-          .map((value) => new WebPage.fromJson(value))
+      pagesWithMatchingImages = (_json["pagesWithMatchingImages"] as core.List)
+          .map<WebPage>((value) => new WebPage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("partialMatchingImages")) {
-      partialMatchingImages = _json["partialMatchingImages"]
-          .map((value) => new WebImage.fromJson(value))
+      partialMatchingImages = (_json["partialMatchingImages"] as core.List)
+          .map<WebImage>((value) => new WebImage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("visuallySimilarImages")) {
-      visuallySimilarImages = _json["visuallySimilarImages"]
-          .map((value) => new WebImage.fromJson(value))
+      visuallySimilarImages = (_json["visuallySimilarImages"] as core.List)
+          .map<WebImage>((value) => new WebImage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("webEntities")) {
-      webEntities = _json["webEntities"]
-          .map((value) => new WebEntity.fromJson(value))
+      webEntities = (_json["webEntities"] as core.List)
+          .map<WebEntity>((value) => new WebEntity.fromJson(value))
           .toList();
     }
   }
@@ -2472,16 +2488,16 @@ class WebPage {
 
   WebPage.fromJson(core.Map _json) {
     if (_json.containsKey("fullMatchingImages")) {
-      fullMatchingImages = _json["fullMatchingImages"]
-          .map((value) => new WebImage.fromJson(value))
+      fullMatchingImages = (_json["fullMatchingImages"] as core.List)
+          .map<WebImage>((value) => new WebImage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("pageTitle")) {
       pageTitle = _json["pageTitle"];
     }
     if (_json.containsKey("partialMatchingImages")) {
-      partialMatchingImages = _json["partialMatchingImages"]
-          .map((value) => new WebImage.fromJson(value))
+      partialMatchingImages = (_json["partialMatchingImages"] as core.List)
+          .map<WebImage>((value) => new WebImage.fromJson(value))
           .toList();
     }
     if (_json.containsKey("score")) {
@@ -2558,8 +2574,9 @@ class Word {
       property = new TextProperty.fromJson(_json["property"]);
     }
     if (_json.containsKey("symbols")) {
-      symbols =
-          _json["symbols"].map((value) => new Symbol.fromJson(value)).toList();
+      symbols = (_json["symbols"] as core.List)
+          .map<Symbol>((value) => new Symbol.fromJson(value))
+          .toList();
     }
   }
 

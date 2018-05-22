@@ -96,7 +96,7 @@ class AccountsResourceApi {
   async.Future<Account> get(core.String accountId,
       {core.bool tree, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -148,7 +148,7 @@ class AccountsResourceApi {
   async.Future<Accounts> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -209,7 +209,7 @@ class AccountsAdclientsResourceApi {
   async.Future<AdClients> list(core.String accountId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -275,7 +275,7 @@ class AccountsAdunitsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -334,7 +334,7 @@ class AccountsAdunitsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -404,7 +404,7 @@ class AccountsAdunitsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -483,7 +483,7 @@ class AccountsAdunitsCustomchannelsResourceApi {
       core.String accountId, core.String adClientId, core.String adUnitId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -551,7 +551,7 @@ class AccountsAlertsResourceApi {
   async.Future delete(core.String accountId, core.String alertId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -606,7 +606,7 @@ class AccountsAlertsResourceApi {
   async.Future<Alerts> list(core.String accountId,
       {core.String locale, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -669,7 +669,7 @@ class AccountsCustomchannelsResourceApi {
       core.String customChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -735,7 +735,7 @@ class AccountsCustomchannelsResourceApi {
       core.String accountId, core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -816,7 +816,7 @@ class AccountsCustomchannelsAdunitsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -886,7 +886,7 @@ class AccountsPaymentsResourceApi {
   /// this method will complete with the same error.
   async.Future<Payments> list(core.String accountId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1004,7 +1004,7 @@ class AccountsReportsResourceApi {
       commons.DownloadOptions downloadOptions:
           commons.DownloadOptions.Metadata}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1115,7 +1115,7 @@ class AccountsReportsSavedResourceApi {
       core.int startIndex,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1182,7 +1182,7 @@ class AccountsReportsSavedResourceApi {
   async.Future<SavedReports> list(core.String accountId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1243,7 +1243,7 @@ class AccountsSavedadstylesResourceApi {
       core.String accountId, core.String savedAdStyleId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1300,7 +1300,7 @@ class AccountsSavedadstylesResourceApi {
   async.Future<SavedAdStyles> list(core.String accountId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1369,7 +1369,7 @@ class AccountsUrlchannelsResourceApi {
   async.Future<UrlChannels> list(core.String accountId, core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1437,7 +1437,7 @@ class AdclientsResourceApi {
   async.Future<AdClients> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1494,7 +1494,7 @@ class AdunitsResourceApi {
   async.Future<AdUnit> get(core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1545,7 +1545,7 @@ class AdunitsResourceApi {
   async.Future<AdCode> getAdCode(core.String adClientId, core.String adUnitId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1608,7 +1608,7 @@ class AdunitsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1680,7 +1680,7 @@ class AdunitsCustomchannelsResourceApi {
       core.String adClientId, core.String adUnitId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1739,7 +1739,7 @@ class AlertsResourceApi {
   /// this method will complete with the same error.
   async.Future delete(core.String alertId, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1785,7 +1785,7 @@ class AlertsResourceApi {
   /// this method will complete with the same error.
   async.Future<Alerts> list({core.String locale, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1840,7 +1840,7 @@ class CustomchannelsResourceApi {
       core.String adClientId, core.String customChannelId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1898,7 +1898,7 @@ class CustomchannelsResourceApi {
   async.Future<CustomChannels> list(core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1972,7 +1972,7 @@ class CustomchannelsAdunitsResourceApi {
       core.String pageToken,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2046,7 +2046,7 @@ class MetadataDimensionsResourceApi {
   /// this method will complete with the same error.
   async.Future<Metadata> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2089,7 +2089,7 @@ class MetadataMetricsResourceApi {
   /// this method will complete with the same error.
   async.Future<Metadata> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2132,7 +2132,7 @@ class PaymentsResourceApi {
   /// this method will complete with the same error.
   async.Future<Payments> list({core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2245,7 +2245,7 @@ class ReportsResourceApi {
       commons.DownloadOptions downloadOptions:
           commons.DownloadOptions.Metadata}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2352,7 +2352,7 @@ class ReportsSavedResourceApi {
       core.int startIndex,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2411,7 +2411,7 @@ class ReportsSavedResourceApi {
   async.Future<SavedReports> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2463,7 +2463,7 @@ class SavedadstylesResourceApi {
   async.Future<SavedAdStyle> get(core.String savedAdStyleId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2512,7 +2512,7 @@ class SavedadstylesResourceApi {
   async.Future<SavedAdStyles> list(
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2572,7 +2572,7 @@ class UrlchannelsResourceApi {
   async.Future<UrlChannels> list(core.String adClientId,
       {core.int maxResults, core.String pageToken, core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -2645,8 +2645,8 @@ class Account {
       premium = _json["premium"];
     }
     if (_json.containsKey("subAccounts")) {
-      subAccounts = _json["subAccounts"]
-          .map((value) => new Account.fromJson(value))
+      subAccounts = (_json["subAccounts"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
           .toList();
     }
     if (_json.containsKey("timezone")) {
@@ -2704,8 +2704,9 @@ class Accounts {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Account.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Account>((value) => new Account.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -2814,8 +2815,9 @@ class AdClients {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new AdClient.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<AdClient>((value) => new AdClient.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3341,8 +3343,9 @@ class AdUnits {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new AdUnit.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<AdUnit>((value) => new AdUnit.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3453,14 +3456,14 @@ class AdsenseReportsGenerateResponse {
 
   AdsenseReportsGenerateResponse.fromJson(core.Map _json) {
     if (_json.containsKey("averages")) {
-      averages = _json["averages"];
+      averages = (_json["averages"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("endDate")) {
       endDate = _json["endDate"];
     }
     if (_json.containsKey("headers")) {
-      headers = _json["headers"]
-          .map((value) =>
+      headers = (_json["headers"] as core.List)
+          .map<AdsenseReportsGenerateResponseHeaders>((value) =>
               new AdsenseReportsGenerateResponseHeaders.fromJson(value))
           .toList();
     }
@@ -3468,7 +3471,10 @@ class AdsenseReportsGenerateResponse {
       kind = _json["kind"];
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"];
+      rows = (_json["rows"] as core.List)
+          .map<core.List<core.String>>(
+              (value) => (value as core.List).cast<core.String>())
+          .toList();
     }
     if (_json.containsKey("startDate")) {
       startDate = _json["startDate"];
@@ -3477,10 +3483,10 @@ class AdsenseReportsGenerateResponse {
       totalMatchedRows = _json["totalMatchedRows"];
     }
     if (_json.containsKey("totals")) {
-      totals = _json["totals"];
+      totals = (_json["totals"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("warnings")) {
-      warnings = _json["warnings"];
+      warnings = (_json["warnings"] as core.List).cast<core.String>();
     }
   }
 
@@ -3599,7 +3605,9 @@ class Alerts {
 
   Alerts.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"].map((value) => new Alert.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Alert>((value) => new Alert.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3756,8 +3764,8 @@ class CustomChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new CustomChannel.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<CustomChannel>((value) => new CustomChannel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -3797,8 +3805,9 @@ class Metadata {
 
   Metadata.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new ReportingMetadataEntry.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<ReportingMetadataEntry>(
+              (value) => new ReportingMetadataEntry.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -3890,8 +3899,9 @@ class Payments {
 
   Payments.fromJson(core.Map _json) {
     if (_json.containsKey("items")) {
-      items =
-          _json["items"].map((value) => new Payment.fromJson(value)).toList();
+      items = (_json["items"] as core.List)
+          .map<Payment>((value) => new Payment.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("kind")) {
       kind = _json["kind"];
@@ -3948,10 +3958,12 @@ class ReportingMetadataEntry {
 
   ReportingMetadataEntry.fromJson(core.Map _json) {
     if (_json.containsKey("compatibleDimensions")) {
-      compatibleDimensions = _json["compatibleDimensions"];
+      compatibleDimensions =
+          (_json["compatibleDimensions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("compatibleMetrics")) {
-      compatibleMetrics = _json["compatibleMetrics"];
+      compatibleMetrics =
+          (_json["compatibleMetrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("id")) {
       id = _json["id"];
@@ -3960,13 +3972,16 @@ class ReportingMetadataEntry {
       kind = _json["kind"];
     }
     if (_json.containsKey("requiredDimensions")) {
-      requiredDimensions = _json["requiredDimensions"];
+      requiredDimensions =
+          (_json["requiredDimensions"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("requiredMetrics")) {
-      requiredMetrics = _json["requiredMetrics"];
+      requiredMetrics =
+          (_json["requiredMetrics"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("supportedProducts")) {
-      supportedProducts = _json["supportedProducts"];
+      supportedProducts =
+          (_json["supportedProducts"] as core.List).cast<core.String>();
     }
   }
 
@@ -4070,8 +4085,8 @@ class SavedAdStyles {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new SavedAdStyle.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<SavedAdStyle>((value) => new SavedAdStyle.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4162,8 +4177,8 @@ class SavedReports {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new SavedReport.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<SavedReport>((value) => new SavedReport.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {
@@ -4256,8 +4271,8 @@ class UrlChannels {
       etag = _json["etag"];
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new UrlChannel.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<UrlChannel>((value) => new UrlChannel.fromJson(value))
           .toList();
     }
     if (_json.containsKey("kind")) {

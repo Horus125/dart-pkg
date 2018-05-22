@@ -99,14 +99,14 @@ class SpreadsheetsResourceApi {
       BatchUpdateSpreadsheetRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -147,14 +147,14 @@ class SpreadsheetsResourceApi {
   /// this method will complete with the same error.
   async.Future<Spreadsheet> create(Spreadsheet request, {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if ($fields != null) {
       _queryParams["fields"] = [$fields];
@@ -217,7 +217,7 @@ class SpreadsheetsResourceApi {
       core.bool includeGridData,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -290,14 +290,14 @@ class SpreadsheetsResourceApi {
       GetSpreadsheetByDataFilterRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -350,7 +350,7 @@ class SpreadsheetsDeveloperMetadataResourceApi {
       core.String spreadsheetId, core.int metadataId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -406,14 +406,14 @@ class SpreadsheetsDeveloperMetadataResourceApi {
       SearchDeveloperMetadataRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -470,14 +470,14 @@ class SpreadsheetsSheetsResourceApi {
       core.int sheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -589,14 +589,14 @@ class SpreadsheetsValuesResourceApi {
       core.bool includeValuesInResponse,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -665,14 +665,14 @@ class SpreadsheetsValuesResourceApi {
       BatchClearValuesRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -721,14 +721,14 @@ class SpreadsheetsValuesResourceApi {
       BatchClearValuesByDataFilterRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -806,7 +806,7 @@ class SpreadsheetsValuesResourceApi {
       core.String majorDimension,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -870,14 +870,14 @@ class SpreadsheetsValuesResourceApi {
       BatchGetValuesByDataFilterRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -925,14 +925,14 @@ class SpreadsheetsValuesResourceApi {
       BatchUpdateValuesRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -980,14 +980,14 @@ class SpreadsheetsValuesResourceApi {
       BatchUpdateValuesByDataFilterRequest request, core.String spreadsheetId,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -1037,14 +1037,14 @@ class SpreadsheetsValuesResourceApi {
       ClearValuesRequest request, core.String spreadsheetId, core.String range,
       {core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -1125,7 +1125,7 @@ class SpreadsheetsValuesResourceApi {
       core.String dateTimeRenderOption,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -1226,14 +1226,14 @@ class SpreadsheetsValuesResourceApi {
       core.String responseDateTimeRenderOption,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode((request).toJson());
+      _body = convert.json.encode((request).toJson());
     }
     if (spreadsheetId == null) {
       throw new core.ArgumentError("Parameter spreadsheetId is required.");
@@ -1630,7 +1630,9 @@ class AppendCellsRequest {
       fields = _json["fields"];
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"].map((value) => new RowData.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<RowData>((value) => new RowData.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("sheetId")) {
       sheetId = _json["sheetId"];
@@ -2225,8 +2227,8 @@ class BasicChartSpec {
 
   BasicChartSpec.fromJson(core.Map _json) {
     if (_json.containsKey("axis")) {
-      axis = _json["axis"]
-          .map((value) => new BasicChartAxis.fromJson(value))
+      axis = (_json["axis"] as core.List)
+          .map<BasicChartAxis>((value) => new BasicChartAxis.fromJson(value))
           .toList();
     }
     if (_json.containsKey("chartType")) {
@@ -2236,8 +2238,9 @@ class BasicChartSpec {
       compareMode = _json["compareMode"];
     }
     if (_json.containsKey("domains")) {
-      domains = _json["domains"]
-          .map((value) => new BasicChartDomain.fromJson(value))
+      domains = (_json["domains"] as core.List)
+          .map<BasicChartDomain>(
+              (value) => new BasicChartDomain.fromJson(value))
           .toList();
     }
     if (_json.containsKey("headerCount")) {
@@ -2253,8 +2256,9 @@ class BasicChartSpec {
       lineSmoothing = _json["lineSmoothing"];
     }
     if (_json.containsKey("series")) {
-      series = _json["series"]
-          .map((value) => new BasicChartSeries.fromJson(value))
+      series = (_json["series"] as core.List)
+          .map<BasicChartSeries>(
+              (value) => new BasicChartSeries.fromJson(value))
           .toList();
     }
     if (_json.containsKey("stackedType")) {
@@ -2323,18 +2327,16 @@ class BasicFilter {
 
   BasicFilter.fromJson(core.Map _json) {
     if (_json.containsKey("criteria")) {
-      criteria =
-          commons.mapMap<core.Map<core.String, core.Object>, FilterCriteria>(
-              _json["criteria"],
-              (core.Map<core.String, core.Object> item) =>
-                  new FilterCriteria.fromJson(item));
+      criteria = commons.mapMap<core.Map, FilterCriteria>(
+          _json["criteria"].cast<core.String, core.Map>(),
+          (core.Map item) => new FilterCriteria.fromJson(item));
     }
     if (_json.containsKey("range")) {
       range = new GridRange.fromJson(_json["range"]);
     }
     if (_json.containsKey("sortSpecs")) {
-      sortSpecs = _json["sortSpecs"]
-          .map((value) => new SortSpec.fromJson(value))
+      sortSpecs = (_json["sortSpecs"] as core.List)
+          .map<SortSpec>((value) => new SortSpec.fromJson(value))
           .toList();
     }
   }
@@ -2367,8 +2369,8 @@ class BatchClearValuesByDataFilterRequest {
 
   BatchClearValuesByDataFilterRequest.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
   }
@@ -2400,7 +2402,7 @@ class BatchClearValuesByDataFilterResponse {
 
   BatchClearValuesByDataFilterResponse.fromJson(core.Map _json) {
     if (_json.containsKey("clearedRanges")) {
-      clearedRanges = _json["clearedRanges"];
+      clearedRanges = (_json["clearedRanges"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("spreadsheetId")) {
       spreadsheetId = _json["spreadsheetId"];
@@ -2429,7 +2431,7 @@ class BatchClearValuesRequest {
 
   BatchClearValuesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("ranges")) {
-      ranges = _json["ranges"];
+      ranges = (_json["ranges"] as core.List).cast<core.String>();
     }
   }
 
@@ -2458,7 +2460,7 @@ class BatchClearValuesResponse {
 
   BatchClearValuesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("clearedRanges")) {
-      clearedRanges = _json["clearedRanges"];
+      clearedRanges = (_json["clearedRanges"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("spreadsheetId")) {
       spreadsheetId = _json["spreadsheetId"];
@@ -2547,8 +2549,8 @@ class BatchGetValuesByDataFilterRequest {
 
   BatchGetValuesByDataFilterRequest.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("dateTimeRenderOption")) {
@@ -2598,8 +2600,9 @@ class BatchGetValuesByDataFilterResponse {
       spreadsheetId = _json["spreadsheetId"];
     }
     if (_json.containsKey("valueRanges")) {
-      valueRanges = _json["valueRanges"]
-          .map((value) => new MatchedValueRange.fromJson(value))
+      valueRanges = (_json["valueRanges"] as core.List)
+          .map<MatchedValueRange>(
+              (value) => new MatchedValueRange.fromJson(value))
           .toList();
     }
   }
@@ -2634,8 +2637,8 @@ class BatchGetValuesResponse {
       spreadsheetId = _json["spreadsheetId"];
     }
     if (_json.containsKey("valueRanges")) {
-      valueRanges = _json["valueRanges"]
-          .map((value) => new ValueRange.fromJson(value))
+      valueRanges = (_json["valueRanges"] as core.List)
+          .map<ValueRange>((value) => new ValueRange.fromJson(value))
           .toList();
     }
   }
@@ -2681,15 +2684,16 @@ class BatchUpdateSpreadsheetRequest {
       includeSpreadsheetInResponse = _json["includeSpreadsheetInResponse"];
     }
     if (_json.containsKey("requests")) {
-      requests = _json["requests"]
-          .map((value) => new Request.fromJson(value))
+      requests = (_json["requests"] as core.List)
+          .map<Request>((value) => new Request.fromJson(value))
           .toList();
     }
     if (_json.containsKey("responseIncludeGridData")) {
       responseIncludeGridData = _json["responseIncludeGridData"];
     }
     if (_json.containsKey("responseRanges")) {
-      responseRanges = _json["responseRanges"];
+      responseRanges =
+          (_json["responseRanges"] as core.List).cast<core.String>();
     }
   }
 
@@ -2729,8 +2733,8 @@ class BatchUpdateSpreadsheetResponse {
 
   BatchUpdateSpreadsheetResponse.fromJson(core.Map _json) {
     if (_json.containsKey("replies")) {
-      replies = _json["replies"]
-          .map((value) => new Response.fromJson(value))
+      replies = (_json["replies"] as core.List)
+          .map<Response>((value) => new Response.fromJson(value))
           .toList();
     }
     if (_json.containsKey("spreadsheetId")) {
@@ -2836,8 +2840,9 @@ class BatchUpdateValuesByDataFilterRequest {
 
   BatchUpdateValuesByDataFilterRequest.fromJson(core.Map _json) {
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new DataFilterValueRange.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<DataFilterValueRange>(
+              (value) => new DataFilterValueRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("includeValuesInResponse")) {
@@ -2902,8 +2907,9 @@ class BatchUpdateValuesByDataFilterResponse {
 
   BatchUpdateValuesByDataFilterResponse.fromJson(core.Map _json) {
     if (_json.containsKey("responses")) {
-      responses = _json["responses"]
-          .map((value) => new UpdateValuesByDataFilterResponse.fromJson(value))
+      responses = (_json["responses"] as core.List)
+          .map<UpdateValuesByDataFilterResponse>(
+              (value) => new UpdateValuesByDataFilterResponse.fromJson(value))
           .toList();
     }
     if (_json.containsKey("spreadsheetId")) {
@@ -3024,8 +3030,9 @@ class BatchUpdateValuesRequest {
 
   BatchUpdateValuesRequest.fromJson(core.Map _json) {
     if (_json.containsKey("data")) {
-      data =
-          _json["data"].map((value) => new ValueRange.fromJson(value)).toList();
+      data = (_json["data"] as core.List)
+          .map<ValueRange>((value) => new ValueRange.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("includeValuesInResponse")) {
       includeValuesInResponse = _json["includeValuesInResponse"];
@@ -3090,8 +3097,9 @@ class BatchUpdateValuesResponse {
 
   BatchUpdateValuesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("responses")) {
-      responses = _json["responses"]
-          .map((value) => new UpdateValuesResponse.fromJson(value))
+      responses = (_json["responses"] as core.List)
+          .map<UpdateValuesResponse>(
+              (value) => new UpdateValuesResponse.fromJson(value))
           .toList();
     }
     if (_json.containsKey("spreadsheetId")) {
@@ -3266,8 +3274,8 @@ class BooleanCondition {
       type = _json["type"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"]
-          .map((value) => new ConditionValue.fromJson(value))
+      values = (_json["values"] as core.List)
+          .map<ConditionValue>((value) => new ConditionValue.fromJson(value))
           .toList();
     }
   }
@@ -3574,8 +3582,8 @@ class CandlestickChartSpec {
 
   CandlestickChartSpec.fromJson(core.Map _json) {
     if (_json.containsKey("data")) {
-      data = _json["data"]
-          .map((value) => new CandlestickData.fromJson(value))
+      data = (_json["data"] as core.List)
+          .map<CandlestickData>((value) => new CandlestickData.fromJson(value))
           .toList();
     }
     if (_json.containsKey("domain")) {
@@ -3797,8 +3805,8 @@ class CellData {
       pivotTable = new PivotTable.fromJson(_json["pivotTable"]);
     }
     if (_json.containsKey("textFormatRuns")) {
-      textFormatRuns = _json["textFormatRuns"]
-          .map((value) => new TextFormatRun.fromJson(value))
+      textFormatRuns = (_json["textFormatRuns"] as core.List)
+          .map<TextFormatRun>((value) => new TextFormatRun.fromJson(value))
           .toList();
     }
     if (_json.containsKey("userEnteredFormat")) {
@@ -4069,8 +4077,8 @@ class ChartSourceRange {
 
   ChartSourceRange.fromJson(core.Map _json) {
     if (_json.containsKey("sources")) {
-      sources = _json["sources"]
-          .map((value) => new GridRange.fromJson(value))
+      sources = (_json["sources"] as core.List)
+          .map<GridRange>((value) => new GridRange.fromJson(value))
           .toList();
     }
   }
@@ -4600,8 +4608,8 @@ class ConditionalFormatRule {
       gradientRule = new GradientRule.fromJson(_json["gradientRule"]);
     }
     if (_json.containsKey("ranges")) {
-      ranges = _json["ranges"]
-          .map((value) => new GridRange.fromJson(value))
+      ranges = (_json["ranges"] as core.List)
+          .map<GridRange>((value) => new GridRange.fromJson(value))
           .toList();
     }
   }
@@ -4889,7 +4897,10 @@ class DataFilterValueRange {
       majorDimension = _json["majorDimension"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
   }
 
@@ -5072,9 +5083,11 @@ class DeleteDeveloperMetadataResponse {
 
   DeleteDeveloperMetadataResponse.fromJson(core.Map _json) {
     if (_json.containsKey("deletedDeveloperMetadata")) {
-      deletedDeveloperMetadata = _json["deletedDeveloperMetadata"]
-          .map((value) => new DeveloperMetadata.fromJson(value))
-          .toList();
+      deletedDeveloperMetadata =
+          (_json["deletedDeveloperMetadata"] as core.List)
+              .map<DeveloperMetadata>(
+                  (value) => new DeveloperMetadata.fromJson(value))
+              .toList();
     }
   }
 
@@ -5568,8 +5581,9 @@ class DimensionProperties {
 
   DimensionProperties.fromJson(core.Map _json) {
     if (_json.containsKey("developerMetadata")) {
-      developerMetadata = _json["developerMetadata"]
-          .map((value) => new DeveloperMetadata.fromJson(value))
+      developerMetadata = (_json["developerMetadata"] as core.List)
+          .map<DeveloperMetadata>(
+              (value) => new DeveloperMetadata.fromJson(value))
           .toList();
     }
     if (_json.containsKey("hiddenByFilter")) {
@@ -5802,10 +5816,10 @@ class Editors {
       domainUsersCanEdit = _json["domainUsersCanEdit"];
     }
     if (_json.containsKey("groups")) {
-      groups = _json["groups"];
+      groups = (_json["groups"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("users")) {
-      users = _json["users"];
+      users = (_json["users"] as core.List).cast<core.String>();
     }
   }
 
@@ -6035,7 +6049,7 @@ class FilterCriteria {
       condition = new BooleanCondition.fromJson(_json["condition"]);
     }
     if (_json.containsKey("hiddenValues")) {
-      hiddenValues = _json["hiddenValues"];
+      hiddenValues = (_json["hiddenValues"] as core.List).cast<core.String>();
     }
   }
 
@@ -6085,11 +6099,9 @@ class FilterView {
 
   FilterView.fromJson(core.Map _json) {
     if (_json.containsKey("criteria")) {
-      criteria =
-          commons.mapMap<core.Map<core.String, core.Object>, FilterCriteria>(
-              _json["criteria"],
-              (core.Map<core.String, core.Object> item) =>
-                  new FilterCriteria.fromJson(item));
+      criteria = commons.mapMap<core.Map, FilterCriteria>(
+          _json["criteria"].cast<core.String, core.Map>(),
+          (core.Map item) => new FilterCriteria.fromJson(item));
     }
     if (_json.containsKey("filterViewId")) {
       filterViewId = _json["filterViewId"];
@@ -6101,8 +6113,8 @@ class FilterView {
       range = new GridRange.fromJson(_json["range"]);
     }
     if (_json.containsKey("sortSpecs")) {
-      sortSpecs = _json["sortSpecs"]
-          .map((value) => new SortSpec.fromJson(value))
+      sortSpecs = (_json["sortSpecs"] as core.List)
+          .map<SortSpec>((value) => new SortSpec.fromJson(value))
           .toList();
     }
     if (_json.containsKey("title")) {
@@ -6316,8 +6328,8 @@ class GetSpreadsheetByDataFilterRequest {
 
   GetSpreadsheetByDataFilterRequest.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("includeGridData")) {
@@ -6451,17 +6463,20 @@ class GridData {
 
   GridData.fromJson(core.Map _json) {
     if (_json.containsKey("columnMetadata")) {
-      columnMetadata = _json["columnMetadata"]
-          .map((value) => new DimensionProperties.fromJson(value))
+      columnMetadata = (_json["columnMetadata"] as core.List)
+          .map<DimensionProperties>(
+              (value) => new DimensionProperties.fromJson(value))
           .toList();
     }
     if (_json.containsKey("rowData")) {
-      rowData =
-          _json["rowData"].map((value) => new RowData.fromJson(value)).toList();
+      rowData = (_json["rowData"] as core.List)
+          .map<RowData>((value) => new RowData.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("rowMetadata")) {
-      rowMetadata = _json["rowMetadata"]
-          .map((value) => new DimensionProperties.fromJson(value))
+      rowMetadata = (_json["rowMetadata"] as core.List)
+          .map<DimensionProperties>(
+              (value) => new DimensionProperties.fromJson(value))
           .toList();
     }
     if (_json.containsKey("startColumn")) {
@@ -6700,8 +6715,8 @@ class HistogramChartSpec {
       outlierPercentile = _json["outlierPercentile"];
     }
     if (_json.containsKey("series")) {
-      series = _json["series"]
-          .map((value) => new HistogramSeries.fromJson(value))
+      series = (_json["series"] as core.List)
+          .map<HistogramSeries>((value) => new HistogramSeries.fromJson(value))
           .toList();
     }
     if (_json.containsKey("showItemDividers")) {
@@ -7101,8 +7116,8 @@ class ManualRule {
 
   ManualRule.fromJson(core.Map _json) {
     if (_json.containsKey("groups")) {
-      groups = _json["groups"]
-          .map((value) => new ManualRuleGroup.fromJson(value))
+      groups = (_json["groups"] as core.List)
+          .map<ManualRuleGroup>((value) => new ManualRuleGroup.fromJson(value))
           .toList();
     }
   }
@@ -7137,8 +7152,8 @@ class ManualRuleGroup {
       groupName = new ExtendedValue.fromJson(_json["groupName"]);
     }
     if (_json.containsKey("items")) {
-      items = _json["items"]
-          .map((value) => new ExtendedValue.fromJson(value))
+      items = (_json["items"] as core.List)
+          .map<ExtendedValue>((value) => new ExtendedValue.fromJson(value))
           .toList();
     }
   }
@@ -7169,8 +7184,8 @@ class MatchedDeveloperMetadata {
 
   MatchedDeveloperMetadata.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("developerMetadata")) {
@@ -7206,8 +7221,8 @@ class MatchedValueRange {
 
   MatchedValueRange.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("valueRange")) {
@@ -7745,7 +7760,7 @@ class PivotFilterCriteria {
 
   PivotFilterCriteria.fromJson(core.Map _json) {
     if (_json.containsKey("visibleValues")) {
-      visibleValues = _json["visibleValues"];
+      visibleValues = (_json["visibleValues"] as core.List).cast<core.String>();
     }
   }
 
@@ -7852,8 +7867,9 @@ class PivotGroup {
           new PivotGroupSortValueBucket.fromJson(_json["valueBucket"]);
     }
     if (_json.containsKey("valueMetadata")) {
-      valueMetadata = _json["valueMetadata"]
-          .map((value) => new PivotGroupValueMetadata.fromJson(value))
+      valueMetadata = (_json["valueMetadata"] as core.List)
+          .map<PivotGroupValueMetadata>(
+              (value) => new PivotGroupValueMetadata.fromJson(value))
           .toList();
     }
   }
@@ -7947,8 +7963,8 @@ class PivotGroupSortValueBucket {
 
   PivotGroupSortValueBucket.fromJson(core.Map _json) {
     if (_json.containsKey("buckets")) {
-      buckets = _json["buckets"]
-          .map((value) => new ExtendedValue.fromJson(value))
+      buckets = (_json["buckets"] as core.List)
+          .map<ExtendedValue>((value) => new ExtendedValue.fromJson(value))
           .toList();
     }
     if (_json.containsKey("valuesIndex")) {
@@ -8039,20 +8055,19 @@ class PivotTable {
 
   PivotTable.fromJson(core.Map _json) {
     if (_json.containsKey("columns")) {
-      columns = _json["columns"]
-          .map((value) => new PivotGroup.fromJson(value))
+      columns = (_json["columns"] as core.List)
+          .map<PivotGroup>((value) => new PivotGroup.fromJson(value))
           .toList();
     }
     if (_json.containsKey("criteria")) {
-      criteria = commons
-          .mapMap<core.Map<core.String, core.Object>, PivotFilterCriteria>(
-              _json["criteria"],
-              (core.Map<core.String, core.Object> item) =>
-                  new PivotFilterCriteria.fromJson(item));
+      criteria = commons.mapMap<core.Map, PivotFilterCriteria>(
+          _json["criteria"].cast<core.String, core.Map>(),
+          (core.Map item) => new PivotFilterCriteria.fromJson(item));
     }
     if (_json.containsKey("rows")) {
-      rows =
-          _json["rows"].map((value) => new PivotGroup.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<PivotGroup>((value) => new PivotGroup.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("source")) {
       source = new GridRange.fromJson(_json["source"]);
@@ -8061,8 +8076,8 @@ class PivotTable {
       valueLayout = _json["valueLayout"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"]
-          .map((value) => new PivotValue.fromJson(value))
+      values = (_json["values"] as core.List)
+          .map<PivotValue>((value) => new PivotValue.fromJson(value))
           .toList();
     }
   }
@@ -8265,8 +8280,8 @@ class ProtectedRange {
       requestingUserCanEdit = _json["requestingUserCanEdit"];
     }
     if (_json.containsKey("unprotectedRanges")) {
-      unprotectedRanges = _json["unprotectedRanges"]
-          .map((value) => new GridRange.fromJson(value))
+      unprotectedRanges = (_json["unprotectedRanges"] as core.List)
+          .map<GridRange>((value) => new GridRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("warningOnly")) {
@@ -9088,8 +9103,9 @@ class RowData {
 
   RowData.fromJson(core.Map _json) {
     if (_json.containsKey("values")) {
-      values =
-          _json["values"].map((value) => new CellData.fromJson(value)).toList();
+      values = (_json["values"] as core.List)
+          .map<CellData>((value) => new CellData.fromJson(value))
+          .toList();
     }
   }
 
@@ -9116,8 +9132,8 @@ class SearchDeveloperMetadataRequest {
 
   SearchDeveloperMetadataRequest.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
   }
@@ -9142,9 +9158,11 @@ class SearchDeveloperMetadataResponse {
 
   SearchDeveloperMetadataResponse.fromJson(core.Map _json) {
     if (_json.containsKey("matchedDeveloperMetadata")) {
-      matchedDeveloperMetadata = _json["matchedDeveloperMetadata"]
-          .map((value) => new MatchedDeveloperMetadata.fromJson(value))
-          .toList();
+      matchedDeveloperMetadata =
+          (_json["matchedDeveloperMetadata"] as core.List)
+              .map<MatchedDeveloperMetadata>(
+                  (value) => new MatchedDeveloperMetadata.fromJson(value))
+              .toList();
     }
   }
 
@@ -9259,48 +9277,51 @@ class Sheet {
 
   Sheet.fromJson(core.Map _json) {
     if (_json.containsKey("bandedRanges")) {
-      bandedRanges = _json["bandedRanges"]
-          .map((value) => new BandedRange.fromJson(value))
+      bandedRanges = (_json["bandedRanges"] as core.List)
+          .map<BandedRange>((value) => new BandedRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("basicFilter")) {
       basicFilter = new BasicFilter.fromJson(_json["basicFilter"]);
     }
     if (_json.containsKey("charts")) {
-      charts = _json["charts"]
-          .map((value) => new EmbeddedChart.fromJson(value))
+      charts = (_json["charts"] as core.List)
+          .map<EmbeddedChart>((value) => new EmbeddedChart.fromJson(value))
           .toList();
     }
     if (_json.containsKey("conditionalFormats")) {
-      conditionalFormats = _json["conditionalFormats"]
-          .map((value) => new ConditionalFormatRule.fromJson(value))
+      conditionalFormats = (_json["conditionalFormats"] as core.List)
+          .map<ConditionalFormatRule>(
+              (value) => new ConditionalFormatRule.fromJson(value))
           .toList();
     }
     if (_json.containsKey("data")) {
-      data =
-          _json["data"].map((value) => new GridData.fromJson(value)).toList();
+      data = (_json["data"] as core.List)
+          .map<GridData>((value) => new GridData.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("developerMetadata")) {
-      developerMetadata = _json["developerMetadata"]
-          .map((value) => new DeveloperMetadata.fromJson(value))
+      developerMetadata = (_json["developerMetadata"] as core.List)
+          .map<DeveloperMetadata>(
+              (value) => new DeveloperMetadata.fromJson(value))
           .toList();
     }
     if (_json.containsKey("filterViews")) {
-      filterViews = _json["filterViews"]
-          .map((value) => new FilterView.fromJson(value))
+      filterViews = (_json["filterViews"] as core.List)
+          .map<FilterView>((value) => new FilterView.fromJson(value))
           .toList();
     }
     if (_json.containsKey("merges")) {
-      merges = _json["merges"]
-          .map((value) => new GridRange.fromJson(value))
+      merges = (_json["merges"] as core.List)
+          .map<GridRange>((value) => new GridRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("properties")) {
       properties = new SheetProperties.fromJson(_json["properties"]);
     }
     if (_json.containsKey("protectedRanges")) {
-      protectedRanges = _json["protectedRanges"]
-          .map((value) => new ProtectedRange.fromJson(value))
+      protectedRanges = (_json["protectedRanges"] as core.List)
+          .map<ProtectedRange>((value) => new ProtectedRange.fromJson(value))
           .toList();
     }
   }
@@ -9468,8 +9489,8 @@ class SortRangeRequest {
       range = new GridRange.fromJson(_json["range"]);
     }
     if (_json.containsKey("sortSpecs")) {
-      sortSpecs = _json["sortSpecs"]
-          .map((value) => new SortSpec.fromJson(value))
+      sortSpecs = (_json["sortSpecs"] as core.List)
+          .map<SortSpec>((value) => new SortSpec.fromJson(value))
           .toList();
     }
   }
@@ -9597,21 +9618,23 @@ class Spreadsheet {
 
   Spreadsheet.fromJson(core.Map _json) {
     if (_json.containsKey("developerMetadata")) {
-      developerMetadata = _json["developerMetadata"]
-          .map((value) => new DeveloperMetadata.fromJson(value))
+      developerMetadata = (_json["developerMetadata"] as core.List)
+          .map<DeveloperMetadata>(
+              (value) => new DeveloperMetadata.fromJson(value))
           .toList();
     }
     if (_json.containsKey("namedRanges")) {
-      namedRanges = _json["namedRanges"]
-          .map((value) => new NamedRange.fromJson(value))
+      namedRanges = (_json["namedRanges"] as core.List)
+          .map<NamedRange>((value) => new NamedRange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("properties")) {
       properties = new SpreadsheetProperties.fromJson(_json["properties"]);
     }
     if (_json.containsKey("sheets")) {
-      sheets =
-          _json["sheets"].map((value) => new Sheet.fromJson(value)).toList();
+      sheets = (_json["sheets"] as core.List)
+          .map<Sheet>((value) => new Sheet.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("spreadsheetId")) {
       spreadsheetId = _json["spreadsheetId"];
@@ -10159,7 +10182,9 @@ class UpdateCellsRequest {
       range = new GridRange.fromJson(_json["range"]);
     }
     if (_json.containsKey("rows")) {
-      rows = _json["rows"].map((value) => new RowData.fromJson(value)).toList();
+      rows = (_json["rows"] as core.List)
+          .map<RowData>((value) => new RowData.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("start")) {
       start = new GridCoordinate.fromJson(_json["start"]);
@@ -10347,8 +10372,8 @@ class UpdateDeveloperMetadataRequest {
 
   UpdateDeveloperMetadataRequest.fromJson(core.Map _json) {
     if (_json.containsKey("dataFilters")) {
-      dataFilters = _json["dataFilters"]
-          .map((value) => new DataFilter.fromJson(value))
+      dataFilters = (_json["dataFilters"] as core.List)
+          .map<DataFilter>((value) => new DataFilter.fromJson(value))
           .toList();
     }
     if (_json.containsKey("developerMetadata")) {
@@ -10386,8 +10411,9 @@ class UpdateDeveloperMetadataResponse {
 
   UpdateDeveloperMetadataResponse.fromJson(core.Map _json) {
     if (_json.containsKey("developerMetadata")) {
-      developerMetadata = _json["developerMetadata"]
-          .map((value) => new DeveloperMetadata.fromJson(value))
+      developerMetadata = (_json["developerMetadata"] as core.List)
+          .map<DeveloperMetadata>(
+              (value) => new DeveloperMetadata.fromJson(value))
           .toList();
     }
   }
@@ -10888,7 +10914,10 @@ class ValueRange {
       range = _json["range"];
     }
     if (_json.containsKey("values")) {
-      values = _json["values"];
+      values = (_json["values"] as core.List)
+          .map<core.List<core.Object>>(
+              (value) => (value as core.List).cast<core.Object>())
+          .toList();
     }
   }
 
@@ -11049,8 +11078,9 @@ class WaterfallChartSeries {
 
   WaterfallChartSeries.fromJson(core.Map _json) {
     if (_json.containsKey("customSubtotals")) {
-      customSubtotals = _json["customSubtotals"]
-          .map((value) => new WaterfallChartCustomSubtotal.fromJson(value))
+      customSubtotals = (_json["customSubtotals"] as core.List)
+          .map<WaterfallChartCustomSubtotal>(
+              (value) => new WaterfallChartCustomSubtotal.fromJson(value))
           .toList();
     }
     if (_json.containsKey("data")) {
@@ -11141,8 +11171,9 @@ class WaterfallChartSpec {
       hideConnectorLines = _json["hideConnectorLines"];
     }
     if (_json.containsKey("series")) {
-      series = _json["series"]
-          .map((value) => new WaterfallChartSeries.fromJson(value))
+      series = (_json["series"] as core.List)
+          .map<WaterfallChartSeries>(
+              (value) => new WaterfallChartSeries.fromJson(value))
           .toList();
     }
     if (_json.containsKey("stackedType")) {

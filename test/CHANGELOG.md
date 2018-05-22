@@ -1,3 +1,30 @@
+## 0.12.37
+
+* Removed the transformer, and the `pub_serve.dart` entrypoint. This is not
+  being treated as a breaking change because the minimum sdk constraint now
+  points to an sdk which does not support pub serve or barback any more anyways.
+* Drop the dependency on `barback`.
+
+## 0.12.36
+
+* Expose the test bootstrapping methods, so that build systems can precompile
+  tests without relying on internal apis.
+
+## 0.12.35
+
+* Dropped support for Dart 1. Going forward only Dart 2 will be supported.
+  * If you experience blocking issues and are still on the Dart 1 sdk, we will
+    consider bug fixes on a per-case basis based on severity and impact.
+  * Drop support for `dartium` and `content-shell` platforms since those are
+    removed from the Dart 2 SDK.
+* Fixed an issue `--precompiled` node tests in subdirectories.
+* Fixed some dart2 issues with node test bootstrapping code so that dartdevc
+  tests can run.
+* Fixed default custom html handler so it correctly includes the
+  packages/test/dart.js file. This allows you to get proper errors instead of
+  timeouts if there are load exceptions in the browser.
+* Upgrade to package:matcher 0.12.2
+
 ## 0.12.34
 
 * Requires at least Dart 1.24.0.

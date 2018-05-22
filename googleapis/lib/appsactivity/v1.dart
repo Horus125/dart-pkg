@@ -86,7 +86,7 @@ class ActivitiesResourceApi {
       core.String userId,
       core.String $fields}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -146,8 +146,8 @@ class Activity {
       combinedEvent = new Event.fromJson(_json["combinedEvent"]);
     }
     if (_json.containsKey("singleEvents")) {
-      singleEvents = _json["singleEvents"]
-          .map((value) => new Event.fromJson(value))
+      singleEvents = (_json["singleEvents"] as core.List)
+          .map<Event>((value) => new Event.fromJson(value))
           .toList();
     }
   }
@@ -216,7 +216,8 @@ class Event {
 
   Event.fromJson(core.Map _json) {
     if (_json.containsKey("additionalEventTypes")) {
-      additionalEventTypes = _json["additionalEventTypes"];
+      additionalEventTypes =
+          (_json["additionalEventTypes"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("eventTimeMillis")) {
       eventTimeMillis = _json["eventTimeMillis"];
@@ -228,8 +229,9 @@ class Event {
       move = new Move.fromJson(_json["move"]);
     }
     if (_json.containsKey("permissionChanges")) {
-      permissionChanges = _json["permissionChanges"]
-          .map((value) => new PermissionChange.fromJson(value))
+      permissionChanges = (_json["permissionChanges"] as core.List)
+          .map<PermissionChange>(
+              (value) => new PermissionChange.fromJson(value))
           .toList();
     }
     if (_json.containsKey("primaryEventType")) {
@@ -294,8 +296,8 @@ class ListActivitiesResponse {
 
   ListActivitiesResponse.fromJson(core.Map _json) {
     if (_json.containsKey("activities")) {
-      activities = _json["activities"]
-          .map((value) => new Activity.fromJson(value))
+      activities = (_json["activities"] as core.List)
+          .map<Activity>((value) => new Activity.fromJson(value))
           .toList();
     }
     if (_json.containsKey("nextPageToken")) {
@@ -330,13 +332,13 @@ class Move {
 
   Move.fromJson(core.Map _json) {
     if (_json.containsKey("addedParents")) {
-      addedParents = _json["addedParents"]
-          .map((value) => new Parent.fromJson(value))
+      addedParents = (_json["addedParents"] as core.List)
+          .map<Parent>((value) => new Parent.fromJson(value))
           .toList();
     }
     if (_json.containsKey("removedParents")) {
-      removedParents = _json["removedParents"]
-          .map((value) => new Parent.fromJson(value))
+      removedParents = (_json["removedParents"] as core.List)
+          .map<Parent>((value) => new Parent.fromJson(value))
           .toList();
     }
   }
@@ -494,13 +496,13 @@ class PermissionChange {
 
   PermissionChange.fromJson(core.Map _json) {
     if (_json.containsKey("addedPermissions")) {
-      addedPermissions = _json["addedPermissions"]
-          .map((value) => new Permission.fromJson(value))
+      addedPermissions = (_json["addedPermissions"] as core.List)
+          .map<Permission>((value) => new Permission.fromJson(value))
           .toList();
     }
     if (_json.containsKey("removedPermissions")) {
-      removedPermissions = _json["removedPermissions"]
-          .map((value) => new Permission.fromJson(value))
+      removedPermissions = (_json["removedPermissions"] as core.List)
+          .map<Permission>((value) => new Permission.fromJson(value))
           .toList();
     }
   }
