@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.doubleclicksearch.v2;
 
 import 'dart:core' as core;
@@ -1151,7 +1153,7 @@ class CustomMetric {
       name = _json["name"];
     }
     if (_json.containsKey("value")) {
-      value = _json["value"];
+      value = _json["value"].toDouble();
     }
   }
 

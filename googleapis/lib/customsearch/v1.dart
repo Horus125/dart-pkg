@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.customsearch.v1;
 
 import 'dart:core' as core;
@@ -1068,7 +1070,7 @@ class SearchSearchInformation {
       formattedTotalResults = _json["formattedTotalResults"];
     }
     if (_json.containsKey("searchTime")) {
-      searchTime = _json["searchTime"];
+      searchTime = _json["searchTime"].toDouble();
     }
     if (_json.containsKey("totalResults")) {
       totalResults = _json["totalResults"];

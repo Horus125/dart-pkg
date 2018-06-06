@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.poly.v1;
 
 import 'dart:core' as core;
@@ -931,16 +933,16 @@ class Quaternion {
 
   Quaternion.fromJson(core.Map _json) {
     if (_json.containsKey("w")) {
-      w = _json["w"];
+      w = _json["w"].toDouble();
     }
     if (_json.containsKey("x")) {
-      x = _json["x"];
+      x = _json["x"].toDouble();
     }
     if (_json.containsKey("y")) {
-      y = _json["y"];
+      y = _json["y"].toDouble();
     }
     if (_json.containsKey("z")) {
-      z = _json["z"];
+      z = _json["z"].toDouble();
     }
   }
 

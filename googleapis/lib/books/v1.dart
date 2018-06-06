@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.books.v1;
 
 import 'dart:core' as core;
@@ -5882,10 +5884,10 @@ class GeolayerdataGeoViewportHi {
 
   GeolayerdataGeoViewportHi.fromJson(core.Map _json) {
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -5910,10 +5912,10 @@ class GeolayerdataGeoViewportLo {
 
   GeolayerdataGeoViewportLo.fromJson(core.Map _json) {
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -6010,10 +6012,10 @@ class GeolayerdataGeo {
       countryCode = _json["countryCode"];
     }
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
     if (_json.containsKey("mapType")) {
       mapType = _json["mapType"];
@@ -7579,7 +7581,7 @@ class VolumeSaleInfoListPrice {
 
   VolumeSaleInfoListPrice.fromJson(core.Map _json) {
     if (_json.containsKey("amount")) {
-      amount = _json["amount"];
+      amount = _json["amount"].toDouble();
     }
     if (_json.containsKey("currencyCode")) {
       currencyCode = _json["currencyCode"];
@@ -7608,7 +7610,7 @@ class VolumeSaleInfoOffersListPrice {
 
   VolumeSaleInfoOffersListPrice.fromJson(core.Map _json) {
     if (_json.containsKey("amountInMicros")) {
-      amountInMicros = _json["amountInMicros"];
+      amountInMicros = _json["amountInMicros"].toDouble();
     }
     if (_json.containsKey("currencyCode")) {
       currencyCode = _json["currencyCode"];
@@ -7637,7 +7639,7 @@ class VolumeSaleInfoOffersRentalDuration {
 
   VolumeSaleInfoOffersRentalDuration.fromJson(core.Map _json) {
     if (_json.containsKey("count")) {
-      count = _json["count"];
+      count = _json["count"].toDouble();
     }
     if (_json.containsKey("unit")) {
       unit = _json["unit"];
@@ -7666,7 +7668,7 @@ class VolumeSaleInfoOffersRetailPrice {
 
   VolumeSaleInfoOffersRetailPrice.fromJson(core.Map _json) {
     if (_json.containsKey("amountInMicros")) {
-      amountInMicros = _json["amountInMicros"];
+      amountInMicros = _json["amountInMicros"].toDouble();
     }
     if (_json.containsKey("currencyCode")) {
       currencyCode = _json["currencyCode"];
@@ -7761,7 +7763,7 @@ class VolumeSaleInfoRetailPrice {
 
   VolumeSaleInfoRetailPrice.fromJson(core.Map _json) {
     if (_json.containsKey("amount")) {
-      amount = _json["amount"];
+      amount = _json["amount"].toDouble();
     }
     if (_json.containsKey("currencyCode")) {
       currencyCode = _json["currencyCode"];
@@ -8522,7 +8524,7 @@ class VolumeVolumeInfo {
       authors = (_json["authors"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("averageRating")) {
-      averageRating = _json["averageRating"];
+      averageRating = _json["averageRating"].toDouble();
     }
     if (_json.containsKey("canonicalVolumeLink")) {
       canonicalVolumeLink = _json["canonicalVolumeLink"];

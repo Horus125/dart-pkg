@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.vision.v1;
 
 import 'dart:core' as core;
@@ -378,7 +380,7 @@ class Block {
       boundingBox = new BoundingPoly.fromJson(_json["boundingBox"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("paragraphs")) {
       paragraphs = (_json["paragraphs"] as core.List)
@@ -579,16 +581,16 @@ class Color {
 
   Color.fromJson(core.Map _json) {
     if (_json.containsKey("alpha")) {
-      alpha = _json["alpha"];
+      alpha = _json["alpha"].toDouble();
     }
     if (_json.containsKey("blue")) {
-      blue = _json["blue"];
+      blue = _json["blue"].toDouble();
     }
     if (_json.containsKey("green")) {
-      green = _json["green"];
+      green = _json["green"].toDouble();
     }
     if (_json.containsKey("red")) {
-      red = _json["red"];
+      red = _json["red"].toDouble();
     }
   }
 
@@ -631,10 +633,10 @@ class ColorInfo {
       color = new Color.fromJson(_json["color"]);
     }
     if (_json.containsKey("pixelFraction")) {
-      pixelFraction = _json["pixelFraction"];
+      pixelFraction = _json["pixelFraction"].toDouble();
     }
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
   }
 
@@ -674,10 +676,10 @@ class CropHint {
       boundingPoly = new BoundingPoly.fromJson(_json["boundingPoly"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("importanceFraction")) {
-      importanceFraction = _json["importanceFraction"];
+      importanceFraction = _json["importanceFraction"].toDouble();
     }
   }
 
@@ -736,7 +738,9 @@ class CropHintsParams {
 
   CropHintsParams.fromJson(core.Map _json) {
     if (_json.containsKey("aspectRatios")) {
-      aspectRatios = (_json["aspectRatios"] as core.List).cast<core.double>();
+      aspectRatios = (_json["aspectRatios"] as core.List)
+          .map<core.double>((value) => value.toDouble())
+          .toList();
     }
   }
 
@@ -805,7 +809,7 @@ class DetectedLanguage {
 
   DetectedLanguage.fromJson(core.Map _json) {
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("languageCode")) {
       languageCode = _json["languageCode"];
@@ -903,7 +907,7 @@ class EntityAnnotation {
       boundingPoly = new BoundingPoly.fromJson(_json["boundingPoly"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("description")) {
       description = _json["description"];
@@ -925,10 +929,10 @@ class EntityAnnotation {
           .toList();
     }
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
     if (_json.containsKey("topicality")) {
-      topicality = _json["topicality"];
+      topicality = _json["topicality"].toDouble();
     }
   }
 
@@ -1128,7 +1132,7 @@ class FaceAnnotation {
       boundingPoly = new BoundingPoly.fromJson(_json["boundingPoly"]);
     }
     if (_json.containsKey("detectionConfidence")) {
-      detectionConfidence = _json["detectionConfidence"];
+      detectionConfidence = _json["detectionConfidence"].toDouble();
     }
     if (_json.containsKey("fdBoundingPoly")) {
       fdBoundingPoly = new BoundingPoly.fromJson(_json["fdBoundingPoly"]);
@@ -1140,7 +1144,7 @@ class FaceAnnotation {
       joyLikelihood = _json["joyLikelihood"];
     }
     if (_json.containsKey("landmarkingConfidence")) {
-      landmarkingConfidence = _json["landmarkingConfidence"];
+      landmarkingConfidence = _json["landmarkingConfidence"].toDouble();
     }
     if (_json.containsKey("landmarks")) {
       landmarks = (_json["landmarks"] as core.List)
@@ -1148,10 +1152,10 @@ class FaceAnnotation {
           .toList();
     }
     if (_json.containsKey("panAngle")) {
-      panAngle = _json["panAngle"];
+      panAngle = _json["panAngle"].toDouble();
     }
     if (_json.containsKey("rollAngle")) {
-      rollAngle = _json["rollAngle"];
+      rollAngle = _json["rollAngle"].toDouble();
     }
     if (_json.containsKey("sorrowLikelihood")) {
       sorrowLikelihood = _json["sorrowLikelihood"];
@@ -1160,7 +1164,7 @@ class FaceAnnotation {
       surpriseLikelihood = _json["surpriseLikelihood"];
     }
     if (_json.containsKey("tiltAngle")) {
-      tiltAngle = _json["tiltAngle"];
+      tiltAngle = _json["tiltAngle"].toDouble();
     }
     if (_json.containsKey("underExposedLikelihood")) {
       underExposedLikelihood = _json["underExposedLikelihood"];
@@ -1550,10 +1554,10 @@ class LatLng {
 
   LatLng.fromJson(core.Map _json) {
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -1651,7 +1655,7 @@ class Page {
           .toList();
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("height")) {
       height = _json["height"];
@@ -1721,7 +1725,7 @@ class Paragraph {
       boundingBox = new BoundingPoly.fromJson(_json["boundingBox"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("property")) {
       property = new TextProperty.fromJson(_json["property"]);
@@ -1769,13 +1773,13 @@ class Position {
 
   Position.fromJson(core.Map _json) {
     if (_json.containsKey("x")) {
-      x = _json["x"];
+      x = _json["x"].toDouble();
     }
     if (_json.containsKey("y")) {
-      y = _json["y"];
+      y = _json["y"].toDouble();
     }
     if (_json.containsKey("z")) {
-      z = _json["z"];
+      z = _json["z"].toDouble();
     }
   }
 
@@ -2104,7 +2108,7 @@ class Symbol {
       boundingBox = new BoundingPoly.fromJson(_json["boundingBox"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("property")) {
       property = new TextProperty.fromJson(_json["property"]);
@@ -2377,7 +2381,7 @@ class WebEntity {
       entityId = _json["entityId"];
     }
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
   }
 
@@ -2409,7 +2413,7 @@ class WebImage {
 
   WebImage.fromJson(core.Map _json) {
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
     if (_json.containsKey("url")) {
       url = _json["url"];
@@ -2501,7 +2505,7 @@ class WebPage {
           .toList();
     }
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
     if (_json.containsKey("url")) {
       url = _json["url"];
@@ -2568,7 +2572,7 @@ class Word {
       boundingBox = new BoundingPoly.fromJson(_json["boundingBox"]);
     }
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("property")) {
       property = new TextProperty.fromJson(_json["property"]);

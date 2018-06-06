@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.translate.v2;
 
 import 'dart:core' as core;
@@ -85,7 +87,8 @@ class DetectionsResourceApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) => new DetectionsListResponse.fromJson(data));
+    return _response
+        .then((data) => new DetectionsListResponse.fromJson(data['data']));
   }
 
   /// Detects the language of text within a request.
@@ -130,7 +133,8 @@ class DetectionsResourceApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) => new DetectionsListResponse.fromJson(data));
+    return _response
+        .then((data) => new DetectionsListResponse.fromJson(data['data']));
   }
 }
 
@@ -186,7 +190,8 @@ class LanguagesResourceApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) => new LanguagesListResponse.fromJson(data));
+    return _response
+        .then((data) => new LanguagesListResponse.fromJson(data['data']));
   }
 }
 
@@ -283,7 +288,7 @@ class TranslationsResourceApi {
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
     return _response
-        .then((data) => new TranslationsListResponse.fromJson(data));
+        .then((data) => new TranslationsListResponse.fromJson(data['data']));
   }
 
   /// Translates input text, returning translated text.
@@ -327,7 +332,7 @@ class TranslationsResourceApi {
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
     return _response
-        .then((data) => new TranslationsListResponse.fromJson(data));
+        .then((data) => new TranslationsListResponse.fromJson(data['data']));
   }
 }
 
@@ -395,7 +400,7 @@ class DetectionsResourceElement {
 
   DetectionsResourceElement.fromJson(core.Map _json) {
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("isReliable")) {
       isReliable = _json["isReliable"];

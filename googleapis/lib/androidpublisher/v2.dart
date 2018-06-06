@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.androidpublisher.v2;
 
 import 'dart:core' as core;
@@ -5907,7 +5909,7 @@ class Track {
       track = _json["track"];
     }
     if (_json.containsKey("userFraction")) {
-      userFraction = _json["userFraction"];
+      userFraction = _json["userFraction"].toDouble();
     }
     if (_json.containsKey("versionCodes")) {
       versionCodes = (_json["versionCodes"] as core.List).cast<core.int>();

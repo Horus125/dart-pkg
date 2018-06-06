@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.streetviewpublish.v1;
 
 import 'dart:core' as core;
@@ -866,10 +868,10 @@ class LatLng {
 
   LatLng.fromJson(core.Map _json) {
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -905,7 +907,7 @@ class Level {
       name = _json["name"];
     }
     if (_json.containsKey("number")) {
-      number = _json["number"];
+      number = _json["number"].toDouble();
     }
   }
 
@@ -1286,10 +1288,10 @@ class Pose {
 
   Pose.fromJson(core.Map _json) {
     if (_json.containsKey("altitude")) {
-      altitude = _json["altitude"];
+      altitude = _json["altitude"].toDouble();
     }
     if (_json.containsKey("heading")) {
-      heading = _json["heading"];
+      heading = _json["heading"].toDouble();
     }
     if (_json.containsKey("latLngPair")) {
       latLngPair = new LatLng.fromJson(_json["latLngPair"]);
@@ -1298,10 +1300,10 @@ class Pose {
       level = new Level.fromJson(_json["level"]);
     }
     if (_json.containsKey("pitch")) {
-      pitch = _json["pitch"];
+      pitch = _json["pitch"].toDouble();
     }
     if (_json.containsKey("roll")) {
-      roll = _json["roll"];
+      roll = _json["roll"].toDouble();
     }
   }
 

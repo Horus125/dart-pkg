@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.blogger.v3;
 
 import 'dart:core' as core;
@@ -3524,10 +3526,10 @@ class PostLocation {
 
   PostLocation.fromJson(core.Map _json) {
     if (_json.containsKey("lat")) {
-      lat = _json["lat"];
+      lat = _json["lat"].toDouble();
     }
     if (_json.containsKey("lng")) {
-      lng = _json["lng"];
+      lng = _json["lng"].toDouble();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];

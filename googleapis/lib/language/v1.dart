@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.language.v1;
 
 import 'dart:core' as core;
@@ -826,7 +828,7 @@ class ClassificationCategory {
 
   ClassificationCategory.fromJson(core.Map _json) {
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("name")) {
       name = _json["name"];
@@ -1146,7 +1148,7 @@ class Entity {
       name = _json["name"];
     }
     if (_json.containsKey("salience")) {
-      salience = _json["salience"];
+      salience = _json["salience"].toDouble();
     }
     if (_json.containsKey("sentiment")) {
       sentiment = new Sentiment.fromJson(_json["sentiment"]);
@@ -1570,10 +1572,10 @@ class Sentiment {
 
   Sentiment.fromJson(core.Map _json) {
     if (_json.containsKey("magnitude")) {
-      magnitude = _json["magnitude"];
+      magnitude = _json["magnitude"].toDouble();
     }
     if (_json.containsKey("score")) {
-      score = _json["score"];
+      score = _json["score"].toDouble();
     }
   }
 

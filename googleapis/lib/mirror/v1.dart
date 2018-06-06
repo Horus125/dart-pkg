@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.mirror.v1;
 
 import 'dart:core' as core;
@@ -1697,7 +1699,7 @@ class Location {
 
   Location.fromJson(core.Map _json) {
     if (_json.containsKey("accuracy")) {
-      accuracy = _json["accuracy"];
+      accuracy = _json["accuracy"].toDouble();
     }
     if (_json.containsKey("address")) {
       address = _json["address"];
@@ -1712,10 +1714,10 @@ class Location {
       kind = _json["kind"];
     }
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
     if (_json.containsKey("timestamp")) {
       timestamp = core.DateTime.parse(_json["timestamp"]);

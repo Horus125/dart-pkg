@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.prediction.v1_6;
 
 import 'dart:core' as core;
@@ -1070,8 +1072,10 @@ class Insert {
     }
     if (_json.containsKey("utility")) {
       utility = (_json["utility"] as core.List)
-          .map<core.Map<core.String, core.double>>(
-              (value) => (value as core.Map).cast<core.String, core.double>())
+          .map<core.Map<core.String, core.double>>((value) =>
+              commons.mapMap<core.num, core.double>(
+                  value.cast<core.String, core.num>(),
+                  (core.num item) => item.toDouble()))
           .toList();
     }
   }

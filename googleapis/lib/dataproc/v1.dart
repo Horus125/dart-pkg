@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.dataproc.v1;
 
 import 'dart:core' as core;
@@ -3399,7 +3401,7 @@ class YarnApplication {
       name = _json["name"];
     }
     if (_json.containsKey("progress")) {
-      progress = _json["progress"];
+      progress = _json["progress"].toDouble();
     }
     if (_json.containsKey("state")) {
       state = _json["state"];

@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.identitytoolkit.v3;
 
 import 'dart:core' as core;
@@ -3920,7 +3922,7 @@ class UserInfo {
       passwordHash = _json["passwordHash"];
     }
     if (_json.containsKey("passwordUpdatedAt")) {
-      passwordUpdatedAt = _json["passwordUpdatedAt"];
+      passwordUpdatedAt = _json["passwordUpdatedAt"].toDouble();
     }
     if (_json.containsKey("phoneNumber")) {
       phoneNumber = _json["phoneNumber"];

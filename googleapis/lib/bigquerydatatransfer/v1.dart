@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.bigquerydatatransfer.v1;
 
 import 'dart:core' as core;
@@ -2200,10 +2202,10 @@ class DataSourceParameter {
       immutable = _json["immutable"];
     }
     if (_json.containsKey("maxValue")) {
-      maxValue = _json["maxValue"];
+      maxValue = _json["maxValue"].toDouble();
     }
     if (_json.containsKey("minValue")) {
-      minValue = _json["minValue"];
+      minValue = _json["minValue"].toDouble();
     }
     if (_json.containsKey("paramId")) {
       paramId = _json["paramId"];

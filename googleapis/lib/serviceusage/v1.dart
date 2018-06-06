@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.serviceusage.v1;
 
 import 'dart:core' as core;
@@ -1097,10 +1099,10 @@ class BackendRule {
       address = _json["address"];
     }
     if (_json.containsKey("deadline")) {
-      deadline = _json["deadline"];
+      deadline = _json["deadline"].toDouble();
     }
     if (_json.containsKey("minDeadline")) {
-      minDeadline = _json["minDeadline"];
+      minDeadline = _json["minDeadline"].toDouble();
     }
     if (_json.containsKey("selector")) {
       selector = _json["selector"];

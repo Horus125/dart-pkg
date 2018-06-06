@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.youtube.v3;
 
 import 'dart:core' as core;
@@ -11251,13 +11253,13 @@ class GeoPoint {
 
   GeoPoint.fromJson(core.Map _json) {
     if (_json.containsKey("altitude")) {
-      altitude = _json["altitude"];
+      altitude = _json["altitude"].toDouble();
     }
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -17932,7 +17934,7 @@ class VideoFileDetailsVideoStream {
 
   VideoFileDetailsVideoStream.fromJson(core.Map _json) {
     if (_json.containsKey("aspectRatio")) {
-      aspectRatio = _json["aspectRatio"];
+      aspectRatio = _json["aspectRatio"].toDouble();
     }
     if (_json.containsKey("bitrateBps")) {
       bitrateBps = _json["bitrateBps"];
@@ -17941,7 +17943,7 @@ class VideoFileDetailsVideoStream {
       codec = _json["codec"];
     }
     if (_json.containsKey("frameRateFps")) {
-      frameRateFps = _json["frameRateFps"];
+      frameRateFps = _json["frameRateFps"].toDouble();
     }
     if (_json.containsKey("heightPixels")) {
       heightPixels = _json["heightPixels"];

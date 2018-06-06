@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.cloudbilling.v1;
 
 import 'dart:core' as core;
@@ -923,13 +925,13 @@ class PricingExpression {
       baseUnit = _json["baseUnit"];
     }
     if (_json.containsKey("baseUnitConversionFactor")) {
-      baseUnitConversionFactor = _json["baseUnitConversionFactor"];
+      baseUnitConversionFactor = _json["baseUnitConversionFactor"].toDouble();
     }
     if (_json.containsKey("baseUnitDescription")) {
       baseUnitDescription = _json["baseUnitDescription"];
     }
     if (_json.containsKey("displayQuantity")) {
-      displayQuantity = _json["displayQuantity"];
+      displayQuantity = _json["displayQuantity"].toDouble();
     }
     if (_json.containsKey("tieredRates")) {
       tieredRates = (_json["tieredRates"] as core.List)
@@ -1009,7 +1011,7 @@ class PricingInfo {
       aggregationInfo = new AggregationInfo.fromJson(_json["aggregationInfo"]);
     }
     if (_json.containsKey("currencyConversionRate")) {
-      currencyConversionRate = _json["currencyConversionRate"];
+      currencyConversionRate = _json["currencyConversionRate"].toDouble();
     }
     if (_json.containsKey("effectiveTime")) {
       effectiveTime = _json["effectiveTime"];
@@ -1252,7 +1254,7 @@ class TierRate {
 
   TierRate.fromJson(core.Map _json) {
     if (_json.containsKey("startUsageAmount")) {
-      startUsageAmount = _json["startUsageAmount"];
+      startUsageAmount = _json["startUsageAmount"].toDouble();
     }
     if (_json.containsKey("unitPrice")) {
       unitPrice = new Money.fromJson(_json["unitPrice"]);

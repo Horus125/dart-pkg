@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.webmasters.v3;
 
 import 'dart:core' as core;
@@ -848,19 +850,19 @@ class ApiDataRow {
 
   ApiDataRow.fromJson(core.Map _json) {
     if (_json.containsKey("clicks")) {
-      clicks = _json["clicks"];
+      clicks = _json["clicks"].toDouble();
     }
     if (_json.containsKey("ctr")) {
-      ctr = _json["ctr"];
+      ctr = _json["ctr"].toDouble();
     }
     if (_json.containsKey("impressions")) {
-      impressions = _json["impressions"];
+      impressions = _json["impressions"].toDouble();
     }
     if (_json.containsKey("keys")) {
       keys = (_json["keys"] as core.List).cast<core.String>();
     }
     if (_json.containsKey("position")) {
-      position = _json["position"];
+      position = _json["position"].toDouble();
     }
   }
 

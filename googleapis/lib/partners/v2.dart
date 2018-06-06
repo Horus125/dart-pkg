@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.partners.v2;
 
 import 'dart:core' as core;
@@ -3574,10 +3576,10 @@ class LatLng {
 
   LatLng.fromJson(core.Map _json) {
     if (_json.containsKey("latitude")) {
-      latitude = _json["latitude"];
+      latitude = _json["latitude"].toDouble();
     }
     if (_json.containsKey("longitude")) {
-      longitude = _json["longitude"];
+      longitude = _json["longitude"].toDouble();
     }
   }
 
@@ -5043,7 +5045,7 @@ class Rank {
       type = _json["type"];
     }
     if (_json.containsKey("value")) {
-      value = _json["value"];
+      value = _json["value"].toDouble();
     }
   }
 

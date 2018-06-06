@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.speech.v1;
 
 import 'dart:core' as core;
@@ -609,7 +611,7 @@ class SpeechRecognitionAlternative {
 
   SpeechRecognitionAlternative.fromJson(core.Map _json) {
     if (_json.containsKey("confidence")) {
-      confidence = _json["confidence"];
+      confidence = _json["confidence"].toDouble();
     }
     if (_json.containsKey("transcript")) {
       transcript = _json["transcript"];

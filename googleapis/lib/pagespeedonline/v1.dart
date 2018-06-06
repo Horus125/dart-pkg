@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library googleapis.pagespeedonline.v1;
 
 import 'dart:core' as core;
@@ -444,7 +446,7 @@ class ResultFormattedResultsRuleResultsValue {
       localizedRuleName = _json["localizedRuleName"];
     }
     if (_json.containsKey("ruleImpact")) {
-      ruleImpact = _json["ruleImpact"];
+      ruleImpact = _json["ruleImpact"].toDouble();
     }
     if (_json.containsKey("urlBlocks")) {
       urlBlocks = (_json["urlBlocks"] as core.List)
