@@ -29,6 +29,8 @@ import 'runner/reporter/expanded.dart';
 import 'util/io.dart';
 import 'utils.dart';
 
+final _silentObservatory = const bool.fromEnvironment('SILENT_OBSERVATORY');
+
 /// A class that loads and runs tests based on a [Configuration].
 ///
 /// This maintains a [Loader] and an [Engine] and passes test suites from one to
@@ -89,7 +91,21 @@ class Runner {
 
         var suites = _loadSuites();
 
-        var success;
+        var runTimes = _config.suiteDefaults.runtimes.map(_loader.findRuntime);
+
+        // TODO(grouma) - Remove this check when
+        // https://github.com/dart-lang/sdk/issues/31308 is resolved.
+        if (!_silentObservatory &&
+            runTimes.contains(Runtime.vm) &&
+            _config.pauseAfterLoad) {
+          warn('You should set `SILENT_OBSERVATORY` to true when debugging the '
+              'VM as it will output the observatory URL by '
+              'default.\nThis breaks the various reporter contracts.'
+              '\nTo set the value define '
+              '`DART_VM_OPTIONS=-DSILENT_OBSERVATORY=true`.');
+        }
+
+        bool success;
         if (_config.pauseAfterLoad) {
           success = await _loadThenPause(suites);
         } else {
@@ -100,7 +116,7 @@ class Runner {
                 .then((_) => _engine.suiteSink.close()),
             _engine.run()
           ], eagerError: true);
-          success = results.last;
+          success = results.last as bool;
         }
 
         if (_closed) return false;
@@ -180,7 +196,7 @@ class Runner {
   /// currently-running VM tests, in case they have stuff to clean up on the
   /// filesystem.
   Future close() => _closeMemo.runOnce(() async {
-        var timer;
+        Timer timer;
         if (!_engine.isIdle) {
           // Wait a bit to print this message, since printing it eagerly looks weird
           // if the tests then finish immediately.
@@ -299,7 +315,7 @@ class Runner {
     var unknownTags = <String, List<GroupEntry>>{};
     var currentTags = new Set<String>();
 
-    collect(entry) {
+    collect(GroupEntry entry) {
       var newTags = new Set<String>();
       for (var unknownTag
           in entry.metadata.tags.difference(_config.knownTags)) {
@@ -309,9 +325,10 @@ class Runner {
       }
 
       if (entry is! Group) return;
+      var group = entry as Group;
 
       currentTags.addAll(newTags);
-      for (var child in entry.entries) {
+      for (var child in group.entries) {
         collect(child);
       }
       currentTags.removeAll(newTags);
@@ -335,7 +352,7 @@ class Runner {
   /// index. This makes the tests pretty tests across shards, and since the
   /// tests are continuous, makes us more likely to be able to re-use
   /// `setUpAll()` logic.
-  Suite _shardSuite(Suite suite) {
+  T _shardSuite<T extends Suite>(T suite) {
     if (_config.totalShards == null) return suite;
 
     var shardSize = suite.group.testCount / _config.totalShards;
@@ -348,17 +365,12 @@ class Runner {
       return count >= shardStart && count < shardEnd;
     });
 
-    return filtered;
+    return filtered as T;
   }
 
   /// Loads each suite in [suites] in order, pausing after load for runtimes
   /// that support debugging.
   Future<bool> _loadThenPause(Stream<LoadSuite> suites) async {
-    if (_config.suiteDefaults.runtimes.contains(Runtime.vm.identifier)) {
-      warn("Debugging is currently unsupported on the Dart VM.",
-          color: _config.color);
-    }
-
     _suiteSubscription = suites.asyncMap((loadSuite) async {
       _debugOperation = debug(_engine, _reporter, loadSuite);
       await _debugOperation.valueOrCancellation();
@@ -368,6 +380,6 @@ class Runner {
       _suiteSubscription.asFuture().then((_) => _engine.suiteSink.close()),
       _engine.run()
     ], eagerError: true);
-    return results.last;
+    return results.last as bool;
   }
 }

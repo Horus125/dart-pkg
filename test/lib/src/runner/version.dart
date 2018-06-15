@@ -11,7 +11,7 @@ import 'package:yaml/yaml.dart';
 /// This is a semantic version, optionally followed by a space and additional
 /// data about its source.
 final String testVersion = (() {
-  var lockfile;
+  dynamic lockfile;
   try {
     lockfile = loadYaml(new File("pubspec.lock").readAsStringSync());
   } on FormatException catch (_) {
@@ -29,7 +29,7 @@ final String testVersion = (() {
   var source = package["source"];
   if (source is! String) return null;
 
-  switch (source) {
+  switch (source as String) {
     case "hosted":
       var version = package["version"];
       if (version is! String) return null;

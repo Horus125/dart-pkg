@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:async/async.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 import '../stream_channel.dart';
 
@@ -50,12 +49,14 @@ class IsolateChannel<T> extends StreamChannelMixin<T> {
     // The first message across the ReceivePort should be a SendPort pointing to
     // the remote end. If it's not, we'll make the stream emit an error
     // complaining.
-    var subscription;
+    StreamSubscription<dynamic> subscription;
     subscription = receivePort.listen((message) {
       if (message is SendPort) {
         var controller = new StreamChannelController<T>(
             allowForeignErrors: false, sync: true);
-        new SubscriptionStream(subscription).pipe(controller.local.sink);
+        new SubscriptionStream(subscription)
+            .cast<T>()
+            .pipe(controller.local.sink);
         controller.local.stream
             .listen((data) => message.send(data), onDone: receivePort.close);
 
@@ -66,7 +67,7 @@ class IsolateChannel<T> extends StreamChannelMixin<T> {
 
       streamCompleter.setError(
           new StateError('Unexpected Isolate response "$message".'),
-          new Trace.current());
+          StackTrace.current);
       sinkCompleter.setDestinationSink(new NullStreamSink<T>());
       subscription.cancel();
     });
@@ -94,7 +95,7 @@ class IsolateChannel<T> extends StreamChannelMixin<T> {
   factory IsolateChannel(ReceivePort receivePort, SendPort sendPort) {
     var controller =
         new StreamChannelController<T>(allowForeignErrors: false, sync: true);
-    receivePort.pipe(controller.local.sink);
+    receivePort.cast<T>().pipe(controller.local.sink);
     controller.local.stream
         .listen((data) => sendPort.send(data), onDone: receivePort.close);
     return new IsolateChannel._(

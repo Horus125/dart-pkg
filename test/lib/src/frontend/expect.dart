@@ -12,12 +12,6 @@ import '../backend/invoker.dart';
 import '../utils.dart';
 import 'async_matcher.dart';
 
-/// A future that emits `null`.
-///
-/// We cache and re-use this value to avoid adding a new microtask hit for each
-/// call to `expect()`.
-final _emptyFuture = new Future.value();
-
 /// An exception thrown when a test assertion fails.
 class TestFailure {
   final String message;
@@ -52,10 +46,6 @@ typedef String ErrorFormatter(
 /// If [skip] is a string, it should explain why the assertion is skipped; this
 /// reason will be printed when running the test.
 ///
-/// In some cases extra diagnostic info can be produced on failure (for
-/// example, stack traces on mismatched exceptions). To enable these,
-/// [verbose] should be specified as `true`.
-///
 /// Certain matchers, like [completion] and [throwsA], either match or fail
 /// asynchronously. When you use [expect] with these matchers, it ensures that
 /// the test doesn't complete until the matcher has either matched or failed. If
@@ -64,7 +54,8 @@ typedef String ErrorFormatter(
 void expect(actual, matcher,
     {String reason,
     skip,
-    @Deprecated("Will be removed in 0.13.0.") bool verbose: false,
+    @Deprecated("Will be removed in 0.13.0.") bool verbose = false,
+    // ignore: deprecated_member_use
     @Deprecated("Will be removed in 0.13.0.") ErrorFormatter formatter}) {
   _expect(actual, matcher,
       reason: reason, skip: skip, verbose: verbose, formatter: formatter);
@@ -86,11 +77,16 @@ Future expectLater(actual, matcher, {String reason, skip}) =>
 
 /// The implementation of [expect] and [expectLater].
 Future _expect(actual, matcher,
-    {String reason, skip, bool verbose: false, ErrorFormatter formatter}) {
+    {String reason,
+    skip,
+    bool verbose = false,
+    // ignore: deprecated_member_use
+    ErrorFormatter formatter}) {
   formatter ??= (actual, matcher, reason, matchState, verbose) {
     var mismatchDescription = new StringDescription();
     matcher.describeMismatch(actual, mismatchDescription, matchState, verbose);
 
+    // ignore: deprecated_member_use
     return formatFailure(matcher, actual, mismatchDescription.toString(),
         reason: reason);
   };
@@ -118,7 +114,7 @@ Future _expect(actual, matcher,
     }
 
     Invoker.current.skip(message);
-    return _emptyFuture;
+    return new Future.sync(() {});
   }
 
   if (matcher is AsyncMatcher) {
@@ -134,12 +130,15 @@ Future _expect(actual, matcher,
         reason: "matchAsync() may only return a String, a Future, or null.");
 
     if (result is String) {
-      fail(formatFailure(matcher, actual, result, reason: reason));
+      // ignore: deprecated_member_use
+      fail(formatFailure(matcher as Matcher, actual, result, reason: reason));
     } else if (result is Future) {
       Invoker.current.addOutstandingCallback();
       return result.then((realResult) {
         if (realResult == null) return;
-        fail(formatFailure(matcher, actual, realResult, reason: reason));
+        // ignore: deprecated_member_use
+        fail(formatFailure(matcher as Matcher, actual, realResult as String,
+            reason: reason));
       }).whenComplete(() {
         // Always remove this, in case the failure is caught and handled
         // gracefully.
@@ -147,16 +146,17 @@ Future _expect(actual, matcher,
       });
     }
 
-    return _emptyFuture;
+    return new Future.sync(() {});
   }
 
   var matchState = {};
   try {
-    if (matcher.matches(actual, matchState)) return _emptyFuture;
+    if ((matcher as Matcher).matches(actual, matchState))
+      return new Future.sync(() {});
   } catch (e, trace) {
     reason ??= '$e at $trace';
   }
-  fail(formatter(actual, matcher, reason, matchState, verbose));
+  fail(formatter(actual, matcher as Matcher, reason, matchState, verbose));
 }
 
 /// Convenience method for throwing a new [TestFailure] with the provided

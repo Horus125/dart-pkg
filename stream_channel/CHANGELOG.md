@@ -1,3 +1,12 @@
+## 1.6.7+1
+
+* Fix Dart 2 runtime types in `IsolateChannel`.
+
+## 1.6.7
+
+* Update SDK version to 2.0.0-dev.17.0.
+* Add a type argument to `MultiChannel`.
+
 ## 1.6.6
 
 * Fix a Dart 2 issue with inner stream transformation in `GuaranteeChannel`.

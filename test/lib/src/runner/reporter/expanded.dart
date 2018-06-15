@@ -94,13 +94,13 @@ class ExpandedReporter implements Reporter {
   /// the test description. Likewise, if [printPlatform] is `true`, this will
   /// print the platform as part of the test description.
   static ExpandedReporter watch(Engine engine,
-      {bool color: true, bool printPath: true, bool printPlatform: true}) {
+      {bool color = true, bool printPath = true, bool printPlatform = true}) {
     return new ExpandedReporter._(engine,
         color: color, printPath: printPath, printPlatform: printPlatform);
   }
 
   ExpandedReporter._(this._engine,
-      {bool color: true, bool printPath: true, bool printPlatform: true})
+      {bool color = true, bool printPath = true, bool printPlatform = true})
       : _printPath = printPath,
         _printPlatform = printPlatform,
         _color = color,
@@ -200,7 +200,8 @@ class ExpandedReporter implements Reporter {
       return;
     }
 
-    print(indent(error.toString(color: _color)));
+    // TODO - what type is this?
+    print(indent((error as dynamic).toString(color: _color) as String));
 
     // Only print stack traces for load errors that come from the user's code.
     if (error.innerError is! IsolateSpawnException &&

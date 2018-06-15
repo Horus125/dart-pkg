@@ -186,8 +186,8 @@ class VMIsolateRef {
 
   /// Like [transform], but only calls [handleData] for events related to this
   /// isolate.
-  Stream<T> _transform<T>(Stream<Map> stream,
-      void handleData(Map json, StreamSink<T> sink)) {
+  Stream<T> _transform<T>(
+      Stream<Map> stream, void handleData(Map json, Sink<T> sink)) {
     return transform(stream, (json, sink) {
       if (json["isolate"]["id"] != _scope.isolateId) return;
       handleData(json, sink);
@@ -473,7 +473,7 @@ class VMRunnableIsolate extends VMIsolate {
 
   Future<VMRunnableIsolate> loadRunnable() => load();
 
-  Future<VMRunnableIsolate> load() => super.load();
+  Future<VMRunnableIsolate> load() => DelegatingFuture.typed(super.load());
 
   String toString() => "Isolate running $rootLibrary";
 }

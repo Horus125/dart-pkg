@@ -31,7 +31,7 @@ class RemoteException implements Exception {
   /// Other than JSON- and isolate-safety, no guarantees are made about the
   /// serialized format.
   static serialize(error, StackTrace stackTrace) {
-    var message;
+    String message;
     if (error is String) {
       message = error;
     } else {
@@ -45,7 +45,7 @@ class RemoteException implements Exception {
     // It's possible (although unlikely) for a user-defined class to have
     // multiple of these supertypes. That's fine, though, since we only care
     // about core-library-raised IsolateSpawnExceptions anyway.
-    var supertype;
+    String supertype;
     if (error is TestFailure) {
       supertype = 'TestFailure';
     } else if (error is IsolateSpawnException) {
@@ -67,16 +67,16 @@ class RemoteException implements Exception {
   /// error and a [Chain] as its stack trace.
   static AsyncError deserialize(serialized) {
     return new AsyncError(_deserializeException(serialized),
-        new Chain.parse(serialized['stackChain']));
+        new Chain.parse(serialized['stackChain'] as String));
   }
 
   /// Deserializes the exception portion of [serialized].
   static RemoteException _deserializeException(serialized) {
-    var message = serialized['message'];
-    var type = serialized['type'];
-    var toString = serialized['toString'];
+    String message = serialized['message'];
+    String type = serialized['type'];
+    String toString = serialized['toString'];
 
-    switch (serialized['supertype']) {
+    switch (serialized['supertype'] as String) {
       case 'TestFailure':
         return new _RemoteTestFailure(message, type, toString);
       case 'IsolateSpawnException':

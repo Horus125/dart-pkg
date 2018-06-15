@@ -10,7 +10,8 @@ class OutputFileStream {
   OutputFileStream(this.path, {this.byteOrder: LITTLE_ENDIAN})
     : length = 0 {
     _file = new io.File(path);
-    _fp = _file.openSync(mode: io.FileMode.WRITE);
+    _file.createSync(recursive: true);
+    _fp = _file.openSync(mode: io.FileMode.write);
   }
 
   void close() {

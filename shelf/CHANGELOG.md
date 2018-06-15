@@ -1,3 +1,7 @@
+## 0.7.3+1
+
+* Updated SDK version to 2.0.0-dev.55.0.
+
 ## 0.7.3
 
 * Fix some Dart 2 runtime errors.

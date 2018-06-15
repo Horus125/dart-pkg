@@ -90,8 +90,8 @@ class CompilerPool {
         var buffer = new StringBuffer();
 
         await Future.wait([
-          _printOutputStream(process.stdout, buffer),
-          _printOutputStream(process.stderr, buffer),
+          process.stdout.map(utf8.decode).listen(buffer.write).asFuture(),
+          process.stderr.map(utf8.decode).listen(buffer.write).asFuture(),
         ]);
 
         var exitCode = await process.exitCode;
@@ -113,24 +113,16 @@ class CompilerPool {
   /// URIs that are resolvable by the browser.
   void _fixSourceMap(String mapPath) {
     var map = jsonDecode(new File(mapPath).readAsStringSync());
-    var root = map['sourceRoot'];
+    var root = map['sourceRoot'] as String;
 
     map['sources'] = map['sources'].map((source) {
-      var url = Uri.parse(root + source);
+      var url = Uri.parse(root + '$source');
       if (url.scheme != '' && url.scheme != 'file') return source;
       if (url.path.endsWith("/runInBrowser.dart")) return "";
       return p.toUri(mapPath).resolveUri(url).toString();
     }).toList();
 
     new File(mapPath).writeAsStringSync(jsonEncode(map));
-  }
-
-  /// Sanitizes the bytes emitted by [stream], converts them to text, and writes
-  /// them to [buffer].
-  Future _printOutputStream(Stream<List<int>> stream, StringBuffer buffer) {
-    return sanitizeForWindows(stream)
-        .listen((data) => buffer.write(utf8.decode(data)))
-        .asFuture();
   }
 
   /// Closes the compiler pool.

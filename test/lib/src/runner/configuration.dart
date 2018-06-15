@@ -188,7 +188,7 @@ class Configuration {
   ///
   /// The current configuration is set using [asCurrent].
   static Configuration get current =>
-      Zone.current[_currentKey] ?? new Configuration();
+      Zone.current[_currentKey] as Configuration ?? new Configuration();
 
   /// Parses the configuration from [args].
   ///
@@ -202,7 +202,7 @@ class Configuration {
   ///
   /// Throws an [IOException] if [path] does not exist or cannot be read. Throws
   /// a [FormatException] if its contents are invalid.
-  factory Configuration.load(String path, {bool global: false}) =>
+  factory Configuration.load(String path, {bool global = false}) =>
       load(path, global: global);
 
   factory Configuration(
@@ -294,12 +294,13 @@ class Configuration {
     return configuration._resolvePresets();
   }
 
-  static Map<Object, Configuration> _withChosenPresets(
-      Map<Object, Configuration> map, Set<String> chosenPresets) {
+  static Map<String, Configuration> _withChosenPresets(
+      Map<String, Configuration> map, Set<String> chosenPresets) {
     if (map == null || chosenPresets == null) return map;
-    return mapMap(map,
-        value: (_, config) => config.change(
-            chosenPresets: config.chosenPresets.union(chosenPresets)));
+    return map.map((key, config) => new MapEntry(
+        key,
+        config.change(
+            chosenPresets: config.chosenPresets.union(chosenPresets))));
   }
 
   /// Creates new Configuration.
@@ -393,7 +394,7 @@ class Configuration {
 
   /// Returns an unmodifiable copy of [input] or an empty unmodifiable map.
   static Map<K, V> _map<K, V>(Map<K, V> input) {
-    if (input == null || input.isEmpty) return const {};
+    input ??= {};
     return new Map.unmodifiable(input);
   }
 
@@ -576,8 +577,8 @@ class Configuration {
   ///
   /// Any overlapping keys in the maps have their configurations merged in the
   /// returned map.
-  Map<Object, Configuration> _mergeConfigMaps(
-          Map<Object, Configuration> map1, Map<Object, Configuration> map2) =>
+  Map<String, Configuration> _mergeConfigMaps(
+          Map<String, Configuration> map1, Map<String, Configuration> map2) =>
       mergeMaps(map1, map2,
           value: (config1, config2) => config1.merge(config2));
 
@@ -589,7 +590,7 @@ class Configuration {
     var newPresets = new Map<String, Configuration>.from(presets);
     var merged = chosenPresets.fold(
         empty,
-        (merged, preset) =>
+        (Configuration merged, preset) =>
             merged.merge(newPresets.remove(preset) ?? Configuration.empty));
 
     if (merged == empty) return this;

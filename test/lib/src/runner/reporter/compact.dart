@@ -212,7 +212,8 @@ class CompactReporter implements Reporter {
       return;
     }
 
-    print(indent(error.toString(color: _config.color)));
+    // TODO - what type is this?
+    print(indent(error.toString(color: _config.color) as String));
 
     // Only print stack traces for load errors that come from the user's code.
     if (error.innerError is! IOException &&
@@ -268,7 +269,7 @@ class CompactReporter implements Reporter {
   /// color for [message]. If [suffix] is passed, it's added to the end of
   /// [message].
   bool _progressLine(String message,
-      {String color, bool truncate: true, String suffix}) {
+      {String color, bool truncate = true, String suffix}) {
     var elapsed = _stopwatch.elapsed.inSeconds;
 
     // Print nothing if nothing has changed since the last progress line.

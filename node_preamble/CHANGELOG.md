@@ -1,3 +1,12 @@
+## 1.4.2
+
+* Keep `Uri.base` up to date when the current working directory changes.
+* Add .dart_tool to gitignore. 
+
+## 1.4.1
+
+* Make sure to replace all backslashes for cwd on Windows, not just the first.
+
 ## 1.4.0
 
 * Add __dirname and __filename to exposed globals. Adds ability of exposing more

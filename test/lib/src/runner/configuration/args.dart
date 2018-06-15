@@ -32,31 +32,27 @@ final ArgParser _parser = (() {
   // merges properly with the config file.
 
   parser.addSeparator("======== Selecting Tests");
-  parser.addOption("name",
+  parser.addMultiOption("name",
       abbr: 'n',
       help: 'A substring of the name of the test to run.\n'
           'Regular expression syntax is supported.\n'
           'If passed multiple times, tests must match all substrings.',
-      allowMultiple: true,
       splitCommas: false);
-  parser.addOption("plain-name",
+  parser.addMultiOption("plain-name",
       abbr: 'N',
       help: 'A plain-text substring of the name of the test to run.\n'
           'If passed multiple times, tests must match all substrings.',
-      allowMultiple: true,
       splitCommas: false);
-  parser.addOption("tags",
+  parser.addMultiOption("tags",
       abbr: 't',
       help: 'Run only tests with all of the specified tags.\n'
-          'Supports boolean selector syntax.',
-      allowMultiple: true);
-  parser.addOption("tag", hide: true, allowMultiple: true);
-  parser.addOption("exclude-tags",
+          'Supports boolean selector syntax.');
+  parser.addMultiOption("tag", hide: true);
+  parser.addMultiOption("exclude-tags",
       abbr: 'x',
       help: "Don't run tests with any of the specified tags.\n"
-          "Supports boolean selector syntax.",
-      allowMultiple: true);
-  parser.addOption("exclude-tag", hide: true, allowMultiple: true);
+          "Supports boolean selector syntax.");
+  parser.addMultiOption("exclude-tag", hide: true);
   parser.addFlag("run-skipped",
       help: 'Run skipped tests instead of skipping them.');
 
@@ -66,16 +62,13 @@ final ArgParser _parser = (() {
   // The [Runtime] class used to be called [TestPlatform], but it was changed to
   // avoid conflicting with [SuitePlatform]. We decided not to also change the
   // UI to avoid a painful migration.
-  parser.addOption("platform",
+  parser.addMultiOption("platform",
       abbr: 'p',
       help: 'The platform(s) on which to run the tests.\n'
           '[vm (default), '
-          '${allRuntimes.map((runtime) => runtime.identifier).join(", ")}]',
-      allowMultiple: true);
-  parser.addOption("preset",
-      abbr: 'P',
-      help: 'The configuration preset(s) to use.',
-      allowMultiple: true);
+          '${allRuntimes.map((runtime) => runtime.identifier).join(", ")}]');
+  parser.addMultiOption("preset",
+      abbr: 'P', help: 'The configuration preset(s) to use.');
   parser.addOption("concurrency",
       abbr: 'j',
       help: 'The number of concurrent test suites run.',
@@ -131,10 +124,8 @@ final ArgParser _parser = (() {
       help: 'The path to the configuration file.', hide: true);
   parser.addOption("dart2js-path",
       help: 'The path to the dart2js executable.', hide: true);
-  parser.addOption("dart2js-args",
-      help: 'Extra arguments to pass to dart2js.',
-      allowMultiple: true,
-      hide: true);
+  parser.addMultiOption("dart2js-args",
+      help: 'Extra arguments to pass to dart2js.', hide: true);
   parser.addOption("total-shards",
       help: 'The total number of invocations of the test runner being run.',
       hide: true);
@@ -177,19 +168,21 @@ class _Parser {
         .toList()
           ..addAll(_options['plain-name'] as List<String>);
 
-    var includeTagSet = new Set.from(_options['tags'] ?? [])
-      ..addAll(_options['tag'] ?? []);
+    var includeTagSet = new Set.from(_options['tags'] as Iterable ?? [])
+      ..addAll(_options['tag'] as Iterable ?? []);
 
-    var includeTags = includeTagSet.fold(BooleanSelector.all, (selector, tag) {
-      var tagSelector = new BooleanSelector.parse(tag);
+    var includeTags = includeTagSet.fold(BooleanSelector.all,
+        (BooleanSelector selector, tag) {
+      var tagSelector = new BooleanSelector.parse(tag as String);
       return selector.intersection(tagSelector);
     });
 
-    var excludeTagSet = new Set.from(_options['exclude-tags'] ?? [])
-      ..addAll(_options['exclude-tag'] ?? []);
+    var excludeTagSet = new Set.from(_options['exclude-tags'] as Iterable ?? [])
+      ..addAll(_options['exclude-tag'] as Iterable ?? []);
 
-    var excludeTags = excludeTagSet.fold(BooleanSelector.none, (selector, tag) {
-      var tagSelector = new BooleanSelector.parse(tag);
+    var excludeTags = excludeTagSet.fold(BooleanSelector.none,
+        (BooleanSelector selector, tag) {
+      var tagSelector = new BooleanSelector.parse(tag as String);
       return selector.union(tagSelector);
     });
 
@@ -217,7 +210,7 @@ class _Parser {
         color: _ifParsed('color'),
         configurationPath: _ifParsed('configuration'),
         dart2jsPath: _ifParsed('dart2js-path'),
-        dart2jsArgs: _ifParsed('dart2js-args') as List<String>,
+        dart2jsArgs: _ifParsed('dart2js-args'),
         precompiledPath: _ifParsed('precompiled'),
         reporter: _ifParsed('reporter'),
         pubServePort: _parseOption('pub-serve', int.parse),
@@ -226,11 +219,11 @@ class _Parser {
         totalShards: totalShards,
         timeout: _parseOption('timeout', (value) => new Timeout.parse(value)),
         patterns: patterns,
-        runtimes: (_ifParsed('platform') as List<String>)
+        runtimes: _ifParsed<List<String>>('platform')
             ?.map((runtime) => new RuntimeSelection(runtime))
             ?.toList(),
         runSkipped: _ifParsed('run-skipped'),
-        chosenPresets: _ifParsed('preset') as List<String>,
+        chosenPresets: _ifParsed('preset'),
         paths: _options.rest.isEmpty ? null : _options.rest,
         includeTags: includeTags,
         excludeTags: excludeTags,
@@ -242,7 +235,8 @@ class _Parser {
   /// If the user hasn't explicitly chosen a value, we want to pass null values
   /// to [new Configuration] so that it considers those fields unset when
   /// merging with configuration from the config file.
-  _ifParsed(String name) => _options.wasParsed(name) ? _options[name] : null;
+  T _ifParsed<T>(String name) =>
+      _options.wasParsed(name) ? _options[name] as T : null;
 
   /// Runs [parse] on the value of the option [name], and wraps any
   /// [FormatException] it throws with additional information.

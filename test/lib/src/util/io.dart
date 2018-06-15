@@ -17,12 +17,6 @@ import '../backend/runtime.dart';
 import '../backend/suite_platform.dart';
 import '../utils.dart';
 
-/// The ASCII code for a newline character.
-const _newline = 0xA;
-
-/// The ASCII code for a carriage return character.
-const _carriageReturn = 0xD;
-
 /// The default line length for output when there isn't a terminal attached to
 /// stdout.
 const _defaultLineLength = 200;
@@ -84,14 +78,11 @@ final _tempDir = Platform.environment.containsKey("_UNITTEST_TEMP_DIR")
     ? Platform.environment["_UNITTEST_TEMP_DIR"]
     : Directory.systemTemp.path;
 
-// TODO(nweiz): Make this check [stdioType] once that works within "pub run".
-/// Whether "special" strings such as Unicode characters or color escapes are
-/// safe to use.
+/// Whether or not the current terminal supports ansi escape codes.
 ///
-/// On Windows or when not printing to a terminal, only printable ASCII
-/// characters should be used.
+/// Otherwise only printable ASCII characters should be used.
 bool get canUseSpecialChars =>
-    Platform.operatingSystem != 'windows' && !inTestTests;
+    (!Platform.isWindows || stdout.supportsAnsiEscapes) && !inTestTests;
 
 /// Creates a temporary directory and returns its path.
 String createTempDir() => new Directory(_tempDir)
@@ -111,34 +102,6 @@ Future withTempDir(Future fn(String path)) {
     var tempDir = createTempDir();
     return new Future.sync(() => fn(tempDir))
         .whenComplete(() => new Directory(tempDir).deleteSync(recursive: true));
-  });
-}
-
-/// Return a transformation of [input] with all null bytes removed.
-///
-/// This works around the combination of issue 23295 and 22667 by removing null
-/// bytes. This workaround can be removed when either of those are fixed in the
-/// oldest supported SDK.
-///
-/// It also somewhat works around issue 23303 by removing any carriage returns
-/// that are followed by newlines, to ensure that carriage returns aren't
-/// doubled up in the output. This can be removed when the issue is fixed in the
-/// oldest supported SDk.
-Stream<List<int>> sanitizeForWindows(Stream<List<int>> input) {
-  if (!Platform.isWindows) return input;
-
-  return input.map((list) {
-    var previous;
-    return list.reversed
-        .where((byte) {
-          if (byte == 0) return false;
-          if (byte == _carriageReturn && previous == _newline) return false;
-          previous = byte;
-          return true;
-        })
-        .toList()
-        .reversed
-        .toList();
   });
 }
 
@@ -180,7 +143,7 @@ String wordWrap(String text) {
 ///
 /// If [print] is `true`, this prints the message using [print] to associate it
 /// with the current test. Otherwise, it prints it using [stderr].
-void warn(String message, {bool color, bool print: false}) {
+void warn(String message, {bool color, bool print = false}) {
   if (color == null) color = canUseSpecialChars;
   var header = color ? "\u001b[33mWarning:\u001b[0m" : "Warning:";
   (print ? core.print : stderr.writeln)(wordWrap("$header $message\n"));
@@ -213,20 +176,22 @@ var _maySupportIPv6 = true;
 /// any time after this call has returned. If at all possible, callers should
 /// use [getUnusedPort] instead.
 Future<int> getUnsafeUnusedPort() async {
-  var socket;
+  int port;
   if (_maySupportIPv6) {
     try {
-      socket = await ServerSocket.bind(InternetAddress.LOOPBACK_IP_V6, 0,
+      final socket = await ServerSocket.bind(InternetAddress.loopbackIPv6, 0,
           v6Only: true);
+      port = socket.port;
+      await socket.close();
     } on SocketException {
       _maySupportIPv6 = false;
     }
   }
   if (!_maySupportIPv6) {
-    socket = await RawServerSocket.bind(InternetAddress.LOOPBACK_IP_V4, 0);
+    final socket = await RawServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+    port = socket.port;
+    await socket.close();
   }
-  var port = socket.port;
-  await socket.close();
   return port;
 }
 
@@ -242,7 +207,7 @@ Future<Uri> getRemoteDebuggerUrl(Uri base) async {
     var response = await request.close();
     var jsonObject =
         await json.fuse(utf8).decoder.bind(response).single as List;
-    return base.resolve(jsonObject.first["devtoolsFrontendUrl"]);
+    return base.resolve(jsonObject.first["devtoolsFrontendUrl"] as String);
   } catch (_) {
     // If we fail to talk to the remote debugger protocol, give up and return
     // the raw URL rather than crashing.

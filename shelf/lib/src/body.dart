@@ -5,9 +5,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:async/async.dart';
-import 'package:collection/collection.dart';
-
 /// The body of a request or response.
 ///
 /// This tracks whether the body has been read. It's separate from [Message]
@@ -44,10 +41,10 @@ class Body {
       stream = new Stream.fromIterable([]);
     } else if (body is String) {
       if (encoding == null) {
-        var encoded = UTF8.encode(body);
+        var encoded = utf8.encode(body);
         // If the text is plain ASCII, don't modify the encoding. This means
         // that an encoding of "text/plain" will stay put.
-        if (!_isPlainAscii(encoded, body.length)) encoding = UTF8;
+        if (!_isPlainAscii(encoded, body.length)) encoding = utf8;
         contentLength = encoded.length;
         stream = new Stream.fromIterable([encoded]);
       } else {
@@ -57,9 +54,9 @@ class Body {
       }
     } else if (body is List) {
       contentLength = body.length;
-      stream = new Stream.fromIterable([DelegatingList.typed(body)]);
+      stream = new Stream.fromIterable([body.cast()]);
     } else if (body is Stream) {
-      stream = DelegatingStream.typed(body);
+      stream = body.cast();
     } else {
       throw new ArgumentError('Response body "$body" must be a String or a '
           'Stream.');

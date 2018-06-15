@@ -5,6 +5,7 @@
 // TODO(nweiz): This is under lib so that it can be used by the unittest dummy
 // package. Once that package is no longer being updated, move this back into
 // bin.
+import 'dart:async';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -28,9 +29,9 @@ import 'utils.dart';
 /// Otherwise, they'll be handled by Dart's default signal handler, which
 /// terminates the program immediately.
 final _signals = Platform.isWindows
-    ? ProcessSignal.SIGINT.watch()
+    ? ProcessSignal.sigint.watch()
     : StreamGroup
-        .merge([ProcessSignal.SIGTERM.watch(), ProcessSignal.SIGINT.watch()]);
+        .merge([ProcessSignal.sigterm.watch(), ProcessSignal.sigint.watch()]);
 
 /// Returns whether the current package has a pubspec which uses the
 /// `test/pub_serve` transformer.
@@ -38,7 +39,7 @@ bool get _usesTransformer {
   if (!new File('pubspec.yaml').existsSync()) return false;
   var contents = new File('pubspec.yaml').readAsStringSync();
 
-  var yaml;
+  dynamic yaml;
   try {
     yaml = loadYaml(contents);
   } on FormatException {
@@ -51,7 +52,7 @@ bool get _usesTransformer {
   if (transformers == null) return false;
   if (transformers is! List) return false;
 
-  return transformers.any((transformer) {
+  return (transformers as List).any((transformer) {
     if (transformer is String) return transformer == 'test/pub_serve';
     if (transformer is! Map) return false;
     if (transformer.keys.length != 1) return false;
@@ -155,7 +156,7 @@ transformers:
   }
 
   Runner runner;
-  var signalSubscription;
+  StreamSubscription signalSubscription;
   close() async {
     if (signalSubscription == null) return;
     signalSubscription.cancel();

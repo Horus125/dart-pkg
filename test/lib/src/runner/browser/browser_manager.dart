@@ -99,7 +99,7 @@ class BrowserManager {
   /// connection fails to be established.
   static Future<BrowserManager> start(Runtime runtime, Uri url,
       Future<WebSocketChannel> future, ExecutableSettings settings,
-      {bool debug: false}) {
+      {bool debug = false}) {
     var browser = _newBrowser(url, runtime, settings, debug: debug);
 
     var completer = new Completer<BrowserManager>();
@@ -109,7 +109,7 @@ class BrowserManager {
     browser.onExit.then((_) {
       throw new ApplicationException(
           "${runtime.name} exited before connecting.");
-    }).catchError((error, stackTrace) {
+    }).catchError((error, StackTrace stackTrace) {
       if (completer.isCompleted) return;
       completer.completeError(error, stackTrace);
     });
@@ -117,7 +117,7 @@ class BrowserManager {
     future.then((webSocket) {
       if (completer.isCompleted) return;
       completer.complete(new BrowserManager._(browser, runtime, webSocket));
-    }).catchError((error, stackTrace) {
+    }).catchError((error, StackTrace stackTrace) {
       browser.close();
       if (completer.isCompleted) return;
       completer.completeError(error, stackTrace);
@@ -135,7 +135,7 @@ class BrowserManager {
   /// If [debug] is true, starts the browser in debug mode.
   static Browser _newBrowser(
       Uri url, Runtime browser, ExecutableSettings settings,
-      {bool debug: false}) {
+      {bool debug = false}) {
     switch (browser.root) {
       case Runtime.chrome:
         return new Chrome(url, settings: settings, debug: debug);
@@ -171,7 +171,7 @@ class BrowserManager {
     // Whenever we get a message, no matter which child channel it's for, we the
     // know browser is still running code which means the user isn't debugging.
     _channel = new MultiChannel(
-        webSocket.transform(jsonDocument).changeStream((stream) {
+        webSocket.cast<String>().transform(jsonDocument).changeStream((stream) {
       return stream.map((message) {
         if (!_closed) _timer.reset();
         for (var controller in _controllers) {
@@ -183,7 +183,8 @@ class BrowserManager {
     }));
 
     _environment = _loadBrowserEnvironment();
-    _channel.stream.listen((message) => _onMessage(message), onDone: close);
+    _channel.stream
+        .listen((message) => _onMessage(message as Map), onDone: close);
   }
 
   /// Loads [_BrowserEnvironment].
@@ -210,7 +211,7 @@ class BrowserManager {
     })));
 
     var suiteID = _suiteID++;
-    var controller;
+    RunnerSuiteController controller;
     closeIframe() {
       if (_closed) return;
       _controllers.remove(controller);
@@ -219,15 +220,15 @@ class BrowserManager {
 
     // The virtual channel will be closed when the suite is closed, in which
     // case we should unload the iframe.
-    var suiteChannel = _channel.virtualChannel();
-    var suiteChannelID = suiteChannel.id;
-    suiteChannel = suiteChannel
+    var virtualChannel = _channel.virtualChannel();
+    var suiteChannelID = virtualChannel.id;
+    var suiteChannel = virtualChannel
         .transformStream(new StreamTransformer.fromHandlers(handleDone: (sink) {
       closeIframe();
       sink.close();
     }));
 
-    return await _pool.withResource<Future<RunnerSuite>>(() async {
+    return await _pool.withResource<RunnerSuite>(() async {
       _channel.sink.add({
         "command": "loadSuite",
         "url": url.toString(),
@@ -270,7 +271,7 @@ class BrowserManager {
 
   /// The callback for handling messages received from the host page.
   void _onMessage(Map message) {
-    switch (message["command"]) {
+    switch (message["command"] as String) {
       case "ping":
         break;
 

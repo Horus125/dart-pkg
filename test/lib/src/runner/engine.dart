@@ -62,7 +62,7 @@ class Engine {
   /// This is `null` if close hasn't been called and the tests are still
   /// running, `true` if close was called before the tests finished running, and
   /// `false` if the tests finished running before close was called.
-  var _closedBeforeDone;
+  bool _closedBeforeDone;
 
   /// A pool that limits the number of test suites running concurrently.
   final Pool _runPool;
@@ -252,10 +252,10 @@ class Engine {
       _addedSuites.add(suite);
       _onSuiteAddedController.add(suite);
 
-      _group.add(new Future.sync(() async {
+      _group.add(() async {
         var loadResource = await _loadPool.request();
 
-        var controller;
+        LiveSuiteController controller;
         if (suite is LoadSuite) {
           await _onUnpaused;
           controller = await _addLoadSuite(suite);
@@ -275,7 +275,7 @@ class Engine {
           controller.noMoreLiveTests();
           loadResource.allowRelease(() => controller.close());
         });
-      }));
+      }());
     }, onDone: () {
       _subscriptions.remove(subscription);
       _onSuiteAddedController.close();
@@ -314,7 +314,7 @@ class Engine {
           if (entry is Group) {
             await _runGroup(suiteController, entry, parents);
           } else if (!suiteConfig.runSkipped && entry.metadata.skip) {
-            await _runSkippedTest(suiteController, entry, parents);
+            await _runSkippedTest(suiteController, entry as Test, parents);
           } else {
             var test = entry as Test;
             await _runLiveTest(suiteController,
@@ -341,7 +341,7 @@ class Engine {
   /// If [countSuccess] is `true` (the default), the test is put into [passed]
   /// if it succeeds. Otherwise, it's removed from [liveTests] entirely.
   Future _runLiveTest(LiveSuiteController suiteController, LiveTest liveTest,
-      {bool countSuccess: true}) async {
+      {bool countSuccess = true}) async {
     await _onUnpaused;
     _active.add(liveTest);
 
@@ -390,7 +390,7 @@ class Engine {
     var skipped =
         new LocalTest(test.name, test.metadata, () {}, trace: test.trace);
 
-    var controller;
+    LiveTestController controller;
     controller =
         new LiveTestController(suiteController.liveSuite.suite, skipped, () {
       controller.setState(const State(Status.running, Result.success));
@@ -527,6 +527,8 @@ class Engine {
   /// Closing [suiteSink] indicates that no more input will be provided, closing
   /// the engine indicates that no more output should be emitted.
   Future close() async {
+    // TODO(grouma) - Remove this unecessary await.
+    await new Future(() {});
     _closed = true;
     if (_closedBeforeDone != null) _closedBeforeDone = true;
     _onSuiteAddedController.close();

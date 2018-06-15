@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 
 import 'src/backend/declarer.dart';
@@ -26,6 +27,7 @@ export 'src/frontend/future_matchers.dart';
 export 'src/frontend/on_platform.dart';
 export 'src/frontend/never_called.dart';
 export 'src/frontend/prints_matcher.dart';
+export 'src/frontend/retry.dart';
 export 'src/frontend/skip.dart';
 export 'src/frontend/spawn_hybrid.dart';
 export 'src/frontend/stream_matcher.dart';
@@ -130,6 +132,7 @@ Declarer get _declarer {
 ///
 /// If multiple platforms match, the annotations apply in order as through
 /// they were in nested groups.
+@isTest
 void test(description, body(),
     {String testOn,
     Timeout timeout,
@@ -199,6 +202,7 @@ void test(description, body(),
 ///
 /// If multiple platforms match, the annotations apply in order as through
 /// they were in nested groups.
+@isTestGroup
 void group(description, body(),
     {String testOn,
     Timeout timeout,

@@ -17,11 +17,11 @@ final _isolateFileRegExp =
 class LoadException implements Exception {
   final String path;
 
-  final innerError;
+  final Object innerError;
 
   LoadException(this.path, this.innerError);
 
-  String toString({bool color: false}) {
+  String toString({bool color = false}) {
     var buffer = new StringBuffer();
     if (color) buffer.write('\u001b[31m'); // red
     buffer.write('Failed to load "$path":');
@@ -54,8 +54,9 @@ class LoadException implements Exception {
       innerString = innerString.split("Stack Trace:\n").first.trim();
     }
     if (innerError is SourceSpanException) {
-      innerString =
-          innerError.toString(color: color).replaceFirst(" of $path", "");
+      innerString = (innerError as SourceSpanException)
+          .toString(color: color)
+          .replaceFirst(" of $path", "");
     }
 
     buffer.write(innerString.contains("\n") ? "\n" : " ");
