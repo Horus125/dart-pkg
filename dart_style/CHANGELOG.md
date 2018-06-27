@@ -1,3 +1,17 @@
+# 1.1.1
+
+* Format expressions in string interpolations (#226).
+* Apply fixes inside string interpolations (#707).
+
+# 1.1.0
+
+* Add support for "style fixes", opt-in non-whitespace changes.
+* Add fix to convert `:` to `=` as the named parameter default value separator.
+* Add fix to remove `new` keywords.
+* Add fix to remove unneeded `const` keywords.
+* Uniformly format constructor invocations and other static method calls.
+* Don't crash when showing parse errors in Dart 2 mode (#697).
+
 # 1.0.14
 
 * Support metadata on enum cases (#688).

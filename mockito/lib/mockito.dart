@@ -20,19 +20,14 @@ export 'src/mock.dart'
         // -- setting behaviour
         when,
         any,
+        anyNamed,
         argThat,
         captureAny,
+        captureAnyNamed,
         captureThat,
-        typed,
         Answering,
         Expectation,
         PostExpectation,
-
-        // -- Mockito 3.0 compatibility
-        anyNamed,
-        captureAnyNamed,
-        typedArgThat,
-        typedCaptureThat,
 
         // -- verification
         verify,
@@ -42,6 +37,11 @@ export 'src/mock.dart'
         verifyZeroInteractions,
         VerificationResult,
         Verification,
+
+        // -- deprecated
+        typed,
+        typedArgThat,
+        typedCaptureThat,
 
         // -- misc
         throwOnMissingStub,

@@ -19,11 +19,72 @@ import 'rule/metadata.dart';
 import 'rule/rule.dart';
 import 'rule/type_argument.dart';
 import 'source_code.dart';
+import 'style_fix.dart';
 import 'whitespace.dart';
+
+final _capitalPattern = new RegExp(r"^_?[A-Z].*[a-z]");
 
 /// Visits every token of the AST and passes all of the relevant bits to a
 /// [ChunkBuilder].
 class SourceVisitor extends ThrowingAstVisitor {
+  /// Returns `true` if [node] is a method invocation that looks like it might
+  /// be a static method or constructor call without a `new` keyword.
+  ///
+  /// With optional `new`, we can no longer reliably identify constructor calls
+  /// statically, but we still don't want to mix named constructor calls into
+  /// a call chain like:
+  ///
+  ///     Iterable
+  ///         .generate(...)
+  ///         .toList();
+  ///
+  /// And instead prefer:
+  ///
+  ///     Iterable.generate(...)
+  ///         .toList();
+  ///
+  /// So we try to identify these calls syntactically. The heuristic we use is
+  /// that a target that's a capitalized name (possibly prefixed by "_") is
+  /// assumed to be a class.
+  ///
+  /// This has the effect of also keeping static method calls with the class,
+  /// but that tends to look pretty good too, and is certainly better than
+  /// splitting up named constructors.
+  static bool looksLikeStaticCall(Expression node) {
+    if (node is! MethodInvocation) return false;
+    var invocation = node as MethodInvocation;
+    if (invocation.target == null) return false;
+
+    // A prefixed unnamed constructor call:
+    //
+    //     prefix.Foo();
+    if (invocation.target is SimpleIdentifier &&
+        _looksLikeClassName(invocation.methodName.name)) {
+      return true;
+    }
+
+    // A prefixed or unprefixed named constructor call:
+    //
+    //     Foo.named();
+    //     prefix.Foo.named();
+    var target = invocation.target;
+    if (target is PrefixedIdentifier) {
+      target = (target as PrefixedIdentifier).identifier;
+    }
+
+    return target is SimpleIdentifier && _looksLikeClassName(target.name);
+  }
+
+  static bool _looksLikeClassName(String name) {
+    // Handle the weird lowercase corelib names.
+    if (name == "bool") return true;
+    if (name == "double") return true;
+    if (name == "int") return true;
+    if (name == "num") return true;
+
+    return _capitalPattern.hasMatch(name);
+  }
+
   /// The builder for the block that is currently being visited.
   ChunkBuilder builder;
 
@@ -47,6 +108,9 @@ class SourceVisitor extends ThrowingAstVisitor {
   ///
   /// This is calculated and cached by [_findSelectionEnd].
   int _selectionEnd;
+
+  /// How many levels deep inside a constant context the visitor currently is.
+  int _constNesting = 0;
 
   /// A stack that tracks forcing nested collections to split.
   ///
@@ -100,6 +164,8 @@ class SourceVisitor extends ThrowingAstVisitor {
 
     // Output trailing comments.
     writePrecedingCommentsAndNewlines(node.endToken.next);
+
+    assert(_constNesting == 0, "Should have exited all const contexts.");
 
     // Finish writing and return the complete result.
     return builder.end();
@@ -831,9 +897,16 @@ class SourceVisitor extends ThrowingAstVisitor {
       builder.startSpan();
       builder.nestExpression();
 
-      // The '=' separator is preceded by a space, ":" is not.
-      if (node.separator.type == TokenType.EQ) space();
-      token(node.separator);
+      if (_formatter.fixes.contains(StyleFix.namedDefaultSeparator)) {
+        // Change the separator to "=".
+        space();
+        writePrecedingCommentsAndNewlines(node.separator);
+        _writeText("=", node.separator.offset);
+      } else {
+        // The '=' separator is preceded by a space, ":" is not.
+        if (node.separator.type == TokenType.EQ) space();
+        token(node.separator);
+      }
 
       soloSplit(_assignmentCost(node.defaultValue));
       visit(node.defaultValue);
@@ -1222,6 +1295,10 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitFunctionExpression(FunctionExpression node) {
+    // Inside a function body is no longer in the surrounding const context.
+    var oldConstNesting = _constNesting;
+    _constNesting = 0;
+
     // TODO(rnystrom): This is working but not tested. As of 2016/11/29, the
     // latest version of analyzer on pub does not parse generic lambdas. When
     // a version of it that does is published, upgrade dart_style to use it and
@@ -1236,6 +1313,8 @@ class SourceVisitor extends ThrowingAstVisitor {
     //       var generic = <T, S>() {};
     //     }
     _visitBody(node.typeParameters, node.parameters, node.body);
+
+    _constNesting = oldConstNesting;
   }
 
   visitFunctionExpressionInvocation(FunctionExpressionInvocation node) {
@@ -1435,7 +1514,27 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitInstanceCreationExpression(InstanceCreationExpression node) {
     builder.startSpan();
-    token(node.keyword, after: space);
+
+    var includeKeyword = true;
+
+    if (node.keyword != null) {
+      if (node.keyword.keyword == Keyword.NEW &&
+          _formatter.fixes.contains(StyleFix.optionalNew)) {
+        includeKeyword = false;
+      } else if (node.keyword.keyword == Keyword.CONST &&
+          _formatter.fixes.contains(StyleFix.optionalConst) &&
+          _constNesting > 0) {
+        includeKeyword = false;
+      }
+    }
+
+    if (includeKeyword) {
+      token(node.keyword, after: space);
+    } else {
+      // Don't lose comments before the discarded keyword, if any.
+      writePrecedingCommentsAndNewlines(node.keyword);
+    }
+
     builder.startSpan(Cost.constructorName);
 
     // Start the expression nesting for the argument list here, in case this
@@ -1444,9 +1543,13 @@ class SourceVisitor extends ThrowingAstVisitor {
     builder.nestExpression();
     visit(node.constructorName);
 
+    _startPossibleConstContext(node.keyword);
+
     builder.endSpan();
     visitArgumentList(node.argumentList, nestExpression: false);
     builder.endSpan();
+
+    _endPossibleConstContext(node.keyword);
 
     builder.unnest();
   }
@@ -1457,12 +1560,14 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitInterpolationExpression(InterpolationExpression node) {
     token(node.leftBracket);
+    builder.startSpan();
     visit(node.expression);
+    builder.endSpan();
     token(node.rightBracket);
   }
 
   visitInterpolationString(InterpolationString node) {
-    token(node.contents);
+    _writeStringLiteral(node.contents);
   }
 
   visitIsExpression(IsExpression node) {
@@ -1531,15 +1636,33 @@ class SourceVisitor extends ThrowingAstVisitor {
 
   visitMethodInvocation(MethodInvocation node) {
     // If there's no target, this is a "bare" function call like "foo(1, 2)",
-    // or a section in a cascade. Handle this case specially.
-    if (node.target == null) {
+    // or a section in a cascade.
+    //
+    // If it looks like a constructor or static call, we want to keep the
+    // target and method together instead of including the method in the
+    // subsequent method chain. When this happens, it's important that this
+    // code here has the same rules as in [visitInstanceCreationExpression].
+    //
+    // That ensures that the way some code is formatted is not affected by the
+    // presence or absence of `new`/`const`. In particular, it means that if
+    // they run `dartfmt --fix`, and then run `dartfmt` *again*, the second run
+    // will not produce any additional changes.
+    if (node.target == null || looksLikeStaticCall(node)) {
       // Try to keep the entire method invocation one line.
-      builder.startSpan();
       builder.nestExpression();
+      builder.startSpan();
 
-      // This will be non-null for cascade sections.
+      if (node.target != null) {
+        builder.startSpan(Cost.constructorName);
+        visit(node.target);
+        soloZeroSplit();
+      }
+
+      // If target is null, this will be `..` for a cascade.
       token(node.operator);
       visit(node.methodName);
+
+      if (node.target != null) builder.endSpan();
 
       // TODO(rnystrom): Currently, there are no constraints between a generic
       // method's type arguments and arguments. That can lead to some funny
@@ -1552,11 +1675,13 @@ class SourceVisitor extends ThrowingAstVisitor {
       // The indentation is fine, but splitting in the middle of each argument
       // list looks kind of strange. If this ends up happening in real world
       // code, consider putting a constraint between them.
+      builder.nestExpression();
       visit(node.typeArguments);
       visitArgumentList(node.argumentList, nestExpression: false);
-
       builder.unnest();
+
       builder.endSpan();
+      builder.unnest();
       return;
     }
 
@@ -1711,24 +1836,13 @@ class SourceVisitor extends ThrowingAstVisitor {
   }
 
   visitSimpleStringLiteral(SimpleStringLiteral node) {
-    // Since we output the string literal manually, ensure any preceding
-    // comments are written first.
-    writePrecedingCommentsAndNewlines(node.literal);
-
-    _writeStringLiteral(node.literal.lexeme, node.offset);
+    _writeStringLiteral(node.literal);
   }
 
   visitStringInterpolation(StringInterpolation node) {
-    // Since we output the interpolated text manually, ensure we include any
-    // preceding stuff first.
-    writePrecedingCommentsAndNewlines(node.beginToken);
-
-    // Right now, the formatter does not try to do any reformatting of the
-    // contents of interpolated strings. Instead, it treats the entire thing as
-    // a single (possibly multi-line) chunk of text.
-    _writeStringLiteral(
-        _source.text.substring(node.beginToken.offset, node.endToken.end),
-        node.offset);
+    for (var element in node.elements) {
+      visit(element);
+    }
   }
 
   visitSuperConstructorInvocation(SuperConstructorInvocation node) {
@@ -1894,6 +2008,8 @@ class SourceVisitor extends ThrowingAstVisitor {
 
     builder.endSpan();
 
+    _startPossibleConstContext(node.keyword);
+
     // Use a single rule for all of the variables. If there are multiple
     // declarations, we will try to keep them all on one line. If that isn't
     // possible, we split after *every* declaration so that each is on its own
@@ -1901,6 +2017,8 @@ class SourceVisitor extends ThrowingAstVisitor {
     builder.startRule();
     visitCommaSeparatedNodes(node.variables, between: split);
     builder.endRule();
+
+    _endPossibleConstContext(node.keyword);
   }
 
   visitVariableDeclarationStatement(VariableDeclarationStatement node) {
@@ -1951,7 +2069,12 @@ class SourceVisitor extends ThrowingAstVisitor {
   ///
   /// These always force the annotations to be on the previous line.
   void visitMetadata(NodeList<Annotation> metadata) {
+    // Metadata annotations are always const contexts.
+    _constNesting++;
+
     visitNodes(metadata, between: newline, after: newline);
+
+    _constNesting--;
   }
 
   /// Visit metadata annotations for a directive.
@@ -2250,7 +2373,16 @@ class SourceVisitor extends ThrowingAstVisitor {
       Iterable<AstNode> elements, Token rightBracket,
       [int cost]) {
     if (node != null) {
-      modifier(node.constKeyword);
+      // See if `const` should be removed.
+      if (node.constKeyword != null &&
+          _constNesting > 0 &&
+          _formatter.fixes.contains(StyleFix.optionalConst)) {
+        // Don't lose comments before the discarded keyword, if any.
+        writePrecedingCommentsAndNewlines(node.constKeyword);
+      } else {
+        modifier(node.constKeyword);
+      }
+
       visit(node.typeArguments);
     }
 
@@ -2270,6 +2402,7 @@ class SourceVisitor extends ThrowingAstVisitor {
     _collectionSplits.add(false);
 
     _startLiteralBody(leftBracket);
+    if (node != null) _startPossibleConstContext(node.constKeyword);
 
     // If a collection contains a line comment, we assume it's a big complex
     // blob of data with some documented structure. In that case, the user
@@ -2335,6 +2468,7 @@ class SourceVisitor extends ThrowingAstVisitor {
       force = true;
     }
 
+    if (node != null) _endPossibleConstContext(node.constKeyword);
     _endLiteralBody(rightBracket, ignoredRule: rule, forceSplit: force);
   }
 
@@ -2548,6 +2682,20 @@ class SourceVisitor extends ThrowingAstVisitor {
     builder.unnest();
   }
 
+  /// If [keyword] is `const`, begins a new constant context.
+  bool _startPossibleConstContext(Token keyword) {
+    if (keyword != null && keyword.keyword == Keyword.CONST) {
+      _constNesting++;
+    }
+  }
+
+  /// If [keyword] is `const`, ends the current outermost constant context.
+  bool _endPossibleConstContext(Token keyword) {
+    if (keyword != null && keyword.keyword == Keyword.CONST) {
+      _constNesting--;
+    }
+  }
+
   /// Writes the simple statement or semicolon-delimited top-level declaration.
   ///
   /// Handles nesting if a line break occurs in the statement and writes the
@@ -2605,9 +2753,14 @@ class SourceVisitor extends ThrowingAstVisitor {
   ///
   /// Splits multiline strings into separate chunks so that the line splitter
   /// can handle them correctly.
-  void _writeStringLiteral(String string, int offset) {
+  void _writeStringLiteral(Token string) {
+    // Since we output the string literal manually, ensure any preceding
+    // comments are written first.
+    writePrecedingCommentsAndNewlines(string);
+
     // Split each line of a multiline string into separate chunks.
-    var lines = string.split(_formatter.lineEnding);
+    var lines = string.lexeme.split(_formatter.lineEnding);
+    var offset = string.offset;
 
     _writeText(lines.first, offset);
     offset += lines.first.length;

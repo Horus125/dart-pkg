@@ -1,7 +1,3 @@
-## 0.12.2+1
-
-- Updated SDK version to 2.0.0-dev.17.0
-
 ## 0.12.2
 
 * Fixed `unorderedMatches` in cases where the matchers may match more than one
