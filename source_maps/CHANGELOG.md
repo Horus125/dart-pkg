@@ -1,3 +1,7 @@
+## 0.10.6
+
+* Require version 2.0.0 of the Dart SDK.
+
 ## 0.10.5
 
 * Add a `SingleMapping.files` field which provides access to `SourceFile`s
