@@ -1,3 +1,8 @@
+## 0.0.23
+* Fixed strong-mode cast errors.
+* Added `increment` to `ListPointer`, which is a type-safe way
+to increase the pointer.
+
 ## 0.0.22
 
 - Added `strong_mode` option

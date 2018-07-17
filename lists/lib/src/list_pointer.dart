@@ -57,10 +57,14 @@ class ListPointer<T> extends Object with ListMixin {
 
   ListPointer<T> operator +(other) {
     if (other is int) {
-      return new ListPointer<T>(base, offset + other);
+      return new ListPointer<T>(base, offset + (other as int));
     }
 
     throw new ArgumentError.value(other, "other");
+  }
+
+  ListPointer<T> increment(int n) {
+    return new ListPointer<T>(base, offset + n);
   }
 
   ListPointer<T> operator -(other) {
@@ -76,7 +80,6 @@ class ListPointer<T> extends Object with ListMixin {
       if (identical(base, other.base)) {
         return offset < other.offset;
       }
-
     } else if (other is List) {
       if (identical(base, other)) {
         return offset < 0;
@@ -91,7 +94,6 @@ class ListPointer<T> extends Object with ListMixin {
       if (identical(base, other.base)) {
         return offset <= other.offset;
       }
-
     } else if (other is List) {
       if (identical(base, other)) {
         return offset <= 0;
@@ -108,7 +110,6 @@ class ListPointer<T> extends Object with ListMixin {
           return true;
         }
       }
-
     } else if (other is List) {
       if (identical(base, other)) {
         if (offset == 0) {
@@ -125,7 +126,6 @@ class ListPointer<T> extends Object with ListMixin {
       if (identical(base, other.base)) {
         return offset > other.offset;
       }
-
     } else if (other is List) {
       if (identical(base, other)) {
         return offset > 0;
@@ -140,7 +140,6 @@ class ListPointer<T> extends Object with ListMixin {
       if (identical(base, other.base)) {
         return offset >= other.offset;
       }
-
     } else if (other is List) {
       if (identical(base, other)) {
         return offset >= 0;
@@ -158,7 +157,7 @@ class ListPointer<T> extends Object with ListMixin {
     return base[_offset + index];
   }
 
-  void operator []=(int index, T value) {
-    base[_offset + index] = value;
+  void operator []=(int index, value) {
+    base[_offset + index] = value as T;
   }
 }

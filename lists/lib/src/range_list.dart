@@ -44,23 +44,25 @@ class RangeList extends Object with ListMixin<int> {
     return false;
   }
 
-  RangeList operator +(RangeList other) {
-    if (other == null) {
+  RangeList operator +(List<int> other) {
+    if (other == null || other is! RangeList) {
       throw new ArgumentError("other: $other");
     }
 
     int start;
     int end;
-    if (this.start < other.start) {
+
+    var otherRange = other as RangeList;
+    if (this.start < otherRange.start) {
       start = this.start;
     } else {
-      start = other.start;
+      start = otherRange.start;
     }
 
-    if (this.end > other.end) {
+    if (this.end > otherRange.end) {
       end = this.end;
     } else {
-      end = other.end;
+      end = otherRange.end;
     }
 
     return new RangeList(start, end);
@@ -83,9 +85,11 @@ class RangeList extends Object with ListMixin<int> {
   }
 
   /// Returns true if range list contains the [value]; otherwise false.
-  // ignore: strong_mode_invalid_method_override
-  bool contains(int value) {
-    if (value == null || value > end || value < start) {
+  bool contains(value) {
+    if (value == null ||
+        value is! int ||
+        (value as int) > end ||
+        (value as int) < start) {
       return false;
     }
 
@@ -98,7 +102,8 @@ class RangeList extends Object with ListMixin<int> {
       throw new ArgumentError("other: $other");
     }
 
-    return (other.start >= start && other.start <= end) && (other.end >= start && other.end <= end);
+    return (other.start >= start && other.start <= end) &&
+        (other.end >= start && other.end <= end);
   }
 
   /// Returns true if this range list intersect [other]; otherwise false.
@@ -107,7 +112,8 @@ class RangeList extends Object with ListMixin<int> {
       throw new ArgumentError("other: $other");
     }
 
-    return (start <= other.start && end >= other.start) || (other.start <= start && other.end >= start);
+    return (start <= other.start && end >= other.start) ||
+        (other.start <= start && other.end >= start);
   }
 
   /// Returns the intersection of this range list and the [other] range list;

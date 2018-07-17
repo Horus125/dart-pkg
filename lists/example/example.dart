@@ -88,8 +88,8 @@ void sparseBoolList() {
 
   sw.stop();
   elapsed = (sw.elapsedMilliseconds / 1000);
-  print("SparseBoolList: ${_format(acessed)} elements accessed in $elapsed sec."
-      );
+  print(
+      "SparseBoolList: ${_format(acessed)} elements accessed in $elapsed sec.");
 }
 
 void sparseList() {
