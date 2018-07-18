@@ -2,11 +2,10 @@ language: dart
 
 dart:
   - dev
-  - stable
 
 dart_task:
   - test
-  - dartanalyzer
+  - dartanalyzer: --fatal-warnings --fatal-lints .
   - dartfmt
 
 # Only building master means that we don't run two builds for each pull request.

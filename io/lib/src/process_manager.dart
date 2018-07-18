@@ -14,7 +14,7 @@ import 'shared_stdin.dart';
 /// Useful for taking different implementations of this base functionality.
 typedef Future<io.Process> StartProcess(
   String executable,
-  Iterable<String> arguments, {
+  List<String> arguments, {
   String workingDirectory,
   Map<String, String> environment,
   bool includeParentEnvironment,
@@ -71,7 +71,7 @@ abstract class ProcessManager {
     Map<String, String> environment,
     bool includeParentEnvironment: true,
     bool runInShell: false,
-    io.ProcessStartMode mode: io.ProcessStartMode.NORMAL,
+    io.ProcessStartMode mode: io.ProcessStartMode.normal,
   }) async {
     final process = io.Process.start(
       executable,
@@ -99,7 +99,7 @@ abstract class ProcessManager {
     Map<String, String> environment,
     bool includeParentEnvironment: true,
     bool runInShell: false,
-    io.ProcessStartMode mode: io.ProcessStartMode.NORMAL,
+    io.ProcessStartMode mode: io.ProcessStartMode.normal,
   }) async {
     final process = io.Process.start(
       executable,
@@ -130,7 +130,7 @@ abstract class ProcessManager {
     Map<String, String> environment,
     bool includeParentEnvironment: true,
     bool runInShell: false,
-    io.ProcessStartMode mode: io.ProcessStartMode.NORMAL,
+    io.ProcessStartMode mode: io.ProcessStartMode.normal,
   }) async {
     return io.Process.start(
       executable,
@@ -159,7 +159,7 @@ class Spawn implements io.Process {
   void _onClosed() {}
 
   @override
-  bool kill([io.ProcessSignal signal = io.ProcessSignal.SIGTERM]) =>
+  bool kill([io.ProcessSignal signal = io.ProcessSignal.sigterm]) =>
       _delegate.kill(signal);
 
   @override
@@ -220,8 +220,7 @@ class _ForwardingSpawn extends Spawn {
     this._stdErrSub,
     this._stdOut,
     this._stdErr,
-  )
-      : super._(delegate);
+  ) : super._(delegate);
 
   @override
   void _onClosed() {
@@ -243,8 +242,7 @@ class _UnixProcessManager extends ProcessManager {
     Stream<List<int>> stdin,
     io.IOSink stdout,
     io.IOSink stderr,
-  )
-      : super._(
+  ) : super._(
           stdin,
           stdout,
           stderr,
@@ -256,8 +254,7 @@ class _WindowsProcessManager extends ProcessManager {
     Stream<List<int>> stdin,
     io.IOSink stdout,
     io.IOSink stderr,
-  )
-      : super._(
+  ) : super._(
           stdin,
           stdout,
           stderr,
