@@ -1,3 +1,42 @@
+#### 2.0.0+1 - 2017-07-18
+
+   * Updated Dart SDK constraint to >=2.0.0-dev.61 < 3.0.0.
+
+#### 2.0.0 - 2018-07-18
+
+   * BREAKING CHANGE: This version requires Dart SDK 2.0.0-dev.61 or later.
+
+#### 1.0.0 - 2018-07-18
+
+   * BREAKING CHANGE: StreamBuffer has been changed from implementing
+     `StreamConsumer<T>` to `StreamConsumer<List<T>>`. Users of
+     `StreamBuffer<List<T>>` can simply change declarations to
+     `StreamBuffer<T>`. In cases where the generic type is already not a list
+     type, inputs to the list may need to be wrapped in a list.
+
+#### 0.29.0+1 - 2018-03-29
+
+   * BREAKING CHANGE: This version requires Dart SDK 2.0.0-dev.30 or later.
+     Bugfixes will be backported to the 0.28.x series for Dart 1 users.
+   * New: BiMap now includes a real implementation of `addEntries`, `get
+     entries`, `map`, `removeWhere`, `update`, and `updateAll`.
+   * New: DelegatingIterable now includes a real implementation of
+     `followedBy`, and accepts the `orElse` parameter on `singleWhere`.
+   * New: DelegatingList now includes real implementations of `operator +`,
+     `indexWhere`, and `lastIndexWhere`.
+   * New: LruMap now includes a real implementation of `addEntries`, `get
+     entries`, `removeWhere`, `update`, and `updateAll`.
+   * New: The map returned by `Multimap.asMap()` now includes real
+     implementations of `get entries` and `removeWhere`. This class also has
+     "real" implementations of `addEntries`, `map`, `update`, and `updateAll`,
+     which just throw an `UnsupportedError`, as inserts and updates are not
+     allowed on map views.
+   * New: The list keys of `ListMultimap` now include real implementations of
+     `operator +`, `indexWhere`, and `lastIndexWhere`.
+   * New: The iterable keys of `ListMultimap` and `SetMultimap` now include a
+     real implementation of `followedBy`, and accept the `orElse` parameter on
+     `singleWhere`.
+
 #### 0.29.0 - 2018-03-28
 
    * BREAKING CHANGE: Deleted `createTimer` and `createTimerPeriodic`, which
@@ -15,7 +54,7 @@
 #### 0.28.1 - 2018-03-22
 
    * Remove use of `Maps.mapToString` in `LruMap`.
-   * Add @visibleForTesting annotation in `AvlTreeSet`.
+   * Add `@visibleForTesting` annotation in `AvlTreeSet`.
 
 #### 0.28.0 - 2018-01-19
 

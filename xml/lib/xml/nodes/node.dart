@@ -1,42 +1,42 @@
 library xml.nodes.node;
 
-import 'package:xml/xml/iterators/ancestors.dart' show XmlAncestorsIterable;
-import 'package:xml/xml/iterators/descendants.dart' show XmlDescendantsIterable;
-import 'package:xml/xml/iterators/following.dart' show XmlFollowingIterable;
-import 'package:xml/xml/iterators/preceding.dart' show XmlPrecedingIterable;
-import 'package:xml/xml/nodes/attribute.dart' show XmlAttribute;
-import 'package:xml/xml/nodes/cdata.dart' show XmlCDATA;
-import 'package:xml/xml/nodes/document.dart' show XmlDocument;
-import 'package:xml/xml/nodes/text.dart' show XmlText;
-import 'package:xml/xml/utils/node_type.dart' show XmlNodeType;
-import 'package:xml/xml/utils/owned.dart' show XmlOwned;
-import 'package:xml/xml/utils/writable.dart' show XmlWritable;
-import 'package:xml/xml/visitors/normalizer.dart' show XmlNormalizer;
-import 'package:xml/xml/visitors/visitable.dart' show XmlVisitable;
-import 'package:xml/xml/visitors/transformer.dart' show XmlTransformer;
+import 'package:xml/xml/iterators/ancestors.dart';
+import 'package:xml/xml/iterators/descendants.dart';
+import 'package:xml/xml/iterators/following.dart';
+import 'package:xml/xml/iterators/preceding.dart';
+import 'package:xml/xml/nodes/attribute.dart';
+import 'package:xml/xml/nodes/cdata.dart';
+import 'package:xml/xml/nodes/document.dart';
+import 'package:xml/xml/nodes/text.dart';
+import 'package:xml/xml/utils/node_type.dart';
+import 'package:xml/xml/utils/owned.dart';
+import 'package:xml/xml/utils/writable.dart';
+import 'package:xml/xml/visitors/normalizer.dart';
+import 'package:xml/xml/visitors/transformer.dart';
+import 'package:xml/xml/visitors/visitable.dart';
 
 /// Immutable abstract XML node.
 abstract class XmlNode extends Object with XmlVisitable, XmlWritable, XmlOwned {
-  /// Return the attribute nodes of this node.
-  List<XmlAttribute> get attributes => const [];
-
-  /// Return the direct children of this node.
+  /// Return the direct children of this node in document order.
   List<XmlNode> get children => const [];
 
-  /// Return an iterable of the nodes preceding the opening tag of this node
-  /// in document order.
+  /// Return the attribute nodes of this node in document order.
+  List<XmlAttribute> get attributes => const [];
+
+  /// Return a lazy [Iterable] of the nodes preceding the opening tag of this
+  /// node in document order.
   Iterable<XmlNode> get preceding => new XmlPrecedingIterable(this);
 
-  /// Return an iterable over the descendants of this node (children, grandchildren,
-  /// ...) in document order.
+  /// Return a lazy [Iterable] of the descendants of this node (children,
+  /// grandchildren, ...) in document order.
   Iterable<XmlNode> get descendants => new XmlDescendantsIterable(this);
 
-  /// Return an iterable of the nodes following the closing tag of this node
-  /// in document order.
+  /// Return a lazy [Iterable] of the nodes following the closing tag of this
+  /// node in document order.
   Iterable<XmlNode> get following => new XmlFollowingIterable(this);
 
-  /// Return an iterable over the ancestors of this node (parent, grandparent,
-  /// ...) in reverse document order.
+  /// Return a lazy [Iterable] of the ancestors of this node (parent,
+  /// grandparent, ...) in reverse document order.
   Iterable<XmlNode> get ancestors => new XmlAncestorsIterable(this);
 
   /// Return the node type of this node.

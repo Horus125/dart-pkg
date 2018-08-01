@@ -1,5 +1,5 @@
 analyzer:
- strong-mode: true
+
 linter:
   rules:
     - always_declare_return_types
@@ -23,5 +23,5 @@ linter:
     - super_goes_last
     # - type_annotate_public_apis
     - type_init_formals
-    - unnecessary_brace_in_string_interp
+    - unnecessary_brace_in_string_interps
     - unnecessary_getters_setters

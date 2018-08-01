@@ -129,7 +129,7 @@ class _FieldSet {
 
   List<T> _getDefaultList<T>(FieldInfo<T> fi) {
     assert(fi.isRepeated);
-    if (_isReadOnly) return const [];
+    if (_isReadOnly) return new List.unmodifiable(const []);
 
     // TODO(skybrian) we could avoid this by generating another
     // method for repeated fields:
@@ -474,7 +474,7 @@ class _FieldSet {
       if (fieldValue == null) continue;
       if (fieldValue is ByteData) {
         // TODO(skybrian): possibly unused. Delete?
-        final value = fieldValue.getUint64(0, Endianness.LITTLE_ENDIAN);
+        final value = fieldValue.getUint64(0, Endian.little);
         renderValue(fi.name, value);
       } else if (fieldValue is List) {
         for (var value in fieldValue) {

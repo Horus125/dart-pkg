@@ -1,3 +1,8 @@
+## 2.0.8
+
+* Set max SDK version to `<3.0.0`.
+* Deprecate `DelegatingFuture.typed`, it is not necessary in Dart 2.
+
 ## 2.0.7
 
 * Fix Dart 2 runtime errors.

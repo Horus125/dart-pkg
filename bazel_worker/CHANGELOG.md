@@ -1,3 +1,17 @@
+## 0.1.12
+
+* Set max SDK version to `<3.0.0`.
+
+## 0.1.11
+
+* Added support for protobuf 0.9.0.
+
+## 0.1.10
+
+* Update the SDK dependency to 2.0.0-dev.17.0.
+* Update to protobuf version 0.8.0
+* Remove usages of deprecated upper-case constants from the SDK.
+
 ## 0.1.9
 
 * Update the worker_protocol.pb.dart file with the latest proto generator.

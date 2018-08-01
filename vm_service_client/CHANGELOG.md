@@ -1,3 +1,17 @@
+## 0.2.6
+
+* Add `VMPauseEvent.atAsyncSuspension` to indicate when an isolate is paused at an
+  await, yield, or yield* statement (only available from VM service version 3.3).
+* Add `VMStep.OverAsyncSuspension` to allow continuing until execution returns from
+  an await, yield, or yield* statement (only valid when
+  `VMPauseEvent.atAsyncSuspension` is `true`).
+* Add `VMIsolate.setExceptionPauseMode` and `VMIsolate.exceptionPauseMode` to
+  return/set pause behaviour for exceptions.
+
+## 0.2.5+1
+
+* Support Dart 2 stable releases.
+
 ## 0.2.5
 
 * Update usage of SDK constants.

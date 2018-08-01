@@ -18,7 +18,7 @@ const _compPointVar = 'COMP_POINT';
 void tryCompletion(
     List<String> args,
     List<String> completer(List<String> args, String compLine, int compPoint),
-    {@Deprecated('Useful for testing, but do not released with this set.')
+    {@Deprecated('Useful for testing, but do not release with this set.')
         logFile}) {
   if (logFile != null) {
     var logFile = new File('_completion.log');
@@ -43,15 +43,8 @@ void tryCompletion(
   String scriptName;
   try {
     scriptName = p.basename(Platform.script.toFilePath());
-  } on UnsupportedError catch (e, stack) {
-    log(e);
-    log(stack);
-    return;
-  }
-
-  if (scriptName.isEmpty) {
-    // should have a script name...weird...
-    return;
+  } on UnsupportedError catch (e) {
+    scriptName = '<unknown>';
   }
 
   log('Checking for completion on script:\t$scriptName');

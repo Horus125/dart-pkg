@@ -1,13 +1,13 @@
 library xml.visitors.pretty_writer;
 
-import 'package:xml/xml/grammar.dart' show XmlGrammarDefinition;
-import 'package:xml/xml/nodes/cdata.dart' show XmlCDATA;
-import 'package:xml/xml/nodes/comment.dart' show XmlComment;
-import 'package:xml/xml/nodes/doctype.dart' show XmlDoctype;
-import 'package:xml/xml/nodes/element.dart' show XmlElement;
-import 'package:xml/xml/nodes/processing.dart' show XmlProcessing;
-import 'package:xml/xml/nodes/text.dart' show XmlText;
-import 'package:xml/xml/visitors/writer.dart' show XmlWriter;
+import 'package:xml/xml/nodes/cdata.dart';
+import 'package:xml/xml/nodes/comment.dart';
+import 'package:xml/xml/nodes/doctype.dart';
+import 'package:xml/xml/nodes/element.dart';
+import 'package:xml/xml/nodes/processing.dart';
+import 'package:xml/xml/nodes/text.dart';
+import 'package:xml/xml/utils/token.dart';
+import 'package:xml/xml/visitors/writer.dart';
 
 /// A visitor that writes XML nodes correctly indented and with whitespaces adapted.
 class XmlPrettyWriter extends XmlWriter {
@@ -37,23 +37,23 @@ class XmlPrettyWriter extends XmlWriter {
   @override
   void visitElement(XmlElement node) {
     newLine();
-    buffer.write(XmlGrammarDefinition.OPEN_ELEMENT);
+    buffer.write(XmlToken.openElement);
     visit(node.name);
     writeAttributes(node);
     if (node.children.isEmpty) {
-      buffer.write(XmlGrammarDefinition.WHITESPACE);
-      buffer.write(XmlGrammarDefinition.CLOSE_END_ELEMENT);
+      buffer.write(XmlToken.whitespace);
+      buffer.write(XmlToken.closeEndElement);
     } else {
-      buffer.write(XmlGrammarDefinition.CLOSE_ELEMENT);
+      buffer.write(XmlToken.closeElement);
       level++;
       writeChildren(node);
       level--;
       if (!node.children.every((each) => each is XmlText)) {
         newLine();
       }
-      buffer.write(XmlGrammarDefinition.OPEN_END_ELEMENT);
+      buffer.write(XmlToken.openEndElement);
       visit(node.name);
-      buffer.write(XmlGrammarDefinition.CLOSE_ELEMENT);
+      buffer.write(XmlToken.closeElement);
     }
   }
 

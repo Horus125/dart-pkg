@@ -67,8 +67,12 @@ abstract class GeneratedMessage {
   // TODO(antonm): move to getters.
   int getTagNumber(String fieldName) => info_.tagNumber(fieldName);
 
-  bool operator ==(other) =>
-      other is GeneratedMessage ? _fieldSet._equals(other._fieldSet) : false;
+  bool operator ==(other) {
+    if (identical(this, other)) return true;
+    return other is GeneratedMessage
+        ? _fieldSet._equals(other._fieldSet)
+        : false;
+  }
 
   /// Calculates a hash code based on the contents of the protobuf.
   ///
@@ -151,7 +155,7 @@ abstract class GeneratedMessage {
   /// literals; values with a 64-bit integer datatype (regardless of their
   /// actual runtime value) are represented as strings. Enumerated values are
   /// represented as their integer value.
-  String writeToJson() => JSON.encode(writeToJsonMap());
+  String writeToJson() => jsonEncode(writeToJsonMap());
 
   /// Merges field values from [data], a JSON object, encoded as described by
   /// [GeneratedMessage.writeToJson].
@@ -162,7 +166,7 @@ abstract class GeneratedMessage {
     /// TODO(skybrian) we could skip the reviver if we're running
     /// on the Dart VM for a slight speedup.
     final jsonMap =
-        JSON.decode(data, reviver: _emptyReviver) as Map<String, dynamic>;
+        jsonDecode(data, reviver: _emptyReviver) as Map<String, dynamic>;
     _mergeFromJsonMap(_fieldSet, jsonMap, extensionRegistry);
   }
 

@@ -1,3 +1,13 @@
+#### 3.0.3
+
+* Update dependency on `package:file`
+
+#### 3.0.2
+
+* Remove upper case constants.
+* Update SDK constraint to 2.0.0-dev.54.0.
+* Fix tests for Dart 2.
+
 #### 3.0.1
 
 * General cleanup

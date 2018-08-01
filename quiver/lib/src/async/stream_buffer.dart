@@ -31,9 +31,10 @@ class UnderflowError extends Error {
 }
 
 /// Allow orderly reading of elements from a datastream, such as Socket, which
-/// might not receive List<int> bytes regular chunks.
+/// might not receive `List<int>` bytes regular chunks.
 ///
 /// Example usage:
+///
 ///     StreamBuffer<int> buffer = new StreamBuffer();
 ///     Socket.connect('127.0.0.1', 5555).then((sock) => sock.pipe(buffer));
 ///     buffer.read(100).then((bytes) {
@@ -42,12 +43,12 @@ class UnderflowError extends Error {
 ///
 /// Throws [UnderflowError] if [throwOnError] is true. Useful for unexpected
 /// [Socket] disconnects.
-class StreamBuffer<T> implements StreamConsumer<T> {
+class StreamBuffer<T> implements StreamConsumer<List<T>> {
   List<T> _chunks = [];
   int _offset = 0;
   int _counter = 0; // sum(_chunks[*].length) - _offset
   List<_ReaderInWaiting<List<T>>> _readers = [];
-  StreamSubscription<T> _sub;
+  StreamSubscription<List<T>> _sub;
 
   final bool _throwOnError;
 
@@ -128,7 +129,7 @@ class StreamBuffer<T> implements StreamConsumer<T> {
   }
 
   @override
-  Future addStream(Stream<T> stream) {
+  Future addStream(Stream<List<T>> stream) {
     var lastStream = _currentStream == null ? stream : _currentStream;
     if (_sub != null) {
       _sub.cancel();
@@ -136,7 +137,7 @@ class StreamBuffer<T> implements StreamConsumer<T> {
     _currentStream = stream;
     final streamDone = new Completer<Null>();
     _sub = stream.listen((items) {
-      _chunks.add(items);
+      _chunks.addAll(items);
       _counter += items is List ? items.length : 1;
       if (limited && _counter >= limit) {
         _sub.pause();
