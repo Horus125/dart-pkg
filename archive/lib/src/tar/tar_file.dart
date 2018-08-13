@@ -1,4 +1,6 @@
-part of archive;
+import 'dart:typed_data';
+import '../util/input_stream.dart';
+import '../util/output_stream.dart';
 
 /**
  *  File Header (512 bytes)
@@ -61,8 +63,7 @@ class TarFile {
   InputStream _rawContent;
   dynamic _content;
 
-  TarFile() {
-  }
+  TarFile();
 
   TarFile.read(dynamic input, {bool storeData: true}) {
     InputStream header = input.readBytes(512);
@@ -108,12 +109,16 @@ class TarFile {
 
   bool get isFile => typeFlag != TYPE_DIRECTORY;
 
-  List<int> get content {
+  InputStream get rawContent => _rawContent;
+
+  get content {
     if (_content == null) {
       _content = _rawContent.toUint8List();
     }
     return _content;
   }
+
+  set content(data) => _content = data;
 
   int get size => _content != null ? _content.length :
                   _rawContent != null ? _rawContent.length :

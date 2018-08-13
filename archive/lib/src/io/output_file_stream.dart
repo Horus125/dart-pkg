@@ -1,18 +1,26 @@
-part of archive_io;
+import 'dart:io';
+import 'dart:typed_data';
+import '../util/byte_order.dart';
+import '../util/input_stream.dart';
+import '../util/output_stream.dart';
+import 'input_file_stream.dart';
 
-class OutputFileStream {
+
+class OutputFileStream extends OutputStreamBase {
   String path;
   final int byteOrder;
-  int length;
-  io.File _file;
-  io.RandomAccessFile _fp;
+  int _length;
+  File _file;
+  RandomAccessFile _fp;
 
   OutputFileStream(this.path, {this.byteOrder: LITTLE_ENDIAN})
-    : length = 0 {
-    _file = new io.File(path);
+    : _length = 0 {
+    _file = new File(path);
     _file.createSync(recursive: true);
-    _fp = _file.openSync(mode: io.FileMode.write);
+    _fp = _file.openSync(mode: FileMode.write);
   }
+
+  int get length => _length;
 
   void close() {
     _fp.closeSync();
@@ -24,7 +32,7 @@ class OutputFileStream {
    */
   void writeByte(int value) {
     _fp.writeByteSync(value);
-    length++;
+    _length++;
   }
 
   /**
@@ -43,11 +51,18 @@ class OutputFileStream {
     } else {
       _fp.writeFromSync(bytes, 0, len);
     }
-    length += len;
+    _length += len;
   }
 
-  void writeInputStream(InputStream bytes) {
-    _fp.writeFromSync(bytes.buffer, bytes.offset, bytes.length);
+  void writeInputStream(InputStreamBase stream) {
+    if (stream is InputStream) {
+      _fp.writeFromSync(stream.buffer, stream.offset, stream.length);
+      _length += stream.length;
+    } else {
+      var bytes = stream.toUint8List();
+      _fp.writeFromSync(bytes);
+      _length += bytes.length;
+    }
   }
 
   /**

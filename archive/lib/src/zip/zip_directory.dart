@@ -1,4 +1,6 @@
-part of archive;
+import '../util/archive_exception.dart';
+import '../util/input_stream.dart';
+import 'zip_file_header.dart';
 
 class ZipDirectory {
   // End of Central Directory Record
@@ -19,8 +21,7 @@ class ZipDirectory {
   // Central Directory
   List<ZipFileHeader> fileHeaders = [];
 
-  ZipDirectory([InputStream input]) {
-  }
+  ZipDirectory();
 
   ZipDirectory.read(InputStream input) {
     filePosition = _findSignature(input);

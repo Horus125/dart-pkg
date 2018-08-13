@@ -1,4 +1,11 @@
-part of archive;
+import 'util/archive_exception.dart';
+import 'util/crc32.dart';
+import 'util/input_stream.dart';
+import 'zip/zip_directory.dart';
+import 'zip/zip_file_header.dart';
+import 'zip/zip_file.dart';
+import 'archive.dart';
+import 'archive_file.dart';
 
 /**
  * Decode a zip formatted buffer into an [Archive] object.
@@ -13,7 +20,6 @@ class ZipDecoder {
   Archive decodeBuffer(InputStream input, {bool verify: false}) {
     directory = new ZipDirectory.read(input);
     Archive archive = new Archive();
-
 
     for (ZipFileHeader zfh in directory.fileHeaders) {
       ZipFile zf = zfh.file;
@@ -30,10 +36,10 @@ class ZipDecoder {
         }
       }
 
-      var content = zf._content != null ? zf._content : zf._rawContent;
-      ArchiveFile file = new ArchiveFile(zf.filename, zf.uncompressedSize,
-          content, zf.compressionMethod)
-        ..unixPermissions = unixPermissions;
+      var content = zf.rawContent;
+      var file = new ArchiveFile(zf.filename, zf.uncompressedSize,
+          content, zf.compressionMethod);
+      file.unixPermissions = unixPermissions;
 
       // see https://github.com/brendan-duncan/archive/issues/21
       // UNIX systems has a creator version of 3 decimal at 1 byte offset

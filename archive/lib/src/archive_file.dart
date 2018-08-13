@@ -1,4 +1,5 @@
-part of archive;
+import 'util/input_stream.dart';
+import 'zlib/inflate.dart';
 
 /**
  * A file contained in an Archive.
@@ -46,7 +47,7 @@ class ArchiveFile {
   }
 
   ArchiveFile.stream(this.name, this.size, content_stream) {
-    compress = false;
+    compress = true;
     _content = content_stream;
     //_rawContent = content_stream;
     _compressionType = STORE;
