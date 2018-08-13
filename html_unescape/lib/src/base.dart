@@ -1,4 +1,4 @@
-// Copyright (c) 2016, Filip Hracek. All rights reserved. Use of this source
+// Copyright (c) 2018, Filip Hracek. All rights reserved. Use of this source
 // code is governed by a BSD-style license that can be found in the LICENSE
 // file.
 library html_unescape.base;
@@ -8,21 +8,20 @@ import 'dart:math';
 
 // Character constants.
 const int _hashCodeUnit = 35; // #
-const int _xCodeUnit = 120; // x
-const int _minDecimalEscapeLength = 4; // &#0;
-const int _minHexadecimalEscapeLength = 5; // &#x0;
+const int _minDecimalEscapeLength = 4; // x
+const int _minHexadecimalEscapeLength = 5; // &#0;
+const int _xCodeUnit = 120; // &#x0;
 
-abstract class HtmlUnescapeBase
-    extends Converter<String, String> {
+abstract class HtmlUnescapeBase extends Converter<String, String> {
   int _chunkLength;
-
-  List<String> get keys;
-  List<String> get values;
-  int get maxKeyLength;
 
   HtmlUnescapeBase() {
     _chunkLength = max(maxKeyLength, _minHexadecimalEscapeLength);
   }
+  List<String> get keys;
+  int get maxKeyLength;
+
+  List<String> get values;
 
   /// Converts from HTML-escaped [data] to unescaped string.
   String convert(String data) {
@@ -52,7 +51,7 @@ abstract class HtmlUnescapeBase
         if (nextSemicolon != -1) {
           var hex = chunk.codeUnitAt(2) == _xCodeUnit;
           var str = chunk.substring(hex ? 3 : 2, nextSemicolon);
-          int ord = int.parse(str, radix: hex ? 16 : 10, onError: (_) => -1);
+          int ord = int.tryParse(str, radix: hex ? 16 : 10) ?? -1;
           if (ord != -1) {
             buf.write(new String.fromCharCode(ord));
             offset += nextSemicolon + 1;
