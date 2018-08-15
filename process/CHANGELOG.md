@@ -1,3 +1,13 @@
+
+#### 3.0.5
+
+* Fixes for missing_return analysis errors with 2.10.0-dev.1.0.
+
+#### 3.0.4
+
+* Fix unit tests
+* Update SDK constraint to 3.
+
 #### 3.0.3
 
 * Update dependency on `package:file`
