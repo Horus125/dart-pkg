@@ -1,28 +1,20 @@
-## 3.0.0-beta
+## 3.0.0
 
-* This release is the first 3.0.0 release featuring the new Mockito 3 API. The
-  README has been updated, and an [upgrading-to-mockito-3] doc has been added
-  to help users upgrade. Here's a quick rundown:
-
-  ```dart
-  // Old API:
-  when(obj.fn(typed(any)))...
-  // New API:
-  when(obj.fn(any))...
-
-  // Old API:
-  when(obj.fn(foo: typed(any, named: 'foo')))...
-  // New API:
-  when(obj.fn(foo: anyNamed('foo')))...
-
-  // Old API:
-  when(obj.fn(foo: typed(null, named: 'foo')))...
-  // New API:
-  when(obj.fn(foo: argThat(isNull, named: 'foo')))...
-  ```
-
-## 3.0.0-alpha+5
-
+* Deprecate the `typed` API; instead of wrapping other Mockito API calls, like
+  `any`, `argThat`, `captureAny`, and `captureArgThat`, with a call to `typed`,
+  the regular API calls are to be used by themselves. Passing `any` and
+  `captureAny` as named arguments must be replaced with `anyNamed()` and
+  `captureAnyNamed`, respectively. Passing `argThat` and `captureThat` as named
+  arguments must include the `named` parameter.
+* Introduce a backward-and-forward compatible API to help users migrate to
+  Mockito 3. See more details in the [upgrading-to-mockito-3] doc.
+* `thenReturn` now throws an `ArgumentError` if either a `Future` or `Stream`
+  is provided. `thenReturn` calls with futures and streams should be changed to
+  `thenAnswer`. See the README for more information.
+* Support stubbing of void methods in Dart 2.
+* `thenReturn` and `thenAnswer` now support generics and infer the correct
+  types from the `when` call.
+* Completely remove the mirrors implementation of Mockito (`mirrors.dart`).
 * Fix compatibility with new [noSuchMethod Forwarding] feature of Dart 2. This
   is thankfully a mostly backwards-compatible change. This means that this
   version of Mockito should continue to work:
@@ -60,36 +52,22 @@
   This used to print `[2, 3]`, because only the second call matched the `verify`
   call. Now, it will print `[1, null, 2, 3]`, as both real calls contain a value
   for both the required argument, and the optional argument.
-
-[noSuchMethod Forwarding]: https://github.com/dart-lang/sdk/blob/master/docs/language/informal/nosuchmethod-forwarding.md
-
-## 3.0.0-alpha+4
-
-* Introduce a backward-and-forward compatible API to help users migrate to
-  Mockito 3. See more details in the [upgrading-to-mockito-3] doc.
+* Upgrade package dependencies.
+* Throw an exception when attempting to stub a method on a Mock object that
+  already exists.
 
 [upgrading-to-mockito-3]: https://github.com/dart-lang/mockito/blob/master/upgrading-to-mockito-3.md
-
-## 3.0.0-alpha+3
-
-* `thenReturn` and `thenAnswer` now support generics and infer the correct
-  types from the `when` call.
-* Completely remove the mirrors implementation of Mockito (`mirrors.dart`).
-
-## 3.0.0-alpha+2
-
-* Support stubbing of void methods in Dart 2.
-
-## 3.0.0-alpha
-
-* `thenReturn` now throws an `ArgumentError` if either a `Future` or `Stream`
-  is provided. `thenReturn` calls with futures and streams should be changed to
-  `thenAnswer`. See the README for more information.
+[noSuchMethod Forwarding]: https://github.com/dart-lang/sdk/blob/master/docs/language/informal/nosuchmethod-forwarding.md
 
 ## 2.2.0
 
 * Add new feature to wait for an interaction: `untilCalled`. See the README for
   documentation.
+* `capture*` calls outside of a `verify*` call no longer capture arguments.
+* Some collections require stricter argument matching. For example, a stub like:
+  `mock.methodWithListArgs([1,2,3].map((e) => e*2))` (note the _`Iterable`_
+  argument) will no longer match the following stub:
+  `when(mock.methodWithListArgs([42])).thenReturn(7);`.
 
 ## 2.1.0
 

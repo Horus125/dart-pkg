@@ -1,12 +1,12 @@
 language: dart
 dart:
   - dev
-  - stable
 
 dart_task:
-  - test: -p vm,firefox
+  - test: -p vm
+  - test: -p firefox
   - dartfmt
-  - analyzer
+  - dartanalyzer
 
 # Only building master means that we don't run two builds for each pull request.
 branches:

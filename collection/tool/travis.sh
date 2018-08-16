@@ -1,4 +1,4 @@
-# Copyright 2016 Dart Mockito authors
+# Copyright 2018 the Dart project authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ while (( "$#" )); do
     ;;
   vm_test) echo
     echo -e '\033[1mTASK: vm_test\033[22m'
-    echo -e 'pub run test -p vm'
+    echo -e 'pub run test -P travis -p vm -x requires-dart2'
     pub run test -p vm || EXIT_CODE=$?
     ;;
   dartdevc_build) echo
@@ -46,27 +46,13 @@ while (( "$#" )); do
     ;;
   dartdevc_test) echo
     echo -e '\033[1mTASK: dartdevc_test\033[22m'
-    echo -e 'pub run build_runner test -- -p chrome'
+    echo -e 'pub run build_runner test -- -P travis -p chrome'
     pub run build_runner test -- -p chrome || EXIT_CODE=$?
     ;;
   dart2js_test) echo
     echo -e '\033[1mTASK: dart2js_test\033[22m'
-    echo -e 'pub run test -p chrome'
+    echo -e 'pub run test -P travis -p chrome -x requires-dart2'
     pub run test -p chrome || EXIT_CODE=$?
-    ;;
-  coverage) echo
-    echo -e '\033[1mTASK: coverage\033[22m'
-    if [ "$REPO_TOKEN" ]; then
-      echo -e 'pub run dart_coveralls report test/all.dart'
-      pub global activate dart_coveralls
-      pub global run dart_coveralls report \
-        --token $REPO_TOKEN \
-        --retry 2 \
-        --exclude-test-files \
-        test/all.dart
-    else
-      echo -e "\033[33mNo token for coveralls. Skipping.\033[0m"
-    fi
     ;;
   *) echo -e "\033[31mNot expecting TASK '${TASK}'. Error!\033[0m"
     EXIT_CODE=1

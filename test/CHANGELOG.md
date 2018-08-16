@@ -1,3 +1,28 @@
+## 1.3.0
+
+* When using `--precompiled`, the test runner now allows symlinks to reach
+  outside the precompiled directory. This allows more efficient creation of
+  precompiled directories (using symlinks instead of copies).
+* Updated max sdk range to `<3.0.0`.
+
+## 1.2.0
+
+* Added support for using precompiled kernel files when running vm tests.
+  * When using the `--precompiled` flag we will now first check for a
+    `<original-test-path>.vm_test.vm.app.dill` file, and if present load that
+    directly in the isolate. Otherwise the `<original-test-path>.vm_test.dart`
+    file will be used.
+
+## 1.1.0
+
+* Added a new `pid` field to the StartEvent in the json runner containing the
+  pid of the VM process running the tests.
+
+## 1.0.0
+
+* No change from `0.12.42`. We are simply signalling to users that this is a
+  well supported package and is the prefered way to write Dart tests.
+
 ## 0.12.42
 
 * Add support for `solo` test and group. When the argument is `true` only tests
@@ -8,7 +33,7 @@
 
   - Many improvements to `TypeMatcher`
     - Can now be used directly as `const TypeMatcher<MyType>()`.
-    - Added a type parameter to specify the target `Type`. 
+    - Added a type parameter to specify the target `Type`.
       - Made the `name` constructor parameter optional and marked it deprecated.
         It's redundant to the type parameter.
     - Migrated all `isType` matchers to `TypeMatcher`.
