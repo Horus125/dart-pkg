@@ -53,7 +53,8 @@ main(List<String> args) {
   DartGenerator generator = new DartGenerator();
   api.generate(generator);
   outputFile.writeAsStringSync(generator.toString());
-  Process.runSync('dartfmt', ['-w', outputFile.path]);
+  Process.runSync(
+      'dartfmt${Platform.isWindows ? ".bat" : ""}', ['-w', outputFile.path]);
   print('Wrote ${outputFile.path}.');
 }
 
@@ -481,6 +482,8 @@ class Request {
 }
 
 class Notification {
+  static Set<String> disambiguateEvents = new Set.from(['FlutterOutline']);
+
   final Domain domain;
   String event;
   String docs;
@@ -498,7 +501,13 @@ class Notification {
 
   String get onName => 'on${titleCase(event)}';
 
-  String get className => '${titleCase(domain.name)}${titleCase(event)}';
+  String get className {
+    String name = '${titleCase(domain.name)}${titleCase(event)}';
+    if (disambiguateEvents.contains(name)) {
+      name = name + 'Event';
+    }
+    return name;
+  }
 
   void generate(DartGenerator gen) {
     gen.writeDocs(docs);
@@ -759,11 +768,12 @@ class TypeDef {
     if (_fields.isNotEmpty) {
       gen.writeln();
       _fields.forEach((field) {
+        gen.writeln();
+        gen.writeDocs(field.docs);
         if (field.deprecated) {
           gen.write('@deprecated ');
-        } else {
-          gen.writeDocs(field.docs);
         }
+
         if (field.optional) gen.write('@optional ');
         gen.writeln('final ${field.type} ${field.name};');
       });
@@ -815,7 +825,7 @@ class TypeDef {
     if (hasToString) {
       gen.writeln();
       String str = fields
-          .where((f) => !f.optional)
+          .where((f) => (!f.optional && !f.deprecated))
           .map((f) => "${f.name}: \${${f.name}}")
           .join(', ');
       gen.writeln("String toString() => '[${name} ${str}]';");
@@ -1035,9 +1045,11 @@ final String _staticFactory = r'''
   /// - [onRead] called every time data is read from the server
   /// - [onWrite] called every time data is written to the server
   static Future<AnalysisServer> create(
-      {String sdkPath, String scriptPath, onRead(String), onWrite(String),
+      {String sdkPath, String scriptPath,
+       void onRead(String str), void onWrite(String str),
        List<String> vmArgs, List<String> serverArgs,
-       String clientId, String clientVersion}) async {
+       String clientId, String clientVersion,
+      Map<String, String> processEnvironment}) async {
     Completer<int> processCompleter = new Completer();
 
     String vmPath;
@@ -1055,11 +1067,11 @@ final String _staticFactory = r'''
     if (clientId != null) args.add('--client-id=$clientId');
     if (clientVersion != null) args.add('--client-version=$clientVersion');
 
-    Process process = await Process.start(vmPath, args);
+    Process process = await Process.start(vmPath, args, environment: processEnvironment);
     process.exitCode.then((code) => processCompleter.complete(code));
 
     Stream<String> inStream = process.stdout
-        .transform(UTF8.decoder)
+        .transform(utf8.decoder)
         .transform(const LineSplitter())
         .map((String message) {
       if (onRead != null) onRead(message);
@@ -1108,7 +1120,7 @@ final String _serverCode = r'''
     }
 
     try {
-      var json = JSON.decode(message);
+      var json = jsonDecode(message);
 
       if (json['id'] == null) {
         // Handle a notification.
@@ -1140,9 +1152,9 @@ final String _serverCode = r'''
     }
   }
 
-  Future _call(String method, [Map args]) {
+  Future<Map> _call(String method, [Map args]) {
     String id = '${++_id}';
-    _completers[id] = new Completer();
+    _completers[id] = new Completer<Map>();
     _methodNames[id] = method;
     Map m = {'id': id, 'method': method};
     if (args != null) m['params'] = args;
@@ -1161,19 +1173,19 @@ abstract class Domain {
   final AnalysisServer server;
   final String name;
 
-  Map<String, StreamController> _controllers = {};
+  Map<String, StreamController<Map>> _controllers = {};
   Map<String, Stream> _streams = {};
 
   Domain(this.server, this.name) {
     server._domains[name] = this;
   }
 
-  Future _call(String method, [Map args]) => server._call(method, args);
+  Future<Map> _call(String method, [Map args]) => server._call(method, args);
 
-  Stream<dynamic> _listen(String name, Function cvt) {
+  Stream<E> _listen<E>(String name, E cvt(Map m)) {
     if (_streams[name] == null) {
-      _controllers[name] = new StreamController.broadcast();
-      _streams[name] = _controllers[name].stream.map(cvt);
+      _controllers[name] = new StreamController<Map>.broadcast();
+      _streams[name] = _controllers[name].stream.map<E>(cvt);
     }
 
     return _streams[name];

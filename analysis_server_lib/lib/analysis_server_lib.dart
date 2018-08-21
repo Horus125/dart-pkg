@@ -24,7 +24,7 @@ const String experimental = 'experimental';
 
 final Logger _logger = new Logger('analysis_server');
 
-const String generatedProtocolVersion = '1.18.1';
+const String generatedProtocolVersion = '1.20.0';
 
 typedef void MethodSend(String methodName);
 
@@ -56,12 +56,13 @@ class AnalysisServer {
   static Future<AnalysisServer> create(
       {String sdkPath,
       String scriptPath,
-      onRead(String),
-      onWrite(String),
+      void onRead(String str),
+      void onWrite(String str),
       List<String> vmArgs,
       List<String> serverArgs,
       String clientId,
-      String clientVersion}) async {
+      String clientVersion,
+      Map<String, String> processEnvironment}) async {
     Completer<int> processCompleter = new Completer();
 
     String vmPath;
@@ -80,11 +81,12 @@ class AnalysisServer {
     if (clientId != null) args.add('--client-id=$clientId');
     if (clientVersion != null) args.add('--client-version=$clientVersion');
 
-    Process process = await Process.start(vmPath, args);
+    Process process =
+        await Process.start(vmPath, args, environment: processEnvironment);
     process.exitCode.then((code) => processCompleter.complete(code));
 
     Stream<String> inStream = process.stdout
-        .transform(UTF8.decoder)
+        .transform(utf8.decoder)
         .transform(const LineSplitter())
         .map((String message) {
       if (onRead != null) onRead(message);
@@ -121,6 +123,8 @@ class AnalysisServer {
   ExecutionDomain _execution;
   DiagnosticDomain _diagnostic;
   AnalyticsDomain _analytics;
+  KytheDomain _kythe;
+  FlutterDomain _flutter;
 
   /// Connect to an existing analysis server instance.
   AnalysisServer(Stream<String> inStream, void writeMessage(String message),
@@ -136,6 +140,8 @@ class AnalysisServer {
     _execution = new ExecutionDomain(this);
     _diagnostic = new DiagnosticDomain(this);
     _analytics = new AnalyticsDomain(this);
+    _kythe = new KytheDomain(this);
+    _flutter = new FlutterDomain(this);
   }
 
   ServerDomain get server => _server;
@@ -146,6 +152,8 @@ class AnalysisServer {
   ExecutionDomain get execution => _execution;
   DiagnosticDomain get diagnostic => _diagnostic;
   AnalyticsDomain get analytics => _analytics;
+  KytheDomain get kythe => _kythe;
+  FlutterDomain get flutter => _flutter;
 
   Stream<String> get onSend => _onSend.stream;
   Stream<String> get onReceive => _onReceive.stream;
@@ -178,7 +186,7 @@ class AnalysisServer {
     }
 
     try {
-      var json = JSON.decode(message);
+      var json = jsonDecode(message);
 
       if (json['id'] == null) {
         // Handle a notification.
@@ -211,9 +219,9 @@ class AnalysisServer {
     }
   }
 
-  Future _call(String method, [Map args]) {
+  Future<Map> _call(String method, [Map args]) {
     String id = '${++_id}';
-    _completers[id] = new Completer();
+    _completers[id] = new Completer<Map>();
     _methodNames[id] = method;
     Map m = {'id': id, 'method': method};
     if (args != null) m['params'] = args;
@@ -231,19 +239,19 @@ abstract class Domain {
   final AnalysisServer server;
   final String name;
 
-  Map<String, StreamController> _controllers = {};
+  Map<String, StreamController<Map>> _controllers = {};
   Map<String, Stream> _streams = {};
 
   Domain(this.server, this.name) {
     server._domains[name] = this;
   }
 
-  Future _call(String method, [Map args]) => server._call(method, args);
+  Future<Map> _call(String method, [Map args]) => server._call(method, args);
 
-  Stream<dynamic> _listen(String name, Function cvt) {
+  Stream<E> _listen<E>(String name, E cvt(Map m)) {
     if (_streams[name] == null) {
-      _controllers[name] = new StreamController.broadcast();
-      _streams[name] = _controllers[name].stream.map(cvt);
+      _controllers[name] = new StreamController<Map>.broadcast();
+      _streams[name] = _controllers[name].stream.map<E>(cvt);
     }
 
     return _streams[name];
@@ -434,6 +442,15 @@ class AnalysisDomain extends Domain {
     return _listen('analysis.analyzedFiles', AnalysisAnalyzedFiles.parse);
   }
 
+  /// Reports closing labels relevant to a given file.
+  ///
+  /// This notification is not subscribed to by default. Clients can subscribe
+  /// by including the value `"CLOSING_LABELS"` in the list of services passed
+  /// in an analysis.setSubscriptions request.
+  Stream<AnalysisClosingLabels> get onClosingLabels {
+    return _listen('analysis.closingLabels', AnalysisClosingLabels.parse);
+  }
+
   /// Reports the errors associated with a given file. The set of errors
   /// included in the notification is always a complete list that supersedes any
   /// previously reported errors.
@@ -565,16 +582,19 @@ class AnalysisDomain extends Domain {
     return _call('analysis.getHover', m).then(HoverResult.parse);
   }
 
-  /// Return the transitive closure of reachable sources for a given file.
+  /// Return a description of all of the elements referenced in a given region
+  /// of a given file that come from imported libraries.
   ///
-  /// If a request is made for a file which does not exist, or which is not
+  /// If a request is made for a file that does not exist, or that is not
   /// currently subject to analysis (e.g. because it is not associated with any
-  /// analysis root specified to analysis.setAnalysisRoots), an error of type
-  /// `GET_REACHABLE_SOURCES_INVALID_FILE` will be generated.
-  Future<ReachableSourcesResult> getReachableSources(String file) {
-    Map m = {'file': file};
-    return _call('analysis.getReachableSources', m)
-        .then(ReachableSourcesResult.parse);
+  /// analysis root specified via analysis.setAnalysisRoots), an error of type
+  /// `GET_IMPORTED_ELEMENTS_INVALID_FILE` will be generated.
+  @experimental
+  Future<ImportedElementsResult> getImportedElements(
+      String file, int offset, int length) {
+    Map m = {'file': file, 'offset': offset, 'length': length};
+    return _call('analysis.getImportedElements', m)
+        .then(ImportedElementsResult.parse);
   }
 
   /// Return library dependency information for use in client-side indexing and
@@ -608,6 +628,18 @@ class AnalysisDomain extends Domain {
   Future<NavigationResult> getNavigation(String file, int offset, int length) {
     Map m = {'file': file, 'offset': offset, 'length': length};
     return _call('analysis.getNavigation', m).then(NavigationResult.parse);
+  }
+
+  /// Return the transitive closure of reachable sources for a given file.
+  ///
+  /// If a request is made for a file which does not exist, or which is not
+  /// currently subject to analysis (e.g. because it is not associated with any
+  /// analysis root specified to analysis.setAnalysisRoots), an error of type
+  /// `GET_REACHABLE_SOURCES_INVALID_FILE` will be generated.
+  Future<ReachableSourcesResult> getReachableSources(String file) {
+    Map m = {'file': file};
+    return _call('analysis.getReachableSources', m)
+        .then(ReachableSourcesResult.parse);
   }
 
   /// Force the re-analysis of everything contained in the specified analysis
@@ -735,6 +767,28 @@ class AnalysisAnalyzedFiles {
   final List<String> directories;
 
   AnalysisAnalyzedFiles(this.directories);
+}
+
+class AnalysisClosingLabels {
+  static AnalysisClosingLabels parse(Map m) => new AnalysisClosingLabels(
+      m['file'],
+      m['labels'] == null
+          ? null
+          : new List.from(m['labels'].map((obj) => ClosingLabel.parse(obj))));
+
+  /// The file the closing labels relate to.
+  final String file;
+
+  /// Closing labels relevant to the file. Each item represents a useful label
+  /// associated with some range with may be useful to display to the user
+  /// within the editor at the end of the range to indicate what construct is
+  /// closed at that location. Closing labels include constructor/method calls
+  /// and List arguments that span multiple lines. Note that the ranges that are
+  /// returned can overlap each other because they may be associated with
+  /// constructs that can be nested.
+  final List<ClosingLabel> labels;
+
+  AnalysisClosingLabels(this.file, this.labels);
 }
 
 class AnalysisErrors {
@@ -965,19 +1019,18 @@ class HoverResult {
   HoverResult(this.hovers);
 }
 
-class ReachableSourcesResult {
-  static ReachableSourcesResult parse(Map m) =>
-      new ReachableSourcesResult(new Map.from(m['sources']));
+class ImportedElementsResult {
+  static ImportedElementsResult parse(Map m) =>
+      new ImportedElementsResult(m['elements'] == null
+          ? null
+          : new List.from(
+              m['elements'].map((obj) => ImportedElements.parse(obj))));
 
-  /// A mapping from source URIs to directly reachable source URIs. For example,
-  /// a file "foo.dart" that imports "bar.dart" would have the corresponding
-  /// mapping { "file:///foo.dart" : ["file:///bar.dart"] }. If "bar.dart" has
-  /// further imports (or exports) there will be a mapping from the URI
-  /// "file:///bar.dart" to them. To check if a specific URI is reachable from a
-  /// given file, clients can check for its presence in the resulting key set.
-  final Map<String, List<String>> sources;
+  /// The information about the elements that are referenced in the specified
+  /// region of the specified file that come from imported libraries.
+  final List<ImportedElements> elements;
 
-  ReachableSourcesResult(this.sources);
+  ImportedElementsResult(this.elements);
 }
 
 class LibraryDependenciesResult {
@@ -1021,6 +1074,21 @@ class NavigationResult {
   final List<NavigationRegion> regions;
 
   NavigationResult(this.files, this.targets, this.regions);
+}
+
+class ReachableSourcesResult {
+  static ReachableSourcesResult parse(Map m) =>
+      new ReachableSourcesResult(new Map.from(m['sources']));
+
+  /// A mapping from source URIs to directly reachable source URIs. For example,
+  /// a file "foo.dart" that imports "bar.dart" would have the corresponding
+  /// mapping { "file:///foo.dart" : ["file:///bar.dart"] }. If "bar.dart" has
+  /// further imports (or exports) there will be a mapping from the URI
+  /// "file:///bar.dart" to them. To check if a specific URI is reachable from a
+  /// given file, clients can check for its presence in the resulting key set.
+  final Map<String, List<String>> sources;
+
+  ReachableSourcesResult(this.sources);
 }
 
 // completion domain
@@ -1162,6 +1230,18 @@ class SearchDomain extends Domain {
         .then(FindTopLevelDeclarationsResult.parse);
   }
 
+  /// Return top-level and class member declarations.
+  @experimental
+  Future<ElementDeclarationsResult> getElementDeclarations(
+      {String file, String pattern, int maxResults}) {
+    Map m = {};
+    if (file != null) m['file'] = file;
+    if (pattern != null) m['pattern'] = pattern;
+    if (maxResults != null) m['maxResults'] = maxResults;
+    return _call('search.getElementDeclarations', m)
+        .then(ElementDeclarationsResult.parse);
+  }
+
   /// Return the type hierarchy of the class declared or referenced at the given
   /// location.
   Future<TypeHierarchyResult> getTypeHierarchy(String file, int offset,
@@ -1245,6 +1325,24 @@ class FindTopLevelDeclarationsResult {
   FindTopLevelDeclarationsResult(this.id);
 }
 
+class ElementDeclarationsResult {
+  static ElementDeclarationsResult parse(Map m) =>
+      new ElementDeclarationsResult(
+          m['declarations'] == null
+              ? null
+              : new List.from(m['declarations']
+                  .map((obj) => ElementDeclaration.parse(obj))),
+          m['files'] == null ? null : new List.from(m['files']));
+
+  /// The list of declarations.
+  final List<ElementDeclaration> declarations;
+
+  /// The list of the paths of files with declarations.
+  final List<String> files;
+
+  ElementDeclarationsResult(this.declarations, this.files);
+}
+
 class TypeHierarchyResult {
   static TypeHierarchyResult parse(Map m) => new TypeHierarchyResult(
       hierarchyItems: m['hierarchyItems'] == null
@@ -1324,6 +1422,16 @@ class EditDomain extends Domain {
     return _call('edit.getFixes', m).then(FixesResult.parse);
   }
 
+  /// Get the changes required to convert the postfix template at the given
+  /// location into the template's expanded form.
+  @experimental
+  Future<PostfixCompletionResult> getPostfixCompletion(
+      String file, String key, int offset) {
+    Map m = {'file': file, 'key': key, 'offset': offset};
+    return _call('edit.getPostfixCompletion', m)
+        .then(PostfixCompletionResult.parse);
+  }
+
   /// Get the changes required to perform a refactoring.
   ///
   /// If another refactoring request is received during the processing of this
@@ -1356,6 +1464,38 @@ class EditDomain extends Domain {
     Map m = {'file': file, 'offset': offset};
     return _call('edit.getStatementCompletion', m)
         .then(StatementCompletionResult.parse);
+  }
+
+  /// Determine if the request postfix completion template is applicable at the
+  /// given location in the given file.
+  @experimental
+  Future<IsPostfixCompletionApplicableResult> isPostfixCompletionApplicable(
+      String file, String key, int offset) {
+    Map m = {'file': file, 'key': key, 'offset': offset};
+    return _call('edit.isPostfixCompletionApplicable', m)
+        .then(IsPostfixCompletionApplicableResult.parse);
+  }
+
+  /// Return a list of all postfix templates currently available.
+  @experimental
+  Future<ListPostfixCompletionTemplatesResult>
+      listPostfixCompletionTemplates() =>
+          _call('edit.listPostfixCompletionTemplates')
+              .then(ListPostfixCompletionTemplatesResult.parse);
+
+  /// Return a list of edits that would need to be applied in order to ensure
+  /// that all of the elements in the specified list of imported elements are
+  /// accessible within the library.
+  ///
+  /// If a request is made for a file that does not exist, or that is not
+  /// currently subject to analysis (e.g. because it is not associated with any
+  /// analysis root specified via analysis.setAnalysisRoots), an error of type
+  /// `IMPORT_ELEMENTS_INVALID_FILE` will be generated.
+  @experimental
+  Future<ImportElementsResult> importElements(
+      String file, List<ImportedElements> elements) {
+    Map m = {'file': file, 'elements': elements};
+    return _call('edit.importElements', m).then(ImportElementsResult.parse);
   }
 
   /// Sort all of the directives, unit and class members of the given Dart file.
@@ -1443,6 +1583,16 @@ class FixesResult {
   FixesResult(this.fixes);
 }
 
+class PostfixCompletionResult {
+  static PostfixCompletionResult parse(Map m) =>
+      new PostfixCompletionResult(SourceChange.parse(m['change']));
+
+  /// The change to be applied in order to complete the statement.
+  final SourceChange change;
+
+  PostfixCompletionResult(this.change);
+}
+
 class RefactoringResult {
   static RefactoringResult parse(String kind, Map m) => new RefactoringResult(
       m['initialProblems'] == null
@@ -1519,6 +1669,43 @@ class StatementCompletionResult {
   final bool whitespaceOnly;
 
   StatementCompletionResult(this.change, this.whitespaceOnly);
+}
+
+class IsPostfixCompletionApplicableResult {
+  static IsPostfixCompletionApplicableResult parse(Map m) =>
+      new IsPostfixCompletionApplicableResult(m['value']);
+
+  /// True if the template can be expanded at the given location.
+  final bool value;
+
+  IsPostfixCompletionApplicableResult(this.value);
+}
+
+class ListPostfixCompletionTemplatesResult {
+  static ListPostfixCompletionTemplatesResult parse(Map m) =>
+      new ListPostfixCompletionTemplatesResult(m['templates'] == null
+          ? null
+          : new List.from(m['templates']
+              .map((obj) => PostfixTemplateDescriptor.parse(obj))));
+
+  /// The list of available templates.
+  final List<PostfixTemplateDescriptor> templates;
+
+  ListPostfixCompletionTemplatesResult(this.templates);
+}
+
+class ImportElementsResult {
+  static ImportElementsResult parse(Map m) =>
+      new ImportElementsResult(SourceFileEdit.parse(m['edit']));
+
+  /// The edits to be applied in order to make the specified elements
+  /// accessible. The file to be edited will be the defining compilation unit of
+  /// the library containing the file specified in the request, which can be
+  /// different than the file specified in the request if the specified file is
+  /// a part file.
+  final SourceFileEdit edit;
+
+  ImportElementsResult(this.edit);
 }
 
 class SortMembersResult {
@@ -1780,6 +1967,131 @@ class IsEnabledResult {
   IsEnabledResult(this.enabled);
 }
 
+// kythe domain
+
+/// The kythe domain contains APIs related to generating Dart content in the
+/// (Kythe)[http://kythe.io/] format.
+@experimental
+class KytheDomain extends Domain {
+  KytheDomain(AnalysisServer server) : super(server, 'kythe');
+
+  /// Return the list of `KytheEntry` objects for some file, given the current
+  /// state of the file system populated by "analysis.updateContent".
+  ///
+  /// If a request is made for a file that does not exist, or that is not
+  /// currently subject to analysis (e.g. because it is not associated with any
+  /// analysis root specified to analysis.setAnalysisRoots), an error of type
+  /// `GET_KYTHE_ENTRIES_INVALID_FILE` will be generated.
+  Future<KytheEntriesResult> getKytheEntries(String file) {
+    Map m = {'file': file};
+    return _call('kythe.getKytheEntries', m).then(KytheEntriesResult.parse);
+  }
+}
+
+class KytheEntriesResult {
+  static KytheEntriesResult parse(Map m) => new KytheEntriesResult(
+      m['entries'] == null
+          ? null
+          : new List.from(m['entries'].map((obj) => KytheEntry.parse(obj))),
+      m['files'] == null ? null : new List.from(m['files']));
+
+  /// The list of `KytheEntry` objects for the queried file.
+  final List<KytheEntry> entries;
+
+  /// The set of files paths that were required, but not in the file system, to
+  /// give a complete and accurate Kythe graph for the file. This could be due
+  /// to a referenced file that does not exist or generated files not being
+  /// generated or passed before the call to "getKytheEntries".
+  final List<String> files;
+
+  KytheEntriesResult(this.entries, this.files);
+}
+
+// flutter domain
+
+/// The analysis domain contains API’s related to Flutter support.
+@experimental
+class FlutterDomain extends Domain {
+  FlutterDomain(AnalysisServer server) : super(server, 'flutter');
+
+  /// Reports the Flutter outline associated with a single file.
+  ///
+  /// This notification is not subscribed to by default. Clients can subscribe
+  /// by including the value `"OUTLINE"` in the list of services passed in an
+  /// flutter.setSubscriptions request.
+  Stream<FlutterOutlineEvent> get onOutline {
+    return _listen('flutter.outline', FlutterOutlineEvent.parse);
+  }
+
+  /// Return the change that adds the forDesignTime() constructor for the widget
+  /// class at the given offset.
+  Future<ChangeAddForDesignTimeConstructorResult>
+      getChangeAddForDesignTimeConstructor(String file, int offset) {
+    Map m = {'file': file, 'offset': offset};
+    return _call('flutter.getChangeAddForDesignTimeConstructor', m)
+        .then(ChangeAddForDesignTimeConstructorResult.parse);
+  }
+
+  /// Subscribe for services that are specific to individual files. All previous
+  /// subscriptions are replaced by the current set of subscriptions. If a given
+  /// service is not included as a key in the map then no files will be
+  /// subscribed to the service, exactly as if the service had been included in
+  /// the map with an explicit empty list of files.
+  ///
+  /// Note that this request determines the set of requested subscriptions. The
+  /// actual set of subscriptions at any given time is the intersection of this
+  /// set with the set of files currently subject to analysis. The files
+  /// currently subject to analysis are the set of files contained within an
+  /// actual analysis root but not excluded, plus all of the files transitively
+  /// reachable from those files via import, export and part directives. (See
+  /// analysis.setAnalysisRoots for an explanation of how the actual analysis
+  /// roots are determined.) When the actual analysis roots change, the actual
+  /// set of subscriptions is automatically updated, but the set of requested
+  /// subscriptions is unchanged.
+  ///
+  /// If a requested subscription is a directory it is ignored, but remains in
+  /// the set of requested subscriptions so that if it later becomes a file it
+  /// can be included in the set of actual subscriptions.
+  ///
+  /// It is an error if any of the keys in the map are not valid services. If
+  /// there is an error, then the existing subscriptions will remain unchanged.
+  Future setSubscriptions(Map<String, List<String>> subscriptions) =>
+      _call('flutter.setSubscriptions', {'subscriptions': subscriptions});
+}
+
+class FlutterOutlineEvent {
+  static FlutterOutlineEvent parse(Map m) =>
+      new FlutterOutlineEvent(m['file'], FlutterOutline.parse(m['outline']),
+          instrumentedCode: m['instrumentedCode']);
+
+  /// The file with which the outline is associated.
+  final String file;
+
+  /// The outline associated with the file.
+  final FlutterOutline outline;
+
+  /// If the file has Flutter widgets that can be rendered, this field has the
+  /// instrumented content of the file, that allows associating widgets with
+  /// corresponding outline nodes. If there are no widgets to render, this field
+  /// is absent.
+  @optional
+  final String instrumentedCode;
+
+  FlutterOutlineEvent(this.file, this.outline, {this.instrumentedCode});
+}
+
+class ChangeAddForDesignTimeConstructorResult {
+  static ChangeAddForDesignTimeConstructorResult parse(Map m) =>
+      new ChangeAddForDesignTimeConstructorResult(
+          SourceChange.parse(m['change']));
+
+  /// The change that adds the forDesignTime() constructor. If the change cannot
+  /// be produced, an error is returned.
+  final SourceChange change;
+
+  ChangeAddForDesignTimeConstructorResult(this.change);
+}
+
 // type definitions
 
 /// A directive to begin overlaying the contents of a file. The supplied content
@@ -1904,15 +2216,32 @@ class AnalysisOptions implements Jsonable {
         generateLints: m['generateLints']);
   }
 
+  /// **Deprecated:** this feature is always enabled.
+  ///
+  /// True if the client wants to enable support for the proposed async feature.
   @deprecated
   @optional
   final bool enableAsync;
+
+  /// **Deprecated:** this feature is always enabled.
+  ///
+  /// True if the client wants to enable support for the proposed deferred
+  /// loading feature.
   @deprecated
   @optional
   final bool enableDeferredLoading;
+
+  /// **Deprecated:** this feature is always enabled.
+  ///
+  /// True if the client wants to enable support for the proposed enum feature.
   @deprecated
   @optional
   final bool enableEnums;
+
+  /// **Deprecated:** this feature is always enabled.
+  ///
+  /// True if the client wants to enable support for the proposed "null aware
+  /// operators" feature.
   @deprecated
   @optional
   final bool enableNullAwareOperators;
@@ -2010,6 +2339,28 @@ class ChangeContentOverlay extends ContentOverlayType implements Jsonable {
   Map toMap() => _stripNullValues({'type': type, 'edits': edits});
 }
 
+/// A label that is associated with a range of code that may be useful to render
+/// at the end of the range to aid code readability. For example, a constructor
+/// call that spans multiple lines may result in a closing label to allow the
+/// constructor type/name to be rendered alongside the closing parenthesis.
+class ClosingLabel {
+  static ClosingLabel parse(Map m) {
+    if (m == null) return null;
+    return new ClosingLabel(m['offset'], m['length'], m['label']);
+  }
+
+  /// The offset of the construct being labelled.
+  final int offset;
+
+  /// The length of the whole construct to be labelled.
+  final int length;
+
+  /// The label associated with this range that should be displayed to the user.
+  final String label;
+
+  ClosingLabel(this.offset, this.length, this.label);
+}
+
 /// A suggestion for how to complete partially entered text. Many of the fields
 /// are optional, depending on the kind of element being suggested.
 class CompletionSuggestion implements Jsonable {
@@ -2023,6 +2374,7 @@ class CompletionSuggestion implements Jsonable {
         m['selectionLength'],
         m['isDeprecated'],
         m['isPotential'],
+        displayText: m['displayText'],
         docSummary: m['docSummary'],
         docComplete: m['docComplete'],
         declaringType: m['declaringType'],
@@ -2073,8 +2425,14 @@ class CompletionSuggestion implements Jsonable {
   /// if the type of the target is dynamic.
   final bool isPotential;
 
+  /// Text to be displayed in, for example, a completion pop-up. This field is
+  /// only defined if the displayed text should be different than the
+  /// completion. Otherwise it is omitted.
+  @optional
+  final String displayText;
+
   /// An abbreviated version of the Dartdoc associated with the element being
-  /// suggested, This field is omitted if there is no Dartdoc associated with
+  /// suggested. This field is omitted if there is no Dartdoc associated with
   /// the element.
   @optional
   final String docSummary;
@@ -2158,7 +2516,8 @@ class CompletionSuggestion implements Jsonable {
       this.selectionLength,
       this.isDeprecated,
       this.isPotential,
-      {this.docSummary,
+      {this.displayText,
+      this.docSummary,
       this.docComplete,
       this.declaringType,
       this.defaultArgumentListString,
@@ -2181,6 +2540,7 @@ class CompletionSuggestion implements Jsonable {
         'selectionLength': selectionLength,
         'isDeprecated': isDeprecated,
         'isPotential': isPotential,
+        'displayText': displayText,
         'docSummary': docSummary,
         'docComplete': docComplete,
         'declaringType': declaringType,
@@ -2294,6 +2654,59 @@ class Element implements Jsonable {
       '[Element kind: ${kind}, name: ${name}, flags: ${flags}]';
 }
 
+/// A declaration - top-level (class, field, etc) or a class member (method,
+/// field, etc).
+class ElementDeclaration {
+  static ElementDeclaration parse(Map m) {
+    if (m == null) return null;
+    return new ElementDeclaration(m['name'], m['kind'], m['fileIndex'],
+        m['offset'], m['line'], m['column'], m['codeOffset'], m['codeLength'],
+        className: m['className'], parameters: m['parameters']);
+  }
+
+  /// The name of the declaration.
+  final String name;
+
+  /// The kind of the element that corresponds to the declaration.
+  final String kind;
+
+  /// The index of the file (in the enclosing response).
+  final int fileIndex;
+
+  /// The offset of the declaration name in the file.
+  final int offset;
+
+  /// The one-based index of the line containing the declaration name.
+  final int line;
+
+  /// The one-based index of the column containing the declaration name.
+  final int column;
+
+  /// The offset of the first character of the declaration code in the file.
+  final int codeOffset;
+
+  /// The length of the declaration code in the file.
+  final int codeLength;
+
+  /// The name of the class enclosing this declaration. If the declaration is
+  /// not a class member, this field will be absent.
+  @optional
+  final String className;
+
+  /// The parameter list for the element. If the element is not a method or
+  /// function this field will not be defined. If the element doesn't have
+  /// parameters (e.g. getter), this field will not be defined. If the element
+  /// has zero parameters, this field will have a value of "()". The value
+  /// should not be treated as exact presentation of parameters, it is just
+  /// approximation of parameters to give the user general idea.
+  @optional
+  final String parameters;
+
+  ElementDeclaration(this.name, this.kind, this.fileIndex, this.offset,
+      this.line, this.column, this.codeOffset, this.codeLength,
+      {this.className, this.parameters});
+}
+
 /// A description of an executable file.
 class ExecutableFile {
   static ExecutableFile parse(Map m) {
@@ -2308,6 +2721,180 @@ class ExecutableFile {
   final String kind;
 
   ExecutableFile(this.file, this.kind);
+}
+
+/// An node in the Flutter specific outline structure of a file.
+@experimental
+class FlutterOutline {
+  static FlutterOutline parse(Map m) {
+    if (m == null) return null;
+    return new FlutterOutline(
+        m['kind'], m['offset'], m['length'], m['codeOffset'], m['codeLength'],
+        label: m['label'],
+        dartElement: Element.parse(m['dartElement']),
+        attributes: m['attributes'] == null
+            ? null
+            : new List.from(m['attributes']
+                .map((obj) => FlutterOutlineAttribute.parse(obj))),
+        className: m['className'],
+        parentAssociationLabel: m['parentAssociationLabel'],
+        variableName: m['variableName'],
+        children: m['children'] == null
+            ? null
+            : new List.from(
+                m['children'].map((obj) => FlutterOutline.parse(obj))),
+        id: m['id'],
+        isWidgetClass: m['isWidgetClass'],
+        renderConstructor: m['renderConstructor'],
+        stateClassName: m['stateClassName'],
+        stateOffset: m['stateOffset'],
+        stateLength: m['stateLength']);
+  }
+
+  /// The kind of the node.
+  final String kind;
+
+  /// The offset of the first character of the element. This is different than
+  /// the offset in the Element, which is the offset of the name of the element.
+  /// It can be used, for example, to map locations in the file back to an
+  /// outline.
+  final int offset;
+
+  /// The length of the element.
+  final int length;
+
+  /// The offset of the first character of the element code, which is neither
+  /// documentation, nor annotation.
+  final int codeOffset;
+
+  /// The length of the element code.
+  final int codeLength;
+
+  /// The text label of the node children of the node. It is provided for any
+  /// FlutterOutlineKind.GENERIC node, where better information is not
+  /// available.
+  @optional
+  final String label;
+
+  /// If this node is a Dart element, the description of it; omitted otherwise.
+  @optional
+  final Element dartElement;
+
+  /// Additional attributes for this node, which might be interesting to display
+  /// on the client. These attributes are usually arguments for the instance
+  /// creation or the invocation that created the widget.
+  @optional
+  final List<FlutterOutlineAttribute> attributes;
+
+  /// If the node creates a new class instance, or a reference to an instance,
+  /// this field has the name of the class.
+  @optional
+  final String className;
+
+  /// A short text description how this node is associated with the parent node.
+  /// For example "appBar" or "body" in Scaffold.
+  @optional
+  final String parentAssociationLabel;
+
+  /// If FlutterOutlineKind.VARIABLE, the name of the variable.
+  @optional
+  final String variableName;
+
+  /// The children of the node. The field will be omitted if the node has no
+  /// children.
+  @optional
+  final List<FlutterOutline> children;
+
+  /// If the node is a widget, and it is instrumented, the unique identifier of
+  /// this widget, that can be used to associate rendering information with this
+  /// node.
+  @optional
+  final int id;
+
+  /// True if the node is a widget class, so it can potentially be rendered,
+  /// even if it does not yet have the rendering constructor. This field is
+  /// omitted if the node is not a widget class.
+  @optional
+  final bool isWidgetClass;
+
+  /// If the node is a widget class that can be rendered for IDE, the name of
+  /// the constructor that should be used to instantiate the widget. Empty
+  /// string for default constructor. Absent if the node is not a widget class
+  /// that can be rendered.
+  @optional
+  final String renderConstructor;
+
+  /// If the node is a StatefulWidget, and its state class is defined in the
+  /// same file, the name of the state class.
+  @optional
+  final String stateClassName;
+
+  /// If the node is a StatefulWidget that can be rendered, and its state class
+  /// is defined in the same file, the offset of the state class code in the
+  /// file.
+  @optional
+  final int stateOffset;
+
+  /// If the node is a StatefulWidget that can be rendered, and its state class
+  /// is defined in the same file, the length of the state class code in the
+  /// file.
+  @optional
+  final int stateLength;
+
+  FlutterOutline(
+      this.kind, this.offset, this.length, this.codeOffset, this.codeLength,
+      {this.label,
+      this.dartElement,
+      this.attributes,
+      this.className,
+      this.parentAssociationLabel,
+      this.variableName,
+      this.children,
+      this.id,
+      this.isWidgetClass,
+      this.renderConstructor,
+      this.stateClassName,
+      this.stateOffset,
+      this.stateLength});
+}
+
+/// An attribute for a FlutterOutline.
+@experimental
+class FlutterOutlineAttribute {
+  static FlutterOutlineAttribute parse(Map m) {
+    if (m == null) return null;
+    return new FlutterOutlineAttribute(m['name'], m['label'],
+        literalValueBoolean: m['literalValueBoolean'],
+        literalValueInteger: m['literalValueInteger'],
+        literalValueString: m['literalValueString']);
+  }
+
+  /// The name of the attribute.
+  final String name;
+
+  /// The label of the attribute value, usually the Dart code. It might be quite
+  /// long, the client should abbreviate as needed.
+  final String label;
+
+  /// The boolean literal value of the attribute. This field is absent if the
+  /// value is not a boolean literal.
+  @optional
+  final bool literalValueBoolean;
+
+  /// The integer literal value of the attribute. This field is absent if the
+  /// value is not an integer literal.
+  @optional
+  final int literalValueInteger;
+
+  /// The string literal value of the attribute. This field is absent if the
+  /// value is not a string literal.
+  @optional
+  final String literalValueString;
+
+  FlutterOutlineAttribute(this.name, this.label,
+      {this.literalValueBoolean,
+      this.literalValueInteger,
+      this.literalValueString});
 }
 
 /// A description of a region that can be folded.
@@ -2474,6 +3061,97 @@ class ImplementedMember {
   final int length;
 
   ImplementedMember(this.offset, this.length);
+}
+
+/// A description of the elements that are referenced in a region of a file that
+/// come from a single imported library.
+class ImportedElements implements Jsonable {
+  static ImportedElements parse(Map m) {
+    if (m == null) return null;
+    return new ImportedElements(m['path'], m['prefix'],
+        m['elements'] == null ? null : new List.from(m['elements']));
+  }
+
+  /// The absolute and normalized path of the file containing the library.
+  final String path;
+
+  /// The prefix that was used when importing the library into the original
+  /// source.
+  final String prefix;
+
+  /// The names of the elements imported from the library.
+  final List<String> elements;
+
+  ImportedElements(this.path, this.prefix, this.elements);
+
+  Map toMap() =>
+      _stripNullValues({'path': path, 'prefix': prefix, 'elements': elements});
+}
+
+/// This object matches the format and documentation of the Entry object
+/// documented in the (Kythe Storage
+/// Model)[https://kythe.io/docs/kythe-storage.html#_entry].
+class KytheEntry {
+  static KytheEntry parse(Map m) {
+    if (m == null) return null;
+    return new KytheEntry(KytheVName.parse(m['source']), m['fact'],
+        kind: m['kind'],
+        target: KytheVName.parse(m['target']),
+        value: m['value'] == null ? null : new List.from(m['value']));
+  }
+
+  /// The ticket of the source node.
+  final KytheVName source;
+
+  /// A fact label. The schema defines which fact labels are meaningful.
+  final String fact;
+
+  /// An edge label. The schema defines which labels are meaningful.
+  @optional
+  final String kind;
+
+  /// The ticket of the target node.
+  @optional
+  final KytheVName target;
+
+  /// The `String` value of the fact.
+  @optional
+  final List<int> value;
+
+  KytheEntry(this.source, this.fact, {this.kind, this.target, this.value});
+}
+
+/// This object matches the format and documentation of the Vector-Name object
+/// documented in the (Kythe Storage
+/// Model)[https://kythe.io/docs/kythe-storage.html#_a_id_termvname_a_vector_name_strong_vname_strong].
+class KytheVName {
+  static KytheVName parse(Map m) {
+    if (m == null) return null;
+    return new KytheVName(
+        m['signature'], m['corpus'], m['root'], m['path'], m['language']);
+  }
+
+  /// An opaque signature generated by the analyzer.
+  final String signature;
+
+  /// The corpus of source code this `KytheVName` belongs to. Loosely, a corpus
+  /// is a collection of related files, such as the contents of a given source
+  /// repository.
+  final String corpus;
+
+  /// A corpus-specific root label, typically a directory path or project
+  /// identifier, denoting a distinct subset of the corpus. This may also be
+  /// used to designate virtual collections like generated files.
+  final String root;
+
+  /// A path-structured label describing the “location” of the named object
+  /// relative to the corpus and the root.
+  final String path;
+
+  /// The language this name belongs to.
+  final String language;
+
+  KytheVName(this.signature, this.corpus, this.root, this.path, this.language);
 }
 
 /// A collection of positions that should be linked (edited simultaneously) for
@@ -2764,6 +3442,26 @@ class Position {
   String toString() => '[Position file: ${file}, offset: ${offset}]';
 }
 
+/// The description of a postfix completion template.
+class PostfixTemplateDescriptor {
+  static PostfixTemplateDescriptor parse(Map m) {
+    if (m == null) return null;
+    return new PostfixTemplateDescriptor(m['name'], m['key'], m['example']);
+  }
+
+  /// The template name, shown in the UI.
+  final String name;
+
+  /// The unique template key, not shown in the UI.
+  final String key;
+
+  /// A short example of the transformation performed when the template is
+  /// applied.
+  final String example;
+
+  PostfixTemplateDescriptor(this.name, this.key, this.example);
+}
+
 /// An indication of the current state of pub execution.
 class PubStatus {
   static PubStatus parse(Map m) {
@@ -2903,7 +3601,8 @@ class SourceChange {
             ? null
             : new List.from(
                 m['linkedEditGroups'].map((obj) => LinkedEditGroup.parse(obj))),
-        selection: Position.parse(m['selection']));
+        selection: Position.parse(m['selection']),
+        id: m['id']);
   }
 
   /// A human-readable description of the change to be applied.
@@ -2920,8 +3619,13 @@ class SourceChange {
   @optional
   final Position selection;
 
+  /// The optional identifier of the change kind. The identifier remains stable
+  /// even if the message changes, or is parameterized.
+  @optional
+  final String id;
+
   SourceChange(this.message, this.edits, this.linkedEditGroups,
-      {this.selection});
+      {this.selection, this.id});
 
   String toString() =>
       '[SourceChange message: ${message}, edits: ${edits}, linkedEditGroups: ${linkedEditGroups}]';
@@ -2988,6 +3692,7 @@ class SourceFileEdit {
   /// did not exist and should be created. The client may use this field to make
   /// sure that the file was not changed since then, so it is safe to apply the
   /// change.
+  @deprecated
   final int fileStamp;
 
   /// A list of the edits used to effect the change.
@@ -2995,8 +3700,7 @@ class SourceFileEdit {
 
   SourceFileEdit(this.file, this.fileStamp, this.edits);
 
-  String toString() =>
-      '[SourceFileEdit file: ${file}, fileStamp: ${fileStamp}, edits: ${edits}]';
+  String toString() => '[SourceFileEdit file: ${file}, edits: ${edits}]';
 }
 
 /// A representation of a class in a type hierarchy.
@@ -3060,6 +3764,7 @@ class Refactorings {
   static const String CONVERT_METHOD_TO_GETTER = 'CONVERT_METHOD_TO_GETTER';
   static const String EXTRACT_LOCAL_VARIABLE = 'EXTRACT_LOCAL_VARIABLE';
   static const String EXTRACT_METHOD = 'EXTRACT_METHOD';
+  static const String EXTRACT_WIDGET = 'EXTRACT_WIDGET';
   static const String INLINE_LOCAL_VARIABLE = 'INLINE_LOCAL_VARIABLE';
   static const String INLINE_METHOD = 'INLINE_METHOD';
   static const String MOVE_FILE = 'MOVE_FILE';
@@ -3129,6 +3834,18 @@ class ExtractMethodRefactoringOptions extends RefactoringOptions {
         'parameters': parameters,
         'extractAll': extractAll
       });
+}
+
+/// Create a new class that extends StatelessWidget, whose build() method is the
+/// widget creation expression, or a method returning a Flutter widget, at the
+/// specified offset.
+class ExtractWidgetRefactoringOptions extends RefactoringOptions {
+  /// The name that the widget class should be given.
+  final String name;
+
+  ExtractWidgetRefactoringOptions({this.name});
+
+  Map toMap() => _stripNullValues({'name': name});
 }
 
 /// Inline a method in place of one or all references to that method.
@@ -3334,7 +4051,8 @@ class RenameFeedback extends RefactoringFeedback {
   static RenameFeedback parse(Map m) => new RenameFeedback(
       m['offset'], m['length'], m['elementKindName'], m['oldName']);
 
-  /// The offset to the beginning of the name selected to be renamed.
+  /// The offset to the beginning of the name selected to be renamed, or -1 if
+  /// the name does not exist yet.
   final int offset;
 
   /// The length of the name selected to be renamed.

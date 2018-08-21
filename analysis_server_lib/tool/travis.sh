@@ -8,14 +8,13 @@
 set -e
 
 # Verify the library re-generates.
-dart -c tool/generate_analysis.dart
+dart --enable-asserts tool/generate_analysis.dart
 
 # Verify that the libraries are error free.
-dartanalyzer --fatal-warnings \
-  tool/generate_analysis.dart \
-  tool/analysis_tester.dart \
-  lib/analysis_server_lib.dart \
-  test/domains/*_test.dart
+dartanalyzer --fatal-warnings .
 
 # Run the tests.
 pub run test
+
+# Run a basic smoke test.
+dart tool/analysis_tester.dart

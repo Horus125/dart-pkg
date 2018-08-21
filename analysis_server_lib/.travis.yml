@@ -1,3 +1,8 @@
 language: dart
-sudo: false
+dart:
+  - dev
 script: ./tool/travis.sh
+
+branches:
+  only:
+    - master
