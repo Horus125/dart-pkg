@@ -1,3 +1,11 @@
+#### 5.0.6
+
+* Dart 2 fixes for `RecordingFile.open()`
+
+#### 5.0.5
+
+* Dart 2 fixes
+
 #### 5.0.4
 
 * Update SDK constraint to 2.0.0-dev.67.0, remove workaround in
