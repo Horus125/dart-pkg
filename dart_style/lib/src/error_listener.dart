@@ -13,6 +13,10 @@ class ErrorListener implements AnalysisErrorListener {
   final _errors = <AnalysisError>[];
 
   void onError(AnalysisError error) {
+    // Fasta produces some semantic errors, which we want to ignore so that
+    // users can format code containing static errors.
+    if (error.errorCode.type != ErrorType.SYNTACTIC_ERROR) return;
+
     _errors.add(error);
   }
 

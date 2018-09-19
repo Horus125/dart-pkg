@@ -1,3 +1,14 @@
+# 1.2.0
+
+* Add `--stdin-name` to specify name shown when reading from stdin (#739).
+* Add `--fix-doc-comments` to turn `/** ... */` doc comments into `///` (#730).
+* Add support for new mixin syntax (#727).
+* Remove `const` in all metadata annotations with --fix-optional-const` (#720).
+
+# 1.1.4
+
+* Internal changes to support using the new common front end for parsing.
+
 # 1.1.3
 
 * Preserve whitespace in multi-line strings inside string interpolations (#711).
