@@ -8,32 +8,29 @@ import 'package:petitparser/src/core/parser.dart';
 ///
 /// For example, `any()` succeeds and consumes any given letter. It only
 /// fails for an empty input.
-Parser any([String message = 'input expected']) {
-  return new AnyParser(message);
+Parser<String> any([String message = 'input expected']) {
+  return AnyParser(message);
 }
 
 /// A parser that accepts any input element.
-class AnyParser extends Parser {
-  final String _message;
+class AnyParser extends Parser<String> {
+  final String message;
 
-  AnyParser(this._message);
+  AnyParser(this.message);
 
   @override
-  Result parseOn(Context context) {
-    var position = context.position;
-    var buffer = context.buffer;
+  Result<String> parseOn(Context context) {
+    final position = context.position;
+    final buffer = context.buffer;
     return position < buffer.length
         ? context.success(buffer[position], position + 1)
-        : context.failure(_message);
+        : context.failure(message);
   }
 
   @override
-  Parser copy() => new AnyParser(_message);
+  AnyParser copy() => AnyParser(message);
 
   @override
-  bool hasEqualProperties(Parser other) {
-    return other is AnyParser &&
-        super.hasEqualProperties(other) &&
-        _message == other._message;
-  }
+  bool hasEqualProperties(AnyParser other) =>
+      super.hasEqualProperties(other) && message == other.message;
 }

@@ -48,7 +48,7 @@ abstract class XmlGrammarDefinition<TNode, TName>
 
   @override
   Parser document() => super.document().map((each) {
-        var nodes = [];
+        final nodes = [];
         nodes.addAll(each[0]);
         if (each[1] != null) {
           nodes.add(each[1]);
@@ -56,22 +56,19 @@ abstract class XmlGrammarDefinition<TNode, TName>
         nodes.addAll(each[2]);
         nodes.add(each[3]);
         nodes.addAll(each[4]);
-        return createDocument(new List<TNode>.from(nodes));
+        return createDocument(List<TNode>.from(nodes));
       });
 
   @override
   Parser element() => super.element().map((list) {
         if (list[4] == XmlToken.closeEndElement) {
-          return createElement(
-              list[1] as TName, new List<TNode>.from(list[2]), []);
+          return createElement(list[1] as TName, List<TNode>.from(list[2]), []);
         } else {
           if (list[1] == list[4][3]) {
-            return createElement(
-                list[1] as TName,
-                new List<TNode>.from(list[2]),
-                new List<TNode>.from(list[4][1]));
+            return createElement(list[1] as TName, List<TNode>.from(list[2]),
+                List<TNode>.from(list[4][1]));
           } else {
-            throw new ArgumentError(
+            throw ArgumentError(
                 'Expected </${list[1]}>, but found </${list[4][3]}>');
           }
         }
@@ -82,11 +79,12 @@ abstract class XmlGrammarDefinition<TNode, TName>
       super.processing().map((each) => createProcessing(each[1], each[2]));
 
   @override
-  Parser qualified() => super.qualified().map(createQualified);
+  Parser qualified() => super.qualified().cast<String>().map(createQualified);
 
   @override
-  Parser characterData() => super.characterData().map(createText);
+  Parser characterData() =>
+      super.characterData().cast<String>().map(createText);
 
   @override
-  Parser spaceText() => super.spaceText().map(createText);
+  Parser spaceText() => super.spaceText().cast<String>().map(createText);
 }

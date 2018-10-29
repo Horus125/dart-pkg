@@ -10,20 +10,18 @@ class Context {
   const Context(this.buffer, this.position);
 
   /// The buffer we are working on.
-  final buffer;
+  final String buffer;
 
   /// The current position in the buffer.
   final int position;
 
   /// Returns a result indicating a parse success.
-  Result success(result, [int position]) {
-    return new Success(buffer, position ?? this.position, result);
-  }
+  Result<R> success<R>(R result, [int position]) =>
+      Success<R>(buffer, position ?? this.position, result);
 
   /// Returns a result indicating a parse failure.
-  Result failure(String message, [int position]) {
-    return new Failure(buffer, position ?? this.position, message);
-  }
+  Result<R> failure<R>(String message, [int position]) =>
+      Failure<R>(buffer, position ?? this.position, message);
 
   /// Returns a human readable string of the current context.
   @override

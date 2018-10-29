@@ -8,24 +8,24 @@ import 'package:petitparser/src/core/repeaters/unbounded.dart';
 
 /// A greedy parser that repeatedly parses between 'min' and 'max' instances of
 /// its delegate.
-class PossessiveRepeatingParser extends RepeatingParser {
-  PossessiveRepeatingParser(Parser parser, int min, int max)
+class PossessiveRepeatingParser<T> extends RepeatingParser<T> {
+  PossessiveRepeatingParser(Parser<T> parser, int min, int max)
       : super(parser, min, max);
 
   @override
-  Result parseOn(Context context) {
+  Result<List<T>> parseOn(Context context) {
     var current = context;
-    var elements = [];
+    final elements = <T>[];
     while (elements.length < min) {
-      var result = delegate.parseOn(current);
+      final result = delegate.parseOn(current);
       if (result.isFailure) {
-        return result;
+        return result.failure(result.message);
       }
       elements.add(result.value);
       current = result;
     }
     while (max == unbounded || elements.length < max) {
-      var result = delegate.parseOn(current);
+      final result = delegate.parseOn(current);
       if (result.isFailure) {
         return current.success(elements);
       }
@@ -36,5 +36,6 @@ class PossessiveRepeatingParser extends RepeatingParser {
   }
 
   @override
-  Parser copy() => new PossessiveRepeatingParser(delegate, min, max);
+  PossessiveRepeatingParser<T> copy() =>
+      PossessiveRepeatingParser<T>(delegate, min, max);
 }

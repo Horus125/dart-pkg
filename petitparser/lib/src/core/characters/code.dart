@@ -5,9 +5,9 @@ int toCharCode(Object element) {
   if (element is num) {
     return element.round();
   }
-  var value = element.toString();
+  final value = element.toString();
   if (value.length != 1) {
-    throw new ArgumentError('"$value" is not a character');
+    throw ArgumentError('"$value" is not a character');
   }
   return value.codeUnitAt(0);
 }
@@ -15,13 +15,13 @@ int toCharCode(Object element) {
 /// Converts a character to a readable string.
 String toReadableString(Object element) {
   if (element is String && element.length > 1) {
-    StringBuffer buffer = new StringBuffer();
+    final buffer = StringBuffer();
     for (var i = 0; i < element.length; i++) {
       buffer.write(toReadableString(element[i]));
     }
     return buffer.toString();
   }
-  var code = toCharCode(element);
+  final code = toCharCode(element);
   switch (code) {
     case 0x08:
       return '\\b'; // backspace
@@ -45,5 +45,5 @@ String toReadableString(Object element) {
   if (code < 0x20) {
     return '\\x${code.toRadixString(16).padLeft(2, '0')}';
   }
-  return new String.fromCharCode(code);
+  return String.fromCharCode(code);
 }

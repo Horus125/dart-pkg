@@ -20,7 +20,7 @@ class Reference extends Parser {
         return false;
       }
       for (var i = 0; i < arguments.length; i++) {
-        var a = arguments[i], b = other.arguments[i];
+        final a = arguments[i], b = other.arguments[i];
         if (a is Parser && a is! Reference && b is Parser && b is! Reference) {
           // for parsers do a deep equality check
           if (!a.isEqualTo(b)) {
@@ -42,9 +42,9 @@ class Reference extends Parser {
   int get hashCode => function.hashCode;
 
   @override
-  Parser copy() => throw new UnsupportedError('References cannot be copied.');
+  Reference copy() => throw UnsupportedError('References cannot be copied.');
 
   @override
   Result parseOn(Context context) =>
-      throw new UnsupportedError('References cannot be parsed.');
+      throw UnsupportedError('References cannot be parsed.');
 }

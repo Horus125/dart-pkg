@@ -9,25 +9,25 @@ import 'package:petitparser/src/core/repeaters/unbounded.dart';
 /// A greedy repeating parser, commonly seen in regular expression implementations. It
 /// aggressively consumes as much input as possible and then backtracks to meet the
 /// 'limit' condition.
-class GreedyRepeatingParser extends LimitedRepeatingParser {
-  GreedyRepeatingParser(Parser parser, Parser limit, int min, int max)
+class GreedyRepeatingParser<T> extends LimitedRepeatingParser<T> {
+  GreedyRepeatingParser(Parser<T> parser, Parser limit, int min, int max)
       : super(parser, limit, min, max);
 
   @override
-  Result parseOn(Context context) {
+  Result<List<T>> parseOn(Context context) {
     var current = context;
-    var elements = [];
+    final elements = <T>[];
     while (elements.length < min) {
-      var result = delegate.parseOn(current);
+      final result = delegate.parseOn(current);
       if (result.isFailure) {
-        return result;
+        return result.failure(result.message);
       }
       elements.add(result.value);
       current = result;
     }
-    List<Context> contexts = new List.from([current]);
+    final contexts = <Context>[current];
     while (max == unbounded || elements.length < max) {
-      var result = delegate.parseOn(current);
+      final result = delegate.parseOn(current);
       if (result.isFailure) {
         break;
       }
@@ -35,21 +35,22 @@ class GreedyRepeatingParser extends LimitedRepeatingParser {
       contexts.add(current = result);
     }
     for (;;) {
-      var limiter = limit.parseOn(contexts.last);
+      final limiter = limit.parseOn(contexts.last);
       if (limiter.isSuccess) {
         return contexts.last.success(elements);
       }
       if (elements.isEmpty) {
-        return limiter;
+        return limiter.failure(limiter.message);
       }
       contexts.removeLast();
       elements.removeLast();
       if (contexts.isEmpty) {
-        return limiter;
+        return limiter.failure(limiter.message);
       }
     }
   }
 
   @override
-  Parser copy() => new GreedyRepeatingParser(delegate, limit, min, max);
+  GreedyRepeatingParser<T> copy() =>
+      GreedyRepeatingParser<T>(delegate, limit, min, max);
 }

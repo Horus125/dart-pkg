@@ -8,7 +8,12 @@ import 'dart:typed_data';
 
 import 'base_client.dart';
 import 'base_request.dart';
-import 'io_client.dart';
+// ignore: uri_does_not_exist
+import 'client_stub.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.html) 'browser_client.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.io) 'io_client.dart';
 import 'response.dart';
 import 'streamed_response.dart';
 
@@ -24,10 +29,10 @@ import 'streamed_response.dart';
 abstract class Client {
   /// Creates a new client.
   ///
-  /// Currently this will create an [IOClient] if `dart:io` is available and
-  /// throw an [UnsupportedError] otherwise. In the future, it will create a
-  /// [BrowserClient] if `dart:html` is available.
-  factory Client() => new IOClient();
+  /// Currently this will create an `IOClient` if `dart:io` is available and
+  /// a `BrowserClient` if `dart:html` is available, otherwise it will throw
+  /// an unsupported error.
+  factory Client() => createClient();
 
   /// Sends an HTTP HEAD request with the given headers to the given URL, which
   /// can be a [Uri] or a [String].
@@ -59,8 +64,8 @@ abstract class Client {
   /// [encoding] defaults to [utf8].
   ///
   /// For more fine-grained control over the request, use [send] instead.
-  Future<Response> post(url, {Map<String, String> headers, body,
-      Encoding encoding});
+  Future<Response> post(url,
+      {Map<String, String> headers, body, Encoding encoding});
 
   /// Sends an HTTP PUT request with the given headers and body to the given
   /// URL, which can be a [Uri] or a [String].
@@ -80,8 +85,8 @@ abstract class Client {
   /// [encoding] defaults to [utf8].
   ///
   /// For more fine-grained control over the request, use [send] instead.
-  Future<Response> put(url, {Map<String, String> headers, body,
-      Encoding encoding});
+  Future<Response> put(url,
+      {Map<String, String> headers, body, Encoding encoding});
 
   /// Sends an HTTP PATCH request with the given headers and body to the given
   /// URL, which can be a [Uri] or a [String].
@@ -101,8 +106,8 @@ abstract class Client {
   /// [encoding] defaults to [utf8].
   ///
   /// For more fine-grained control over the request, use [send] instead.
-  Future<Response> patch(url, {Map<String, String> headers, body,
-      Encoding encoding});
+  Future<Response> patch(url,
+      {Map<String, String> headers, body, Encoding encoding});
 
   /// Sends an HTTP DELETE request with the given headers to the given URL,
   /// which can be a [Uri] or a [String].

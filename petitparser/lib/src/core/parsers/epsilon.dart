@@ -8,24 +8,21 @@ import 'package:petitparser/src/core/parser.dart';
 ///
 /// For example, `char('a').or(epsilon())` is equivalent to
 /// `char('a').optional()`.
-Parser epsilon([result]) => new EpsilonParser(result);
+Parser epsilon([result]) => EpsilonParser(result);
 
 /// A parser that consumes nothing and succeeds.
-class EpsilonParser extends Parser {
-  final _result;
+class EpsilonParser<T> extends Parser<T> {
+  final T result;
 
-  EpsilonParser(this._result);
-
-  @override
-  Result parseOn(Context context) => context.success(_result);
+  EpsilonParser(this.result);
 
   @override
-  Parser copy() => new EpsilonParser(_result);
+  Result<T> parseOn(Context context) => context.success(result);
 
   @override
-  bool hasEqualProperties(Parser other) {
-    return other is EpsilonParser &&
-        super.hasEqualProperties(other) &&
-        _result == other._result;
-  }
+  EpsilonParser<T> copy() => EpsilonParser<T>(result);
+
+  @override
+  bool hasEqualProperties(EpsilonParser<T> other) =>
+      super.hasEqualProperties(other) && result == other.result;
 }

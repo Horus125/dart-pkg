@@ -18,7 +18,7 @@ external void _postParentMessage(Object message, String targetOrigin);
 /// Constructs a [StreamChannel] wrapping `postMessage` communication with the
 /// host page.
 StreamChannel postMessageChannel() {
-  var controller = new StreamChannelController(sync: true);
+  var controller = StreamChannelController(sync: true);
 
   window.onMessage.listen((message) {
     // A message on the Window can theoretically come from any website. It's
@@ -35,6 +35,13 @@ StreamChannel postMessageChannel() {
     // TODO(nweiz): Stop manually adding href here once issue 22554 is
     // fixed.
     _postParentMessage(jsify({"href": window.location.href, "data": data}),
+        window.location.origin);
+  }, onDone: () {
+    _postParentMessage(
+        jsify({
+          "href": window.location.href,
+          "event": "done",
+        }),
         window.location.origin);
   });
 

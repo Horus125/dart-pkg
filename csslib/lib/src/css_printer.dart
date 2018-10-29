@@ -294,7 +294,10 @@ class CssPrinter extends Visitor {
       if (i > 0) emit(_newLine);
       emit("$_sp$_sp");
       declarations[i].visit(this);
-      emit(";");
+      // Don't emit the last semicolon in compact mode.
+      if (prettyPrint || i < declarationsLength - 1) {
+        emit(';');
+      }
     }
     if (declarationsLength > 0) emit(_newLine);
   }
@@ -548,7 +551,16 @@ class CssPrinter extends Visitor {
       var expression = expressions[i];
       if (i > 0 &&
           !(expression is OperatorComma || expression is OperatorSlash)) {
-        emit(' ');
+        // If the previous expression is an operator, use `_sp` so the space is
+        // collapsed when emitted in compact mode. If the previous expression
+        // isn't an operator, the space is significant to delimit the two
+        // expressions and can't be collapsed.
+        var previous = expressions[i - 1];
+        if (previous is OperatorComma || previous is OperatorSlash) {
+          emit(_sp);
+        } else {
+          emit(' ');
+        }
       }
       expression.visit(this);
     }

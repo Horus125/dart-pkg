@@ -8,12 +8,16 @@ import 'package:petitparser/src/core/parser.dart';
 /// The token holds the resulting value of the input, the input buffer,
 /// and the start and stop position in the input buffer. It provides many
 /// convenience methods to access the state of the token.
-class Token {
+class Token<T> {
+  /// Constructs a token from the parsed value, the input buffer, and the
+  /// start and stop position in the input buffer.
+  const Token(this.value, this.buffer, this.start, this.stop);
+
   /// The parsed value of the token.
-  final value;
+  final T value;
 
   /// The parsed buffer of the token.
-  final buffer;
+  final String buffer;
 
   /// The start position of the token in the buffer.
   final int start;
@@ -21,14 +25,8 @@ class Token {
   /// The stop position of the token in the buffer.
   final int stop;
 
-  /// Constructs a token from the parsed value, the input buffer, and the
-  /// start and stop position in the input buffer.
-  const Token(this.value, this.buffer, this.start, this.stop);
-
   /// The consumed input of the token.
-  get input => buffer is String
-      ? buffer.substring(start, stop)
-      : buffer.sublist(start, stop);
+  String get input => buffer.substring(start, stop);
 
   /// The length of the token.
   int get length => stop - start;
@@ -62,7 +60,7 @@ class Token {
   /// Converts the [position] index in a [buffer] to a line and column tuple.
   static List<int> lineAndColumnOf(String buffer, int position) {
     var line = 1, offset = 0;
-    for (Token token in newlineParser().token().matchesSkipping(buffer)) {
+    for (var token in newlineParser().token().matchesSkipping(buffer)) {
       if (position < token.stop) {
         return [line, position - offset + 1];
       }
@@ -73,12 +71,8 @@ class Token {
   }
 
   /// Returns a human readable string representing the [position] index in a [buffer].
-  static String positionString(buffer, int position) {
-    if (buffer is String) {
-      var lineAndColumn = Token.lineAndColumnOf(buffer, position);
-      return '${lineAndColumn[0]}:${lineAndColumn[1]}';
-    } else {
-      return '$position';
-    }
+  static String positionString(String buffer, int position) {
+    final lineAndColumn = lineAndColumnOf(buffer, position);
+    return '${lineAndColumn[0]}:${lineAndColumn[1]}';
   }
 }

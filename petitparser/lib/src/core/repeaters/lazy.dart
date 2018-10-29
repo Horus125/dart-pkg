@@ -8,33 +8,33 @@ import 'package:petitparser/src/core/repeaters/unbounded.dart';
 
 /// A lazy repeating parser, commonly seen in regular expression implementations. It
 /// limits its consumption to meet the 'limit' condition as early as possible.
-class LazyRepeatingParser extends LimitedRepeatingParser {
-  LazyRepeatingParser(Parser parser, Parser limit, int min, int max)
+class LazyRepeatingParser<T> extends LimitedRepeatingParser<T> {
+  LazyRepeatingParser(Parser<T> parser, Parser limit, int min, int max)
       : super(parser, limit, min, max);
 
   @override
-  Result parseOn(Context context) {
+  Result<List<T>> parseOn(Context context) {
     var current = context;
-    var elements = [];
+    final elements = <T>[];
     while (elements.length < min) {
-      var result = delegate.parseOn(current);
+      final result = delegate.parseOn(current);
       if (result.isFailure) {
-        return result;
+        return result.failure(result.message);
       }
       elements.add(result.value);
       current = result;
     }
     for (;;) {
-      var limiter = limit.parseOn(current);
+      final limiter = limit.parseOn(current);
       if (limiter.isSuccess) {
         return current.success(elements);
       } else {
         if (max != unbounded && elements.length >= max) {
-          return limiter;
+          return limiter.failure(limiter.message);
         }
-        var result = delegate.parseOn(current);
+        final result = delegate.parseOn(current);
         if (result.isFailure) {
-          return limiter;
+          return limiter.failure(limiter.message);
         }
         elements.add(result.value);
         current = result;
@@ -43,5 +43,6 @@ class LazyRepeatingParser extends LimitedRepeatingParser {
   }
 
   @override
-  Parser copy() => new LazyRepeatingParser(delegate, limit, min, max);
+  LazyRepeatingParser<T> copy() =>
+      LazyRepeatingParser<T>(delegate, limit, min, max);
 }

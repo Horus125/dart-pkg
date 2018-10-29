@@ -13,7 +13,7 @@ Grammars for programming languages are traditionally specified statically. They 
 
 This library is open source, stable and well tested. Development happens on [GitHub](https://github.com/petitparser/dart-petitparser). Feel free to report issues or create a pull-request there. General questions are best asked on [StackOverflow](http://stackoverflow.com/questions/tagged/petitparser+dart).
 
-Up-to-date [class documentation](http://www.dartdocs.org/documentation/petitparser/latest/index.html) is created with every release.
+The package is hosted on [dart packages](https://pub.dartlang.org/packages/petitparser). Up-to-date [API documentation](https://pub.dartlang.org/documentation/petitparser/latest/) is created with every release.
 
 
 Tutorial
@@ -21,7 +21,7 @@ Tutorial
 
 ### Installation
 
-Follow the _Installing_ instructions on https://pub.dartlang.org/packages/petitparser.
+Follow the installation instructions on [dart packages](https://pub.dartlang.org/packages/petitparser#-installing-tab-).
 
 Import the package into your Dart code using:
 
@@ -189,12 +189,12 @@ Misc
 
 The package comes with a large collection of example grammars and language experiments ready to explore:
 
-- `example/dart` contains an experimental Dart grammar.
-- `example/json` contains a complete JSON grammar and parser.
-- `example/lisp` contains a complete Lisp grammar, parser and evaluator:
-- `example/lisphell` contains a command line lisp interpreter.
-- `example/lispweb` contains a web based lisp interpreter.
-- `example/smalltalk` contains a complete Smalltalk grammar.
+- `example/lib/dart` contains an experimental Dart grammar.
+- `example/lib/json` contains a complete JSON grammar and parser.
+- `example/lib/lisp` contains a complete Lisp grammar, parser and evaluator:
+- `example/bin/lisphell` contains a command line lisp interpreter.
+- `example/bin/lispweb` contains a web based lisp interpreter.
+- `example/lib/smalltalk` contains a complete Smalltalk grammar.
 
 Furthermore, there are various open source projects using PetitParser:
 

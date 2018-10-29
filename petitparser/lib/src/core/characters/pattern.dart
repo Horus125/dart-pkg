@@ -10,28 +10,25 @@ import 'package:petitparser/src/core/parser.dart';
 import 'package:petitparser/src/core/predicates/any.dart';
 
 /// Returns a parser that accepts the given character class pattern.
-Parser pattern(String element, [String message]) {
-  return new CharacterParser(_patternParser.parse(element).value,
+Parser<String> pattern(String element, [String message]) {
+  return CharacterParser(pattern_.parse(element).value,
       message ?? '[${toReadableString(element)}] expected');
 }
 
-Parser _createPatternParser() {
-  var single = any().map((String element) {
-    return new RangeCharPredicate(toCharCode(element), toCharCode(element));
-  });
-  var range = any().seq(char('-')).seq(any()).map((List elements) {
-    return new RangeCharPredicate(
-        toCharCode(elements[0]), toCharCode(elements[2]));
-  });
-  var positive = range.or(single).plus().map((List predicates) {
-    return optimizedRanges(
-        new List<RangeCharPredicate>.from(predicates, growable: false));
-  });
-  return char('^').optional().seq(positive).map((List predicates) {
-    return predicates[0] == null
-        ? predicates[1]
-        : new NotCharacterPredicate(predicates[1]);
-  });
-}
+/// Parser that reads a single character.
+final single_ = any().map(
+    (element) => RangeCharPredicate(toCharCode(element), toCharCode(element)));
 
-final _patternParser = _createPatternParser();
+/// Parser that reads a character range.
+final range_ = any().seq(char('-')).seq(any()).map((List elements) =>
+    RangeCharPredicate(toCharCode(elements[0]), toCharCode(elements[2])));
+
+/// Parser that reads a sequence of single characters or ranges.
+final sequence_ = range_.or(single_).plus().map((List predicates) =>
+    optimizedRanges(predicates.cast<RangeCharPredicate>()));
+
+/// Parser that reads a possibly negated sequecne of predicates.
+final pattern_ = char('^').optional().seq(sequence_).map((List predicates) =>
+    predicates[0] == null
+        ? predicates[1]
+        : NotCharacterPredicate(predicates[1]));

@@ -1,6 +1,0 @@
-*.iml
-.DS_Store
-.dart_tool/
-.idea/
-.packages
-pubspec.lock

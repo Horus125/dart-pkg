@@ -5,15 +5,16 @@ import 'package:petitparser/src/core/characters/predicate.dart';
 import 'package:petitparser/src/core/characters/range.dart';
 import 'package:petitparser/src/core/characters/ranges.dart';
 
+/// Creates an optimized character from a string.
 CharacterPredicate optimizedString(String string) {
   return optimizedRanges(
-      string.codeUnits.map((value) => new RangeCharPredicate(value, value)));
+      string.codeUnits.map((value) => RangeCharPredicate(value, value)));
 }
 
+/// Creates an optimized predicate from a list of range predicates.
 CharacterPredicate optimizedRanges(Iterable<RangeCharPredicate> ranges) {
   // 1. sort the ranges
-  List<RangeCharPredicate> sortedRanges =
-      new List.from(ranges, growable: false);
+  final sortedRanges = List.of(ranges, growable: false);
   sortedRanges.sort((first, second) {
     return first.start != second.start
         ? first.start - second.start
@@ -21,15 +22,15 @@ CharacterPredicate optimizedRanges(Iterable<RangeCharPredicate> ranges) {
   });
 
   // 2. merge adjacent or overlapping ranges
-  List<RangeCharPredicate> mergedRanges = [];
+  final mergedRanges = <RangeCharPredicate>[];
   for (var thisRange in sortedRanges) {
     if (mergedRanges.isEmpty) {
       mergedRanges.add(thisRange);
     } else {
-      var lastRange = mergedRanges.last;
+      final lastRange = mergedRanges.last;
       if (lastRange.stop + 1 >= thisRange.start) {
-        var characterRange =
-            new RangeCharPredicate(lastRange.start, thisRange.stop);
+        final characterRange =
+            RangeCharPredicate(lastRange.start, thisRange.stop);
         mergedRanges[mergedRanges.length - 1] = characterRange;
       } else {
         mergedRanges.add(thisRange);
@@ -40,10 +41,10 @@ CharacterPredicate optimizedRanges(Iterable<RangeCharPredicate> ranges) {
   // 3. build the best resulting predicates
   if (mergedRanges.length == 1) {
     return mergedRanges[0].start == mergedRanges[0].stop
-        ? new SingleCharPredicate(mergedRanges[0].start)
+        ? SingleCharPredicate(mergedRanges[0].start)
         : mergedRanges[0];
   } else {
-    return new RangesCharPredicate(
+    return RangesCharPredicate(
         mergedRanges.length,
         mergedRanges.map((range) => range.start).toList(growable: false),
         mergedRanges.map((range) => range.stop).toList(growable: false));

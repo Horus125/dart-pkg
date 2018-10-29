@@ -19,16 +19,16 @@ abstract class Formatter {
 /// Returns a [Future] that completes as soon as all map entries have been
 /// emitted.
 class LcovFormatter implements Formatter {
-  final Resolver resolver;
-  final String basePath;
-  final List<String> reportOn;
-
   /// Creates a new LCOV formatter.
   ///
   /// If [reportOn] is provided, coverage report output is limited to files
   /// prefixed with one of the paths included. If [basePath] is provided, paths
   /// are reported relative to that path.
   LcovFormatter(this.resolver, {this.reportOn, this.basePath});
+
+  final Resolver resolver;
+  final String basePath;
+  final List<String> reportOn;
 
   @override
   Future<String> format(Map hitmap) async {
@@ -50,11 +50,12 @@ class LcovFormatter implements Formatter {
       }
 
       buf.write('SF:$source\n');
-      v.keys.toList()
-        ..sort()
-        ..forEach((int k) {
-          buf.write('DA:$k,${v[k]}\n');
-        });
+      final lines = v.keys.toList()..sort();
+      for (int k in lines) {
+        buf.write('DA:$k,${v[k]}\n');
+      }
+      buf.write('LF:${lines.length}\n');
+      buf.write('LH:${lines.where((k) => v[k] > 0).length}\n');
       buf.write('end_of_record\n');
     }
 
@@ -68,15 +69,15 @@ class LcovFormatter implements Formatter {
 /// Returns a [Future] that completes as soon as all map entries have been
 /// emitted.
 class PrettyPrintFormatter implements Formatter {
-  final Resolver resolver;
-  final Loader loader;
-  final List<String> reportOn;
-
   /// Creates a new pretty-print formatter.
   ///
   /// If [reportOn] is provided, coverage report output is limited to files
   /// prefixed with one of the paths included.
   PrettyPrintFormatter(this.resolver, this.loader, {this.reportOn});
+
+  final Resolver resolver;
+  final Loader loader;
+  final List<String> reportOn;
 
   @override
   Future<String> format(Map hitmap) async {

@@ -4,29 +4,30 @@ import 'package:petitparser/petitparser.dart';
 import 'package:xml/xml/utils/attribute_type.dart';
 
 // Hexadecimal character reference.
-final _entityHex = pattern('xX')
-    .seq(pattern('A-Fa-f0-9').plus().flatten().map((value) {
-      return new String.fromCharCode(int.parse(value, radix: 16));
-    }))
+final Parser<String> _entityHex = pattern('xX')
+    .seq(pattern('A-Fa-f0-9')
+        .plus()
+        .flatten()
+        .map((value) => String.fromCharCode(int.parse(value, radix: 16))))
     .pick(1);
 
 // Decimal character reference.
-final _entityDigit = char('#')
-    .seq(_entityHex.or(digit().plus().flatten().map((value) {
-      return new String.fromCharCode(int.parse(value));
-    })))
+final Parser<String> _entityDigit = char('#')
+    .seq(_entityHex.or(digit()
+        .plus()
+        .flatten()
+        .map((value) => String.fromCharCode(int.parse(value)))))
     .pick(1);
 
 // Named character reference.
-final _entity = char('&')
-    .seq(_entityDigit.or(word().plus().flatten().map((value) {
-      return entityToChar[value];
-    })))
+final Parser<String> _entity = char('&')
+    .seq(_entityDigit
+        .or(word().plus().flatten().map((value) => entityToChar[value])))
     .seq(char(';'))
     .pick(1);
 
 /// Optimized parser to read character data.
-class XmlCharacterDataParser extends Parser {
+class XmlCharacterDataParser extends Parser<String> {
   final String _stopper;
   final int _stopperCode;
   final int _minLength;
@@ -37,20 +38,20 @@ class XmlCharacterDataParser extends Parser {
         _minLength = minLength;
 
   @override
-  Result parseOn(Context context) {
-    var input = context.buffer as String;
-    var length = input.length;
-    var output = new StringBuffer();
+  Result<String> parseOn(Context context) {
+    final input = context.buffer;
+    final length = input.length;
+    final output = StringBuffer();
     var position = context.position;
     var start = position;
 
     // scan over the characters as fast as possible
     while (position < length) {
-      var value = input.codeUnitAt(position);
+      final value = input.codeUnitAt(position);
       if (value == _stopperCode) {
         break;
       } else if (value == 38) {
-        var result = _entity.parseOn(context.success(null, position));
+        final result = _entity.parseOn(context.success(null, position));
         if (result.isSuccess && result.value != null) {
           output.write(input.substring(start, position));
           output.write(result.value);
@@ -75,7 +76,13 @@ class XmlCharacterDataParser extends Parser {
   List<Parser> get children => [_entity];
 
   @override
-  Parser copy() => new XmlCharacterDataParser(_stopper, _minLength);
+  XmlCharacterDataParser copy() => XmlCharacterDataParser(_stopper, _minLength);
+
+  @override
+  bool hasEqualProperties(XmlCharacterDataParser other) =>
+      super.hasEqualProperties(other) &&
+      _stopper == other._stopper &&
+      _minLength == other._minLength;
 }
 
 /// Mapping from entity name to character.
@@ -345,7 +352,7 @@ typedef String ReplaceFunction(Match match);
 String encodeXmlText(String input) =>
     input.replaceAllMapped(_textPattern, _textReplace);
 
-final Pattern _textPattern = new RegExp(r'[&<]|]]>');
+final Pattern _textPattern = RegExp(r'[&<]|]]>');
 
 String _textReplace(Match match) {
   switch (match.group(0)) {
@@ -356,7 +363,7 @@ String _textReplace(Match match) {
     case ']]>':
       return ']]&gt;';
   }
-  throw new AssertionError();
+  throw AssertionError();
 }
 
 /// Encode a string to be serialized as an XML attribute value.
@@ -370,8 +377,8 @@ final Map<XmlAttributeType, String> attributeQuote = {
 };
 
 final Map<XmlAttributeType, Pattern> _attributePattern = {
-  XmlAttributeType.SINGLE_QUOTE: new RegExp(r"['&<\n\r\t]"),
-  XmlAttributeType.DOUBLE_QUOTE: new RegExp(r'["&<\n\r\t]')
+  XmlAttributeType.SINGLE_QUOTE: RegExp(r"['&<\n\r\t]"),
+  XmlAttributeType.DOUBLE_QUOTE: RegExp(r'["&<\n\r\t]')
 };
 
 final Map<XmlAttributeType, ReplaceFunction> _attributeReplace = {
@@ -390,7 +397,7 @@ final Map<XmlAttributeType, ReplaceFunction> _attributeReplace = {
       case '\t':
         return '&#x9;';
     }
-    throw new AssertionError();
+    throw AssertionError();
   },
   XmlAttributeType.DOUBLE_QUOTE: (match) {
     switch (match.group(0)) {
@@ -407,6 +414,6 @@ final Map<XmlAttributeType, ReplaceFunction> _attributeReplace = {
       case '\t':
         return '&#x9;';
     }
-    throw new AssertionError();
+    throw AssertionError();
   },
 };

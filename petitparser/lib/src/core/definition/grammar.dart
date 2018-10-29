@@ -66,33 +66,33 @@ abstract class GrammarDefinition {
   ///
   /// The optional arguments parametrize the called production.
   Parser ref(Function function, [arg1, arg2, arg3, arg4, arg5, arg6]) {
-    var arguments = [arg1, arg2, arg3, arg4, arg5, arg6]
+    final arguments = [arg1, arg2, arg3, arg4, arg5, arg6]
         .takeWhile((each) => each != null)
         .toList(growable: false);
-    return new Reference(function, arguments);
+    return Reference(function, arguments);
   }
 
   /// Builds a composite parser from this definition.
   ///
   /// The optional [start] reference specifies a different starting production into
   /// the grammar. The optional [arguments] list parametrizes the called production.
-  Parser build({Function start, List arguments: const []}) {
-    return _resolve(new Reference(start ?? this.start, arguments));
+  Parser build({Function start, List arguments = const []}) {
+    return _resolve(Reference(start ?? this.start, arguments));
   }
 
   /// Internal helper to resolve a complete parser graph.
   Parser _resolve(Reference reference) {
-    Map<Reference, Parser> mapping = {};
+    final mapping = <Reference, Parser>{};
 
     Parser _dereference(Reference reference) {
       var parser = mapping[reference];
       if (parser == null) {
-        var references = [reference];
+        final references = [reference];
         parser = reference.resolve();
         while (parser is Reference) {
-          var otherReference = parser as Reference;
+          final otherReference = parser as Reference;
           if (references.contains(otherReference)) {
-            throw new StateError('Recursive references detected: $references');
+            throw StateError('Recursive references detected: $references');
           }
           references.add(otherReference);
           parser = otherReference.resolve();
@@ -104,14 +104,14 @@ abstract class GrammarDefinition {
       return parser;
     }
 
-    var todo = [_dereference(reference)];
-    var seen = new Set.from(todo);
+    final todo = [_dereference(reference)];
+    final seen = Set.of(todo);
 
     while (todo.isNotEmpty) {
-      var parent = todo.removeLast();
+      final parent = todo.removeLast();
       for (var child in parent.children) {
         if (child is Reference) {
-          var referenced = _dereference(child);
+          final referenced = _dereference(child);
           parent.replace(child, referenced);
           child = referenced;
         }

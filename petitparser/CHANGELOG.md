@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0
+
+* Make parsers fully typed, where it makes sense. 
+  * In most cases this should have no effect on existing code, but sometimes can point out actual bugs. 
+  * In rare cases, it might be necessary to insert `cast<R>` or `castList<R>` at the appropriate places.
+* Move examples into their own example package.
+
+## 1.8.0
+
+* Drop Dart 1.0 compatibility.
+
 ## 1.7.6
 
 * More Dart 2 strong mode fixes.

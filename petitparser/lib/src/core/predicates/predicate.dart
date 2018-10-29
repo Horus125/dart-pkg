@@ -6,49 +6,50 @@ import 'package:petitparser/src/core/parser.dart';
 
 /// A generic predicate function returning `true` or `false` for a given
 /// [input] argument.
-typedef bool Predicate(input);
+typedef bool Predicate(String input);
 
 /// Returns a parser that reads input of the specified [length], accepts
 /// it if the [predicate] matches, or fails with the given [message].
-Parser predicate(int length, Predicate predicate, String message) {
-  return new PredicateParser(length, predicate, message);
+Parser<String> predicate(int length, Predicate predicate, String message) {
+  return PredicateParser(length, predicate, message);
 }
 
 /// A parser for a literal satisfying a predicate.
-class PredicateParser extends Parser {
-  final int _length;
-  final Predicate _predicate;
-  final String _message;
+class PredicateParser extends Parser<String> {
+  /// The length of the input to read.
+  final int length;
 
-  PredicateParser(this._length, this._predicate, this._message);
+  /// The predicate function testing the input.
+  final Predicate predicate;
+
+  /// The failure message in case of a miss-match.
+  final String message;
+
+  PredicateParser(this.length, this.predicate, this.message);
 
   @override
-  Result parseOn(Context context) {
+  Result<String> parseOn(Context context) {
     final start = context.position;
-    final stop = start + _length;
+    final stop = start + length;
     if (stop <= context.buffer.length) {
-      var result = context.buffer is String
-          ? context.buffer.substring(start, stop)
-          : context.buffer.sublist(start, stop);
-      if (_predicate(result)) {
+      final result = context.buffer.substring(start, stop);
+      if (predicate(result)) {
         return context.success(result, stop);
       }
     }
-    return context.failure(_message);
+    return context.failure(message);
   }
 
   @override
-  String toString() => '${super.toString()}[$_message]';
+  String toString() => '${super.toString()}[$message]';
 
   @override
-  Parser copy() => new PredicateParser(_length, _predicate, _message);
+  PredicateParser copy() => PredicateParser(length, predicate, message);
 
   @override
-  bool hasEqualProperties(Parser other) {
-    return other is PredicateParser &&
-        super.hasEqualProperties(other) &&
-        _length == other._length &&
-        _predicate == other._predicate &&
-        _message == other._message;
-  }
+  bool hasEqualProperties(PredicateParser other) =>
+      super.hasEqualProperties(other) &&
+      length == other.length &&
+      predicate == other.predicate &&
+      message == other.message;
 }

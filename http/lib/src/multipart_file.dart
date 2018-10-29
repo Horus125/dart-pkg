@@ -4,14 +4,16 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:async/async.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart' as path;
 
 import 'byte_stream.dart';
 import 'utils.dart';
+
+// ignore: uri_does_not_exist
+import 'multipart_file_stub.dart'
+    // ignore: uri_does_not_exist
+    if (dart.library.io) 'multipart_file_io.dart';
 
 /// A file to be uploaded as part of a [MultipartRequest]. This doesn't need to
 /// correspond to a physical file.
@@ -44,9 +46,10 @@ class MultipartFile {
   /// future may be inferred from [filename].
   MultipartFile(this.field, Stream<List<int>> stream, this.length,
       {this.filename, MediaType contentType})
-    : this._stream = toByteStream(stream),
-      this.contentType = contentType != null ? contentType :
-          new MediaType("application", "octet-stream");
+      : this._stream = toByteStream(stream),
+        this.contentType = contentType != null
+            ? contentType
+            : new MediaType("application", "octet-stream");
 
   /// Creates a new [MultipartFile] from a byte array.
   ///
@@ -56,8 +59,7 @@ class MultipartFile {
       {String filename, MediaType contentType}) {
     var stream = new ByteStream.fromBytes(value);
     return new MultipartFile(field, stream, value.length,
-        filename: filename,
-        contentType: contentType);
+        filename: filename, contentType: contentType);
   }
 
   /// Creates a new [MultipartFile] from a string.
@@ -68,14 +70,13 @@ class MultipartFile {
   /// the future may be inferred from [filename].
   factory MultipartFile.fromString(String field, String value,
       {String filename, MediaType contentType}) {
-    contentType = contentType == null ? new MediaType("text", "plain")
-                                      : contentType;
+    contentType =
+        contentType == null ? new MediaType("text", "plain") : contentType;
     var encoding = encodingForCharset(contentType.parameters['charset'], utf8);
     contentType = contentType.change(parameters: {'charset': encoding.name});
 
     return new MultipartFile.fromBytes(field, encoding.encode(value),
-        filename: filename,
-        contentType: contentType);
+        filename: filename, contentType: contentType);
   }
 
   // TODO(nweiz): Infer the content-type from the filename.
@@ -88,15 +89,9 @@ class MultipartFile {
   /// Throws an [UnsupportedError] if `dart:io` isn't supported in this
   /// environment.
   static Future<MultipartFile> fromPath(String field, String filePath,
-      {String filename, MediaType contentType}) async {
-    if (filename == null) filename = path.basename(filePath);
-    var file = new File(filePath);
-    var length = await file.length();
-    var stream = new ByteStream(DelegatingStream.typed(file.openRead()));
-    return new MultipartFile(field, stream, length,
-        filename: filename,
-        contentType: contentType);
-  }
+          {String filename, MediaType contentType}) =>
+      multipartFileFromPath(field, filePath,
+          filename: filename, contentType: contentType);
 
   // Finalizes the file in preparation for it being sent as part of a
   // [MultipartRequest]. This returns a [ByteStream] that should emit the body

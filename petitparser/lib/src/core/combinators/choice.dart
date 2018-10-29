@@ -8,7 +8,7 @@ import 'package:petitparser/src/core/parser.dart';
 /// A parser that uses the first parser that succeeds.
 class ChoiceParser extends ListParser {
   factory ChoiceParser(Iterable<Parser> children) {
-    return new ChoiceParser._(new List.from(children, growable: false));
+    return ChoiceParser._(List.of(children, growable: false));
   }
 
   ChoiceParser._(List<Parser> children) : super(children);
@@ -26,12 +26,10 @@ class ChoiceParser extends ListParser {
   }
 
   @override
-  Parser or(Parser other) {
-    return new ChoiceParser([]
-      ..addAll(children)
-      ..add(other));
-  }
+  Parser or(Parser other) => ChoiceParser([]
+    ..addAll(children)
+    ..add(other));
 
   @override
-  Parser copy() => new ChoiceParser(children);
+  ChoiceParser copy() => ChoiceParser(children);
 }

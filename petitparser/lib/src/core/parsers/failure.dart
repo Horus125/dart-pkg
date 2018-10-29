@@ -7,29 +7,26 @@ import 'package:petitparser/src/core/parser.dart';
 /// Returns a parser that consumes nothing and fails.
 ///
 /// For example, `failure()` always fails, no matter what input it is given.
-Parser failure([String message = 'unable to parse']) {
-  return new FailureParser(message);
+Parser<T> failure<T>([String message = 'unable to parse']) {
+  return FailureParser(message);
 }
 
 /// A parser that consumes nothing and fails.
-class FailureParser extends Parser {
-  final String _message;
+class FailureParser<T> extends Parser<T> {
+  final String message;
 
-  FailureParser(this._message);
-
-  @override
-  Result parseOn(Context context) => context.failure(_message);
+  FailureParser(this.message);
 
   @override
-  String toString() => '${super.toString()}[$_message]';
+  Result<T> parseOn(Context context) => context.failure(message);
 
   @override
-  Parser copy() => new FailureParser(_message);
+  String toString() => '${super.toString()}[$message]';
 
   @override
-  bool hasEqualProperties(Parser other) {
-    return other is FailureParser &&
-        super.hasEqualProperties(other) &&
-        _message == other._message;
-  }
+  FailureParser<T> copy() => FailureParser<T>(message);
+
+  @override
+  bool hasEqualProperties(FailureParser<T> other) =>
+      super.hasEqualProperties(other) && message == other.message;
 }
