@@ -73,7 +73,7 @@ class GrpcServiceGenerator {
       return;
     }
     mg.checkResolved();
-    _deps[mg.fqname] = mg;
+    _deps[mg.dottedName] = mg;
   }
 
   /// Adds dependencies of [generate] to [imports].
@@ -96,12 +96,11 @@ class GrpcServiceGenerator {
       // TODO(jakobr): Throw more actionable error.
       throw 'FAILURE: Unknown type reference (${fqname}) for ${location}';
     }
-    if (fileGen.package == mg.fileGen.package || mg.fileGen.package == '') {
-      // It's either the same file, or another file with the same package.
-      // (In the second case, we import it without using "as".)
+    if (fileGen.protoFileUri == mg.fileGen.protoFileUri) {
+      // If it's the same file, we import it without using "as".
       return mg.classname;
     }
-    return mg.packageImportPrefix + '.' + mg.classname;
+    return mg.fileImportPrefix + '.' + mg.classname;
   }
 
   void generate(IndentingWriter out) {
@@ -188,12 +187,14 @@ class _GrpcMethod {
     final requestType = service._getDartClassName(method.inputType);
     final responseType = service._getDartClassName(method.outputType);
 
-    final argumentType = clientStreaming ? 'Stream<$requestType>' : requestType;
+    final argumentType =
+        clientStreaming ? '\$async.Stream<$requestType>' : requestType;
     final clientReturnType = serverStreaming
         ? 'ResponseStream<$responseType>'
         : 'ResponseFuture<$responseType>';
-    final serverReturnType =
-        serverStreaming ? 'Stream<$responseType>' : 'Future<$responseType>';
+    final serverReturnType = serverStreaming
+        ? '\$async.Stream<$responseType>'
+        : '\$async.Future<$responseType>';
 
     return new _GrpcMethod._(
         grpcName,
@@ -222,8 +223,9 @@ class _GrpcMethod {
     out.addBlock(
         '$_clientReturnType $_dartName($_argumentType request, {CallOptions options}) {',
         '}', () {
-      final requestStream =
-          _clientStreaming ? 'request' : 'new Stream.fromIterable([request])';
+      final requestStream = _clientStreaming
+          ? 'request'
+          : r'new $async.Stream.fromIterable([request])';
       out.println(
           'final call = \$createCall(_\$$_dartName, $requestStream, options: options);');
       if (_serverStreaming) {
@@ -250,7 +252,7 @@ class _GrpcMethod {
     if (_clientStreaming) return;
 
     out.addBlock(
-        '$_serverReturnType ${_dartName}_Pre(ServiceCall call, Future request) async${_serverStreaming ? '*' : ''} {',
+        '$_serverReturnType ${_dartName}_Pre(ServiceCall call, \$async.Future request) async${_serverStreaming ? '*' : ''} {',
         '}', () {
       if (_serverStreaming) {
         out.println(

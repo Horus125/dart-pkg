@@ -163,7 +163,7 @@ class FileGenerator extends ProtobufContainer {
 
   String get package => descriptor.package;
   String get classname => '';
-  String get fqname => '.${descriptor.package}';
+  String get fullName => descriptor.package;
   FileGenerator get fileGen => this;
 
   /// Generates all the Dart files for this .proto file.
@@ -208,7 +208,7 @@ class FileGenerator extends ProtobufContainer {
 
     // Generate code for extensions defined at top-level using a class
     // name derived from the file name.
-    if (!extensionGenerators.isEmpty) {
+    if (extensionGenerators.isNotEmpty) {
       // TODO(antonm): do not generate a class.
       String className = extensionClassName(descriptor);
       out.addBlock('class $className {', '}\n', () {
@@ -239,7 +239,7 @@ class FileGenerator extends ProtobufContainer {
     // We only add the dart:async import if there are generic client API
     // generators for services in the FileDescriptorProto.
     if (clientApiGenerators.isNotEmpty) {
-      out.println("import 'dart:async';");
+      out.println(r"import 'dart:async' as $async;");
     }
 
     // Make sure any other symbols in dart:core don't cause name conflicts with
@@ -393,8 +393,8 @@ class FileGenerator extends ProtobufContainer {
     _writeHeading(out);
 
     if (serviceGenerators.isNotEmpty) {
-      out.println('''
-import 'dart:async';
+      out.println(r'''
+import 'dart:async' as $async;
 
 import 'package:protobuf/protobuf.dart';
 ''');
@@ -434,8 +434,8 @@ import 'package:protobuf/protobuf.dart';
     var out = new IndentingWriter();
     _writeHeading(out);
 
-    out.println('''
-import 'dart:async';
+    out.println(r'''
+import 'dart:async' as $async;
 
 import 'package:grpc/grpc.dart';
 ''');
@@ -510,8 +510,9 @@ import 'package:grpc/grpc.dart';
     out.println('''
 ///
 //  Generated code. Do not modify.
+//  source: ${descriptor.name}
 ///
-// ignore_for_file: non_constant_identifier_names,library_prefixes
+// ignore_for_file: non_constant_identifier_names,library_prefixes,unused_import
 ''');
   }
 
@@ -522,8 +523,8 @@ import 'package:grpc/grpc.dart';
     Uri resolvedImport =
         config.resolveImport(target.protoFileUri, protoFileUri, extension);
     out.print("import '$resolvedImport'");
-    if (package != target.package && target.package.isNotEmpty) {
-      out.print(' as ${target.packageImportPrefix}');
+    if (protoFileUri != target.protoFileUri) {
+      out.print(' as ${target.fileImportPrefix}');
     }
     out.println(';');
   }

@@ -13,22 +13,20 @@ class EnumAlias {
 class EnumGenerator extends ProtobufContainer {
   final ProtobufContainer _parent;
   final String classname;
-  final String fqname;
+  final String fullName;
   final EnumDescriptorProto _descriptor;
   final List<EnumValueDescriptorProto> _canonicalValues =
       <EnumValueDescriptorProto>[];
   final List<EnumAlias> _aliases = <EnumAlias>[];
 
   EnumGenerator(EnumDescriptorProto descriptor, ProtobufContainer parent)
-      : _parent = parent,
-        classname = (parent == null || parent is FileGenerator)
+      : assert(parent != null),
+        _parent = parent,
+        classname = messageOrEnumClassName(descriptor.name,
+            parent: parent?.classname ?? ''),
+        fullName = parent.fullName == ''
             ? descriptor.name
-            : '${parent.classname}_${descriptor.name}',
-        fqname = (parent == null || parent.fqname == null)
-            ? descriptor.name
-            : (parent.fqname == '.'
-                ? '.${descriptor.name}'
-                : '${parent.fqname}.${descriptor.name}'),
+            : '${parent.fullName}.${descriptor.name}',
         _descriptor = descriptor {
     for (EnumValueDescriptorProto value in descriptor.value) {
       EnumValueDescriptorProto canonicalValue =
@@ -46,17 +44,17 @@ class EnumGenerator extends ProtobufContainer {
 
   /// Make this enum available as a field type.
   void register(GenerationContext ctx) {
-    ctx.registerFieldType(fqname, this);
+    ctx.registerFieldType(this);
   }
 
   /// Returns a const expression that evaluates to the JSON for this message.
   /// [usage] represents the .pb.dart file where the expression will be used.
   String getJsonConstant(FileGenerator usage) {
     var name = "$classname\$json";
-    if (usage.package == fileGen.package || packageImportPrefix.isEmpty) {
+    if (usage.protoFileUri == fileGen.protoFileUri) {
       return name;
     }
-    return "$packageImportPrefix.$name";
+    return "$fileImportPrefix.$name";
   }
 
   void generate(IndentingWriter out) {
@@ -65,14 +63,17 @@ class EnumGenerator extends ProtobufContainer {
         '}\n', () {
       // -----------------------------------------------------------------
       // Define enum types.
+      var reservedNames = reservedEnumNames;
       for (EnumValueDescriptorProto val in _canonicalValues) {
-        out.println('static const ${classname} ${val.name} = '
-            "const ${classname}._(${val.number}, '${val.name}');");
+        final name = unusedEnumNames(val.name, reservedNames);
+        out.println('static const ${classname} $name = '
+            "const ${classname}._(${val.number}, '$name');");
       }
-      if (!_aliases.isEmpty) {
+      if (_aliases.isNotEmpty) {
         out.println();
         for (EnumAlias alias in _aliases) {
-          out.println('static const ${classname} ${alias.value.name} ='
+          final name = unusedEnumNames(alias.value.name, reservedNames);
+          out.println('static const ${classname} $name ='
               ' ${alias.canonicalValue.name};');
         }
       }
@@ -80,16 +81,18 @@ class EnumGenerator extends ProtobufContainer {
 
       out.println('static const List<${classname}> values ='
           ' const <${classname}> [');
+      reservedNames = reservedEnumNames;
       for (EnumValueDescriptorProto val in _canonicalValues) {
-        out.println('  ${val.name},');
+        final name = unusedEnumNames(val.name, reservedNames);
+        out.println('  $name,');
       }
       out.println('];');
       out.println();
 
-      out.println('static final Map<int, dynamic> _byValue ='
+      out.println('static final Map<int, $classname> _byValue ='
           ' $_protobufImportPrefix.ProtobufEnum.initByValue(values);');
       out.println('static ${classname} valueOf(int value) =>'
-          ' _byValue[value] as ${classname};');
+          ' _byValue[value];');
       out.addBlock('static void $checkItem($classname v) {', '}', () {
         out.println('if (v is! $classname)'
             " $_protobufImportPrefix.checkItemFailed(v, '$classname');");

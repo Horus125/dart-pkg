@@ -6,7 +6,8 @@ part of protobuf;
 
 /// Per-message type setup.
 class BuilderInfo {
-  final String messageName;
+  /// The fully qualified name of this message.
+  final String qualifiedMessageName;
   final List<FieldInfo> byIndex = <FieldInfo>[];
   final Map<int, FieldInfo> fieldInfo = new Map<int, FieldInfo>();
   final Map<String, FieldInfo> byTagAsString = <String, FieldInfo>{};
@@ -15,7 +16,8 @@ class BuilderInfo {
   bool hasRequiredFields = true;
   List<FieldInfo> _sortedByTag;
 
-  BuilderInfo(this.messageName);
+  BuilderInfo(String messageName, {PackageName package = const PackageName('')})
+      : qualifiedMessageName = "${package.prefix}$messageName";
 
   void add<T>(
       int tagNumber,
@@ -94,14 +96,6 @@ class BuilderInfo {
         tagNumber, name, fieldType, defaultOrMaker, null, valueOf, enumValues);
   }
 
-  // Repeated message.
-  // TODO(skybrian): migrate to pp() and remove.
-  void m<T>(int tagNumber, String name, CreateBuilderFunc subBuilder,
-      MakeDefaultFunc makeDefault) {
-    add<T>(tagNumber, name, PbFieldType._REPEATED_MESSAGE, makeDefault,
-        subBuilder, null, null);
-  }
-
   // Repeated, not a message, group, or enum.
   void p<T>(int tagNumber, String name, int fieldType) {
     assert(!_isGroupOrMessage(fieldType) && !_isEnum(fieldType));
@@ -157,8 +151,16 @@ class BuilderInfo {
     return i != null ? i.valueOf : null;
   }
 
-  /// Returns the FieldInfo for each field in tag number order.
+  /// The FieldInfo for each field in tag number order.
   List<FieldInfo> get sortedByTag => _sortedByTag ??= _computeSortedByTag();
+
+  /// The message name. Also see [qualifiedMessageName].
+  String get messageName {
+    final lastDot = qualifiedMessageName.lastIndexOf('.');
+    return lastDot == -1
+        ? qualifiedMessageName
+        : qualifiedMessageName.substring(lastDot + 1);
+  }
 
   List<FieldInfo> _computeSortedByTag() {
     // TODO(skybrian): perhaps the code generator should insert the FieldInfos
@@ -171,8 +173,9 @@ class BuilderInfo {
       int tagNumber, ExtensionRegistry extensionRegistry) {
     CreateBuilderFunc subBuilderFunc = subBuilder(tagNumber);
     if (subBuilderFunc == null && extensionRegistry != null) {
-      subBuilderFunc =
-          extensionRegistry.getExtension(messageName, tagNumber).subBuilder;
+      subBuilderFunc = extensionRegistry
+          .getExtension(qualifiedMessageName, tagNumber)
+          .subBuilder;
     }
     return subBuilderFunc();
   }
@@ -180,7 +183,7 @@ class BuilderInfo {
   _decodeEnum(int tagNumber, ExtensionRegistry registry, int rawValue) {
     ValueOfFunc f = valueOfFunc(tagNumber);
     if (f == null && registry != null) {
-      f = registry.getExtension(messageName, tagNumber).valueOf;
+      f = registry.getExtension(qualifiedMessageName, tagNumber).valueOf;
     }
     return f(rawValue);
   }

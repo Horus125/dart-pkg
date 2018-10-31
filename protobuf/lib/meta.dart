@@ -2,16 +2,18 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Provides metadata about GeneratedMessage to dart-protoc-plugin.
-/// (Experimental API; subject to change.)
+/// Provides metadata about GeneratedMessage and ProtobufEnum to
+/// dart-protoc-plugin. (Experimental API; subject to change.)
 library protobuf.meta;
 
 // List of names which cannot be used in a subclass of GeneratedMessage.
-const List<String> GeneratedMessage_reservedNames = const [
+const GeneratedMessage_reservedNames = const <String>[
   'hashCode',
   'noSuchMethod',
+  'copyWith',
   'runtimeType',
   'toString',
+  'freeze',
   'fromBuffer',
   'fromJson',
   'hasRequiredFields',
@@ -63,5 +65,18 @@ const List<String> GeneratedMessage_reservedNames = const [
   r'$_setSignedInt32',
   r'$_setUnsignedInt32',
   r'$_setInt64',
+  'toBuilder',
   'toDebugString',
+];
+
+// List of names which cannot be used in a subclass of ProtobufEnum.
+const ProtobufEnum_reservedNames = const <String>[
+  '==',
+  'Object',
+  'ProtobufEnum',
+  'hashCode',
+  'initByValue',
+  'noSuchMethod',
+  'runtimeType',
+  'toString'
 ];

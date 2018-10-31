@@ -22,7 +22,7 @@ class ProtobufField {
   /// Dart names within a GeneratedMessage or `null` for an extension.
   final MemberNames memberNames;
 
-  final String fqname;
+  final String fullName;
   final BaseType baseType;
 
   ProtobufField.message(
@@ -37,7 +37,7 @@ class ProtobufField {
       ProtobufContainer parent, GenerationContext ctx)
       : this.descriptor = descriptor,
         this.memberNames = dartNames,
-        fqname = '${parent.fqname}.${descriptor.name}',
+        fullName = '${parent.fullName}.${descriptor.name}',
         baseType = new BaseType(descriptor, ctx);
 
   /// The index of this field in MessageGenerator.fieldList.
@@ -75,10 +75,10 @@ class ProtobufField {
   /// Returns the expression to use for the Dart type.
   ///
   /// This will be a List for repeated types.
-  /// [package] is the package where we are generating code.
-  String getDartType(String package) {
-    if (isRepeated) return baseType.getRepeatedDartType(package);
-    return baseType.getDartType(package);
+  /// [fileGen] represents the .proto file where we are generating code.
+  String getDartType(FileGenerator fileGen) {
+    if (isRepeated) return baseType.getRepeatedDartType(fileGen);
+    return baseType.getDartType(fileGen);
   }
 
   /// Returns the tag number of the underlying proto field.
@@ -101,10 +101,10 @@ class ProtobufField {
 
   /// Returns Dart code adding this field to a BuilderInfo object.
   /// The call will start with ".." and a method name.
-  /// [package] is the package where the code will be evaluated.
-  String generateBuilderInfoCall(String package, String dartFieldName) {
+  /// [fileGen] represents the .proto file where the code will be evaluated.
+  String generateBuilderInfoCall(FileGenerator fileGen, String dartFieldName) {
     String quotedName = "'$dartFieldName'";
-    String type = baseType.getDartType(package);
+    String type = baseType.getDartType(fileGen);
 
     if (isRepeated) {
       if (baseType.isMessage || baseType.isGroup) {
@@ -120,7 +120,7 @@ class ProtobufField {
       }
     }
 
-    String makeDefault = generateDefaultFunction(package);
+    String makeDefault = generateDefaultFunction(fileGen);
     if (baseType.isEnum) {
       String enumParams = '$type.valueOf, $type.values';
       return '..e<$type>('
@@ -185,14 +185,14 @@ class ProtobufField {
 
   /// Returns a function expression that returns the field's default value.
   ///
-  /// [package] is the package where the expression will be evaluated.
-  /// Returns null if this field doesn't have an initializer.
-  String generateDefaultFunction(String package) {
+  /// [fileGen] represents the .proto file where the expression will be
+  /// evaluated.
+  String generateDefaultFunction(FileGenerator fileGen) {
     if (isRepeated) {
       return '() => new $_protobufImportPrefix.PbList()';
     }
-
-    bool samePackage = package == baseType.package;
+    bool sameProtoFile =
+        fileGen.protoFileUri == baseType.generator?.fileGen?.protoFileUri;
 
     switch (descriptor.type) {
       case FieldDescriptorProto_Type.TYPE_BOOL:
@@ -246,14 +246,15 @@ class ProtobufField {
         return '() => <int>[$byteList]';
       case FieldDescriptorProto_Type.TYPE_GROUP:
       case FieldDescriptorProto_Type.TYPE_MESSAGE:
-        if (samePackage) return '${baseType.unprefixed}.getDefault';
+        if (sameProtoFile) return '${baseType.unprefixed}.getDefault';
         return "${baseType.prefixed}.getDefault";
       case FieldDescriptorProto_Type.TYPE_ENUM:
-        var className = samePackage ? baseType.unprefixed : baseType.prefixed;
+        var className = sameProtoFile ? baseType.unprefixed : baseType.prefixed;
         EnumGenerator gen = baseType.generator;
-        if (descriptor.hasDefaultValue() && !descriptor.defaultValue.isEmpty) {
+        if (descriptor.hasDefaultValue() &&
+            descriptor.defaultValue.isNotEmpty) {
           return '$className.${descriptor.defaultValue}';
-        } else if (!gen._canonicalValues.isEmpty) {
+        } else if (gen._canonicalValues.isNotEmpty) {
           return '$className.${gen._canonicalValues[0].name}';
         }
         return null;
@@ -290,9 +291,9 @@ class ProtobufField {
 
   get _invalidDefaultValue => "dart-protoc-plugin:"
       " invalid default value (${descriptor.defaultValue})"
-      " found in field $fqname";
+      " found in field $fullName";
 
   _typeNotImplemented(String methodName) => "dart-protoc-plugin:"
       " $methodName not implemented for type (${descriptor.type})"
-      " found in field $fqname";
+      " found in field $fullName";
 }

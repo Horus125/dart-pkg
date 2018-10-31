@@ -1,3 +1,25 @@
+## 0.10.4
+
+* Added separate getter for `BuilderInfo.qualifiedMessageName`.
+
+## 0.10.3
+
+* Added type argument to `ProtobufEnum.initByValue` which allows the return
+  value to be fully typed.
+
+## 0.10.2
+
+* Added ProtobufEnum reserved names.
+
+## 0.10.1
+
+* Added Support for [any](https://developers.google.com/protocol-buffers/docs/proto3#any) messages.
+
+## 0.10.0
+
+* Breaking change: Add `GeneratedMessage.freeze()`. A frozen message and its
+  sub-messages cannot be changed.
+
 ## 0.9.1
 
 * Fix problem with encoding negative enum values.

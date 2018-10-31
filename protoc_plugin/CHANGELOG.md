@@ -1,3 +1,40 @@
+## 0.10.5
+
+* Generated files now import `dart:async` with a prefix to prevent name
+  collisions.
+
+## 0.10.4
+
+* Change the fully qualified message name of generated messages to use
+  `BuilderInfo.qualifiedMessageName`.
+  Requires package:protobuf version 0.10.4 or newer.
+
+## 0.10.3
+
+* Remove runtime `as` check of enum `valueOf` by using correctly typed `Map` of
+  values.
+  Generated files must require package:protobuf version 0.10.3 or newer.
+
+## 0.10.2
+
+* Add link to source file in generated code.
+
+## 0.10.1
+
+* Prefix generated Dart proto imports by proto file path instead of by package.
+  Tighten up member name checks for generated enum classes.
+
+## 0.10.0
+
+* Breaking change: Support for [any](https://developers.google.com/protocol-buffers/docs/proto3#any) messages.
+  Generated files require package:protobuf version 0.10.1 or newer.
+  `BuilderInfo.messageName` will now be the fully qualified name for generated messages.
+
+## 0.9.0
+
+* Breaking change: Add `copyWith()` to message classes and update `getDefault()` to use `freeze()`.
+  Requires package:protobuf version 0.10.0 or newer.
+
 ## 0.8.2
 
 * Generated code now imports 'package:protobuf/protobuf.dart' prefixed.

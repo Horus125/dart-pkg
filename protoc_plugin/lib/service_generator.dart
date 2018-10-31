@@ -12,13 +12,13 @@ class ServiceGenerator {
 
   /// The message types needed directly by this service.
   ///
-  /// The key is the fully qualified name.
+  /// The key is the fully qualified name with a leading '.'.
   /// Populated by [resolve].
   final _deps = <String, MessageGenerator>{};
 
   /// The message types needed transitively by this service.
   ///
-  /// The key is the fully qualified name.
+  /// The key is the fully qualified name with a leading '.'.
   /// Populated by [resolve].
   final _transitiveDeps = <String, MessageGenerator>{};
 
@@ -69,14 +69,14 @@ class ServiceGenerator {
   }
 
   void _addDepsRecursively(MessageGenerator mg, int depth) {
-    if (_transitiveDeps.containsKey(mg.fqname)) {
+    if (_transitiveDeps.containsKey(mg.dottedName)) {
       // Already added, but perhaps at a different depth.
-      if (depth == 0) _deps[mg.fqname] = mg;
+      if (depth == 0) _deps[mg.dottedName] = mg;
       return;
     }
     mg.checkResolved();
-    if (depth == 0) _deps[mg.fqname] = mg;
-    _transitiveDeps[mg.fqname] = mg;
+    if (depth == 0) _deps[mg.dottedName] = mg;
+    _transitiveDeps[mg.dottedName] = mg;
     for (var field in mg._fieldList) {
       if (field.baseType.isGroup || field.baseType.isMessage) {
         _addDepsRecursively(field.baseType.generator, depth + 1);
@@ -113,12 +113,11 @@ class ServiceGenerator {
       var location = _undefinedDeps[fqname];
       throw 'FAILURE: Unknown type reference (${fqname}) for ${location}';
     }
-    if (fileGen.package == mg.fileGen.package || mg.fileGen.package == "") {
-      // It's either the same file, or another file with the same package.
-      // (In the second case, we import it without using "as".)
+    if (fileGen.protoFileUri == mg.fileGen.protoFileUri) {
+      // If it's the same file, we import it without using "as".
       return mg.classname;
     }
-    return mg.packageImportPrefix + "." + mg.classname;
+    return mg.fileImportPrefix + "." + mg.classname;
   }
 
   List<MethodDescriptorProto> get _methodDescriptors => _descriptor.method;
@@ -133,7 +132,7 @@ class ServiceGenerator {
     var inputClass = _getDartClassName(m.inputType);
     var outputClass = _getDartClassName(m.outputType);
 
-    out.println('Future<$outputClass> $methodName('
+    out.println('\$async.Future<$outputClass> $methodName('
         'ServerContext ctx, $inputClass request);');
   }
 
@@ -160,7 +159,7 @@ class ServiceGenerator {
 
   void _generateDispatchMethod(out) {
     out.addBlock(
-        'Future<GeneratedMessage> handleCall(ServerContext ctx, '
+        r'$async.Future<GeneratedMessage> handleCall(ServerContext ctx, '
         'String method, GeneratedMessage request) {',
         '}', () {
       out.addBlock("switch (method) {", "}", () {
