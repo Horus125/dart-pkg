@@ -10,9 +10,13 @@ import 'package:meta/meta.dart';
 /// `dashOffset` specifies an initial starting point for the dashing.
 ///
 /// Passing in a null `source` will result in a null result.  Passing a `source`
-/// that is an empty path will return the `source`.
-Path dashPath(Path source,
-    {@required CircularIntervalList<double> dashArray, DashOffset dashOffset}) {
+/// that is an empty path will return an empty path.
+Path dashPath(
+  Path source, {
+  @required CircularIntervalList<double> dashArray,
+  DashOffset dashOffset,
+}) {
+  assert(dashArray != null);
   if (source == null) {
     return null;
   }
@@ -20,9 +24,7 @@ Path dashPath(Path source,
   dashOffset = dashOffset ?? const DashOffset.absolute(0.0);
   // TODO: Is there some way to determine how much of a path would be visible today?
 
-  bool some = false;
-
-  final Path dest = new Path();
+  final Path dest = Path();
   for (final PathMetric metric in source.computeMetrics()) {
     double distance = dashOffset._calculate(metric.length);
     bool draw = true;
@@ -34,11 +36,6 @@ Path dashPath(Path source,
       distance += len;
       draw = !draw;
     }
-    some = true;
-  }
-
-  if (!some) {
-    return source;
   }
 
   return dest;
@@ -51,9 +48,6 @@ enum _DashOffsetType { Absolute, Percentage }
 ///
 /// The internal value will be guaranteed to not be null.
 class DashOffset {
-  final double _rawVal;
-  final _DashOffsetType _dashOffsetType;
-
   /// Create a DashOffset that will be measured as a percentage of the length
   /// of the segment being dashed.
   ///
@@ -70,6 +64,9 @@ class DashOffset {
   const DashOffset.absolute(double start)
       : _rawVal = start ?? 0.0,
         _dashOffsetType = _DashOffsetType.Absolute;
+
+  final double _rawVal;
+  final _DashOffsetType _dashOffsetType;
 
   double _calculate(double length) {
     return _dashOffsetType == _DashOffsetType.Absolute
