@@ -4,3 +4,4 @@
 
 export 'src/interface/local_process_manager.dart';
 export 'src/interface/process_manager.dart';
+export 'src/interface/process_wrapper.dart';

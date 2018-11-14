@@ -5,10 +5,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import '../../backend/runtime.dart';
-import '../executable_settings.dart';
+import 'package:test_api/src/backend/runtime.dart'; // ignore: implementation_imports
 import 'browser.dart';
 import 'default_settings.dart';
+import '../executable_settings.dart';
 
 /// A class for running an instance of Internet Explorer.
 ///

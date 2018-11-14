@@ -130,11 +130,11 @@ void main() {
 
 A single test file can be run just using `pub run test path/to/test.dart`.
 
-![Single file being run via "pub run"](https://raw.githubusercontent.com/dart-lang/test/master/image/test1.gif)
+![Single file being run via "pub run"](https://raw.githubusercontent.com/dart-lang/test/master/pkgs/test/image/test1.gif)
 
 Many tests can be run at a time using `pub run test path/to/dir`.
 
-![Directory being run via "pub run".](https://raw.githubusercontent.com/dart-lang/test/master/image/test2.gif)
+![Directory being run via "pub run".](https://raw.githubusercontent.com/dart-lang/test/master/pkgs/test/image/test2.gif)
 
 It's also possible to run a test on the Dart VM only by invoking it using `dart
 path/to/test.dart`, but this doesn't load the full test runner and will be
@@ -188,7 +188,7 @@ these platform names.
 You can also declare that your entire package only works on certain platforms by
 adding a [`test_on` field][test_on] to your package config file.
 
-[test_on]: https://github.com/dart-lang/test/blob/master/doc/configuration.md#test_on
+[test_on]: https://github.com/dart-lang/test/blob/master/pkgs/test/doc/configuration.md#test_on
 
 ### Platform Selectors
 
@@ -621,7 +621,7 @@ like duration-based timeouts, the last matching value wins.
 You can also set up global platform-specific configuration using the
 [package configuration file][configuring platforms].
 
-[configuring platforms]: https://github.com/dart-lang/test/blob/master/doc/configuration.md#configuring-platforms
+[configuring platforms]: https://github.com/dart-lang/test/blob/master/pkgs/test/doc/configuration.md#configuring-platforms
 
 ### Tagging Tests
 
@@ -655,7 +655,7 @@ sure to include all your tags there. You can also use the file to provide
 default configuration for tags, like giving all `browser` tests twice as much
 time before they time out.
 
-[configuring tags]: https://github.com/dart-lang/test/blob/master/doc/configuration.md#configuring-tags
+[configuring tags]: https://github.com/dart-lang/test/blob/master/pkgs/test/doc/configuration.md#configuring-tags
 
 Tests can be filtered based on their tags by passing command line flags. The
 `--tags` or `-t` flag will cause the test runner to only run tests with the
@@ -689,7 +689,7 @@ above, you could pass `--platform firefox` to run on Firefox.
 A configuration file can do much more than just set global defaults. See
 [the full documentation][package config] for more details.
 
-[package config]: https://github.com/dart-lang/test/blob/master/doc/configuration.md
+[package config]: https://github.com/dart-lang/test/blob/master/pkgs/test/doc/configuration.md
 
 ## Debugging
 
@@ -786,7 +786,7 @@ void main() {
 }
 ```
 
-![A diagram showing a test in a browser communicating with a Dart VM isolate outside the browser.](https://raw.githubusercontent.com/dart-lang/test/master/image/hybrid.png)
+![A diagram showing a test in a browser communicating with a Dart VM isolate outside the browser.](https://raw.githubusercontent.com/dart-lang/test/master/pkgs/test/image/hybrid.png)
 
 **Note**: If you write hybrid tests, be sure to add a dependency on the
 `stream_channel` package, since you're using its API!
@@ -825,4 +825,4 @@ reporter allows the test runner to be wrapped and its progress presented in
 custom ways (for example, in an IDE). See [the protocol documentation][json] for
 more details.
 
-[json]: https://github.com/dart-lang/test/blob/master/doc/json_reporter.md
+[json]: https://github.com/dart-lang/test/blob/master/pkgs/test/doc/json_reporter.md
