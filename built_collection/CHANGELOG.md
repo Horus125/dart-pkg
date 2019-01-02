@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0
+
+- Add return val to `SetBuilder.add()` to match `Set.add()`.
+- Expand `ListMultimapBuilder`: implement `[]` and add return values to
+  `remove` and `removeAll`.
+
 ## 4.0.0
 
 - Many changes following Dart 2 improvements to collections:

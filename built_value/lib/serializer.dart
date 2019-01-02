@@ -5,6 +5,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/src/big_int_serializer.dart';
 import 'package:built_value/src/date_time_serializer.dart';
+import 'package:built_value/src/duration_serializer.dart';
 import 'package:built_value/src/int64_serializer.dart';
 import 'package:built_value/src/json_object_serializer.dart';
 import 'package:built_value/src/num_serializer.dart';
@@ -61,6 +62,7 @@ abstract class Serializers {
           ..add(new BuiltSetMultimapSerializer())
           ..add(new DateTimeSerializer())
           ..add(new DoubleSerializer())
+          ..add(new DurationSerializer())
           ..add(new IntSerializer())
           ..add(new Int64Serializer())
           ..add(new JsonObjectSerializer())
@@ -119,6 +121,14 @@ abstract class Serializers {
   /// Specify the type by specifying its [Serializer] class. Equivalent to
   /// calling [deserialize] with a `specifiedType`.
   T deserializeWith<T>(Serializer<T> serializer, Object serialized);
+
+  /// Gets a serializer; returns `null` if none is found. For use in plugins
+  /// and other extension code.
+  Serializer serializerForType(Type type);
+
+  /// Gets a serializer; returns `null` if none is found. For use in plugins
+  /// and other extension code.
+  Serializer serializerForWireName(String wireName);
 
   /// Creates a new builder for the type represented by [fullType].
   ///

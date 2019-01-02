@@ -25,7 +25,7 @@ import 'response.dart';
 /// [HijackException]s on without modification.
 ///
 /// A simple [Middleware] can be created using [createMiddleware].
-typedef Handler Middleware(Handler innerHandler);
+typedef Middleware = Handler Function(Handler innerHandler);
 
 /// Creates a [Middleware] using the provided functions.
 ///
@@ -54,7 +54,7 @@ Middleware createMiddleware(
 
   if (responseHandler == null) responseHandler = (response) => response;
 
-  var onError;
+  void Function(Object, StackTrace) onError;
   if (errorHandler != null) {
     onError = (error, stackTrace) {
       if (error is HijackException) throw error;
@@ -64,10 +64,10 @@ Middleware createMiddleware(
 
   return (Handler innerHandler) {
     return (request) {
-      return new Future.sync(() => requestHandler(request)).then((response) {
+      return Future.sync(() => requestHandler(request)).then((response) {
         if (response != null) return response;
 
-        return new Future.sync(() => innerHandler(request))
+        return Future.sync(() => innerHandler(request))
             .then((response) => responseHandler(response), onError: onError);
       });
     };

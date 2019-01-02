@@ -1,8 +1,0 @@
-.children
-.dart_tool/
-.idea
-.packages
-.pub
-build/
-packages
-pubspec.lock

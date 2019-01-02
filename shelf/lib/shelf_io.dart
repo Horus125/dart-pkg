@@ -11,14 +11,13 @@
 /// supports the `"shelf.io.buffer_output"` `Response.context` property. If this
 /// property is `true` (the default), streamed responses will be buffered to
 /// improve performance; if it's `false`, all chunks will be pushed over the
-/// wire as they're received. See [`HttpResponse.bufferOutput`][bufferOutput]
+/// wire as they're received. See
+/// [`HttpResponse.bufferOutput`](https://api.dartlang.org/stable/dart-io/HttpResponse/bufferOutput.html)
 /// for more information.
 ///
 /// `Request`s passed to a `Handler` will contain the
 /// `"shelf.io.connection_info"` `Request.context` property, which holds the
 /// `HttpConnectionInfo` object from the underlying `HttpRequest`.
-///
-/// [bufferOutput]: https://api.dartlang.org/apidocs/channels/stable/dartdoc-viewer/dart:io.HttpResponse#id_bufferOutput
 import 'dart:async';
 import 'dart:io';
 
@@ -38,14 +37,14 @@ export 'src/io_server.dart';
 /// If a [securityContext] is provided an HTTPS server will be started.
 ////
 /// See the documentation for [HttpServer.bind] and [HttpServer.bindSecure]
-/// for more details on [address], [port], and [backlog].
+/// for more details on [address], [port], [backlog], and [shared].
 Future<HttpServer> serve(Handler handler, address, int port,
-    {SecurityContext securityContext, int backlog}) async {
+    {SecurityContext securityContext, int backlog, bool shared = false}) async {
   backlog ??= 0;
   HttpServer server = await (securityContext == null
-      ? HttpServer.bind(address, port, backlog: backlog)
+      ? HttpServer.bind(address, port, backlog: backlog, shared: shared)
       : HttpServer.bindSecure(address, port, securityContext,
-          backlog: backlog));
+          backlog: backlog, shared: shared));
   serveRequests(server, handler);
   return server;
 }
@@ -71,7 +70,7 @@ void serveRequests(Stream<HttpRequest> requests, Handler handler) {
 ///
 /// Returns a [Future] which completes when the request has been handled.
 Future handleRequest(HttpRequest request, Handler handler) async {
-  var shelfRequest;
+  Request shelfRequest;
   try {
     shelfRequest = _fromHttpRequest(request);
   } catch (error, stackTrace) {
@@ -83,7 +82,7 @@ Future handleRequest(HttpRequest request, Handler handler) async {
 
   // TODO(nweiz): abstract out hijack handling to make it easier to implement an
   // adapter.
-  var response;
+  Response response;
   try {
     response = await handler(shelfRequest);
   } on HijackException catch (error, stackTrace) {
@@ -107,12 +106,12 @@ Future handleRequest(HttpRequest request, Handler handler) async {
     return;
   }
 
-  var message = new StringBuffer()
+  var message = StringBuffer()
     ..writeln("Got a response for hijacked request "
         "${shelfRequest.method} ${shelfRequest.requestedUri}:")
     ..writeln(response.statusCode);
   response.headers.forEach((key, value) => message.writeln("$key: $value"));
-  throw new Exception(message.toString().trim());
+  throw Exception(message.toString().trim());
 }
 
 /// Creates a new [Request] from the provided [HttpRequest].
@@ -130,10 +129,10 @@ Request _fromHttpRequest(HttpRequest request) {
   void onHijack(void callback(StreamChannel<List<int>> channel)) {
     request.response
         .detachSocket(writeHeaders: false)
-        .then((socket) => callback(new StreamChannel(socket, socket)));
+        .then((socket) => callback(StreamChannel(socket, socket)));
   }
 
-  return new Request(request.method, request.requestedUri,
+  return Request(request.method, request.requestedUri,
       protocolVersion: request.protocolVersion,
       headers: headers,
       body: request,
@@ -143,7 +142,8 @@ Request _fromHttpRequest(HttpRequest request) {
 
 Future _writeResponse(Response response, HttpResponse httpResponse) {
   if (response.context.containsKey("shelf.io.buffer_output")) {
-    httpResponse.bufferOutput = response.context["shelf.io.buffer_output"];
+    httpResponse.bufferOutput =
+        response.context["shelf.io.buffer_output"] as bool;
   }
 
   httpResponse.statusCode = response.statusCode;
@@ -183,7 +183,7 @@ Future _writeResponse(Response response, HttpResponse httpResponse) {
   }
 
   if (!response.headers.containsKey(HttpHeaders.dateHeader)) {
-    httpResponse.headers.date = new DateTime.now().toUtc();
+    httpResponse.headers.date = DateTime.now().toUtc();
   }
 
   return httpResponse
@@ -195,7 +195,7 @@ Future _writeResponse(Response response, HttpResponse httpResponse) {
 // TODO(kevmoo) Make error output plugable. stderr, logging, etc
 Response _logError(Request request, String message, [StackTrace stackTrace]) {
   // Add information about the request itself.
-  var buffer = new StringBuffer();
+  var buffer = StringBuffer();
   buffer.write("${request.method} ${request.requestedUri.path}");
   if (request.requestedUri.query.isNotEmpty) {
     buffer.write("?${request.requestedUri.query}");
@@ -207,16 +207,16 @@ Response _logError(Request request, String message, [StackTrace stackTrace]) {
 }
 
 Response _logTopLevelError(String message, [StackTrace stackTrace]) {
-  var chain = new Chain.current();
+  var chain = Chain.current();
   if (stackTrace != null) {
-    chain = new Chain.forTrace(stackTrace);
+    chain = Chain.forTrace(stackTrace);
   }
   chain = chain
       .foldFrames((frame) => frame.isCore || frame.package == 'shelf')
       .terse;
 
-  stderr.writeln('ERROR - ${new DateTime.now()}');
+  stderr.writeln('ERROR - ${DateTime.now()}');
   stderr.writeln(message);
   stderr.writeln(chain);
-  return new Response.internalServerError();
+  return Response.internalServerError();
 }

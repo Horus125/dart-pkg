@@ -1,3 +1,11 @@
+## 0.7.4
+
+* Allow passing `shared` parameter to underlying `HttpServer.bind` calls via
+  `shelf_io.serve`.
+* Correctly pass `encoding` in `Response` constructors `forbidden`, `notFound`,
+  and `internalServerError`.
+* Update `README.md` to point to latest docs on `pub.dartlang.org`.
+
 ## 0.7.3+3
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.

@@ -1,3 +1,12 @@
+## 2.1.1
+
+ * Fixed a DDC compilation regression for consumers using the Dart 1.x SDK that was introduced in `2.1.0`.
+
+## 2.1.0
+
+ * Added an `IdentityCodec<T>` which implements `Codec<T,T>` for use as default
+   value for in functions accepting an optional `Codec` as parameter.
+
 ## 2.0.2
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.

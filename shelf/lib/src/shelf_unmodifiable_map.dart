@@ -22,7 +22,7 @@ class ShelfUnmodifiableMap<V> extends UnmodifiableMapView<String, V> {
   /// [source] is copied to a new [Map] to ensure changes to the parameter value
   /// after constructions are not reflected.
   factory ShelfUnmodifiableMap(Map<String, V> source,
-      {bool ignoreKeyCase: false}) {
+      {bool ignoreKeyCase = false}) {
     if (source is ShelfUnmodifiableMap<V> &&
         //        !ignoreKeyCase: no transformation of the input is required
         // source._ignoreKeyCase: the input cannot be transformed any more
@@ -35,12 +35,12 @@ class ShelfUnmodifiableMap<V> extends UnmodifiableMapView<String, V> {
     }
 
     if (ignoreKeyCase) {
-      source = new CaseInsensitiveMap<V>.from(source);
+      source = CaseInsensitiveMap<V>.from(source);
     } else {
-      source = new Map<String, V>.from(source);
+      source = Map<String, V>.from(source);
     }
 
-    return new ShelfUnmodifiableMap<V>._(source, ignoreKeyCase);
+    return ShelfUnmodifiableMap<V>._(source, ignoreKeyCase);
   }
 
   /// Returns an empty [ShelfUnmodifiableMap].
