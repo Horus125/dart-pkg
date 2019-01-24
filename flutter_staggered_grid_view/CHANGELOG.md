@@ -1,3 +1,11 @@
+## 0.2.7
+### Fixed
+* Better fix for the bug where items are built only once.
+
+## 0.2.6
+### Fixed
+* Fix a bug where items are built only once.
+
 ## 0.2.5
 ### Changed
 * Use the new SliverWithKeepAliveWidget.

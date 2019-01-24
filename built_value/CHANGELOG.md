@@ -1,5 +1,17 @@
 # Changelog
 
+# 6.3.0
+
+- Allow custom builders to use setter/getter pairs instead of normal fields.
+- Add an option to `@BuiltValue` to turn off auto instantiation of nested
+  builders.
+- Add `@BuiltValueSerializer` annotation which gives the option to specify a
+  custom serializer for a class.
+- Make it possible to merge `Serializers` instances: add a `serializers`
+  getter that returns the installed serializers.
+- Add serializer for `RegExp` fields.
+- Allow `analyzer` 0.34.0.
+
 # 6.2.0
 
 New features:

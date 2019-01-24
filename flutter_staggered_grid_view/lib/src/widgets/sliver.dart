@@ -11,12 +11,13 @@ import 'package:flutter_staggered_grid_view/src/widgets/staggered_tile.dart';
 /// A base class for sliver that have multiple variable size box children.
 ///
 /// Helps subclasses build their children lazily using a [SliverVariableSizeChildDelegate].
-abstract class SliverVariableSizeBoxAdaptorWidget extends SliverWithKeepAliveWidget {
+abstract class SliverVariableSizeBoxAdaptorWidget
+    extends SliverWithKeepAliveWidget {
   /// Initializes fields for subclasses.
   const SliverVariableSizeBoxAdaptorWidget({
     Key key,
     @required this.delegate,
-  })  : super(key: key);
+  }) : super(key: key);
 
   /// The delegate that provides the children for this widget.
   ///
@@ -48,12 +49,12 @@ abstract class SliverVariableSizeBoxAdaptorWidget extends SliverWithKeepAliveWid
   /// The default implementation defers to [delegate] via its
   /// [SliverChildDelegate.estimateMaxScrollOffset] method.
   double estimateMaxScrollOffset(
-      SliverConstraints constraints,
-      int firstIndex,
-      int lastIndex,
-      double leadingScrollOffset,
-      double trailingScrollOffset,
-      ) {
+    SliverConstraints constraints,
+    int firstIndex,
+    int lastIndex,
+    double leadingScrollOffset,
+    double trailingScrollOffset,
+  ) {
     assert(lastIndex >= firstIndex);
     return delegate.estimateMaxScrollOffset(
       firstIndex,
@@ -66,8 +67,8 @@ abstract class SliverVariableSizeBoxAdaptorWidget extends SliverWithKeepAliveWid
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(new DiagnosticsProperty<SliverChildDelegate>(
-        'delegate', delegate));
+    properties.add(
+        new DiagnosticsProperty<SliverChildDelegate>('delegate', delegate));
   }
 }
 
@@ -86,6 +87,17 @@ class SliverVariableSizeBoxAdaptorElement extends RenderObjectElement
 
   @override
   RenderSliverVariableSizeBoxAdaptor get renderObject => super.renderObject;
+
+  @override
+  void update(covariant SliverVariableSizeBoxAdaptorWidget newWidget) {
+    final SliverVariableSizeBoxAdaptorWidget oldWidget = widget;
+    super.update(newWidget);
+    final SliverChildDelegate newDelegate = newWidget.delegate;
+    final SliverChildDelegate oldDelegate = oldWidget.delegate;
+    if (newDelegate != oldDelegate &&
+        (newDelegate.runtimeType != oldDelegate.runtimeType ||
+            newDelegate.shouldRebuild(oldDelegate))) performRebuild();
+  }
 
   // We inflate widgets at two different times:
   //  1. When we ourselves are told to rebuild (see performRebuild).
