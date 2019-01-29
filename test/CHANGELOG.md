@@ -1,3 +1,8 @@
+## 1.5.2
+
+* Require Dart SDK `>=2.1.0`.
+* Depend on latest `test_core` and `test_api`.
+
 ## 1.5.1
 
 * Depend on latest `test_core` and `test_api`.

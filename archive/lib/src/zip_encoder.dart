@@ -19,6 +19,8 @@ class _ZipFileData {
   bool compress = true;
   String comment = "";
   int position = 0;
+  int mode = 0;
+  bool isFile = true;
 }
 
 class _ZipEncoderData {
@@ -91,6 +93,8 @@ class ZipEncoder {
     fileData.name = file.name;
     fileData.time = _data.time;
     fileData.date = _data.date;
+    fileData.mode = file.mode == null ? 0 : file.mode;
+    fileData.isFile = file.isFile;
 
     InputStreamBase compressedData;
     int crc32;
@@ -212,7 +216,10 @@ class ZipEncoder {
       int uncompressedSize = fileData.uncompressedSize;
       int diskNumberStart = 0;
       int internalFileAttributes = 0;
-      int externalFileAttributes = 0;
+      int externalFileAttributes = fileData.mode << 16;
+      /*if (!fileData.isFile) {
+        externalFileAttributes |= 0x4000; // ?
+      }*/
       int localHeaderOffset = fileData.position;
       List<int> extraField = [];
       String fileComment = fileData.comment;

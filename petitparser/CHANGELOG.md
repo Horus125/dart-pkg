@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0
+
+* Rename ParserError to ParserException, and make it an Exception.
+* Simplify the `EndOfInputParser` and the `ListParser`.
+* Add a `PositionParser` that produces the current input position.
+* Constructor assertions across the stack.
+
 ## 2.0.0
 
 * Make parsers fully typed, where it makes sense. 

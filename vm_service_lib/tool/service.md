@@ -1876,11 +1876,13 @@ class Instance extends Object {
   //   Closure
   @Function closureFunction [optional];
 
+  // TODO(devoncarew): this can return an InstanceRef
+  //
   // The context associated with a Closure instance.
   //
   // Provided for instance kinds:
   //   Closure
-  @Context closureContext [optional];
+  //@Context closureContext [optional];
 
   // The referent of a MirrorReference instance.
   //
@@ -2391,7 +2393,7 @@ class Script extends Object {
   string source [optional];
 
   // A table encoding a mapping from token position to line and column.
-  int[][] tokenPosTable;
+  int[][] tokenPosTable [optional];
 }
 ```
 

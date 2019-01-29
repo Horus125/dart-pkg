@@ -21,20 +21,20 @@ class Pool {
   ///
   /// When an item is released, the next element of [_requestedResources] will
   /// be completed.
-  final _requestedResources = new Queue<Completer<PoolResource>>();
+  final _requestedResources = Queue<Completer<PoolResource>>();
 
   /// Callbacks that must be called before additional resources can be
   /// allocated.
   ///
   /// See [PoolResource.allowRelease].
-  final _onReleaseCallbacks = new Queue<Function>();
+  final _onReleaseCallbacks = Queue<void Function()>();
 
   /// Completers that will be completed once `onRelease` callbacks are done
   /// running.
   ///
   /// These are kept in a queue to ensure that the earliest request completes
   /// first regardless of what order the `onRelease` callbacks complete in.
-  final _onReleaseCompleters = new Queue<Completer<PoolResource>>();
+  final _onReleaseCompleters = Queue<Completer<PoolResource>>();
 
   /// The maximum number of resources that may be allocated at once.
   final int _maxAllocatedResources;
@@ -79,10 +79,15 @@ class Pool {
   /// all pending [request] futures will throw a [TimeoutException]. This is
   /// intended to avoid deadlocks.
   Pool(this._maxAllocatedResources, {Duration timeout}) : _timeout = timeout {
+    if (_maxAllocatedResources <= 0) {
+      throw ArgumentError.value(_maxAllocatedResources, 'maxAllocatedResources',
+          'Must be greater than zero.');
+    }
+
     if (timeout != null) {
       // Start the timer canceled since we only want to start counting down once
       // we've run out of available resources.
-      _timer = new RestartableTimer(timeout, _onTimeout)..cancel();
+      _timer = RestartableTimer(timeout, _onTimeout)..cancel();
     }
   }
 
@@ -92,16 +97,16 @@ class Pool {
   /// until one of them is released.
   Future<PoolResource> request() {
     if (isClosed) {
-      throw new StateError("request() may not be called on a closed Pool.");
+      throw StateError("request() may not be called on a closed Pool.");
     }
 
     if (_allocatedResources < _maxAllocatedResources) {
       _allocatedResources++;
-      return new Future.value(new PoolResource._(this));
+      return Future.value(PoolResource._(this));
     } else if (_onReleaseCallbacks.isNotEmpty) {
       return _runOnRelease(_onReleaseCallbacks.removeFirst());
     } else {
-      var completer = new Completer<PoolResource>();
+      var completer = Completer<PoolResource>();
       _requestedResources.add(completer);
       _resetTimer();
       return completer.future;
@@ -112,19 +117,114 @@ class Pool {
   /// Future.
   ///
   /// The return value of [callback] is piped to the returned Future.
-  Future<T> withResource<T>(FutureOr<T> callback()) {
+  Future<T> withResource<T>(FutureOr<T> Function() callback) async {
     if (isClosed) {
-      throw new StateError(
-          "withResource() may not be called on a closed Pool.");
+      throw StateError("withResource() may not be called on a closed Pool.");
     }
 
-    // We can't use async/await here because we need to start the request
-    // synchronously in case the pool is closed immediately afterwards. Async
-    // functions have an asynchronous gap between calling and running the body,
-    // and [close] could be called during that gap. See #3.
-    return request().then((resource) {
-      return new Future<T>.sync(callback).whenComplete(resource.release);
-    });
+    var resource = await request();
+    try {
+      return await callback();
+    } finally {
+      resource.release();
+    }
+  }
+
+  /// Returns a [Stream] containing the result of [action] applied to each
+  /// element of [elements].
+  ///
+  /// While [action] is invoked on each element of [elements] in order,
+  /// it's possible the return [Stream] may have items out-of-order – especially
+  /// if the completion time of [action] varies.
+  ///
+  /// If [action] throws an error the source item along with the error object
+  /// and [StackTrace] are passed to [onError], if it is provided. If [onError]
+  /// returns `true`, the error is added to the returned [Stream], otherwise
+  /// it is ignored.
+  ///
+  /// Errors thrown from iterating [elements] will not be passed to
+  /// [onError]. They will always be added to the returned stream as an error.
+  ///
+  /// Note: all of the resources of the this [Pool] will be used when the
+  /// returned [Stream] is listened to until it is completed or canceled.
+  ///
+  /// Note: if this [Pool] is closed before the returned [Stream] is listened
+  /// to, a [StateError] is thrown.
+  Stream<T> forEach<S, T>(
+      Iterable<S> elements, FutureOr<T> Function(S source) action,
+      {bool Function(S item, Object error, StackTrace stack) onError}) {
+    onError ??= (item, e, s) => true;
+
+    var cancelPending = false;
+
+    Completer resumeCompleter;
+    StreamController<T> controller;
+
+    Iterator<S> iterator;
+
+    Future<void> run(int i) async {
+      while (iterator.moveNext()) {
+        // caching `current` is necessary because there are async breaks
+        // in this code and `iterator` is shared across many workers
+        final current = iterator.current;
+
+        _resetTimer();
+
+        await resumeCompleter?.future;
+
+        if (cancelPending) {
+          break;
+        }
+
+        T value;
+        try {
+          value = await action(current);
+        } catch (e, stack) {
+          if (onError(current, e, stack)) {
+            controller.addError(e, stack);
+          }
+          continue;
+        }
+        controller.add(value);
+      }
+    }
+
+    Future doneFuture;
+
+    void onListen() {
+      assert(iterator == null);
+      iterator = elements.iterator;
+
+      assert(doneFuture == null);
+      doneFuture = Future.wait(
+              Iterable<int>.generate(_maxAllocatedResources)
+                  .map((i) => withResource(() => run(i))),
+              eagerError: true)
+          .catchError(controller.addError);
+
+      doneFuture.whenComplete(controller.close);
+    }
+
+    controller = StreamController<T>(
+      sync: true,
+      onListen: onListen,
+      onCancel: () async {
+        assert(!cancelPending);
+        cancelPending = true;
+        await doneFuture;
+      },
+      onPause: () {
+        assert(resumeCompleter == null);
+        resumeCompleter = Completer();
+      },
+      onResume: () {
+        assert(resumeCompleter != null);
+        resumeCompleter.complete();
+        resumeCompleter = null;
+      },
+    );
+
+    return controller.stream;
   }
 
   /// Closes the pool so that no more resources are requested.
@@ -143,9 +243,9 @@ class Pool {
 
         _resetTimer();
 
-        _closeGroup = new FutureGroup();
+        _closeGroup = FutureGroup();
         for (var callback in _onReleaseCallbacks) {
-          _closeGroup.add(new Future.sync(callback));
+          _closeGroup.add(Future.sync(callback));
         }
 
         _allocatedResources -= _onReleaseCallbacks.length;
@@ -154,7 +254,7 @@ class Pool {
         if (_allocatedResources == 0) _closeGroup.close();
         return _closeGroup.future;
       });
-  final _closeMemo = new AsyncMemoizer();
+  final _closeMemo = AsyncMemoizer();
 
   /// If there are any pending requests, this will fire the oldest one.
   void _onResourceReleased() {
@@ -162,7 +262,7 @@ class Pool {
 
     if (_requestedResources.isNotEmpty) {
       var pending = _requestedResources.removeFirst();
-      pending.complete(new PoolResource._(this));
+      pending.complete(PoolResource._(this));
     } else {
       _allocatedResources--;
       if (isClosed && _allocatedResources == 0) _closeGroup.close();
@@ -171,14 +271,14 @@ class Pool {
 
   /// If there are any pending requests, this will fire the oldest one after
   /// running [onRelease].
-  void _onResourceReleaseAllowed(onRelease()) {
+  void _onResourceReleaseAllowed(Function() onRelease) {
     _resetTimer();
 
     if (_requestedResources.isNotEmpty) {
       var pending = _requestedResources.removeFirst();
       pending.complete(_runOnRelease(onRelease));
     } else if (isClosed) {
-      _closeGroup.add(new Future.sync(onRelease));
+      _closeGroup.add(Future.sync(onRelease));
       _allocatedResources--;
       if (_allocatedResources == 0) _closeGroup.close();
     } else {
@@ -193,14 +293,14 @@ class Pool {
   ///
   /// Futures returned by [_runOnRelease] always complete in the order they were
   /// created, even if earlier [onRelease] callbacks take longer to run.
-  Future<PoolResource> _runOnRelease(onRelease()) {
-    new Future.sync(onRelease).then((value) {
-      _onReleaseCompleters.removeFirst().complete(new PoolResource._(this));
-    }).catchError((error, stackTrace) {
+  Future<PoolResource> _runOnRelease(Function() onRelease) {
+    Future.sync(onRelease).then((value) {
+      _onReleaseCompleters.removeFirst().complete(PoolResource._(this));
+    }).catchError((error, StackTrace stackTrace) {
       _onReleaseCompleters.removeFirst().completeError(error, stackTrace);
     });
 
-    var completer = new Completer<PoolResource>.sync();
+    var completer = Completer<PoolResource>.sync();
     _onReleaseCompleters.add(completer);
     return completer.future;
   }
@@ -221,11 +321,11 @@ class Pool {
   void _onTimeout() {
     for (var completer in _requestedResources) {
       completer.completeError(
-          new TimeoutException(
+          TimeoutException(
               "Pool deadlock: all resources have been "
               "allocated for too long.",
               _timeout),
-          new Chain.current());
+          Chain.current());
     }
     _requestedResources.clear();
     _timer = null;
@@ -239,7 +339,7 @@ class Pool {
 class PoolResource {
   final Pool _pool;
 
-  /// Whether [this] has been released yet.
+  /// Whether `this` has been released yet.
   bool _released = false;
 
   PoolResource._(this._pool);
@@ -248,7 +348,7 @@ class PoolResource {
   /// no longer allocated, and that a new [PoolResource] may be allocated.
   void release() {
     if (_released) {
-      throw new StateError("A PoolResource may only be released once.");
+      throw StateError("A PoolResource may only be released once.");
     }
     _released = true;
     _pool._onResourceReleased();
@@ -266,9 +366,9 @@ class PoolResource {
   /// This is useful when a resource's main function is complete, but it may
   /// produce additional information later on. For example, an isolate's task
   /// may be complete, but it could still emit asynchronous errors.
-  void allowRelease(onRelease()) {
+  void allowRelease(Function() onRelease) {
     if (_released) {
-      throw new StateError("A PoolResource may only be released once.");
+      throw StateError("A PoolResource may only be released once.");
     }
     _released = true;
     _pool._onResourceReleaseAllowed(onRelease);

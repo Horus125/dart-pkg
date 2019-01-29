@@ -48,7 +48,7 @@ dynamic _createSpecificObject(
   if (json == null) return null;
 
   if (json is List) {
-    return json.map((e) => _createObject(e)).toList();
+    return json.map((e) => creator(e)).toList();
   } else if (json is Map) {
     Map<String, dynamic> map = {};
     for (dynamic key in json.keys) {
@@ -2367,14 +2367,13 @@ class Instance extends Obj {
   @optional
   FuncRef closureFunction;
 
+  /// TODO(devoncarew): this can return an InstanceRef
+  ///
   /// The context associated with a Closure instance.
   ///
   /// Provided for instance kinds:
-  ///  - Closure
-  @optional
-  ContextRef closureContext;
-
-  /// The referent of a MirrorReference instance.
+  /// - Closure@Context closureContext [optional]; The referent of a
+  /// MirrorReference instance.
   ///
   /// Provided for instance kinds:
   ///  - MirrorReference
@@ -2477,7 +2476,6 @@ class Instance extends Obj {
             _createSpecificObject(json['associations'], MapAssociation.parse));
     bytes = json['bytes'];
     closureFunction = _createObject(json['closureFunction']);
-    closureContext = _createObject(json['closureContext']);
     mirrorReferent = _createObject(json['mirrorReferent']);
     pattern = json['pattern'];
     isCaseSensitive = json['isCaseSensitive'];
@@ -3018,6 +3016,7 @@ class Script extends Obj {
   String source;
 
   /// A table encoding a mapping from token position to line and column.
+  @optional
   List<List<int>> tokenPosTable;
 
   Script();
@@ -3034,9 +3033,8 @@ class Script extends Obj {
 
   operator ==(other) => other is Script && id == other.id;
 
-  String toString() => '[Script ' //
-      'type: ${type}, id: ${id}, uri: ${uri}, library: ${library}, ' //
-      'tokenPosTable: ${tokenPosTable}]';
+  String toString() =>
+      '[Script type: ${type}, id: ${id}, uri: ${uri}, library: ${library}]';
 }
 
 class ScriptList extends Response {

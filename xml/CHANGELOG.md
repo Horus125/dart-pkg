@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.3.0
+
+* New event based parsing in `xml_events`:
+  * Lazy event parsing from a XML string into an `Iterable` of `XmlEvent`.
+  * Async converters between streams of XML, `XmlEvent` and `XmlNode`.
+* Remove the experimental 
+
+* Clean up package structure by moving internal packages into the `src/`
+  subtree.
+
+
+## 3.2.4
+
+* Remove unnecessary whitespace when printing self-closing tags.
+* Remember if an element is self-closing for stable printing.
+
 ## 3.2.0
 
 * Migrated to PetitParser 2.0
@@ -26,6 +42,10 @@
 ## 2.5.0
 
 * Generic Method syntax with Dart 1.21
+
+## 2.4.5
+
+* Do no longer use ArgumentErrors, but instead use proper exceptions.
 
 ## 2.4.4
 

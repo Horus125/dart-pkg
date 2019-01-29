@@ -7,11 +7,11 @@ import 'package:petitparser/src/core/parser.dart';
 
 /// A parser that uses the first parser that succeeds.
 class ChoiceParser extends ListParser {
-  factory ChoiceParser(Iterable<Parser> children) {
-    return ChoiceParser._(List.of(children, growable: false));
+  ChoiceParser(Iterable<Parser> children) : super(children) {
+    if (children.isEmpty) {
+      throw ArgumentError('Choice parser cannot be empty.');
+    }
   }
-
-  ChoiceParser._(List<Parser> children) : super(children);
 
   @override
   Result parseOn(Context context) {

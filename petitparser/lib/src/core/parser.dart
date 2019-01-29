@@ -8,7 +8,6 @@ import 'package:petitparser/src/core/actions/trimming.dart';
 import 'package:petitparser/src/core/characters/whitespace.dart';
 import 'package:petitparser/src/core/combinators/and.dart';
 import 'package:petitparser/src/core/combinators/choice.dart';
-import 'package:petitparser/src/core/combinators/eof.dart';
 import 'package:petitparser/src/core/combinators/not.dart';
 import 'package:petitparser/src/core/combinators/optional.dart';
 import 'package:petitparser/src/core/combinators/sequence.dart';
@@ -16,6 +15,7 @@ import 'package:petitparser/src/core/contexts/context.dart';
 import 'package:petitparser/src/core/contexts/failure.dart';
 import 'package:petitparser/src/core/contexts/result.dart';
 import 'package:petitparser/src/core/contexts/success.dart';
+import 'package:petitparser/src/core/parsers/eof.dart';
 import 'package:petitparser/src/core/parsers/settable.dart';
 import 'package:petitparser/src/core/predicates/any.dart';
 import 'package:petitparser/src/core/repeaters/greedy.dart';
@@ -26,6 +26,8 @@ import 'package:petitparser/src/core/token.dart';
 
 /// Abstract base class of all parsers.
 abstract class Parser<T> {
+  const Parser();
+
   /// Primitive method doing the actual parsing.
   ///
   /// The method is overridden in concrete subclasses to implement the
@@ -141,18 +143,19 @@ abstract class Parser<T> {
   ///
   /// For example, the parser `letter().repeat(2, 4)` accepts a sequence of
   /// two, three, or four letters and returns the accepted letters as a list.
-  Parser<List<T>> repeat(int min, int max) =>
-      PossessiveRepeatingParser<T>(this, min, max);
+  Parser<List<T>> repeat(int min, [int max]) =>
+      PossessiveRepeatingParser<T>(this, min, max ?? min);
 
   /// Returns a parser that parses the receiver at least [min] and at most [max]
-  /// times until it reaches a [limit]. This is a greedy non-blind implementation of
-  /// the [Parser.repeat] operator. The [limit] is not consumed.
+  /// times until it reaches a [limit]. This is a greedy non-blind
+  /// implementation of the [Parser.repeat] operator. The [limit] is not
+  /// consumed.
   Parser<List<T>> repeatGreedy(Parser limit, int min, int max) =>
       GreedyRepeatingParser<T>(this, limit, min, max);
 
   /// Returns a parser that parses the receiver at least [min] and at most [max]
-  /// times until it reaches a [limit]. This is a lazy non-blind implementation of
-  /// the [Parser.repeat] operator. The [limit] is not consumed.
+  /// times until it reaches a [limit]. This is a lazy non-blind implementation
+  /// of the [Parser.repeat] operator. The [limit] is not consumed.
   Parser<List<T>> repeatLazy(Parser limit, int min, int max) =>
       LazyRepeatingParser<T>(this, limit, min, max);
 
@@ -204,7 +207,8 @@ abstract class Parser<T> {
   /// `char('_')` accepts the input, the negation and subsequently the
   /// complete parser fails. Otherwise the parser `identifier` is given the
   /// ability to process the complete identifier.
-  Parser<Null> not([String message]) => NotParser(this, message);
+  Parser<void> not([String message = 'success not expected']) =>
+      NotParser(this, message);
 
   /// Returns a parser that consumes any input token (character), but the
   /// receiver.
@@ -212,7 +216,8 @@ abstract class Parser<T> {
   /// For example, the parser `letter().neg()` accepts any input but a letter.
   /// The parser fails for inputs like `'a'` or `'Z'`, but succeeds for
   /// input like `'1'`, `'_'` or `'$'`.
-  Parser<String> neg([String message]) => not(message).seq(any()).pick(1);
+  Parser<String> neg([String message = 'input not expected']) =>
+      not(message).seq(any()).pick(1);
 
   /// Returns a parser that discards the result of the receiver, and returns
   /// a sub-string of the consumed range in the string/list being parsed.
@@ -249,7 +254,7 @@ abstract class Parser<T> {
   /// and fails on `'ab'`. In contrast the parser `letter()` alone would
   /// succeed on both inputs, but not consume everything for the second input.
   Parser<T> end([String message = 'end of input expected']) =>
-      EndOfInputParser(this, message);
+      SequenceParser([this, endOfInput(message)]).pick(0);
 
   /// Returns a parser that points to the receiver, but can be changed to point
   /// to something else at a later point in time.
@@ -320,7 +325,7 @@ abstract class Parser<T> {
     final parser = SequenceParser(optionalSeparatorAtEnd
         ? [this, repeater, separator.optional()]
         : [this, repeater]);
-    return parser.map((List list) {
+    return parser.map((list) {
       final result = [];
       result.add(list[0]);
       for (var tuple in list[1]) {

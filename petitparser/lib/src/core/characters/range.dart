@@ -18,7 +18,9 @@ class RangeCharPredicate implements CharacterPredicate {
   final int start;
   final int stop;
 
-  RangeCharPredicate(this.start, this.stop) {
+  RangeCharPredicate(this.start, this.stop)
+      : assert(start != null),
+        assert(stop != null) {
     if (start > stop) {
       throw ArgumentError('Invalid range: $start-$stop');
     }
@@ -26,4 +28,8 @@ class RangeCharPredicate implements CharacterPredicate {
 
   @override
   bool test(int value) => start <= value && value <= stop;
+
+  @override
+  bool isEqualTo(CharacterPredicate other) =>
+      other is RangeCharPredicate && other.start == start && other.stop == stop;
 }

@@ -7,7 +7,10 @@ class RangesCharPredicate implements CharacterPredicate {
   final List<int> starts;
   final List<int> stops;
 
-  const RangesCharPredicate(this.length, this.starts, this.stops);
+  const RangesCharPredicate(this.length, this.starts, this.stops)
+      : assert(length != null),
+        assert(starts != null),
+        assert(stops != null);
 
   @override
   bool test(int value) {
@@ -26,4 +29,11 @@ class RangesCharPredicate implements CharacterPredicate {
     }
     return 0 < min && value <= stops[min - 1];
   }
+
+  @override
+  bool isEqualTo(CharacterPredicate other) =>
+      other is RangesCharPredicate &&
+      other.length == length &&
+      other.starts == starts &&
+      other.stops == stops;
 }

@@ -16,15 +16,16 @@ class ArchiveFile {
   int groupId = 0;
   int lastModTime;
   bool isFile = true;
-  /// The unix permissions of the file stored in base 8. Use .toRadixString(8)
-  /// to convert to the chmod format (e.g. 777).
-  int unixPermissions;
   /// The crc32 checksum of the uncompressed content.
   int crc32;
   String comment;
   /// If false, this file will not be compressed when encoded to an archive
   /// format such as zip.
   bool compress = true;
+
+  int get unixPermissions {
+    return mode & 0x1FF;
+  }
 
   ArchiveFile(this.name, this.size, content,
               [this._compressionType = STORE]) {

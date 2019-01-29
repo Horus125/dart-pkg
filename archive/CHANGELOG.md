@@ -1,3 +1,16 @@
+## 2.0.8
+
+* Fix zip isFile
+
+## 2.0.7
+
+* Fix zip file attributes.
+
+## 2.0.6
+
+* Support GNU tar long file names
+* Maintain unix file permissions in zip archives.
+
 ## 2.0.5
 
 * Use dart:io ZLibCodec when run from dart:io.

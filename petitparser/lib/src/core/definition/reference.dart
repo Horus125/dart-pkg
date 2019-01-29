@@ -8,12 +8,14 @@ class Reference extends Parser {
   final Function function;
   final List arguments;
 
-  Reference(this.function, this.arguments);
+  Reference(this.function, this.arguments)
+      : assert(function != null),
+        assert(arguments != null);
 
   Parser resolve() => Function.apply(function, arguments);
 
   @override
-  bool operator ==(other) {
+  bool operator ==(Object other) {
     if (other is Reference) {
       if (other.function != function ||
           other.arguments.length != arguments.length) {

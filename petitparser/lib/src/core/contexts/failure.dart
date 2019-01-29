@@ -12,10 +12,13 @@ class Failure<R> extends Result<R> {
   bool get isFailure => true;
 
   @override
-  R get value => throw ParserError(this);
+  R get value => throw ParserException(this);
 
   @override
   final String message;
+
+  @override
+  Result<T> map<T>(T Function(R element) callback) => failure(message);
 
   @override
   String toString() => 'Failure[${toPositionString()}]: $message';

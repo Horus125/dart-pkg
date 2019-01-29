@@ -1,3 +1,40 @@
+# 1.5.3
+
+* Fix an edge case where `FileSpan.highlight()` would put the highlight
+  indicator in the wrong position when highlighting a point span after the end
+  of a file.
+
+# 1.5.2
+
+* `SourceFile.span()` now goes to the end of the file by default, rather than
+  ending one character before the end of the file. This matches the documented
+  behavior.
+
+* `FileSpan.context` now includes the full line on which the span appears for
+  empty spans at the beginning and end of lines.
+
+* Fix an edge case where `FileSpan.highlight()` could crash when highlighting a
+  span that ended with an empty line.
+
+# 1.5.1
+
+* Produce better source span highlights for multi-line spans that cover the
+  entire last line of the span, including the newline.
+
+* Produce better source span highlights for spans that contain Windows-style
+  newlines.
+
+# 1.5.0
+
+* Improve the output of `SourceSpan.highlight()` and `SourceSpan.message()`:
+
+  * They now include line numbers.
+  * They will now print every line of a multiline span.
+  * They will now use Unicode box-drawing characters by default (this can be
+    controlled using [`term_glyph.ascii`][]).
+
+[`term_glyph.ascii`]: https://pub.dartlang.org/documentation/term_glyph/latest/term_glyph/ascii.html
+
 # 1.4.1
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.

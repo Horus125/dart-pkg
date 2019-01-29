@@ -11,7 +11,9 @@ class CharacterParser extends Parser<String> {
 
   final String message;
 
-  CharacterParser(this.predicate, this.message);
+  CharacterParser(this.predicate, this.message)
+      : assert(predicate != null),
+        assert(message != null);
 
   @override
   Result<String> parseOn(Context context) {
@@ -33,6 +35,6 @@ class CharacterParser extends Parser<String> {
   @override
   bool hasEqualProperties(CharacterParser other) =>
       super.hasEqualProperties(other) &&
-      predicate == other.predicate &&
+      predicate.isEqualTo(other.predicate) &&
       message == other.message;
 }
