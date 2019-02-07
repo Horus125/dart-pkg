@@ -229,7 +229,7 @@ final String _implCode = r'''
 ''';
 
 final String _rpcError = r'''
-typedef Future DisposeHandler();
+typedef DisposeHandler = Future Function();
 
 class RPCError {
   static RPCError parse(String callingMethod, dynamic json) {
@@ -309,7 +309,7 @@ class Api extends Member with ApiParseUtil {
     // the pre following it is the definition
     // the optional p following that is the documentation
 
-    String h3Name = null;
+    String h3Name;
 
     for (int i = 0; i < nodes.length; i++) {
       Node node = nodes[i];
@@ -400,7 +400,7 @@ const String undocumented = 'undocumented';
 
 /// Decode a string in Base64 encoding into the equivalent non-encoded string.
 /// This is useful for handling the results of the Stdout or Stderr events.
-String decodeBase64(String str) => new String.fromCharCodes(base64.decode(str));
+String decodeBase64(String str) => utf8.decode(base64.decode(str));
 
 Object _createObject(dynamic json) {
   if (json == null) return null;
@@ -437,7 +437,8 @@ dynamic _createSpecificObject(dynamic json, dynamic creator(Map<String, dynamic>
   }
 }
 
-typedef Future<Map<String, dynamic>> ServiceCallback(Map<String, dynamic> params);
+typedef ServiceCallback = Future<Map<String, dynamic>> Function(
+    Map<String, dynamic> params);
 
 ''');
     gen.writeln();
@@ -600,7 +601,7 @@ List<String> assertStrings(List<String> list) {
 
 String assertString(String obj) {
   assertNotNull(obj);
-  if (obj.length == 0) throw 'expected non-zero length string';
+  if (obj.isEmpty) throw 'expected non-zero length string';
   return obj;
 }
 

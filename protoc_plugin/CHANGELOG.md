@@ -1,3 +1,80 @@
+## 15.0.3
+
+* Add test for frozen messages with unknown fields and update protobuf dependency to 0.13.1.
+
+## 15.0.2
+
+* The generated `pbgrpc.dart` files now import `package:grpc/grpc.dart` with a prefix.
+
+## 15.0.1
+
+* Add test for frozen messages with extension fields and update protobuf dependency to 0.13.0.
+
+## 15.0.0
+
+*  Breaking change: Changed BuilderInfo call for map fields to include the BuilderInfo object for map entries.
+   Generated files require package:protobuf version 0.12.0 or newer.
+
+## 14.0.1
+
+* Remove the benchmark from the protoc_package. It now lives in
+  [https://github.com/dart-lang/protobuf] as `api_benchmark`.
+  This simplifies the dev_dependencies of this package.
+
+## 14.0.0
+
+* Breaking change: generated message classes now have a new instance method `createEmptyInstance`
+  that is used to support the new `toBuilder()` semantics of protobuf 0.11.0.
+  The generated code requires at least protobuf 0.11.0.
+
+## 13.0.1
+
+* Add test for recursive merging and update protobuf dependency to 0.10.7.
+
+## 13.0.0
+
+* Breaking change: Support for [oneof](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
+  Generated files require package:protobuf version 0.10.6 or newer.
+
+## 12.0.0
+
+* Breaking change: Handle identifiers starting with a leading underscore.
+  This covers message names, enum names, enum value identifiers and file names.
+
+  Before, these would appear in the generated Dart code as private identifiers.
+  Now the underscore is moved to the end.
+
+  Field names and extension field names already had all underscores removed, and these are not
+  affected by this change.
+
+  If there is a conflicting name with a trailing underscore defined later in the same scope, a
+  disambiguation will happen that can potentially lead to existing identifiers getting a new name in
+  the generated Dart.
+
+  For example:
+
+  ```
+  message _Foo {}
+  message Foo_ {}
+  ```
+
+  `_Foo` will get the name `Foo_` and `Foo_` will now end up being called `Foo__`.
+
+## 11.0.0
+
+* Breaking change: Support for [map fields](https://developers.google.com/protocol-buffers/docs/proto3#maps)
+  Generated files require package:protobuf version 0.10.5 or newer.
+  Protobuf map fields such as:
+
+  message Foo {
+    map<int32, string> map_field = 1;
+  }
+  are now no longer represented as List<Foo_MapFieldEntry> but as Map<int, String>.
+
+  All code handling these fields needs to be updated.
+
+  Accidentally published as 11.0.0 instead of 0.11.0. Continuing from here.
+
 ## 0.10.5
 
 * Generated files now import `dart:async` with a prefix to prevent name

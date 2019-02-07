@@ -1,3 +1,39 @@
+## 0.13.2
+
+* Include extension fields in GeneratedMessage.toString().
+
+## 0.13.1
+
+* Fix issue with not being able to read unknown fields after freezing.
+
+Reading an unknown field set after freeze() now returns the existing field set before freezing instead of an empty UnknownFieldSet.
+
+## 0.13.0
+
+* Breaking change: Fix issue with not being able to read extensions after freezing.
+
+Reading an extension field after freeze() now returns the value set before freezing instead of the default value.
+
+## 0.12.0
+
+* Breaking change: Changed `BuilderInfo.m()` to take class and package name of the protobuf message representing the map
+  entry. Also changed `BuilderInfo.addMapField` as well as the constructors `PbMap` and `MapFieldInfo.map` to take a map
+  entry BuilderInfo object.
+
+  This mostly affects generated code, which should now be built with protoc_plugin 15.0.0 or newer.
+
+  With this change we avoid creating a map entry BuilderInfo object for each PbMap instance, instead it is passed
+  through the static BuilderInfo object in the generated subclasses of GeneratedMessage.
+
+## 0.11.0
+
+* Breaking change: changed semantics of `GeneratedMessage.toBuilder()` to only make a shallow copy.
+
+  `GeneratedMessage` has a new abstract method: `createEmptyInstance()` that subclasses must
+  implement.
+
+  Proto files must be rebuilt using protoc_plugin 14.0.0 or newer.
+
 ## 0.10.8
 
 * Fix freezing of map fields.

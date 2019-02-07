@@ -1,0 +1,445 @@
+diff --git a/lib/message_generator.dart b/../../dart-protoc-plugin/lib/message_generator.dart
+index 5c9c072..65ca39c 100644
+--- a/lib/message_generator.dart
++++ b/../../dart-protoc-plugin/lib/message_generator.dart
+@@ -4,6 +4,19 @@
+ 
+ part of protoc;
+ 
++class OneofEnumGenerator {
++  static void generate(
++      IndentingWriter out, String classname, List<ProtobufField> fields) {
++    out.addBlock('enum ${classname} {', '}\n', () {
++      for (ProtobufField field in fields) {
++        final name = field.memberNames.fieldName;
++        out.println('$name, ');
++      }
++      out.println('unset');
++    });
++  }
++}
++
+ class MessageGenerator extends ProtobufContainer {
+   /// Returns the mixin for this message, or null if none.
+   ///
+@@ -56,37 +69,46 @@ class MessageGenerator extends ProtobufContainer {
+   final List<EnumGenerator> _enumGenerators = <EnumGenerator>[];
+   final List<MessageGenerator> _messageGenerators = <MessageGenerator>[];
+   final List<ExtensionGenerator> _extensionGenerators = <ExtensionGenerator>[];
++  // Stores the list of fields belonging to each oneof declaration identified
++  // by the index in the containing types's oneof_decl list.
++  final List<List<ProtobufField>> _oneofFields;
++  List<OneofNames> _oneofNames;
+ 
+   // populated by resolve()
+   List<ProtobufField> _fieldList;
+ 
++  Set<String> _usedTopLevelNames;
++
+   MessageGenerator(
+       DescriptorProto descriptor,
+       ProtobufContainer parent,
+       Map<String, PbMixin> declaredMixins,
+       PbMixin defaultMixin,
+-      Set<String> usedNames)
++      this._usedTopLevelNames)
+       : _descriptor = descriptor,
+         _parent = parent,
+-        classname = messageOrEnumClassName(descriptor.name, usedNames,
++        classname = messageOrEnumClassName(descriptor.name, _usedTopLevelNames,
+             parent: parent?.classname ?? ''),
+         assert(parent != null),
+         fullName = parent.fullName == ''
+             ? descriptor.name
+             : '${parent.fullName}.${descriptor.name}',
+         mixin = _getMixin(descriptor, parent.fileGen.descriptor, declaredMixins,
+-            defaultMixin) {
++            defaultMixin),
++        _oneofFields =
++            List.generate(descriptor.oneofDecl.length, (int index) => []) {
+     for (EnumDescriptorProto e in _descriptor.enumType) {
+-      _enumGenerators.add(new EnumGenerator(e, this, usedNames));
++      _enumGenerators.add(new EnumGenerator(e, this, _usedTopLevelNames));
+     }
+ 
+     for (DescriptorProto n in _descriptor.nestedType) {
+       _messageGenerators.add(new MessageGenerator(
+-          n, this, declaredMixins, defaultMixin, usedNames));
++          n, this, declaredMixins, defaultMixin, _usedTopLevelNames));
+     }
+ 
+     for (FieldDescriptorProto x in _descriptor.extension) {
+-      _extensionGenerators.add(new ExtensionGenerator(x, this, usedNames));
++      _extensionGenerators
++          .add(new ExtensionGenerator(x, this, _usedTopLevelNames));
+     }
+   }
+ 
+@@ -138,12 +160,19 @@ class MessageGenerator extends ProtobufContainer {
+     if (_fieldList != null) throw new StateError("message already resolved");
+ 
+     var reserved = mixin?.findReservedNames() ?? const <String>[];
+-    var fields = messageFieldNames(_descriptor, reserved: reserved);
++    MemberNames members = messageMemberNames(
++        _descriptor, classname, _usedTopLevelNames,
++        reserved: reserved);
+ 
+     _fieldList = <ProtobufField>[];
+-    for (MemberNames names in fields.values) {
+-      _fieldList.add(new ProtobufField.message(names, this, ctx));
++    for (FieldNames names in members.fieldNames) {
++      ProtobufField field = new ProtobufField.message(names, this, ctx);
++      if (field.descriptor.hasOneofIndex()) {
++        _oneofFields[field.descriptor.oneofIndex].add(field);
++      }
++      _fieldList.add(field);
+     }
++    _oneofNames = members.oneofNames;
+ 
+     for (var m in _messageGenerators) {
+       m.resolve(ctx);
+@@ -223,6 +252,11 @@ class MessageGenerator extends ProtobufContainer {
+       m.generate(out);
+     }
+ 
++    for (OneofNames oneof in _oneofNames) {
++      OneofEnumGenerator.generate(
++          out, oneof.oneofEnumName, _oneofFields[oneof.index]);
++    }
++
+     var mixinClause = '';
+     if (mixin != null) {
+       var mixinNames = mixin.findMixinsToApply().map((m) => m.name);
+@@ -235,6 +269,17 @@ class MessageGenerator extends ProtobufContainer {
+     out.addBlock(
+         'class ${classname} extends $_protobufImportPrefix.GeneratedMessage${mixinClause} {',
+         '}', () {
++      for (OneofNames oneof in _oneofNames) {
++        out.addBlock(
++            'static const Map<int, ${oneof.oneofEnumName}> ${oneof.byTagMapName} = {',
++            '};', () {
++          for (ProtobufField field in _oneofFields[oneof.index]) {
++            out.println(
++                '${field.number} : ${oneof.oneofEnumName}.${field.memberNames.fieldName},');
++          }
++          out.println('0 : ${oneof.oneofEnumName}.unset');
++        });
++      }
+       out.addBlock(
+           'static final $_protobufImportPrefix.BuilderInfo _i = '
+           'new $_protobufImportPrefix.BuilderInfo(\'${messageName}\'$packageClause)',
+@@ -244,6 +289,12 @@ class MessageGenerator extends ProtobufContainer {
+           out.println(field.generateBuilderInfoCall(fileGen, dartFieldName));
+         }
+ 
++        for (int oneof = 0; oneof < _oneofFields.length; oneof++) {
++          List<int> tags =
++              _oneofFields[oneof].map((ProtobufField f) => f.number).toList();
++          out.println("..oo($oneof, ${tags})");
++        }
++
+         if (_descriptor.extensionRange.length > 0) {
+           out.println('..hasExtensions = true');
+         }
+@@ -375,12 +426,23 @@ class MessageGenerator extends ProtobufContainer {
+   }
+ 
+   void generateFieldsAccessorsMutators(IndentingWriter out) {
++    _oneofNames
++        .forEach((OneofNames oneof) => generateoneOfAccessors(out, oneof));
++
+     for (ProtobufField field in _fieldList) {
+       out.println();
+       generateFieldAccessorsMutators(field, out);
+     }
+   }
+ 
++  void generateoneOfAccessors(IndentingWriter out, OneofNames oneof) {
++    out.println();
++    out.println("${oneof.oneofEnumName} ${oneof.whichOneofMethodName}() "
++        "=> ${oneof.byTagMapName}[\$_whichOneof(${oneof.index})];");
++    out.println('void ${oneof.clearMethodName}() '
++        '=> clearField(\$_whichOneof(${oneof.index}));');
++  }
++
+   void generateFieldAccessorsMutators(
+       ProtobufField field, IndentingWriter out) {
+     var fieldTypeString = field.getDartType(fileGen);
+diff --git a/lib/names.dart b/../../dart-protoc-plugin/lib/names.dart
+index a974bec..251f9f0 100644
+--- a/lib/names.dart
++++ b/../../dart-protoc-plugin/lib/names.dart
+@@ -10,8 +10,14 @@ import 'package:protoc_plugin/src/descriptor.pb.dart';
+ /// to check its type and range.
+ const checkItem = '\$checkItem';
+ 
+-/// The Dart member names in a GeneratedMessage subclass for one protobuf field.
+ class MemberNames {
++  List<FieldNames> fieldNames;
++  List<OneofNames> oneofNames;
++  MemberNames(this.fieldNames, this.oneofNames);
++}
++
++/// The Dart member names in a GeneratedMessage subclass for one protobuf field.
++class FieldNames {
+   /// The descriptor of the field these member names apply to.
+   final FieldDescriptorProto descriptor;
+ 
+@@ -32,10 +38,33 @@ class MemberNames {
+   /// `null` for repeated fields.
+   final String clearMethodName;
+ 
+-  MemberNames(this.descriptor, this.index, this.fieldName,
++  FieldNames(this.descriptor, this.index, this.fieldName,
+       {this.hasMethodName, this.clearMethodName});
+ }
+ 
++// The Dart names associated with a oneof declaration.
++class OneofNames {
++  final OneofDescriptorProto descriptor;
++
++  // Index in the containing type's oneof_decl list.
++  final int index;
++
++  // Identifier for the generated whichX() method, without braces.
++  final String whichOneofMethodName;
++
++  // Identifier for the generated clearX() method, without braces.
++  final String clearMethodName;
++
++  // Identifier for the generated enum definition.
++  final String oneofEnumName;
++
++  //  Identifier for the _XByTag map.
++  final String byTagMapName;
++
++  OneofNames(this.descriptor, this.index, this.clearMethodName,
++      this.whichOneofMethodName, this.oneofEnumName, this.byTagMapName);
++}
++
+ /// Move any initial underscores in [input] to the end.
+ ///
+ /// According to the spec identifiers cannot start with _, but it seems to be
+@@ -143,6 +172,13 @@ Iterable<String> defaultSuffixes() sync* {
+   }
+ }
+ 
++String oneofEnumClassName(
++    String descriptorName, Set<String> usedNames, String parent) {
++  descriptorName = '${parent}_${underscoresToCamelCase(descriptorName)}';
++  return disambiguateName(
++      avoidInitialUnderscore(descriptorName), usedNames, defaultSuffixes());
++}
++
+ /// Chooses the name of the Dart class to generate for a proto message or enum.
+ ///
+ /// For a nested message or enum, [parent] should be provided
+@@ -170,17 +206,18 @@ Iterable<String> enumSuffixes() sync* {
+   }
+ }
+ 
+-/// Chooses the GeneratedMessage member names for each field.
++/// Chooses the GeneratedMessage member names for each field and names
++/// associated with each oneof declaration.
+ ///
+ /// Additional names to avoid can be supplied using [reserved].
+ /// (This should only be used for mixins.)
+ ///
+-/// Returns a map from the field name in the .proto file to its
+-/// corresponding MemberNames.
++/// Returns [MemberNames] which holds a list with [FieldNames] and a list with [OneofNames].
+ ///
+ /// Throws [DartNameOptionException] if a field has this option and
+ /// it's set to an invalid name.
+-Map<String, MemberNames> messageFieldNames(DescriptorProto descriptor,
++MemberNames messageMemberNames(DescriptorProto descriptor,
++    String parentClassName, Set<String> usedTopLevelNames,
+     {Iterable<String> reserved = const []}) {
+   var sorted = new List<FieldDescriptorProto>.from(descriptor.field)
+     ..sort((FieldDescriptorProto a, FieldDescriptorProto b) {
+@@ -200,10 +237,10 @@ Map<String, MemberNames> messageFieldNames(DescriptorProto descriptor,
+     ..addAll(reservedMemberNames)
+     ..addAll(reserved);
+ 
+-  var memberNames = <String, MemberNames>{};
++  List<FieldNames> fieldNames = <FieldNames>[];
+ 
+-  void takeNames(MemberNames chosen) {
+-    memberNames[chosen.descriptor.name] = chosen;
++  void takeFieldNames(FieldNames chosen) {
++    fieldNames.add(chosen);
+ 
+     existingNames.add(chosen.fieldName);
+     if (chosen.hasMethodName != null) {
+@@ -219,7 +256,7 @@ Map<String, MemberNames> messageFieldNames(DescriptorProto descriptor,
+   // Explicitly setting a name that's already taken is a build error.
+   for (var field in sorted) {
+     if (_nameOption(field).isNotEmpty) {
+-      takeNames(_memberNamesFromOption(
++      takeFieldNames(_memberNamesFromOption(
+           descriptor, field, indexes[field.name], existingNames));
+     }
+   }
+@@ -229,23 +266,55 @@ Map<String, MemberNames> messageFieldNames(DescriptorProto descriptor,
+   for (var field in sorted) {
+     if (_nameOption(field).isEmpty) {
+       var index = indexes[field.name];
+-      takeNames(_unusedMemberNames(field, index, existingNames));
++      takeFieldNames(_unusedMemberNames(field, index, existingNames));
+     }
+   }
+ 
+-  // Return a map with entries in sorted order.
+-  var result = <String, MemberNames>{};
+-  for (var field in sorted) {
+-    result[field.name] = memberNames[field.name];
++  List<OneofNames> oneofNames = <OneofNames>[];
++
++  void takeOneofNames(OneofNames chosen) {
++    oneofNames.add(chosen);
++
++    if (chosen.whichOneofMethodName != null) {
++      existingNames.add(chosen.whichOneofMethodName);
++    }
++    if (chosen.clearMethodName != null) {
++      existingNames.add(chosen.clearMethodName);
++    }
++    if (chosen.byTagMapName != null) {
++      existingNames.add(chosen.byTagMapName);
++    }
++  }
++
++  List<String> oneofNameVariants(String name) {
++    return [_defaultWhichMethodName(name), _defaultClearMethodName(name)];
+   }
+-  return result;
++
++  for (int i = 0; i < descriptor.oneofDecl.length; i++) {
++    OneofDescriptorProto oneof = descriptor.oneofDecl[i];
++
++    String oneofName = disambiguateName(
++        underscoresToCamelCase(oneof.name), existingNames, defaultSuffixes(),
++        generateVariants: oneofNameVariants);
++
++    String oneofEnumName =
++        oneofEnumClassName(oneof.name, usedTopLevelNames, parentClassName);
++
++    String enumMapName = disambiguateName(
++        '_${oneofEnumName}ByTag', existingNames, defaultSuffixes());
++
++    takeOneofNames(OneofNames(oneof, i, _defaultClearMethodName(oneofName),
++        _defaultWhichMethodName(oneofName), oneofEnumName, enumMapName));
++  }
++
++  return MemberNames(fieldNames, oneofNames);
+ }
+ 
+ /// Chooses the member names for a field that has the 'dart_name' option.
+ ///
+ /// If the explicitly-set Dart name is already taken, throw an exception.
+ /// (Fails the build.)
+-MemberNames _memberNamesFromOption(DescriptorProto message,
++FieldNames _memberNamesFromOption(DescriptorProto message,
+     FieldDescriptorProto field, int index, Set<String> existingNames) {
+   // TODO(skybrian): provide more context in errors (filename).
+   var where = "${message.name}.${field.name}";
+@@ -268,7 +337,7 @@ MemberNames _memberNamesFromOption(DescriptorProto message,
+   checkAvailable(name);
+ 
+   if (_isRepeated(field)) {
+-    return new MemberNames(field, index, name);
++    return new FieldNames(field, index, name);
+   }
+ 
+   String hasMethod = "has${_capitalize(name)}";
+@@ -277,7 +346,7 @@ MemberNames _memberNamesFromOption(DescriptorProto message,
+   String clearMethod = "clear${_capitalize(name)}";
+   checkAvailable(clearMethod);
+ 
+-  return new MemberNames(field, index, name,
++  return new FieldNames(field, index, name,
+       hasMethodName: hasMethod, clearMethodName: clearMethod);
+ }
+ 
+@@ -289,10 +358,10 @@ Iterable<String> _memberNamesSuffix(int number) sync* {
+   }
+ }
+ 
+-MemberNames _unusedMemberNames(
++FieldNames _unusedMemberNames(
+     FieldDescriptorProto field, int index, Set<String> existingNames) {
+   if (_isRepeated(field)) {
+-    return new MemberNames(
++    return new FieldNames(
+         field,
+         index,
+         disambiguateName(_defaultFieldName(_fieldMethodSuffix(field)),
+@@ -310,7 +379,7 @@ MemberNames _unusedMemberNames(
+   String name = disambiguateName(_fieldMethodSuffix(field), existingNames,
+       _memberNamesSuffix(field.number),
+       generateVariants: generateNameVariants);
+-  return new MemberNames(field, index, _defaultFieldName(name),
++  return new FieldNames(field, index, _defaultFieldName(name),
+       hasMethodName: _defaultHasMethodName(name),
+       clearMethodName: _defaultClearMethodName(name));
+ }
+@@ -327,6 +396,9 @@ String _defaultHasMethodName(String fieldMethodSuffix) =>
+ String _defaultClearMethodName(String fieldMethodSuffix) =>
+     'clear$fieldMethodSuffix';
+ 
++String _defaultWhichMethodName(String oneofMethodSuffix) =>
++    'which$oneofMethodSuffix';
++
+ /// The suffix to use for this field in Dart method names.
+ /// (It should be camelcase and begin with an uppercase letter.)
+ String _fieldMethodSuffix(FieldDescriptorProto field) {
+@@ -334,7 +406,7 @@ String _fieldMethodSuffix(FieldDescriptorProto field) {
+   if (name.isNotEmpty) return _capitalize(name);
+ 
+   if (field.type != FieldDescriptorProto_Type.TYPE_GROUP) {
+-    return _underscoresToCamelCase(field.name);
++    return underscoresToCamelCase(field.name);
+   }
+ 
+   // For groups, use capitalization of 'typeName' rather than 'name'.
+@@ -343,10 +415,10 @@ String _fieldMethodSuffix(FieldDescriptorProto field) {
+   if (index != -1) {
+     name = name.substring(index + 1);
+   }
+-  return _underscoresToCamelCase(name);
++  return underscoresToCamelCase(name);
+ }
+ 
+-String _underscoresToCamelCase(s) => s.split('_').map(_capitalize).join('');
++String underscoresToCamelCase(s) => s.split('_').map(_capitalize).join('');
+ 
+ String _capitalize(s) =>
+     s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
+diff --git a/lib/protobuf_field.dart b/../../dart-protoc-plugin/lib/protobuf_field.dart
+index 83eca16..3482161 100644
+--- a/lib/protobuf_field.dart
++++ b/../../dart-protoc-plugin/lib/protobuf_field.dart
+@@ -20,20 +20,20 @@ class ProtobufField {
+   final FieldDescriptorProto descriptor;
+ 
+   /// Dart names within a GeneratedMessage or `null` for an extension.
+-  final MemberNames memberNames;
++  final FieldNames memberNames;
+ 
+   final String fullName;
+   final BaseType baseType;
+ 
+   ProtobufField.message(
+-      MemberNames names, ProtobufContainer parent, GenerationContext ctx)
++      FieldNames names, ProtobufContainer parent, GenerationContext ctx)
+       : this._(names.descriptor, names, parent, ctx);
+ 
+   ProtobufField.extension(FieldDescriptorProto descriptor,
+       ProtobufContainer parent, GenerationContext ctx)
+       : this._(descriptor, null, parent, ctx);
+ 
+-  ProtobufField._(FieldDescriptorProto descriptor, MemberNames dartNames,
++  ProtobufField._(FieldDescriptorProto descriptor, FieldNames dartNames,
+       ProtobufContainer parent, GenerationContext ctx)
+       : this.descriptor = descriptor,
+         this.memberNames = dartNames,

@@ -80,17 +80,18 @@ class _FieldSet {
   bool get _hasObservers => _eventPlugin != null && _eventPlugin.hasObservers;
 
   bool get _hasExtensions => _extensions != null;
-  bool get hasUnknownFields => _unknownFields != null;
+  bool get _hasUnknownFields => _unknownFields != null;
 
   _ExtensionFieldSet _ensureExtensions() {
-    assert(!_isReadOnly);
     if (!_hasExtensions) _extensions = new _ExtensionFieldSet(this);
     return _extensions;
   }
 
   UnknownFieldSet _ensureUnknownFields() {
-    if (_isReadOnly) return _ReadonlyUnknownFieldSet._empty;
-    if (_unknownFields == null) _unknownFields = new UnknownFieldSet();
+    if (_unknownFields == null) {
+      if (_isReadOnly) return UnknownFieldSet.emptyUnknownFieldSet;
+      _unknownFields = new UnknownFieldSet();
+    }
     return _unknownFields;
   }
 
@@ -141,6 +142,13 @@ class _FieldSet {
           (entry as GeneratedMessage).freeze();
         }
       }
+    }
+    if (_hasExtensions) {
+      _ensureExtensions()._markReadOnly();
+    }
+
+    if (_hasUnknownFields) {
+      _ensureUnknownFields()._markReadOnly();
     }
   }
 
@@ -198,8 +206,8 @@ class _FieldSet {
   Map<K, V> _getDefaultMap<K, V>(MapFieldInfo<K, V> fi) {
     assert(fi.isMapField);
     if (_isReadOnly)
-      return PbMap<K, V>.unmodifiable(PbMap<K, V>(fi.keyFieldType,
-          fi.valueFieldType, fi.valueCreator, fi.valueOf, fi.enumValues));
+      return PbMap<K, V>.unmodifiable(PbMap<K, V>(
+          fi.keyFieldType, fi.valueFieldType, fi._mapEntryBuilderInfo));
 
     var value = fi._createMapField(_message);
     _setNonExtensionFieldUnchecked(fi, value);
@@ -558,7 +566,7 @@ class _FieldSet {
     // Hash with fields.
     hashEachField();
     // Hash with unknown fields.
-    if (hasUnknownFields) {
+    if (_hasUnknownFields) {
       hash = 0x1fffffff & ((29 * hash) + _unknownFields.hashCode);
     }
     return hash;
@@ -577,27 +585,36 @@ class _FieldSet {
       }
     }
 
-    for (FieldInfo fi in _infosSortedByTag) {
-      var fieldValue = _values[fi.index];
-      if (fieldValue == null) continue;
+    void writeFieldValue(fieldValue, String name) {
+      if (fieldValue == null) return;
       if (fieldValue is ByteData) {
         // TODO(skybrian): possibly unused. Delete?
         final value = fieldValue.getUint64(0, Endian.little);
-        renderValue(fi.name, value);
+        renderValue(name, value);
       } else if (fieldValue is List) {
         for (var value in fieldValue) {
-          renderValue(fi.name, value);
+          renderValue(name, value);
         }
       } else if (fieldValue is Map) {
         for (var entry in fieldValue.entries) {
-          renderValue(fi.name, entry);
+          renderValue(name, entry);
         }
       } else {
-        renderValue(fi.name, fieldValue);
+        renderValue(name, fieldValue);
       }
     }
-    // TODO(skybrian) write extension fields? So far we haven't.
-    if (hasUnknownFields) {
+
+    _infosSortedByTag
+        .forEach((FieldInfo fi) => writeFieldValue(_values[fi.index], fi.name));
+
+    if (_hasExtensions) {
+      _extensions._info.keys.toList()
+        ..sort()
+        ..forEach((int tagNumber) => writeFieldValue(
+            _extensions._values[tagNumber],
+            '[${_extensions._info[tagNumber].name}]'));
+    }
+    if (_hasUnknownFields) {
       out.write(_unknownFields.toString());
     } else {
       out.write(new UnknownFieldSet().toString());
@@ -628,7 +645,7 @@ class _FieldSet {
       }
     }
 
-    if (other.hasUnknownFields) {
+    if (other._hasUnknownFields) {
       _ensureUnknownFields().mergeFromUnknownFieldSet(other._unknownFields);
     }
   }
@@ -743,5 +760,36 @@ class _FieldSet {
     }
     // TODO(skybrian): search extensions as well
     // https://github.com/dart-lang/protobuf/issues/46
+  }
+
+  /// Makes a shallow copy of all values from [original] to this.
+  ///
+  /// Map fields and repeated fields are copied.
+  void _shallowCopyValues(_FieldSet original) {
+    _values.setRange(0, original._values.length, original._values);
+    for (int index = 0; index < _meta.byIndex.length; index++) {
+      FieldInfo fieldInfo = _meta.byIndex[index];
+      if (fieldInfo.isMapField) {
+        PbMap map = _values[index];
+        if (map != null) {
+          _values[index] = (fieldInfo as MapFieldInfo)._createMapField(_message)
+            ..addAll(map);
+        }
+      } else if (fieldInfo.isRepeated) {
+        PbListBase list = _values[index];
+        if (list != null) {
+          _values[index] = fieldInfo._createRepeatedField(_message)
+            ..addAll(list);
+        }
+      }
+    }
+
+    if (original._hasExtensions) {
+      _ensureExtensions()._shallowCopyValues(original._extensions);
+    }
+
+    if (original._hasUnknownFields) {
+      _ensureUnknownFields()._fields?.addAll(original._unknownFields._fields);
+    }
   }
 }

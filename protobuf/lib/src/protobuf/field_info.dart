@@ -6,6 +6,11 @@ part of protobuf;
 
 /// An object representing a protobuf message field.
 class FieldInfo<T> {
+  FrozenPbList<T> _emptyList;
+
+  // BuilderInfo used when creating a field set for a map field.
+  final BuilderInfo _mapEntryBuilderInfo;
+
   final String name;
   final int tagNumber;
   final int index; // index of the field's value. Null for extensions.
@@ -37,7 +42,8 @@ class FieldInfo<T> {
       [dynamic defaultOrMaker, this.subBuilder, this.valueOf, this.enumValues])
       : this.type = type,
         this.makeDefault = findMakeDefault(type, defaultOrMaker),
-        this.check = null {
+        this.check = null,
+        _mapEntryBuilderInfo = null {
     assert(type != 0);
     assert(!_isGroupOrMessage(type) || subBuilder != null);
     assert(!_isEnum(type) || valueOf != null);
@@ -47,7 +53,8 @@ class FieldInfo<T> {
       this.check, this.subBuilder,
       [this.valueOf, this.enumValues])
       : this.type = type,
-        this.makeDefault = (() => new PbList<T>(check: check)) {
+        this.makeDefault = (() => new PbList<T>(check: check)),
+        _mapEntryBuilderInfo = null {
     assert(name != null);
     assert(tagNumber != null);
     assert(_isRepeated(type));
@@ -57,7 +64,11 @@ class FieldInfo<T> {
 
   FieldInfo._map(
       this.name, this.tagNumber, this.index, int type, this.makeDefault,
-      [dynamic defaultOrMaker, this.subBuilder, this.valueOf, this.enumValues])
+      [dynamic defaultOrMaker,
+      this.subBuilder,
+      this.valueOf,
+      this.enumValues,
+      this._mapEntryBuilderInfo])
       : this.type = type,
         this.check = null {
     assert(name != null);
@@ -80,7 +91,9 @@ class FieldInfo<T> {
   /// Returns a read-only default value for a field.
   /// (Unlike getField, doesn't create a repeated field.)
   get readonlyDefault {
-    if (isRepeated) return const <Null>[];
+    if (isRepeated) {
+      return _emptyList ??= FrozenPbList._([]);
+    }
     return makeDefault();
   }
 
@@ -165,19 +178,19 @@ class MapFieldInfo<K, V> extends FieldInfo<PbMap<K, V>> {
   CreateBuilderFunc valueCreator;
 
   MapFieldInfo.map(String name, int tagNumber, int index, int type,
-      this.keyFieldType, this.valueFieldType,
-      [this.valueCreator, ValueOfFunc valueOf, List<ProtobufEnum> enumValues])
+      this.keyFieldType, this.valueFieldType, BuilderInfo mapEntryBuilderInfo)
       : super._map(
             name,
             tagNumber,
             index,
             type,
-            () => PbMap<K, V>(keyFieldType, valueFieldType, valueCreator,
-                valueOf, enumValues),
+            () =>
+                PbMap<K, V>(keyFieldType, valueFieldType, mapEntryBuilderInfo),
             null,
             null,
-            valueOf,
-            enumValues) {
+            null,
+            null,
+            mapEntryBuilderInfo) {
     assert(name != null);
     assert(tagNumber != null);
     assert(_isMapField(type));

@@ -13,7 +13,7 @@ import 'dart:async';
 import 'dart:convert' show base64, jsonDecode, jsonEncode, utf8;
 import 'dart:typed_data';
 
-const String vmServiceVersion = '3.12.0';
+const String vmServiceVersion = '3.14.0';
 
 /// @optional
 const String optional = 'optional';
@@ -23,7 +23,7 @@ const String undocumented = 'undocumented';
 
 /// Decode a string in Base64 encoding into the equivalent non-encoded string.
 /// This is useful for handling the results of the Stdout or Stderr events.
-String decodeBase64(String str) => new String.fromCharCodes(base64.decode(str));
+String decodeBase64(String str) => utf8.decode(base64.decode(str));
 
 Object _createObject(dynamic json) {
   if (json == null) return null;
@@ -61,7 +61,7 @@ dynamic _createSpecificObject(
   }
 }
 
-typedef Future<Map<String, dynamic>> ServiceCallback(
+typedef ServiceCallback = Future<Map<String, dynamic>> Function(
     Map<String, dynamic> params);
 
 Map<String, Function> _typeFactories = {
@@ -643,8 +643,8 @@ class VmService {
   /// The `streamListen` RPC subscribes to a stream in the VM. Once subscribed,
   /// the client will begin receiving events from the stream.
   ///
-  /// If the client is not subscribed to the stream, the `103` (Stream already
-  /// subscribed) error code is returned.
+  /// If the client is already subscribed to the stream, the `103` (Stream
+  /// already subscribed) error code is returned.
   ///
   /// The `streamId` parameter may have the following published values:
   ///
@@ -910,7 +910,7 @@ class VmService {
   }
 }
 
-typedef Future DisposeHandler();
+typedef DisposeHandler = Future Function();
 
 class RPCError {
   static RPCError parse(String callingMethod, dynamic json) {
