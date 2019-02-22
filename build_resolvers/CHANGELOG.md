@@ -1,3 +1,29 @@
+## 1.0.3
+
+- Fixes a bug where transitive `dart-ext:` imports would cause the resolver
+  to fail. These uris will now be ignored.
+
+## 1.0.2
+
+- Ensure that `BuildAssetUriResolver.restoreAbsolute` never returns null.
+  - Fixes a crash when a resolver is requested but not all transitive sources
+    are available yet.
+
+## 1.0.1
+
+- Fix a bug causing crashes on windows.
+
+## 1.0.0
+
+- Migrate to `AnalysisDriver`. There are behavior changes which may be breaking.
+  The `LibraryElement` instances returned by the resolver will now:
+  - Have non-working `context` fields.
+  - Have no source offsets for annotations or their errors.
+  - Have working `session` fields.
+  - Have `Source` instances with different URIs than before.
+  - Not include missing libraries in the `importedLibraries` getter. You can
+    instead use the `imports` getter to see all the imports.
+
 ## 0.2.3
 
 - Update to `build` `1.1.0` and add `assetIdForElement`.

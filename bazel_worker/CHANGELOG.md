@@ -1,3 +1,11 @@
+## 0.1.20
+
+* Close worker `outputStream` on `cancel`.
+
+## 0.1.19
+
+* Work around https://github.com/dart-lang/sdk/issues/35874.
+
 ## 0.1.18
 
 * Add a `trackWork` optional named argument to `BazelDriver.doWork`. This allows

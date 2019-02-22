@@ -1,3 +1,16 @@
+# 1.2.3
+
+* Update `package:analyzer` constraint to `'>=0.33.0 <0.36.0'`.
+
+# 1.2.2
+
+* Support set literals (#751).
+
+# 1.2.1
+
+* Add `--fix-function-typedefs` to convert the old typedef syntax for function
+  types to the new preferred syntax.
+
 # 1.2.0
 
 * Add `--stdin-name` to specify name shown when reading from stdin (#739).
