@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:isolate';
 
 import 'package:path/path.dart' as p;
@@ -14,7 +13,9 @@ import 'sync_package_resolver.dart';
 import 'utils.dart';
 
 /// The package resolution strategy used by the current isolate.
-class CurrentIsolateResolver implements PackageResolver {
+PackageResolver currentIsolateResolver() => _CurrentIsolateResolver();
+
+class _CurrentIsolateResolver implements PackageResolver {
   Future<Map<String, Uri>> get packageConfigMap async {
     if (_packageConfigMap != null) return _packageConfigMap;
 
@@ -28,6 +29,7 @@ class CurrentIsolateResolver implements PackageResolver {
 
   Future<Uri> get packageConfigUri => Isolate.packageConfig;
 
+  // ignore: deprecated_member_use
   Future<Uri> get packageRoot => Isolate.packageRoot;
 
   Future<SyncPackageResolver> get asSync async {

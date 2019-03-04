@@ -1,0 +1,36 @@
+builders:
+  vm:
+    import: "package:build_vm_compilers/builders.dart"
+    builder_factories:
+      - vmKernelModuleBuilder
+    build_extensions:
+      .dart:
+        - .vm.dill
+    is_optional: True
+    auto_apply: all_packages
+    required_inputs:
+      - .dart
+      - .vm.module
+    applies_builders:
+      - build_modules|vm
+  entrypoint:
+    import: "package:build_vm_compilers/builders.dart"
+    builder_factories:
+      - vmKernelEntrypointBuilder
+    build_extensions:
+      .dart:
+        - .vm.app.dill
+    required_inputs:
+      - .dart
+      - .vm.dill
+      - .vm.module
+    build_to: cache
+    auto_apply: root_package
+    defaults:
+      generate_for:
+        include:
+          - bin/**
+          - tool/**
+          - test/**.dart.vm_test.dart
+          - example/**
+          - benchmark/**
