@@ -10,7 +10,7 @@ import 'package:petitparser/src/reflection/transform.dart';
 ///
 /// For example, the snippet
 ///
-///     var parser = letter() & word().star();
+///     final parser = letter() & word().star();
 ///     progress(parser).parse('f123');
 ///
 /// produces the following output:
@@ -28,7 +28,7 @@ import 'package:petitparser/src/reflection/transform.dart';
 Parser progress(Parser parser, [OutputHandler output = print]) {
   return transformParser(parser, (each) {
     return ContinuationParser(each, (continuation, context) {
-      output('${repeat(1 + context.position, '*')} $each');
+      output('${'*' * (1 + context.position)} $each');
       return continuation(context);
     });
   });

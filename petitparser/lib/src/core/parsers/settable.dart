@@ -10,7 +10,7 @@ import 'package:petitparser/src/core/parsers/failure.dart';
 /// For example, the following code sets up a parser that points to itself
 /// and that accepts a sequence of a's ended with the letter b.
 ///
-///     var p = undefined();
+///     final p = undefined();
 ///     p.set(char('a').seq(p).or(char('b')));
 SettableParser<T> undefined<T>([String message = 'undefined parser']) =>
     failure<T>(message).settable();
@@ -22,6 +22,10 @@ class SettableParser<T> extends DelegateParser<T> {
 
   /// Sets the receiver to delegate to [parser].
   void set(Parser<T> parser) => replace(children[0], parser);
+
+  @override
+  int fastParseOn(String buffer, int position) =>
+      delegate.fastParseOn(buffer, position);
 
   @override
   SettableParser<T> copy() => SettableParser<T>(delegate);

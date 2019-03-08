@@ -12,9 +12,11 @@ typedef ActionCallback<T, R> = R Function(T value);
 /// successful parse result of the delegate.
 class ActionParser<T, R> extends DelegateParser<R> {
   final ActionCallback<T, R> callback;
+  final bool hasSideEffects;
 
-  ActionParser(Parser<T> delegate, this.callback)
+  ActionParser(Parser<T> delegate, this.callback, [this.hasSideEffects = false])
       : assert(callback != null),
+        assert(hasSideEffects != null),
         super(delegate);
 
   @override
@@ -28,9 +30,20 @@ class ActionParser<T, R> extends DelegateParser<R> {
   }
 
   @override
-  ActionParser<T, R> copy() => ActionParser<T, R>(delegate, callback);
+  int fastParseOn(String buffer, int position) {
+    // If we know to have side-effects, we have to fall back to the slow mode.
+    return hasSideEffects
+        ? super.fastParseOn(buffer, position)
+        : delegate.fastParseOn(buffer, position);
+  }
+
+  @override
+  ActionParser<T, R> copy() =>
+      ActionParser<T, R>(delegate, callback, hasSideEffects);
 
   @override
   bool hasEqualProperties(ActionParser<T, R> other) =>
-      super.hasEqualProperties(other) && callback == other.callback;
+      super.hasEqualProperties(other) &&
+      callback == other.callback &&
+      hasSideEffects == other.hasSideEffects;
 }

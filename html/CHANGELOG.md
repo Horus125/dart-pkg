@@ -1,4 +1,15 @@
+## 0.13.4+1
+
+* Fixes to readme and pubspec.
+
+## 0.13.4
+
+* Require Dart 2.0 stable.
+
 ## 0.13.3+3
+
+* Do not use this tag in our systems - there was an earlier version of it
+  pointing to a different commit, that is still in some caches.
 
 * Fix missing_return analyzer errors in `processStartTag` and `processEndTag`
   methods.

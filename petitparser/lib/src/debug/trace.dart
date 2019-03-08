@@ -10,7 +10,7 @@ import 'package:petitparser/src/reflection/transform.dart';
 ///
 /// For example, the snippet
 ///
-///     var parser = letter() & word().star();
+///     final parser = letter() & word().star();
 ///     trace(parser).parse('f1');
 ///
 /// produces the following output:
@@ -33,11 +33,11 @@ Parser trace(Parser parser, [OutputHandler output = print]) {
   var level = 0;
   return transformParser(parser, (each) {
     return ContinuationParser(each, (continuation, context) {
-      output('${repeat(level, '  ')}$each');
+      output('${'  ' * level}$each');
       level++;
       final result = continuation(context);
       level--;
-      output('${repeat(level, '  ')}$result');
+      output('${'  ' * level}$result');
       return result;
     });
   });

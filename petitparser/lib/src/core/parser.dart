@@ -17,6 +17,7 @@ import 'package:petitparser/src/core/contexts/result.dart';
 import 'package:petitparser/src/core/contexts/success.dart';
 import 'package:petitparser/src/core/parsers/eof.dart';
 import 'package:petitparser/src/core/parsers/settable.dart';
+import 'package:petitparser/src/core/pattern.dart';
 import 'package:petitparser/src/core/predicates/any.dart';
 import 'package:petitparser/src/core/repeaters/greedy.dart';
 import 'package:petitparser/src/core/repeaters/lazy.dart';
@@ -25,7 +26,7 @@ import 'package:petitparser/src/core/repeaters/unbounded.dart';
 import 'package:petitparser/src/core/token.dart';
 
 /// Abstract base class of all parsers.
-abstract class Parser<T> {
+abstract class Parser<T> implements Pattern {
   const Parser();
 
   /// Primitive method doing the actual parsing.
@@ -35,6 +36,24 @@ abstract class Parser<T> {
   /// returns the resulting context, which is either a [Success] or
   /// [Failure] context.
   Result<T> parseOn(Context context);
+
+  /// Primitive method doing the actual parsing.
+  ///
+  /// This method is an optimized version of [Parser.parseOn(Context)] that is
+  /// getting its speed advantage by avoiding any unnecessary memory
+  /// allocations.
+  ///
+  /// The method is overridden in most concrete subclasses to implement the
+  /// optimized logic. As an input the method takes a [buffer] and the current
+  /// [position] in that buffer. It returns a new (positive) position in case
+  /// of a successful parse, or `-1` in case of a failure.
+  ///
+  /// Subclasses don't necessarily have to override this method, since it is
+  /// emulated using its slower brother.
+  int fastParseOn(String buffer, int position) {
+    final result = parseOn(Context(buffer, position));
+    return result.isSuccess ? result.position : -1;
+  }
 
   /// Returns the parse result of the [input].
   ///
@@ -50,11 +69,49 @@ abstract class Parser<T> {
   /// ['letter expected'].
   Result<T> parse(String input) => parseOn(Context(input, 0));
 
+  /// Matches this parser against [string] repeatedly.
+  ///
+  /// If [start] is provided, matching will start at that index. The returned
+  /// iterable lazily computes all the non-overlapping matches of the parser on
+  /// the string, ordered by start index.
+  ///
+  /// If the pattern matches the empty string at some point, the next match is
+  /// found by starting at the previous match's end plus one.
+  @override
+  Iterable<Match> allMatches(String string, [int start = 0]) sync* {
+    while (start <= string.length) {
+      final match = matchAsPrefix(string, start);
+      if (match == null) {
+        start++;
+      } else {
+        yield match;
+        if (start == match.end) {
+          start++;
+        } else {
+          start = match.end;
+        }
+      }
+    }
+  }
+
+  /// Match this pattern against the start of [string].
+  ///
+  /// If [start] is provided, this parser is tested against the string at the
+  /// [start] position. That is, a [Match] is returned if the pattern can match
+  /// a part of the string starting from position [start].
+  ///
+  /// Returns `null` if the pattern doesn't match.
+  @override
+  Match matchAsPrefix(String string, [int start = 0]) {
+    final end = fastParseOn(string, start);
+    return end < 0 ? null : ParserMatch(this, string, start, end);
+  }
+
   /// Tests if the [input] can be successfully parsed.
   ///
   /// For example, `letter().plus().accept('abc')` returns `true`, and
   /// `letter().plus().accept('123')` returns `false`.
-  bool accept(String input) => parse(input).isSuccess;
+  bool accept(String input) => fastParseOn(input, 0) >= 0;
 
   /// Returns a list of all successful overlapping parses of the [input].
   ///
@@ -63,7 +120,12 @@ abstract class Parser<T> {
   /// [Parser.matchesSkipping] to retrieve non-overlapping parse results.
   List<T> matches(String input) {
     final list = <T>[];
-    and().map(list.add).seq(any()).or(any()).star().parse(input);
+    and()
+        .map(list.add, hasSideEffects: true)
+        .seq(any())
+        .or(any())
+        .star()
+        .fastParseOn(input, 0);
     return list;
   }
 
@@ -74,7 +136,7 @@ abstract class Parser<T> {
   /// overlapping parse results.
   List<T> matchesSkipping(String input) {
     final list = <T>[];
-    map(list.add).or(any()).star().parse(input);
+    map(list.add, hasSideEffects: true).or(any()).star().fastParseOn(input, 0);
     return list;
   }
 
@@ -222,10 +284,14 @@ abstract class Parser<T> {
   /// Returns a parser that discards the result of the receiver, and returns
   /// a sub-string of the consumed range in the string/list being parsed.
   ///
+  /// If a [message] is provided, the flatten parser can switch to a fast mode
+  /// where error tracking within the receiver is suppressed and in case of a
+  /// problem [message] is reported instead.
+  ///
   /// For example, the parser `letter().plus().flatten()` returns `'abc'`
   /// for the input `'abc'`. In contrast, the parser `letter().plus()` would
   /// return `['a', 'b', 'c']` for the same input instead.
-  Parser<String> flatten() => FlattenParser(this);
+  Parser<String> flatten([String message]) => FlattenParser(this, message);
 
   /// Returns a parser that returns a [Token]. The token carries the parsed
   /// value of the receiver [Token.value], as well as the consumed input
@@ -267,21 +333,28 @@ abstract class Parser<T> {
   /// Returns a parser that evaluates a [callback] as the production action
   /// on success of the receiver.
   ///
+  /// By default we assume the block is side-effect free, so unless
+  /// [hasSideEffects] its execution might be skipped if there are nobody
+  /// depends on the result.
+  ///
   /// For example, the parser `digit().map((char) => int.parse(char))` returns
   /// the number `1` for the input string `'1'`. If the delegate fail, the
   /// production action is not executed and the failure is passed on.
-  Parser<R> map<R>(ActionCallback<T, R> callback) =>
-      ActionParser<T, R>(this, callback);
+  Parser<R> map<R>(ActionCallback<T, R> callback,
+          {bool hasSideEffects = false}) =>
+      ActionParser<T, R>(this, callback, hasSideEffects);
 
   /// Returns a parser that casts itself to `Parser<R>`.
   Parser<R> cast<R>() => CastParser<R>(this);
 
-  /// Returns a parser that casts itself to `Parser<List<R>>`.
+  /// Returns a parser that casts itself to `Parser<List<R>>`. Assumes this
+  /// parser to be of type `Parser<List>`.
   Parser<List<R>> castList<R>() => CastListParser<R>(this);
 
   /// Returns a parser that transform a successful parse result by returning
   /// the element at [index] of a list. A negative index can be used to access
-  /// the elements from the back of the list.
+  /// the elements from the back of the list. Assumes this parser to be of type
+  /// `Parser<List<R>>`.
   ///
   /// For example, the parser `letter().star().pick(-1)` returns the last
   /// letter parsed. For the input `'abc'` it returns `'c'`.
@@ -293,7 +366,8 @@ abstract class Parser<T> {
 
   /// Returns a parser that transforms a successful parse result by returning
   /// the permuted elements at [indexes] of a list. Negative indexes can be
-  /// used to access the elements from the back of the list.
+  /// used to access the elements from the back of the list. Assumes this parser
+  /// to be of type `Parser<List<R>>`.
   ///
   /// For example, the parser `letter().star().permute([0, -1])` returns the
   /// first and last letter parsed. For the input `'abc'` it returns
@@ -309,7 +383,8 @@ abstract class Parser<T> {
   /// Returns a parser that consumes the receiver one or more times separated
   /// by the [separator] parser. The resulting parser returns a flat list of
   /// the parse results of the receiver interleaved with the parse result of the
-  /// separator parser.
+  /// separator parser. The type parameter `R` defines the type of the returned
+  /// list.
   ///
   /// If the optional argument [includeSeparators] is set to `false`, then the
   /// separators are not included in the parse result. If the optional argument
@@ -319,14 +394,14 @@ abstract class Parser<T> {
   /// For example, the parser `digit().separatedBy(char('-'))` returns a parser
   /// that consumes input like `'1-2-3'` and returns a list of the elements and
   /// separators: `['1', '-', '2', '-', '3']`.
-  Parser<List> separatedBy(Parser separator,
+  Parser<List<R>> separatedBy<R>(Parser separator,
       {bool includeSeparators = true, bool optionalSeparatorAtEnd = false}) {
     final repeater = SequenceParser([separator, this]).star();
     final parser = SequenceParser(optionalSeparatorAtEnd
         ? [this, repeater, separator.optional()]
         : [this, repeater]);
     return parser.map((list) {
-      final result = [];
+      final result = <R>[];
       result.add(list[0]);
       for (var tuple in list[1]) {
         if (includeSeparators) {
@@ -352,7 +427,7 @@ abstract class Parser<T> {
   /// refer to other parsers. This code is supposed to be overridden by parsers
   /// that add other state.
   bool isEqualTo(Parser other, [Set<Parser> seen]) {
-    seen ??= Set();
+    seen ??= {};
     if (this == other || seen.contains(this)) {
       return true;
     }
@@ -405,8 +480,8 @@ abstract class Parser<T> {
   /// parser that accepts a digit. The resulting `example` parser accepts one
   /// or more digits.
   ///
-  ///     var letter = letter();
-  ///     var example = letter.plus();
+  ///     final letter = letter();
+  ///     final example = letter.plus();
   ///     example.replace(letter, digit());
   void replace(Parser source, Parser target) {
     // no children, nothing to do
