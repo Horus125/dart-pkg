@@ -12,7 +12,7 @@ dart_library("build_vm_compilers") {
   disable_analysis = true
 
   deps = [
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/path",
     "//third_party/dart-pkg/pub/build_modules",
     "//third_party/dart-pkg/pub/build",

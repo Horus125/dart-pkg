@@ -16,7 +16,7 @@ dart_library("build") {
     "//third_party/dart-pkg/pub/logging",
     "//third_party/dart-pkg/pub/glob",
     "//third_party/dart-pkg/pub/crypto",
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/meta",
     "//third_party/dart-pkg/pub/async",
     "//third_party/dart-pkg/pub/path",

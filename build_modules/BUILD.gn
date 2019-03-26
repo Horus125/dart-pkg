@@ -15,7 +15,7 @@ dart_library("build_modules") {
     "//third_party/dart-pkg/pub/pedantic",
     "//third_party/dart-pkg/pub/logging",
     "//third_party/dart-pkg/pub/glob",
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/graphs",
     "//third_party/dart-pkg/pub/meta",
     "//third_party/dart-pkg/pub/scratch_space",

@@ -19,7 +19,7 @@ dart_library("test_core") {
     "//third_party/dart-pkg/pub/collection",
     "//third_party/dart-pkg/pub/test_api",
     "//third_party/dart-pkg/pub/meta",
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/io",
     "//third_party/dart-pkg/pub/package_resolver",
     "//third_party/dart-pkg/pub/source_span",

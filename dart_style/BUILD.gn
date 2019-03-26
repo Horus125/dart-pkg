@@ -14,7 +14,7 @@ dart_library("dart_style") {
   deps = [
     "//third_party/dart-pkg/pub/path",
     "//third_party/dart-pkg/pub/args",
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/source_span",
   ]
 }

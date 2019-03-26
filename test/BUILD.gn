@@ -20,7 +20,7 @@ dart_library("test") {
     "//third_party/dart-pkg/pub/multi_server_socket",
     "//third_party/dart-pkg/pub/shelf_packages_handler",
     "//third_party/dart-pkg/pub/node_preamble",
-    "//third_party/dart/pkg/analyzer",
+    "//third_party/dart-pkg/pub/analyzer",
     "//third_party/dart-pkg/pub/http_multi_server",
     "//third_party/dart-pkg/pub/test_api",
     "//third_party/dart-pkg/pub/io",
