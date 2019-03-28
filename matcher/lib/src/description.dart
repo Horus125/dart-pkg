@@ -9,25 +9,29 @@ import 'pretty_print.dart';
 /// substitution, although conceivably it is a place where other languages
 /// could be supported.
 class StringDescription implements Description {
-  final StringBuffer _out = new StringBuffer();
+  final StringBuffer _out = StringBuffer();
 
   /// Initialize the description with initial contents [init].
   StringDescription([String init = '']) {
     _out.write(init);
   }
 
+  @override
   int get length => _out.length;
 
   /// Get the description as a string.
+  @override
   String toString() => _out.toString();
 
   /// Append [text] to the description.
+  @override
   Description add(String text) {
     _out.write(text);
     return this;
   }
 
   /// Change the value of the description.
+  @override
   Description replace(String text) {
     _out.clear();
     return add(text);
@@ -37,6 +41,7 @@ class StringDescription implements Description {
   /// describe method; if it is a string use its literal value after
   /// escaping any embedded control characters; otherwise use its
   /// toString() value and wrap it in angular "quotes".
+  @override
   Description addDescriptionOf(value) {
     if (value is Matcher) {
       value.describe(this);
@@ -49,6 +54,7 @@ class StringDescription implements Description {
   /// Append an [Iterable] [list] of objects to the description, using the
   /// specified [separator] and framing the list with [start]
   /// and [end].
+  @override
   Description addAll(
       String start, String separator, String end, Iterable list) {
     var separate = false;

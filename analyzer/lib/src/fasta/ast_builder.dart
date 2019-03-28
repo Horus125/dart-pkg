@@ -12,6 +12,7 @@ import 'package:analyzer/src/dart/ast/ast.dart'
     show
         ClassDeclarationImpl,
         ClassOrMixinDeclarationImpl,
+        CompilationUnitImpl,
         MixinDeclarationImpl;
 import 'package:analyzer/src/fasta/error_converter.dart';
 import 'package:analyzer/src/generated/utilities_dart.dart';
@@ -109,10 +110,6 @@ class AstBuilder extends StackListener {
 
   /// `true` if control-flow-collections behavior is enabled
   bool enableControlFlowCollections = false;
-
-  /// Is `true` if [enableNonNullable] is enabled, and the library directive
-  /// is annotated with `@pragma('analyzer:non-nullable')`.
-  bool hasPragmaAnalyzerNonNullable = false;
 
   AstBuilder(ErrorReporter errorReporter, this.fileUri, this.isFullAst,
       [Uri uri])
@@ -470,8 +467,11 @@ class AstBuilder extends StackListener {
     Token beginToken = pop();
     checkEmpty(endToken.charOffset);
 
-    push(ast.compilationUnit(
-        beginToken, scriptTag, directives, declarations, endToken));
+    CompilationUnitImpl unit = ast.compilationUnit(
+            beginToken, scriptTag, directives, declarations, endToken)
+        as CompilationUnitImpl;
+    unit.isNonNullable = enableNonNullable;
+    push(unit);
   }
 
   void endConditionalExpression(Token question, Token colon) {
@@ -727,36 +727,14 @@ class AstBuilder extends StackListener {
     Token forToken = pop();
     Token awaitToken = pop(NullValue.AwaitToken);
 
-    if (enableControlFlowCollections || enableSpreadCollections) {
-      push(ast.forStatement2(
-        awaitKeyword: awaitToken,
-        forKeyword: forToken,
-        leftParenthesis: leftParenthesis,
-        forLoopParts: forLoopParts,
-        rightParenthesis: leftParenthesis.endGroup,
-        body: body,
-      ));
-    } else if (forLoopParts is ForEachPartsWithDeclaration) {
-      push(ast.forEachStatementWithDeclaration(
-          awaitToken,
-          forToken,
-          leftParenthesis,
-          forLoopParts.loopVariable,
-          forLoopParts.inKeyword,
-          forLoopParts.iterable,
-          leftParenthesis?.endGroup,
-          body));
-    } else {
-      push(ast.forEachStatementWithReference(
-          awaitToken,
-          forToken,
-          leftParenthesis,
-          (forLoopParts as ForEachPartsWithIdentifier).identifier,
-          forLoopParts.inKeyword,
-          forLoopParts.iterable,
-          leftParenthesis?.endGroup,
-          body));
-    }
+    push(ast.forStatement2(
+      awaitKeyword: awaitToken,
+      forKeyword: forToken,
+      leftParenthesis: leftParenthesis,
+      forLoopParts: forLoopParts,
+      rightParenthesis: leftParenthesis.endGroup,
+      body: body,
+    ));
   }
 
   @override
@@ -902,34 +880,13 @@ class AstBuilder extends StackListener {
     Token leftParen = pop();
     Token forToken = pop();
 
-    if (enableControlFlowCollections || enableSpreadCollections) {
-      push(ast.forStatement2(
-        forKeyword: forToken,
-        leftParenthesis: leftParen,
-        forLoopParts: forLoopParts,
-        rightParenthesis: leftParen.endGroup,
-        body: body,
-      ));
-    } else {
-      VariableDeclarationList variableList;
-      Expression initializer;
-      if (forLoopParts is ForPartsWithDeclarations) {
-        variableList = forLoopParts.variables;
-      } else {
-        initializer = (forLoopParts as ForPartsWithExpression).initialization;
-      }
-      push(ast.forStatement(
-          forToken,
-          leftParen,
-          variableList,
-          initializer,
-          forLoopParts.leftSeparator,
-          forLoopParts.condition,
-          forLoopParts.rightSeparator,
-          forLoopParts.updaters,
-          leftParen?.endGroup,
-          body));
-    }
+    push(ast.forStatement2(
+      forKeyword: forToken,
+      leftParenthesis: leftParen,
+      forLoopParts: forLoopParts,
+      rightParenthesis: leftParen.endGroup,
+      body: body,
+    ));
   }
 
   @override
@@ -1225,23 +1182,6 @@ class AstBuilder extends StackListener {
     List<SimpleIdentifier> libraryName = pop();
     var name = ast.libraryIdentifier(libraryName);
     List<Annotation> metadata = pop();
-    if (enableNonNullable && metadata != null) {
-      for (Annotation annotation in metadata) {
-        Identifier pragma = annotation.name;
-        if (pragma is SimpleIdentifier && pragma.name == 'pragma') {
-          NodeList<Expression> arguments = annotation.arguments.arguments;
-          if (arguments.length == 1) {
-            Expression tag = arguments[0];
-            if (tag is StringLiteral) {
-              if (tag.stringValue == 'analyzer:non-nullable') {
-                hasPragmaAnalyzerNonNullable = true;
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
     Comment comment = _findComment(metadata, libraryKeyword);
     directives.add(ast.libraryDirective(
         comment, metadata, libraryKeyword, name, semicolon));
@@ -1276,7 +1216,9 @@ class AstBuilder extends StackListener {
         }
       }
       elements.add(ast.interpolationString(
-          last, unescapeLastStringPart(last.lexeme, quote, last, this)));
+          last,
+          unescapeLastStringPart(
+              last.lexeme, quote, last, last.isSynthetic, this)));
       push(ast.stringInterpolation(elements));
     }
   }
@@ -2581,6 +2523,7 @@ class AstBuilder extends StackListener {
             }
           }
         }
+        // ignore: deprecated_member_use_from_same_package
         push(ast.setLiteral(
             constKeyword, typeArguments, leftBrace, setEntries, rightBrace));
       } else {
@@ -2603,6 +2546,7 @@ class AstBuilder extends StackListener {
             }
           }
         }
+        // ignore: deprecated_member_use_from_same_package
         push(ast.mapLiteral(
             constKeyword, typeArguments, leftBrace, mapEntries, rightBrace));
       }

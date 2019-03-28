@@ -18,13 +18,17 @@ import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer/src/context/cache.dart';
 import 'package:analyzer/src/dart/ast/ast.dart'
-    show NamespaceDirectiveImpl, UriBasedDirectiveImpl, UriValidationCode;
+    show
+        CompilationUnitImpl,
+        NamespaceDirectiveImpl,
+        UriBasedDirectiveImpl,
+        UriValidationCode;
 import 'package:analyzer/src/dart/ast/utilities.dart';
 import 'package:analyzer/src/dart/constant/constant_verifier.dart';
+import 'package:analyzer/src/dart/constant/evaluation.dart';
 import 'package:analyzer/src/dart/element/builder.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/inheritance_manager2.dart';
-import 'package:analyzer/src/dart/scanner/reader.dart';
 import 'package:analyzer/src/dart/scanner/scanner.dart';
 import 'package:analyzer/src/dart/sdk/patch.dart';
 import 'package:analyzer/src/dart/sdk/sdk.dart';
@@ -41,18 +45,21 @@ import 'package:analyzer/src/generated/resolver.dart';
 import 'package:analyzer/src/generated/sdk.dart';
 import 'package:analyzer/src/generated/source.dart';
 import 'package:analyzer/src/generated/utilities_dart.dart';
-import 'package:analyzer/src/plugin/engine_plugin.dart';
+import 'package:analyzer/src/ignore_comments/ignore_info.dart';
 import 'package:analyzer/src/services/lint.dart';
 import 'package:analyzer/src/task/api/dart.dart';
 import 'package:analyzer/src/task/api/general.dart';
 import 'package:analyzer/src/task/api/model.dart';
 import 'package:analyzer/src/task/driver.dart';
 import 'package:analyzer/src/task/general.dart';
-import 'package:analyzer/src/task/html.dart';
 import 'package:analyzer/src/task/inputs.dart';
 import 'package:analyzer/src/task/model.dart';
 import 'package:analyzer/src/task/strong/checker.dart';
 import 'package:analyzer/src/task/strong_mode.dart';
+
+export 'package:analyzer/src/dart/constant/evaluation.dart'
+    show ConstantEvaluationTarget;
+export 'package:analyzer/src/ignore_comments/ignore_info.dart';
 
 /**
  * The [ResultCachingPolicy] for ASTs.
@@ -2376,23 +2383,6 @@ abstract class ConstantEvaluationAnalysisTask extends AnalysisTask {
 }
 
 /**
- * Interface for [AnalysisTarget]s for which constant evaluation can be
- * performed.
- */
-abstract class ConstantEvaluationTarget extends AnalysisTarget {
-  /**
-   * Return the [AnalysisContext] which should be used to evaluate this
-   * constant.
-   */
-  AnalysisContext get context;
-
-  /**
-   * Return whether this constant is evaluated.
-   */
-  bool get isConstantEvaluated;
-}
-
-/**
  * A task that computes a list of the libraries containing the target source.
  */
 class ContainingLibrariesTask extends SourceBasedAnalysisTask {
@@ -2470,27 +2460,6 @@ class DartErrorsTask extends SourceBasedAnalysisTask {
   @override
   void internalPerform() {
     List<List<AnalysisError>> errorLists = <List<AnalysisError>>[];
-    //
-    // Prepare inputs.
-    //
-    EnginePlugin enginePlugin = AnalysisEngine.instance.enginePlugin;
-    List<ResultDescriptor> errorsForSource = enginePlugin.dartErrorsForSource;
-    int sourceLength = errorsForSource.length;
-    for (int i = 0; i < sourceLength; i++) {
-      ResultDescriptor result = errorsForSource[i];
-      String inputName = result.name + '_input';
-      errorLists.add(getRequiredInput(inputName));
-    }
-    List<ResultDescriptor> errorsForUnit = enginePlugin.dartErrorsForUnit;
-    int unitLength = errorsForUnit.length;
-    for (int i = 0; i < unitLength; i++) {
-      ResultDescriptor result = errorsForUnit[i];
-      String inputName = result.name + '_input';
-      Map<Source, List<AnalysisError>> errorMap = getRequiredInput(inputName);
-      for (List<AnalysisError> errors in errorMap.values) {
-        errorLists.add(errors);
-      }
-    }
 
     //
     // Filter ignored errors.
@@ -2529,29 +2498,6 @@ class DartErrorsTask extends SourceBasedAnalysisTask {
     Map<String, TaskInput> inputs = <String, TaskInput>{};
     inputs[LINE_INFO_INPUT] = LINE_INFO.of(source);
     inputs[IGNORE_INFO_INPUT] = IGNORE_INFO.of(source);
-    EnginePlugin enginePlugin = AnalysisEngine.instance.enginePlugin;
-    // for Source
-    List<ListResultDescriptor<AnalysisError>> errorsForSource =
-        enginePlugin.dartErrorsForSource;
-    int sourceLength = errorsForSource.length;
-    for (int i = 0; i < sourceLength; i++) {
-      ListResultDescriptor<AnalysisError> result = errorsForSource[i];
-      String inputName = result.name + '_input';
-      inputs[inputName] = result.of(source);
-    }
-    // for LibrarySpecificUnit
-    List<ListResultDescriptor<AnalysisError>> errorsForUnit =
-        enginePlugin.dartErrorsForUnit;
-    int unitLength = errorsForUnit.length;
-    for (int i = 0; i < unitLength; i++) {
-      ListResultDescriptor<AnalysisError> result = errorsForUnit[i];
-      String inputName = result.name + '_input';
-      inputs[inputName] =
-          CONTAINING_LIBRARIES.of(source).toMap((Source library) {
-        LibrarySpecificUnit unit = new LibrarySpecificUnit(library, source);
-        return result.of(unit);
-      });
-    }
     return inputs;
   }
 
@@ -2837,8 +2783,8 @@ class GenerateHintsTask extends SourceBasedAnalysisTask {
     //
     // Generate errors.
     //
-    unit.accept(new DeadCodeVerifier(errorReporter,
-        (analysisOptions as AnalysisOptionsImpl).experimentStatus,
+    unit.accept(new DeadCodeVerifier(
+        errorReporter, (unit as CompilationUnitImpl).isNonNullable,
         typeSystem: typeSystem));
     // Verify imports.
     {
@@ -2993,127 +2939,6 @@ class GenerateLintsTask extends SourceBasedAnalysisTask {
   static GenerateLintsTask createTask(
       AnalysisContext context, AnalysisTarget target) {
     return new GenerateLintsTask(context, target);
-  }
-}
-
-/**
- * Information about analysis `//ignore:` and `//ignore_for_file` comments
- * within a source file.
- */
-class IgnoreInfo {
-  /**
-   *  Instance shared by all cases without matches.
-   */
-  static final IgnoreInfo _EMPTY_INFO = new IgnoreInfo();
-
-  /**
-   * A regular expression for matching 'ignore' comments.  Produces matches
-   * containing 2 groups.  For example:
-   *
-   *     * ['//ignore: error_code', 'error_code']
-   *
-   * Resulting codes may be in a list ('error_code_1,error_code2').
-   */
-  static final RegExp _IGNORE_MATCHER =
-      new RegExp(r'//+[ ]*ignore:(.*)$', multiLine: true);
-
-  /**
-   * A regular expression for matching 'ignore_for_file' comments.  Produces
-   * matches containing 2 groups.  For example:
-   *
-   *     * ['//ignore_for_file: error_code', 'error_code']
-   *
-   * Resulting codes may be in a list ('error_code_1,error_code2').
-   */
-  static final RegExp _IGNORE_FOR_FILE_MATCHER =
-      new RegExp(r'//[ ]*ignore_for_file:(.*)$', multiLine: true);
-
-  final Map<int, List<String>> _ignoreMap = new HashMap<int, List<String>>();
-
-  final Set<String> _ignoreForFileSet = new HashSet<String>();
-
-  /**
-   * Whether this info object defines any ignores.
-   */
-  bool get hasIgnores => ignores.isNotEmpty || _ignoreForFileSet.isNotEmpty;
-
-  /**
-   * Iterable of error codes ignored for the whole file.
-   */
-  Iterable<String> get ignoreForFiles => _ignoreForFileSet;
-
-  /**
-   * Map of line numbers to associated ignored error codes.
-   */
-  Map<int, Iterable<String>> get ignores => _ignoreMap;
-
-  /**
-   * Ignore this [errorCode] at [line].
-   */
-  void add(int line, String errorCode) {
-    _ignoreMap.putIfAbsent(line, () => new List<String>()).add(errorCode);
-  }
-
-  /**
-   * Ignore these [errorCodes] at [line].
-   */
-  void addAll(int line, Iterable<String> errorCodes) {
-    _ignoreMap.putIfAbsent(line, () => new List<String>()).addAll(errorCodes);
-  }
-
-  /**
-   * Ignore these [errorCodes] in the whole file.
-   */
-  void addAllForFile(Iterable<String> errorCodes) {
-    _ignoreForFileSet.addAll(errorCodes);
-  }
-
-  /**
-   * Test whether this [errorCode] is ignored at the given [line].
-   */
-  bool ignoredAt(String errorCode, int line) =>
-      _ignoreForFileSet.contains(errorCode) ||
-      _ignoreMap[line]?.contains(errorCode) == true;
-
-  /**
-   * Calculate ignores for the given [content] with line [info].
-   */
-  static IgnoreInfo calculateIgnores(String content, LineInfo info) {
-    Iterable<Match> matches = _IGNORE_MATCHER.allMatches(content);
-    Iterable<Match> fileMatches = _IGNORE_FOR_FILE_MATCHER.allMatches(content);
-    if (matches.isEmpty && fileMatches.isEmpty) {
-      return _EMPTY_INFO;
-    }
-
-    IgnoreInfo ignoreInfo = new IgnoreInfo();
-    for (Match match in matches) {
-      // See _IGNORE_MATCHER for format --- note the possibility of error lists.
-      Iterable<String> codes = match
-          .group(1)
-          .split(',')
-          .map((String code) => code.trim().toLowerCase());
-      CharacterLocation location = info.getLocation(match.start);
-      int lineNumber = location.lineNumber;
-      String beforeMatch = content.substring(
-          info.getOffsetOfLine(lineNumber - 1),
-          info.getOffsetOfLine(lineNumber - 1) + location.columnNumber - 1);
-
-      if (beforeMatch.trim().isEmpty) {
-        // The comment is on its own line, so it refers to the next line.
-        ignoreInfo.addAll(lineNumber + 1, codes);
-      } else {
-        // The comment sits next to code, so it refers to its own line.
-        ignoreInfo.addAll(lineNumber, codes);
-      }
-    }
-    for (Match match in fileMatches) {
-      Iterable<String> codes = match
-          .group(1)
-          .split(',')
-          .map((String code) => code.trim().toLowerCase());
-      ignoreInfo.addAllForFile(codes);
-    }
-    return ignoreInfo;
   }
 }
 
@@ -5316,52 +5141,6 @@ class ScanDartTask extends SourceBasedAnalysisTask {
             source, 0, 0, ScannerErrorCode.UNABLE_GET_CONTENT, [message]));
       }
     }
-    if (target is DartScript) {
-      DartScript script = target;
-      List<ScriptFragment> fragments = script.fragments;
-      if (fragments.length < 1) {
-        throw new AnalysisException('Cannot scan scripts with no fragments');
-      } else if (fragments.length > 1) {
-        throw new AnalysisException(
-            'Cannot scan scripts with multiple fragments');
-      }
-      ScriptFragment fragment = fragments[0];
-
-      Scanner scanner = new Scanner(
-          source,
-          new SubSequenceReader(fragment.content, fragment.offset),
-          errorListener);
-      scanner.setSourceStart(fragment.line, fragment.column);
-      scanner.preserveComments = context.analysisOptions.preserveComments;
-      scanner.scanLazyAssignmentOperators =
-          context.analysisOptions.enableLazyAssignmentOperators;
-
-      LineInfo lineInfo = new LineInfo(scanner.lineStarts);
-
-      outputs[TOKEN_STREAM] = scanner.tokenize();
-      outputs[LINE_INFO] = lineInfo;
-      outputs[IGNORE_INFO] =
-          IgnoreInfo.calculateIgnores(fragment.content, lineInfo);
-      outputs[SCAN_ERRORS] = getUniqueErrors(errorListener.errors);
-    } else if (target is Source) {
-      String content = getRequiredInput(CONTENT_INPUT_NAME);
-
-      Scanner scanner =
-          new Scanner(source, new CharSequenceReader(content), errorListener);
-      scanner.preserveComments = context.analysisOptions.preserveComments;
-      scanner.scanLazyAssignmentOperators =
-          context.analysisOptions.enableLazyAssignmentOperators;
-
-      LineInfo lineInfo = new LineInfo(scanner.lineStarts);
-
-      outputs[TOKEN_STREAM] = scanner.tokenize();
-      outputs[LINE_INFO] = lineInfo;
-      outputs[IGNORE_INFO] = IgnoreInfo.calculateIgnores(content, lineInfo);
-      outputs[SCAN_ERRORS] = getUniqueErrors(errorListener.errors);
-    } else {
-      throw new AnalysisException(
-          'Cannot scan Dart code from a ${target.runtimeType}');
-    }
   }
 
   /**
@@ -5374,15 +5153,6 @@ class ScanDartTask extends SourceBasedAnalysisTask {
       return <String, TaskInput>{
         CONTENT_INPUT_NAME: CONTENT.of(target, flushOnAccess: true),
         MODIFICATION_TIME_INPUT: MODIFICATION_TIME.of(target)
-      };
-    } else if (target is DartScript) {
-      // This task does not use the following input; it is included only to add
-      // a dependency between this value and the containing source so that when
-      // the containing source is modified these results will be invalidated.
-      Source source = target.source;
-      return <String, TaskInput>{
-        '-': DART_SCRIPTS.of(source),
-        MODIFICATION_TIME_INPUT: MODIFICATION_TIME.of(source)
       };
     }
     throw new AnalysisException(
@@ -5406,8 +5176,6 @@ class ScanDartTask extends SourceBasedAnalysisTask {
         return TaskSuitability.HIGHEST;
       }
       return TaskSuitability.LOWEST;
-    } else if (target is DartScript) {
-      return TaskSuitability.HIGHEST;
     }
     return TaskSuitability.NONE;
   }

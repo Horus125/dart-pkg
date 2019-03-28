@@ -6,15 +6,17 @@ import 'interfaces.dart';
 import 'util.dart';
 
 /// This returns a matcher that inverts [matcher] to its logical negation.
-Matcher isNot(matcher) => new _IsNot(wrapMatcher(matcher));
+Matcher isNot(matcher) => _IsNot(wrapMatcher(matcher));
 
 class _IsNot extends Matcher {
   final Matcher _matcher;
 
   const _IsNot(this._matcher);
 
+  @override
   bool matches(item, Map matchState) => !_matcher.matches(item, matchState);
 
+  @override
   Description describe(Description description) =>
       description.add('not ').addDescriptionOf(_matcher);
 }
@@ -26,7 +28,7 @@ class _IsNot extends Matcher {
 /// List argument. Any argument that is not a matcher is implicitly wrapped in a
 /// Matcher to check for equality.
 Matcher allOf(arg0, [arg1, arg2, arg3, arg4, arg5, arg6]) {
-  return new _AllOf(_wrapArgs(arg0, arg1, arg2, arg3, arg4, arg5, arg6));
+  return _AllOf(_wrapArgs(arg0, arg1, arg2, arg3, arg4, arg5, arg6));
 }
 
 class _AllOf extends Matcher {
@@ -34,6 +36,7 @@ class _AllOf extends Matcher {
 
   const _AllOf(this._matchers);
 
+  @override
   bool matches(item, Map matchState) {
     for (var matcher in _matchers) {
       if (!matcher.matches(item, matchState)) {
@@ -44,6 +47,7 @@ class _AllOf extends Matcher {
     return true;
   }
 
+  @override
   Description describeMismatch(
       item, Description mismatchDescription, Map matchState, bool verbose) {
     var matcher = matchState['matcher'];
@@ -52,6 +56,7 @@ class _AllOf extends Matcher {
     return mismatchDescription;
   }
 
+  @override
   Description describe(Description description) =>
       description.addAll('(', ' and ', ')', _matchers);
 }
@@ -67,7 +72,7 @@ class _AllOf extends Matcher {
 /// Any argument that is not a matcher is implicitly wrapped in a
 /// Matcher to check for equality.
 Matcher anyOf(arg0, [arg1, arg2, arg3, arg4, arg5, arg6]) {
-  return new _AnyOf(_wrapArgs(arg0, arg1, arg2, arg3, arg4, arg5, arg6));
+  return _AnyOf(_wrapArgs(arg0, arg1, arg2, arg3, arg4, arg5, arg6));
 }
 
 class _AnyOf extends Matcher {
@@ -75,6 +80,7 @@ class _AnyOf extends Matcher {
 
   const _AnyOf(this._matchers);
 
+  @override
   bool matches(item, Map matchState) {
     for (var matcher in _matchers) {
       if (matcher.matches(item, matchState)) {
@@ -84,6 +90,7 @@ class _AnyOf extends Matcher {
     return false;
   }
 
+  @override
   Description describe(Description description) =>
       description.addAll('(', ' or ', ')', _matchers);
 }
@@ -97,7 +104,7 @@ List<Matcher> _wrapArgs(arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         arg4 != null ||
         arg5 != null ||
         arg6 != null) {
-      throw new ArgumentError('If arg0 is a List, all other arguments must be'
+      throw ArgumentError('If arg0 is a List, all other arguments must be'
           ' null.');
     }
 

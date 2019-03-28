@@ -44,7 +44,7 @@ import "stream_splitter.dart";
 ///
 /// Example:
 ///
-///     var events = new StreamQueue<String>(someStreamOfLines);
+///     var events = StreamQueue<String>(someStreamOfLines);
 ///     var first = await events.next;
 ///     while (first.startsWith('#')) {
 ///       // Skip comments.
@@ -62,7 +62,7 @@ import "stream_splitter.dart";
 ///
 /// When you need no further events the `StreamQueue` should be closed
 /// using [cancel]. This releases the underlying stream subscription.
-abstract class StreamQueue<T> {
+class StreamQueue<T> {
   // This class maintains two queues: one of events and one of requests.
   // The active request (the one in front of the queue) is called with
   // the current event queue when it becomes active, every time a
@@ -80,6 +80,14 @@ abstract class StreamQueue<T> {
   // It allows requests that don't consume events (like [hasNext]) or
   // potentially a request that takes either five or zero events, determined
   // by the content of the fifth event.
+
+  final Stream<T> _source;
+
+  /// Subscription on [_source] while listening for events.
+  ///
+  /// Set to subscription when listening, and set to `null` when the
+  /// subscription is done (and [_isDone] is set to true).
+  StreamSubscription<T> _subscription;
 
   /// Whether the event source is done.
   bool _isDone = false;
@@ -99,17 +107,18 @@ abstract class StreamQueue<T> {
   var _eventsReceived = 0;
 
   /// Queue of events not used by a request yet.
-  final QueueList<Result<T>> _eventQueue = new QueueList();
+  final QueueList<Result<T>> _eventQueue = QueueList();
 
   /// Queue of pending requests.
   ///
   /// Access through methods below to ensure consistency.
-  final Queue<_EventRequest> _requestQueue = new Queue();
+  final Queue<_EventRequest> _requestQueue = Queue();
 
   /// Create a `StreamQueue` of the events of [source].
-  factory StreamQueue(Stream<T> source) = _StreamQueue<T>;
+  factory StreamQueue(Stream<T> source) => StreamQueue._(source);
 
-  StreamQueue._();
+  // Private generative constructor to avoid subclasses.
+  StreamQueue._(this._source);
 
   /// Asks if the stream has any more events.
   ///
@@ -124,7 +133,7 @@ abstract class StreamQueue<T> {
   /// one events.
   Future<bool> get hasNext {
     if (!_isClosed) {
-      var hasNextRequest = new _HasNextRequest<T>();
+      var hasNextRequest = _HasNextRequest<T>();
       _addRequest(hasNextRequest);
       return hasNextRequest.future;
     }
@@ -137,9 +146,9 @@ abstract class StreamQueue<T> {
   /// If one of the next [count] events is an error, the returned future
   /// completes with this error, and the error is still left in the queue.
   Future<List<T>> lookAhead(int count) {
-    if (count < 0) throw new RangeError.range(count, 0, null, "count");
+    if (count < 0) throw RangeError.range(count, 0, null, "count");
     if (!_isClosed) {
-      var request = new _LookAheadRequest<T>(count);
+      var request = _LookAheadRequest<T>(count);
       _addRequest(request);
       return request.future;
     }
@@ -162,7 +171,7 @@ abstract class StreamQueue<T> {
   /// first events that were not consumed by previous requeusts.
   Future<T> get next {
     if (!_isClosed) {
-      var nextRequest = new _NextRequest<T>();
+      var nextRequest = _NextRequest<T>();
       _addRequest(nextRequest);
       return nextRequest.future;
     }
@@ -175,7 +184,7 @@ abstract class StreamQueue<T> {
   /// If the next event is an error event, it stays in the queue.
   Future<T> get peek {
     if (!_isClosed) {
-      var nextRequest = new _PeekRequest<T>();
+      var nextRequest = _PeekRequest<T>();
       _addRequest(nextRequest);
       return nextRequest.future;
     }
@@ -195,7 +204,7 @@ abstract class StreamQueue<T> {
     if (_isClosed) {
       throw _failClosed();
     }
-    var request = new _RestRequest<T>(this);
+    var request = _RestRequest<T>(this);
     _isClosed = true;
     _addRequest(request);
     return request.stream;
@@ -217,9 +226,9 @@ abstract class StreamQueue<T> {
   /// then all events were succssfully skipped. If the value
   /// is greater than zero then the stream ended early.
   Future<int> skip(int count) {
-    if (count < 0) throw new RangeError.range(count, 0, null, "count");
+    if (count < 0) throw RangeError.range(count, 0, null, "count");
     if (!_isClosed) {
-      var request = new _SkipRequest<T>(count);
+      var request = _SkipRequest<T>(count);
       _addRequest(request);
       return request.future;
     }
@@ -242,9 +251,9 @@ abstract class StreamQueue<T> {
   /// of data collected so far. That is, the returned
   /// list may have fewer than [count] elements.
   Future<List<T>> take(int count) {
-    if (count < 0) throw new RangeError.range(count, 0, null, "count");
+    if (count < 0) throw RangeError.range(count, 0, null, "count");
     if (!_isClosed) {
-      var request = new _TakeRequest<T>(count);
+      var request = _TakeRequest<T>(count);
       _addRequest(request);
       return request.future;
     }
@@ -286,7 +295,7 @@ abstract class StreamQueue<T> {
   StreamQueueTransaction<T> startTransaction() {
     if (_isClosed) throw _failClosed();
 
-    var request = new _TransactionRequest(this);
+    var request = _TransactionRequest(this);
     _addRequest(request);
     return request.transaction;
   }
@@ -344,7 +353,7 @@ abstract class StreamQueue<T> {
   /// See also [startTransaction] and [withTransaction].
   ///
   /// ```dart
-  /// final _stdinQueue = new StreamQueue(stdin);
+  /// final _stdinQueue = StreamQueue(stdin);
   ///
   /// /// Returns an operation that completes when the user sends a line to
   /// /// standard input.
@@ -356,7 +365,7 @@ abstract class StreamQueue<T> {
   CancelableOperation<S> cancelable<S>(
       Future<S> callback(StreamQueue<T> queue)) {
     var transaction = startTransaction();
-    var completer = new CancelableCompleter<S>(onCancel: () {
+    var completer = CancelableCompleter<S>(onCancel: () {
       transaction.reject();
     });
 
@@ -384,17 +393,17 @@ abstract class StreamQueue<T> {
   /// After calling `cancel`, no further events can be requested.
   /// None of [lookAhead], [next], [peek], [rest], [skip], [take] or [cancel]
   /// may be called again.
-  Future cancel({bool immediate: false}) {
+  Future cancel({bool immediate = false}) {
     if (_isClosed) throw _failClosed();
     _isClosed = true;
 
     if (!immediate) {
-      var request = new _CancelRequest<T>(this);
+      var request = _CancelRequest<T>(this);
       _addRequest(request);
       return request.future;
     }
 
-    if (_isDone && _eventQueue.isEmpty) return new Future.value();
+    if (_isDone && _eventQueue.isEmpty) return Future.value();
     return _cancel();
   }
 
@@ -432,24 +441,66 @@ abstract class StreamQueue<T> {
   /// Can only be used by the very last request (the stream queue must
   /// be closed by that request).
   /// Only used by [rest].
-  Stream<T> _extractStream();
+  Stream<T> _extractStream() {
+    assert(_isClosed);
+    if (_isDone) {
+      return Stream<T>.empty();
+    }
+    _isDone = true;
+
+    if (_subscription == null) {
+      return _source;
+    }
+
+    var subscription = _subscription;
+    _subscription = null;
+
+    var wasPaused = subscription.isPaused;
+    var result = SubscriptionStream<T>(subscription);
+    // Resume after creating stream because that pauses the subscription too.
+    // This way there won't be a short resumption in the middle.
+    if (wasPaused) subscription.resume();
+    return result;
+  }
 
   /// Requests that the event source pauses events.
   ///
   /// This is called automatically when the request queue is empty.
   ///
   /// The event source is restarted by the next call to [_ensureListening].
-  void _pause();
+  void _pause() {
+    _subscription.pause();
+  }
 
   /// Ensures that we are listening on events from the event source.
   ///
   /// Starts listening for the first time or resumes after a [_pause].
   ///
   /// Is called automatically if a request requires more events.
-  void _ensureListening();
+  void _ensureListening() {
+    if (_isDone) return;
+    if (_subscription == null) {
+      _subscription = _source.listen((data) {
+        _addResult(Result.value(data));
+      }, onError: (error, StackTrace stackTrace) {
+        _addResult(Result.error(error, stackTrace));
+      }, onDone: () {
+        _subscription = null;
+        this._close();
+      });
+    } else {
+      _subscription.resume();
+    }
+  }
 
   /// Cancels the underlying event source.
-  Future _cancel();
+  Future _cancel() {
+    if (_isDone) return null;
+    _subscription ??= _source.listen(null);
+    var future = _subscription.cancel();
+    _close();
+    return future;
+  }
 
   // ------------------------------------------------------------------
   // Methods called by the event source to add events or say that it's
@@ -478,7 +529,7 @@ abstract class StreamQueue<T> {
   /// Returns a [StateError] with a message saying that either
   /// [cancel] or [rest] have already been called.
   Error _failClosed() {
-    return new StateError("Already cancelled");
+    return StateError("Already cancelled");
   }
 
   /// Adds a new request to the queue.
@@ -491,73 +542,6 @@ abstract class StreamQueue<T> {
       _ensureListening();
     }
     _requestQueue.add(request);
-  }
-}
-
-/// The default implementation of [StreamQueue].
-///
-/// This queue gets its events from a stream which is listened
-/// to when a request needs events.
-class _StreamQueue<T> extends StreamQueue<T> {
-  /// Source of events.
-  final Stream<T> _sourceStream;
-
-  /// Subscription on [_sourceStream] while listening for events.
-  ///
-  /// Set to subscription when listening, and set to `null` when the
-  /// subscription is done (and [_isDone] is set to true).
-  StreamSubscription<T> _subscription;
-
-  _StreamQueue(this._sourceStream) : super._();
-
-  Future _cancel() {
-    if (_isDone) return null;
-    if (_subscription == null) _subscription = _sourceStream.listen(null);
-    var future = _subscription.cancel();
-    _close();
-    return future;
-  }
-
-  void _ensureListening() {
-    if (_isDone) return;
-    if (_subscription == null) {
-      _subscription = _sourceStream.listen((data) {
-        _addResult(new Result.value(data));
-      }, onError: (error, StackTrace stackTrace) {
-        _addResult(new Result.error(error, stackTrace));
-      }, onDone: () {
-        _subscription = null;
-        this._close();
-      });
-    } else {
-      _subscription.resume();
-    }
-  }
-
-  void _pause() {
-    _subscription.pause();
-  }
-
-  Stream<T> _extractStream() {
-    assert(_isClosed);
-    if (_isDone) {
-      return new Stream<T>.empty();
-    }
-    _isDone = true;
-
-    if (_subscription == null) {
-      return _sourceStream;
-    }
-
-    var subscription = _subscription;
-    _subscription = null;
-
-    var wasPaused = subscription.isPaused;
-    var result = new SubscriptionStream<T>(subscription);
-    // Resume after creating stream because that pauses the subscription too.
-    // This way there won't be a short resumption in the middle.
-    if (wasPaused) subscription.resume();
-    return result;
   }
 }
 
@@ -574,7 +558,7 @@ class StreamQueueTransaction<T> {
   final StreamSplitter<T> _splitter;
 
   /// Queues created using [newQueue].
-  final _queues = new Set<StreamQueue>();
+  final _queues = Set<StreamQueue>();
 
   /// Whether [commit] has been called.
   var _committed = false;
@@ -583,7 +567,7 @@ class StreamQueueTransaction<T> {
   var _rejected = false;
 
   StreamQueueTransaction._(this._parent, Stream<T> source)
-      : _splitter = new StreamSplitter(source);
+      : _splitter = StreamSplitter(source);
 
   /// Creates a new copy of the parent queue.
   ///
@@ -591,7 +575,7 @@ class StreamQueueTransaction<T> {
   /// [StreamQueue.startTransaction] was called. Its position can be committed
   /// to the parent queue using [commit].
   StreamQueue<T> newQueue() {
-    var queue = new StreamQueue(_splitter.split());
+    var queue = StreamQueue(_splitter.split());
     _queues.add(queue);
     return queue;
   }
@@ -608,9 +592,9 @@ class StreamQueueTransaction<T> {
   void commit(StreamQueue<T> queue) {
     _assertActive();
     if (!_queues.contains(queue)) {
-      throw new ArgumentError("Queue doesn't belong to this transaction.");
+      throw ArgumentError("Queue doesn't belong to this transaction.");
     } else if (queue._requestQueue.isNotEmpty) {
-      throw new StateError("A queue with pending requests can't be committed.");
+      throw StateError("A queue with pending requests can't be committed.");
     }
     _committed = true;
 
@@ -655,9 +639,9 @@ class StreamQueueTransaction<T> {
   /// Throws a [StateError] if [accept] or [reject] has already been called.
   void _assertActive() {
     if (_committed) {
-      throw new StateError("This transaction has already been accepted.");
+      throw StateError("This transaction has already been accepted.");
     } else if (_rejected) {
-      throw new StateError("This transaction has already been rejected.");
+      throw StateError("This transaction has already been rejected.");
     }
   }
 }
@@ -706,7 +690,7 @@ abstract class _EventRequest<T> {
 /// and is then complete.
 class _NextRequest<T> implements _EventRequest<T> {
   /// Completer for the future returned by [StreamQueue.next].
-  final _completer = new Completer<T>();
+  final _completer = Completer<T>();
 
   _NextRequest();
 
@@ -718,8 +702,7 @@ class _NextRequest<T> implements _EventRequest<T> {
       return true;
     }
     if (isDone) {
-      _completer.completeError(
-          new StateError("No elements"), StackTrace.current);
+      _completer.completeError(StateError("No elements"), StackTrace.current);
       return true;
     }
     return false;
@@ -732,7 +715,7 @@ class _NextRequest<T> implements _EventRequest<T> {
 /// and is then complete, but doesn't consume the event.
 class _PeekRequest<T> implements _EventRequest<T> {
   /// Completer for the future returned by [StreamQueue.next].
-  final _completer = new Completer<T>();
+  final _completer = Completer<T>();
 
   _PeekRequest();
 
@@ -744,8 +727,7 @@ class _PeekRequest<T> implements _EventRequest<T> {
       return true;
     }
     if (isDone) {
-      _completer.completeError(
-          new StateError("No elements"), StackTrace.current);
+      _completer.completeError(StateError("No elements"), StackTrace.current);
       return true;
     }
     return false;
@@ -755,7 +737,7 @@ class _PeekRequest<T> implements _EventRequest<T> {
 /// Request for a [StreamQueue.skip] call.
 class _SkipRequest<T> implements _EventRequest<T> {
   /// Completer for the future returned by the skip call.
-  final _completer = new Completer<int>();
+  final _completer = Completer<int>();
 
   /// Number of remaining events to skip.
   ///
@@ -792,7 +774,7 @@ class _SkipRequest<T> implements _EventRequest<T> {
 /// Common superclass for [_TakeRequest] and [_LookAheadRequest].
 abstract class _ListRequest<T> implements _EventRequest<T> {
   /// Completer for the future returned by the take call.
-  final _completer = new Completer<List<T>>();
+  final _completer = Completer<List<T>>();
 
   /// List collecting events until enough have been seen.
   final _list = <T>[];
@@ -862,7 +844,7 @@ class _LookAheadRequest<T> extends _ListRequest<T> {
 class _CancelRequest<T> implements _EventRequest<T> {
   /// Completer for the future returned by the `cancel` call.
   /// TODO(lrn); make this Completer<void> when that is implemented.
-  final _completer = new Completer();
+  final _completer = Completer();
 
   /// When the event is completed, it needs to cancel the active subscription
   /// of the `StreamQueue` object, if any.
@@ -891,7 +873,7 @@ class _CancelRequest<T> implements _EventRequest<T> {
 /// stream events subscription and creates a stream from it.
 class _RestRequest<T> implements _EventRequest<T> {
   /// Completer for the stream returned by the `rest` call.
-  final _completer = new StreamCompleter<T>();
+  final _completer = StreamCompleter<T>();
 
   /// The [StreamQueue] object that has this request queued.
   ///
@@ -914,7 +896,7 @@ class _RestRequest<T> implements _EventRequest<T> {
     } else {
       // There are prefetched events which needs to be added before the
       // remaining stream.
-      var controller = new StreamController<T>();
+      var controller = StreamController<T>();
       for (var event in events) {
         event.addTo(controller);
       }
@@ -934,7 +916,7 @@ class _RestRequest<T> implements _EventRequest<T> {
 /// If the request is closed without seeing an event, then
 /// the [future] is completed with `false`.
 class _HasNextRequest<T> implements _EventRequest<T> {
-  final _completer = new Completer<bool>();
+  final _completer = Completer<bool>();
 
   Future<bool> get future => _completer.future;
 
@@ -963,13 +945,13 @@ class _TransactionRequest<T> implements _EventRequest<T> {
   StreamQueueTransaction<T> _transaction;
 
   /// The controller that passes events to [transaction].
-  final _controller = new StreamController<T>(sync: true);
+  final _controller = StreamController<T>(sync: true);
 
   /// The number of events passed to [_controller] so far.
   var _eventsSent = 0;
 
   _TransactionRequest(StreamQueue<T> parent) {
-    _transaction = new StreamQueueTransaction._(parent, _controller.stream);
+    _transaction = StreamQueueTransaction._(parent, _controller.stream);
   }
 
   bool update(QueueList<Result<T>> events, bool isDone) {

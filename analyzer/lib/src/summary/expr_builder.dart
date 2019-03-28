@@ -7,13 +7,19 @@ import 'package:analyzer/dart/ast/standard_ast_factory.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/src/dart/analysis/experiments.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/src/dart/element/element.dart';
+import 'package:analyzer/src/generated/engine.dart';
 import 'package:analyzer/src/generated/resolver.dart' show AstRewriteVisitor;
 import 'package:analyzer/src/generated/testing/ast_test_factory.dart';
 import 'package:analyzer/src/generated/testing/token_factory.dart';
 import 'package:analyzer/src/summary/idl.dart';
 import 'package:analyzer/src/summary/resynthesize.dart';
+
+bool _isSpreadOrControlFlowEnabled(ExperimentStatus experimentStatus) =>
+    experimentStatus.spread_collections ||
+    experimentStatus.control_flow_collections;
 
 /**
  * Builder of [Expression]s from [UnlinkedExpr]s.
@@ -25,24 +31,37 @@ class ExprBuilder {
   final ElementImpl context;
   final UnlinkedExpr _uc;
   final bool requireValidConst;
+  final bool isSpreadOrControlFlowEnabled;
+  final bool becomeSetOrMap;
 
   int intPtr = 0;
   int doublePtr = 0;
   int stringPtr = 0;
   int refPtr = 0;
   int assignmentOperatorPtr = 0;
-  final List<Expression> stack = <Expression>[];
+
+  // The stack of values. Note that they are usually [Expression]s, but may be
+  // any [CollectionElement] to support map/set/list literals.
+  final List<CollectionElement> stack = <CollectionElement>[];
 
   final List<UnlinkedExecutable> localFunctions;
 
   final Map<String, ParameterElement> parametersInScope;
 
-  ExprBuilder(this.resynthesizer, this.context, this._uc,
-      {this.requireValidConst: true,
-      this.localFunctions,
-      Map<String, ParameterElement> parametersInScope})
-      : this.parametersInScope =
-            parametersInScope ?? _parametersInScope(context);
+  ExprBuilder(
+    this.resynthesizer,
+    this.context,
+    this._uc, {
+    this.requireValidConst: true,
+    this.localFunctions,
+    Map<String, ParameterElement> parametersInScope,
+    this.becomeSetOrMap: true,
+  })  : this.parametersInScope =
+            parametersInScope ?? _parametersInScope(context),
+        this.isSpreadOrControlFlowEnabled = _isSpreadOrControlFlowEnabled(
+            (resynthesizer.library.context.analysisOptions
+                    as AnalysisOptionsImpl)
+                .experimentStatus);
 
   bool get hasNonEmptyExpr => _uc != null && _uc.operations.isNotEmpty;
 
@@ -195,6 +214,9 @@ class ExprBuilder {
           _pushList(
               AstTestFactory.typeArgumentList(<TypeAnnotation>[itemType]));
           break;
+        case UnlinkedExprOperation.makeUntypedSetOrMap:
+          _pushSetOrMap(null);
+          break;
         case UnlinkedExprOperation.makeUntypedMap:
           _pushMap(null);
           break;
@@ -204,12 +226,27 @@ class ExprBuilder {
           _pushMap(AstTestFactory.typeArgumentList(
               <TypeAnnotation>[keyType, valueType]));
           break;
+        case UnlinkedExprOperation.makeMapLiteralEntry:
+          _pushMapLiteralEntry();
+          break;
+        case UnlinkedExprOperation.makeTypedMap2:
+          TypeAnnotation keyType = _newTypeName();
+          TypeAnnotation valueType = _newTypeName();
+          _pushSetOrMap(AstTestFactory.typeArgumentList(
+              <TypeAnnotation>[keyType, valueType]));
+          break;
         case UnlinkedExprOperation.makeUntypedSet:
           _pushSet(null);
           break;
         case UnlinkedExprOperation.makeTypedSet:
           TypeAnnotation itemType = _newTypeName();
-          _pushSet(AstTestFactory.typeArgumentList(<TypeAnnotation>[itemType]));
+          if (isSpreadOrControlFlowEnabled) {
+            _pushSetOrMap(
+                AstTestFactory.typeArgumentList(<TypeAnnotation>[itemType]));
+          } else {
+            _pushSet(
+                AstTestFactory.typeArgumentList(<TypeAnnotation>[itemType]));
+          }
           break;
         case UnlinkedExprOperation.pushReference:
           _pushReference();
@@ -280,6 +317,18 @@ class ExprBuilder {
         case UnlinkedExprOperation.pushThis:
           _push(AstTestFactory.thisExpression());
           break;
+        case UnlinkedExprOperation.spreadElement:
+          _pushSpread(TokenType.PERIOD_PERIOD_PERIOD);
+          break;
+        case UnlinkedExprOperation.nullAwareSpreadElement:
+          _pushSpread(TokenType.PERIOD_PERIOD_PERIOD_QUESTION);
+          break;
+        case UnlinkedExprOperation.ifElement:
+          _pushIfElement(false);
+          break;
+        case UnlinkedExprOperation.ifElseElement:
+          _pushIfElement(true);
+          break;
         case UnlinkedExprOperation.cascadeSectionBegin:
         case UnlinkedExprOperation.cascadeSectionEnd:
         case UnlinkedExprOperation.pushLocalFunctionReference:
@@ -299,7 +348,7 @@ class ExprBuilder {
       int numNamedArgs = _uc.ints[intPtr++];
       int numPositionalArgs = _uc.ints[intPtr++];
       int numArgs = numNamedArgs + numPositionalArgs;
-      arguments = _removeTopItems(numArgs);
+      arguments = _removeTopExpressions(numArgs);
       // add names to the named arguments
       for (int i = 0; i < numNamedArgs; i++) {
         String name = _uc.strings[stringPtr++];
@@ -578,9 +627,11 @@ class ExprBuilder {
     return _buildTypeAst(type);
   }
 
-  Expression _pop() => stack.removeLast();
+  Expression _pop() => stack.removeLast() as Expression;
 
-  void _push(Expression expr) {
+  CollectionElement _popCollectionElement() => stack.removeLast();
+
+  void _push(CollectionElement expr) {
     stack.add(expr);
   }
 
@@ -588,6 +639,10 @@ class ExprBuilder {
     Expression right = _pop();
     Expression left = _pop();
     _push(AstTestFactory.binaryExpression(left, operator, right));
+  }
+
+  void _pushCollectionElement(CollectionElement collectionElement) {
+    stack.add(collectionElement);
   }
 
   void _pushExtractProperty() {
@@ -599,6 +654,13 @@ class ExprBuilder {
       propertyNode.staticElement = _getStringLengthElement();
     }
     _push(AstTestFactory.propertyAccess(target, propertyNode));
+  }
+
+  void _pushIfElement(bool hasElse) {
+    CollectionElement elseElement = hasElse ? _popCollectionElement() : null;
+    CollectionElement thenElement = _popCollectionElement();
+    Expression condition = _pop();
+    _push(AstTestFactory.ifElement(condition, thenElement, elseElement));
   }
 
   void _pushInstanceCreation() {
@@ -713,9 +775,10 @@ class ExprBuilder {
 
   void _pushList(TypeArgumentList typeArguments) {
     int count = _uc.ints[intPtr++];
-    List<Expression> elements = <Expression>[];
+    List<CollectionElement> elements =
+        isSpreadOrControlFlowEnabled ? <CollectionElement>[] : <Expression>[];
     for (int i = 0; i < count; i++) {
-      elements.insert(0, _pop());
+      elements.insert(0, _popCollectionElement());
     }
     var typeArg = typeArguments == null
         ? resynthesizer.typeProvider.dynamicType
@@ -788,8 +851,21 @@ class ExprBuilder {
         : typeArguments.arguments[1].type;
     var staticType =
         resynthesizer.typeProvider.mapType.instantiate([keyType, valueType]);
-    _push(AstTestFactory.mapLiteral(Keyword.CONST, typeArguments, entries)
-      ..staticType = staticType);
+    if (isSpreadOrControlFlowEnabled) {
+      _push(
+          AstTestFactory.setOrMapLiteral(Keyword.CONST, typeArguments, entries)
+            ..staticType = staticType);
+    } else {
+      // ignore: deprecated_member_use_from_same_package
+      _push(AstTestFactory.mapLiteral(Keyword.CONST, typeArguments, entries)
+        ..staticType = staticType);
+    }
+  }
+
+  void _pushMapLiteralEntry() {
+    Expression value = _pop();
+    Expression key = _pop();
+    _pushCollectionElement(AstTestFactory.mapLiteralEntry2(key, value));
   }
 
   void _pushPrefix(TokenType operator) {
@@ -807,13 +883,68 @@ class ExprBuilder {
     for (int i = 0; i < count; i++) {
       elements.insert(0, _pop());
     }
+    // ignore: deprecated_member_use_from_same_package
     _push(AstTestFactory.setLiteral(Keyword.CONST, typeArguments, elements));
   }
 
-  List<Expression> _removeTopItems(int count) {
+  void _pushSetOrMap(TypeArgumentList typeArguments) {
+    int count = _uc.ints[intPtr++];
+    List<CollectionElement> elements = <CollectionElement>[];
+    for (int i = 0; i < count; i++) {
+      elements.insert(0, _popCollectionElement());
+    }
+
+    bool isMap = true; // assume Map unless can prove otherwise
+    DartType staticType;
+    if (typeArguments != null) {
+      if (typeArguments.arguments.length == 2) {
+        var keyType = typeArguments.arguments[0].type;
+        var valueType = typeArguments.arguments[1].type;
+        staticType = resynthesizer.typeProvider.mapType
+            .instantiate([keyType, valueType]);
+      } else if (typeArguments.arguments.length == 1) {
+        isMap = false;
+        var valueType = typeArguments == null
+            ? resynthesizer.typeProvider.dynamicType
+            : typeArguments.arguments[0].type;
+        staticType =
+            resynthesizer.typeProvider.setType.instantiate([valueType]);
+      }
+    } else {
+      for (var i = 0; i < elements.length; ++i) {
+        var element = elements[i];
+        if (element is Expression) {
+          isMap = false;
+        }
+      }
+    }
+
+    SetOrMapLiteral setOrMapLiteral = astFactory.setOrMapLiteral(
+      constKeyword: TokenFactory.tokenFromKeyword(Keyword.CONST),
+      typeArguments: typeArguments,
+      leftBracket: TokenFactory.tokenFromType(TokenType.OPEN_CURLY_BRACKET),
+      elements: elements,
+      rightBracket: TokenFactory.tokenFromType(TokenType.CLOSE_CURLY_BRACKET),
+    );
+    if (becomeSetOrMap) {
+      if (isMap) {
+        (setOrMapLiteral as SetOrMapLiteralImpl).becomeMap();
+      } else {
+        (setOrMapLiteral as SetOrMapLiteralImpl).becomeSet();
+      }
+    }
+    _push(setOrMapLiteral..staticType = staticType);
+  }
+
+  void _pushSpread(TokenType operator) {
+    Expression operand = _pop();
+    _push(AstTestFactory.spreadElement(operator, operand));
+  }
+
+  List<Expression> _removeTopExpressions(int count) {
     int start = stack.length - count;
     int end = stack.length;
-    List<Expression> items = stack.getRange(start, end).toList();
+    List<Expression> items = List<Expression>.from(stack.getRange(start, end));
     stack.removeRange(start, end);
     return items;
   }

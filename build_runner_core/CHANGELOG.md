@@ -1,3 +1,10 @@
+## 3.0.0
+
+- Fix an issue where `--symlink` was forcing outputs to not be hoisted.
+- `BuildImpl` now takes an optional list of  `BuildTargets` instead of a list of
+  `buildDirs`.
+- Warn when there are no assets to write in a specified output directory.
+
 ## 2.0.3
 
 - Handle asset graph decode failures.

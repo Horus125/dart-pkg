@@ -1,4 +1,4 @@
-// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// Copyright (c) 2017, the Dart project authors. Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
@@ -14,6 +14,7 @@ import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/src/dart/ast/utilities.dart';
 import 'package:analyzer/src/dart/constant/compute.dart';
 import 'package:analyzer/src/dart/constant/constant_verifier.dart';
+import 'package:analyzer/src/dart/constant/evaluation.dart';
 import 'package:analyzer/src/dart/constant/utilities.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/handle.dart';
@@ -27,10 +28,10 @@ import 'package:analyzer/src/generated/error_verifier.dart';
 import 'package:analyzer/src/generated/resolver.dart';
 import 'package:analyzer/src/generated/source.dart';
 import 'package:analyzer/src/hint/sdk_constraint_verifier.dart';
+import 'package:analyzer/src/ignore_comments/ignore_info.dart';
 import 'package:analyzer/src/lint/linter.dart';
 import 'package:analyzer/src/lint/linter_visitor.dart';
 import 'package:analyzer/src/services/lint.dart';
-import 'package:analyzer/src/task/dart.dart';
 import 'package:analyzer/src/task/strong/checker.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -55,7 +56,7 @@ class LibraryAnalyzer {
   final TypeProvider _typeProvider;
 
   final TypeSystem _typeSystem;
-  bool isNonNullableMigrated = false;
+  bool isNonNullableLibrary = false;
   LibraryElement _libraryElement;
 
   LibraryScope _libraryScope;
@@ -109,8 +110,9 @@ class LibraryAnalyzer {
     for (FileState file in _library.libraryFiles) {
       units[file] = _parse(file);
     }
-    isNonNullableMigrated = (units.values.first as CompilationUnitImpl)
-        .hasPragmaAnalyzerNonNullable;
+    // TODO(danrubel): Verify that all units are either nullable or non-nullable
+    isNonNullableLibrary =
+        (units.values.first as CompilationUnitImpl).isNonNullable;
 
     // Resolve URIs in directives to corresponding sources.
     units.forEach((file, unit) {
@@ -229,8 +231,7 @@ class LibraryAnalyzer {
       errorListener.onError(pendingError.toAnalysisError());
     }
 
-    unit.accept(new DeadCodeVerifier(errorReporter,
-        (_context.analysisOptions as AnalysisOptionsImpl).experimentStatus,
+    unit.accept(new DeadCodeVerifier(errorReporter, isNonNullableLibrary,
         typeSystem: _context.typeSystem));
 
     // Dart2js analysis.
@@ -631,12 +632,12 @@ class LibraryAnalyzer {
 
     new TypeParameterBoundsResolver(
             _context.typeSystem, _libraryElement, source, errorListener,
-            isNonNullableMigrated: isNonNullableMigrated)
+            isNonNullableUnit: isNonNullableLibrary)
         .resolveTypeBounds(unit);
 
     unit.accept(new TypeResolverVisitor(
         _libraryElement, source, _typeProvider, errorListener,
-        isNonNullableMigrated: isNonNullableMigrated));
+        isNonNullableUnit: isNonNullableLibrary));
 
     unit.accept(new VariableResolverVisitor(
         _libraryElement, source, _typeProvider, errorListener,

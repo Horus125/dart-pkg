@@ -437,14 +437,21 @@ class _Parser {
     key ??= (expression) => expression as K;
     value ??= (expression) => expression as V;
 
-    if (expression is! MapLiteral) {
+    if (expression is! SetOrMapLiteral) {
       throw SourceSpanFormatException('Expected a Map.', _spanFor(expression));
     }
 
-    var map = expression as MapLiteral;
-
-    return Map.fromIterables(map.entries.map((e) => key(e.key)),
-        map.entries.map((e) => value(e.value)));
+    var map = <K, V>{};
+    // ignore: deprecated_member_use
+    for (var element in (expression as SetOrMapLiteral).elements2) {
+      if (element is MapLiteralEntry) {
+        map[key(element.key)] = value(element.value);
+      } else {
+        throw SourceSpanFormatException(
+            'Expected a map entry.', _spanFor(element));
+      }
+    }
+    return map;
   }
 
   /// Parses a List literal.
@@ -455,7 +462,14 @@ class _Parser {
 
     var list = expression as ListLiteral;
 
-    return list.elements;
+    // ignore: deprecated_member_use
+    return list.elements2.map((e) {
+      if (e is! Expression) {
+        throw SourceSpanFormatException(
+            'Expected only literal elements.', _spanFor(e));
+      }
+      return e as Expression;
+    }).toList();
   }
 
   /// Parses a constant number literal.
@@ -474,8 +488,11 @@ class _Parser {
 
   /// Parses a constant String literal.
   StringLiteral _parseString(Expression expression) {
-    if (expression is StringLiteral) return expression;
-    throw SourceSpanFormatException('Expected a String.', _spanFor(expression));
+    if (expression is StringLiteral && expression.stringValue != null) {
+      return expression;
+    }
+    throw SourceSpanFormatException(
+        'Expected a String literal.', _spanFor(expression));
   }
 
   /// Creates a [SourceSpan] for [node].

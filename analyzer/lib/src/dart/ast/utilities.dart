@@ -31,7 +31,7 @@ typedef void ExceptionInDelegateHandler(
  * properties associated with the nodes.
  */
 class AstCloner
-    with UiAsCodeVisitorMixin<AstNode>
+    with UIAsCodeVisitorMixin<AstNode>
     implements AstVisitor<AstNode> {
   /**
    * A flag indicating whether tokens should be cloned while cloning an AST
@@ -489,31 +489,6 @@ class AstCloner
           iterable: cloneNode(node.iterable));
 
   @override
-  ForEachStatement visitForEachStatement(ForEachStatement node) {
-    DeclaredIdentifier loopVariable = node.loopVariable;
-    if (loopVariable == null) {
-      return astFactory.forEachStatementWithReference(
-          cloneToken(node.awaitKeyword),
-          cloneToken(node.forKeyword),
-          cloneToken(node.leftParenthesis),
-          cloneNode(node.identifier),
-          cloneToken(node.inKeyword),
-          cloneNode(node.iterable),
-          cloneToken(node.rightParenthesis),
-          cloneNode(node.body));
-    }
-    return astFactory.forEachStatementWithDeclaration(
-        cloneToken(node.awaitKeyword),
-        cloneToken(node.forKeyword),
-        cloneToken(node.leftParenthesis),
-        cloneNode(loopVariable),
-        cloneToken(node.inKeyword),
-        cloneNode(node.iterable),
-        cloneToken(node.rightParenthesis),
-        cloneNode(node.body));
-  }
-
-  @override
   ForElement visitForElement(ForElement node) => astFactory.forElement(
       forKeyword: cloneToken(node.forKeyword),
       leftParenthesis: cloneToken(node.leftParenthesis),
@@ -551,21 +526,9 @@ class AstCloner
           updaters: cloneNodeList(node.updaters));
 
   @override
-  ForStatement visitForStatement(ForStatement node) => astFactory.forStatement(
-      cloneToken(node.forKeyword),
-      cloneToken(node.leftParenthesis),
-      cloneNode(node.variables),
-      cloneNode(node.initialization),
-      cloneToken(node.leftSeparator),
-      cloneNode(node.condition),
-      cloneToken(node.rightSeparator),
-      cloneNodeList(node.updaters),
-      cloneToken(node.rightParenthesis),
-      cloneNode(node.body));
-
-  @override
   ForStatement2 visitForStatement2(ForStatement2 node) =>
       astFactory.forStatement2(
+          awaitKeyword: cloneToken(node.awaitKeyword),
           forKeyword: cloneToken(node.forKeyword),
           leftParenthesis: cloneToken(node.leftParenthesis),
           forLoopParts: cloneNode(node.forLoopParts),
@@ -776,6 +739,7 @@ class AstCloner
   }
 
   @override
+  @deprecated
   MapLiteral visitMapLiteral(MapLiteral node) => astFactory.mapLiteral(
       cloneToken(node.constKeyword),
       cloneNode(node.typeArguments),
@@ -924,6 +888,7 @@ class AstCloner
       astFactory.scriptTag(cloneToken(node.scriptTag));
 
   @override
+  @deprecated
   SetLiteral visitSetLiteral(SetLiteral node) => astFactory.setLiteral(
       cloneToken(node.constKeyword),
       cloneNode(node.typeArguments),
@@ -938,13 +903,20 @@ class AstCloner
   }
 
   @override
-  SetOrMapLiteral visitSetOrMapLiteral(SetOrMapLiteral node) =>
-      astFactory.setOrMapLiteral(
-          constKeyword: cloneToken(node.constKeyword),
-          typeArguments: cloneNode(node.typeArguments),
-          leftBracket: cloneToken(node.leftBracket),
-          elements: cloneNodeList(node.elements2),
-          rightBracket: cloneToken(node.rightBracket));
+  SetOrMapLiteral visitSetOrMapLiteral(SetOrMapLiteral node) {
+    var result = astFactory.setOrMapLiteral(
+        constKeyword: cloneToken(node.constKeyword),
+        typeArguments: cloneNode(node.typeArguments),
+        leftBracket: cloneToken(node.leftBracket),
+        elements: cloneNodeList(node.elements2),
+        rightBracket: cloneToken(node.rightBracket));
+    if (node.isMap) {
+      (result as SetOrMapLiteralImpl).becomeMap();
+    } else if (node.isSet) {
+      (result as SetOrMapLiteralImpl).becomeSet();
+    }
+    return result;
+  }
 
   @override
   ShowCombinator visitShowCombinator(ShowCombinator node) => astFactory
@@ -1177,7 +1149,7 @@ class AstCloner
  * are equal.
  */
 class AstComparator
-    with UiAsCodeVisitorMixin<bool>
+    with UIAsCodeVisitorMixin<bool>
     implements AstVisitor<bool> {
   /**
    * The AST node with which the node being visited is to be compared. This is
@@ -2526,7 +2498,7 @@ class ExceptionHandlingDelegatingAstVisitor<T> extends DelegatingAstVisitor<T> {
  */
 @deprecated
 class IncrementalAstCloner
-    with UiAsCodeVisitorMixin<AstNode>
+    with UIAsCodeVisitorMixin<AstNode>
     implements AstVisitor<AstNode> {
   /**
    * The node to be replaced during the cloning process.
@@ -2935,31 +2907,6 @@ class IncrementalAstCloner
           iterable: _cloneNode(node.iterable));
 
   @override
-  ForEachStatement visitForEachStatement(ForEachStatement node) {
-    DeclaredIdentifier loopVariable = node.loopVariable;
-    if (loopVariable == null) {
-      return astFactory.forEachStatementWithReference(
-          _mapToken(node.awaitKeyword),
-          _mapToken(node.forKeyword),
-          _mapToken(node.leftParenthesis),
-          _cloneNode(node.identifier),
-          _mapToken(node.inKeyword),
-          _cloneNode(node.iterable),
-          _mapToken(node.rightParenthesis),
-          _cloneNode(node.body));
-    }
-    return astFactory.forEachStatementWithDeclaration(
-        _mapToken(node.awaitKeyword),
-        _mapToken(node.forKeyword),
-        _mapToken(node.leftParenthesis),
-        _cloneNode(loopVariable),
-        _mapToken(node.inKeyword),
-        _cloneNode(node.iterable),
-        _mapToken(node.rightParenthesis),
-        _cloneNode(node.body));
-  }
-
-  @override
   ForElement visitForElement(ForElement node) => astFactory.forElement(
       forKeyword: _mapToken(node.forKeyword),
       leftParenthesis: _mapToken(node.leftParenthesis),
@@ -2995,19 +2942,6 @@ class IncrementalAstCloner
           condition: _cloneNode(node.condition),
           rightSeparator: _mapToken(node.rightSeparator),
           updaters: _cloneNodeList(node.updaters));
-
-  @override
-  ForStatement visitForStatement(ForStatement node) => astFactory.forStatement(
-      _mapToken(node.forKeyword),
-      _mapToken(node.leftParenthesis),
-      _cloneNode(node.variables),
-      _cloneNode(node.initialization),
-      _mapToken(node.leftSeparator),
-      _cloneNode(node.condition),
-      _mapToken(node.rightSeparator),
-      _cloneNodeList(node.updaters),
-      _mapToken(node.rightParenthesis),
-      _cloneNode(node.body));
 
   @override
   ForStatement2 visitForStatement2(ForStatement2 node) =>
@@ -3249,7 +3183,7 @@ class IncrementalAstCloner
         _mapToken(node.constKeyword),
         _cloneNode(node.typeArguments),
         _mapToken(node.leftBracket),
-        _cloneNodeList(node.elements),
+        _cloneNodeList(node.elements2),
         _mapToken(node.rightBracket));
     copy.staticType = node.staticType;
     return copy;
@@ -3938,7 +3872,7 @@ class NodeLocator2 extends UnifyingAstVisitor<void> {
 /**
  * An object that will replace one child node in an AST node with another node.
  */
-class NodeReplacer with UiAsCodeVisitorMixin<bool> implements AstVisitor<bool> {
+class NodeReplacer with UIAsCodeVisitorMixin<bool> implements AstVisitor<bool> {
   /**
    * The node being replaced.
    */
@@ -5296,7 +5230,7 @@ class NodeReplacer with UiAsCodeVisitorMixin<bool> implements AstVisitor<bool> {
  * nodes are the same.
  */
 class ResolutionCopier
-    with UiAsCodeVisitorMixin<bool>
+    with UIAsCodeVisitorMixin<bool>
     implements AstVisitor<bool> {
   /**
    * The AST node with which the node being visited is to be compared. This is
@@ -5806,6 +5740,7 @@ class ResolutionCopier
   }
 
   @override
+  @deprecated
   bool visitForEachStatement(ForEachStatement node) {
     ForEachStatement toNode = this._toNode as ForEachStatement;
     return _and(
@@ -5864,6 +5799,7 @@ class ResolutionCopier
   }
 
   @override
+  @deprecated
   bool visitForStatement(ForStatement node) {
     ForStatement toNode = this._toNode as ForStatement;
     return _and(
@@ -6188,6 +6124,7 @@ class ResolutionCopier
   }
 
   @override
+  @deprecated
   bool visitMapLiteral(MapLiteral node) {
     MapLiteral toNode = this._toNode as MapLiteral;
     if (_and(
@@ -6447,6 +6384,7 @@ class ResolutionCopier
   }
 
   @override
+  @deprecated
   bool visitSetLiteral(SetLiteral node) {
     SetLiteral toNode = this._toNode as SetLiteral;
     if (_and(
@@ -6942,6 +6880,7 @@ class ScopedNameFinder extends GeneralizingAstVisitor<void> {
   }
 
   @override
+  @deprecated
   void visitForEachStatement(ForEachStatement node) {
     DeclaredIdentifier loopVariable = node.loopVariable;
     if (loopVariable != null) {
@@ -6957,6 +6896,7 @@ class ScopedNameFinder extends GeneralizingAstVisitor<void> {
   }
 
   @override
+  @deprecated
   void visitForStatement(ForStatement node) {
     if (!identical(_immediateChild, node.variables) && node.variables != null) {
       _addVariables(node.variables.variables);
@@ -7079,7 +7019,7 @@ class ScopedNameFinder extends GeneralizingAstVisitor<void> {
  */
 @deprecated
 class ToSourceVisitor
-    with UiAsCodeVisitorMixin<void>
+    with UIAsCodeVisitorMixin<void>
     implements AstVisitor<void> {
   /**
    * The writer to which the source is to be written.
@@ -8227,7 +8167,7 @@ class ToSourceVisitor
  * all of it's children) to a sink.
  */
 class ToSourceVisitor2
-    with UiAsCodeVisitorMixin<void>
+    with UIAsCodeVisitorMixin<void>
     implements AstVisitor<void> {
   /**
    * The sink to which the source is to be written.
@@ -9395,8 +9335,8 @@ class ToSourceVisitor2
 /// that will be deleted as part of the implementation of the "UI as code"
 /// feature.
 ///
-/// We will be removing the classes [ForEachStatement], [ForStatement],
-/// [MapLiteral], and [SetLiteral] as part of implementing the "UI as code"
+/// We will be removing the classes `ForEachStatement`, `ForStatement`,
+/// `MapLiteral`, and `SetLiteral` as part of implementing the "UI as code"
 /// feature.  In order to allow this change to be rolled out to clients in a
 /// staged fashion, we first update each visitor so that it forwards the old
 /// visit methods to their new counterparts; this will allow clients to begin
@@ -9407,23 +9347,27 @@ class ToSourceVisitor2
 ///
 /// This class will be removed when the above classes (and their corresponding
 /// visit methods) are removed.
-mixin UiAsCodeVisitorMixin<R> implements AstVisitor<R> {
+mixin UIAsCodeVisitorMixin<R> implements AstVisitor<R> {
   @override
+  @deprecated
   R visitForEachStatement(ForEachStatement node) {
     return visitForStatement2(node);
   }
 
   @override
+  @deprecated
   R visitForStatement(ForStatement node) {
     return visitForStatement2(node);
   }
 
   @override
+  @deprecated
   R visitMapLiteral(MapLiteral node) {
     return visitSetOrMapLiteral(node);
   }
 
   @override
+  @deprecated
   R visitSetLiteral(SetLiteral node) {
     return visitSetOrMapLiteral(node);
   }

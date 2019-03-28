@@ -40,6 +40,9 @@ import 'package:front_end/src/fasta/fasta_codes.dart'
 
 import 'package:front_end/src/fasta/problems.dart' show DebugAbort, unhandled;
 
+import 'package:front_end/src/fasta/resolve_input_uri.dart'
+    show resolveInputUri;
+
 import 'package:front_end/src/fasta/severity.dart' show Severity;
 
 import 'package:front_end/src/scheme_based_file_system.dart'
@@ -47,8 +50,6 @@ import 'package:front_end/src/scheme_based_file_system.dart'
 
 import 'package:kernel/target/targets.dart'
     show Target, getTarget, TargetFlags, targets;
-
-import 'resolve_input_uri.dart' show resolveInputUri;
 
 class CommandLineProblem {
   final Message message;
@@ -250,6 +251,7 @@ const Map<String, dynamic> optionSpecification = const <String, dynamic>{
   "--legacy": "--legacy-mode",
   "--legacy-mode": false,
   "--libraries-json": Uri,
+  "--no-defines": false,
   "--output": Uri,
   "--packages": Uri,
   "--platform": Uri,
@@ -308,6 +310,8 @@ ProcessedOptions analyzeCommandLine(
         "Target '${targetName}' not recognized. "
         "Valid targets are:\n  ${targets.keys.join("\n  ")}");
   }
+
+  final bool noDefines = options["--no-defines"];
 
   final bool enableAsserts = options["--enable-asserts"];
 
@@ -384,7 +388,7 @@ ProcessedOptions analyzeCommandLine(
           ..verify = verify
           ..bytecode = bytecode
           ..experimentalFlags = experimentalFlags
-          ..environmentDefines = parsedArguments.defines,
+          ..environmentDefines = noDefines ? null : parsedArguments.defines,
         inputs: <Uri>[Uri.parse(arguments[0])],
         output: resolveInputUri(arguments[3]));
   } else if (arguments.isEmpty) {
@@ -420,7 +424,7 @@ ProcessedOptions analyzeCommandLine(
     ..verbose = verbose
     ..verify = verify
     ..experimentalFlags = experimentalFlags
-    ..environmentDefines = parsedArguments.defines;
+    ..environmentDefines = noDefines ? null : parsedArguments.defines;
 
   // TODO(ahe): What about chase dependencies?
 

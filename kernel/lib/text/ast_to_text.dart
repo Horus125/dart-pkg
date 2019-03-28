@@ -448,6 +448,8 @@ class Printer extends Visitor<Null> {
         Library nodeLibrary = node.enclosingLibrary;
         String prefix = syntheticNames.nameLibraryPrefix(nodeLibrary);
         write(prefix + '::' + node.name);
+      } else if (reference.canonicalName != null) {
+        write(reference.canonicalName.toString());
       } else {
         throw new UnimplementedError('${node.runtimeType}');
       }
@@ -1270,6 +1272,33 @@ class Printer extends Visitor<Null> {
     state = WORD;
   }
 
+  visitListConcatenation(ListConcatenation node) {
+    bool first = true;
+    for (Expression part in node.lists) {
+      if (!first) writeSpaced('+');
+      writeExpression(part);
+      first = false;
+    }
+  }
+
+  visitSetConcatenation(SetConcatenation node) {
+    bool first = true;
+    for (Expression part in node.sets) {
+      if (!first) writeSpaced('+');
+      writeExpression(part);
+      first = false;
+    }
+  }
+
+  visitMapConcatenation(MapConcatenation node) {
+    bool first = true;
+    for (Expression part in node.maps) {
+      if (!first) writeSpaced('+');
+      writeExpression(part);
+      first = false;
+    }
+  }
+
   visitIsExpression(IsExpression node) {
     writeExpression(node.operand, Precedence.BITWISE_OR);
     writeSpaced('is');
@@ -1946,6 +1975,15 @@ class Printer extends Visitor<Null> {
     endLine('${node.runtimeType}<${node.typeArgument}>($entries)');
   }
 
+  visitSetConstant(SetConstant node) {
+    final String name = syntheticNames.nameConstant(node);
+    write('  $name = ');
+    final String entries = node.entries.map((Constant constant) {
+      return syntheticNames.nameConstant(constant);
+    }).join(', ');
+    endLine('${node.runtimeType}<${node.typeArgument}>($entries)');
+  }
+
   visitMapConstant(MapConstant node) {
     final String name = syntheticNames.nameConstant(node);
     write('  $name = ');
@@ -1982,11 +2020,16 @@ class Printer extends Visitor<Null> {
     endLine(sb.toString());
   }
 
+  visitStringConstant(StringConstant node) {
+    final String name = syntheticNames.nameConstant(node);
+    endLine('  $name = "${escapeString(node.value)}"');
+  }
+
   visitUnevaluatedConstant(UnevaluatedConstant node) {
     final String name = syntheticNames.nameConstant(node);
-    write('  $name = ');
+    write('  $name = (');
     writeExpression(node.expression);
-    endLine();
+    endLine(')');
   }
 
   defaultNode(Node node) {

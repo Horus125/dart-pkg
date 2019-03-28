@@ -1,3 +1,17 @@
+## 1.0.11
+
+* Fixed description in pubspec.
+
+* Fixed lints in README.md.
+
+## 1.0.10
+
+* Fixed links in README.md.
+
+* Added an example.
+
+* Fixed analysis lints that affected package score.
+
 ## 1.0.9
 
 * Set max SDK version to `<3.0.0`.

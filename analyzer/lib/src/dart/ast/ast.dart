@@ -2081,9 +2081,8 @@ class CompilationUnitImpl extends AstNodeImpl implements CompilationUnit {
   /// has not yet been performed.
   LocalVariableInfo localVariableInfo = new LocalVariableInfo();
 
-  /// Is `true` if the non-nullable feature is enabled, and this library
-  /// unit is annotated with `@pragma('analyzer:non-nullable')`.
-  bool hasPragmaAnalyzerNonNullable = false;
+  /// Is `true` if this unit has been parsed as non-nullable.
+  bool isNonNullable = false;
 
   /// Initialize a newly created compilation unit to have the given directives
   /// and declarations. The [scriptTag] can be `null` if there is no script tag
@@ -3041,6 +3040,9 @@ class DefaultFormalParameterImpl extends FormalParameterImpl
     _parameter = _becomeParentOf(parameter);
     _defaultValue = _becomeParentOf(defaultValue);
   }
+
+  @override
+  ParameterElement get declaredElement => _parameter.declaredElement;
 
   @override
   Token get beginToken => _parameter.beginToken;
@@ -4174,6 +4176,7 @@ class ForEachPartsWithIdentifierImpl extends ForEachPartsImpl
 ///    forEachStatement ::=
 ///        'await'? 'for' '(' [DeclaredIdentifier] 'in' [Expression] ')' [Block]
 ///      | 'await'? 'for' '(' [SimpleIdentifier] 'in' [Expression] ')' [Block]
+@Deprecated('Use ForStatement2Impl')
 class ForEachStatementImpl extends ForStatement2Impl
     implements ForEachStatement {
   /// Initialize a newly created for-each statement whose loop control variable
@@ -4695,6 +4698,7 @@ abstract class ForStatement2Impl extends StatementImpl
 ///    forInitializerStatement ::=
 ///        [DefaultFormalParameter]
 ///      | [Expression]?
+@Deprecated('Use ForStatement2Impl')
 class ForStatementImpl extends ForStatement2Impl implements ForStatement {
   /// Initialize a newly created for statement. Either the [variableList] or the
   /// [initialization] must be `null`. Either the [condition] and the list of
@@ -5644,6 +5648,7 @@ class IfElementImpl extends CollectionElementImpl
   Iterable<SyntacticEntity> get childEntities => new ChildEntities()
     ..addAll(super.childEntities)
     ..add(_thenElement)
+    ..add(elseKeyword)
     ..add(_elseElement);
 
   @override
@@ -5694,8 +5699,7 @@ mixin IfMixin on AstNodeImpl {
     ..add(ifKeyword)
     ..add(leftParenthesis)
     ..add(_condition)
-    ..add(rightParenthesis)
-    ..add(elseKeyword);
+    ..add(rightParenthesis);
 
   Expression get condition => _condition;
 
@@ -5713,29 +5717,11 @@ mixin IfMixin on AstNodeImpl {
 ///
 ///    ifStatement ::=
 ///        'if' '(' [Expression] ')' [Statement] ('else' [Statement])?
-class IfStatementImpl extends StatementImpl implements IfStatement {
-  /// The token representing the 'if' keyword.
-  @override
-  Token ifKeyword;
-
-  /// The left parenthesis.
-  @override
-  Token leftParenthesis;
-
-  /// The condition used to determine which of the statements is executed next.
-  ExpressionImpl _condition;
-
-  /// The right parenthesis.
-  @override
-  Token rightParenthesis;
-
+class IfStatementImpl extends StatementImpl
+    with IfMixin
+    implements IfStatement {
   /// The statement that is executed if the condition evaluates to `true`.
   StatementImpl _thenStatement;
-
-  /// The token representing the 'else' keyword, or `null` if there is no else
-  /// statement.
-  @override
-  Token elseKeyword;
 
   /// The statement that is executed if the condition evaluates to `false`, or
   /// `null` if there is no else statement.
@@ -5744,15 +5730,19 @@ class IfStatementImpl extends StatementImpl implements IfStatement {
   /// Initialize a newly created if statement. The [elseKeyword] and
   /// [elseStatement] can be `null` if there is no else clause.
   IfStatementImpl(
-      this.ifKeyword,
-      this.leftParenthesis,
+      Token ifKeyword,
+      Token leftParenthesis,
       ExpressionImpl condition,
-      this.rightParenthesis,
+      Token rightParenthesis,
       StatementImpl thenStatement,
-      this.elseKeyword,
+      Token elseKeyword,
       StatementImpl elseStatement) {
+    this.ifKeyword = ifKeyword;
+    this.leftParenthesis = leftParenthesis;
     _condition = _becomeParentOf(condition);
+    this.rightParenthesis = rightParenthesis;
     _thenStatement = _becomeParentOf(thenStatement);
+    this.elseKeyword = elseKeyword;
     _elseStatement = _becomeParentOf(elseStatement);
   }
 
@@ -5761,21 +5751,10 @@ class IfStatementImpl extends StatementImpl implements IfStatement {
 
   @override
   Iterable<SyntacticEntity> get childEntities => new ChildEntities()
-    ..add(ifKeyword)
-    ..add(leftParenthesis)
-    ..add(_condition)
-    ..add(rightParenthesis)
+    ..addAll(super.childEntities)
     ..add(_thenStatement)
     ..add(elseKeyword)
     ..add(_elseStatement);
-
-  @override
-  Expression get condition => _condition;
-
-  @override
-  void set condition(Expression expression) {
-    _condition = _becomeParentOf(expression as ExpressionImpl);
-  }
 
   @override
   Statement get elseStatement => _elseStatement;
@@ -7149,6 +7128,7 @@ class MapLiteralEntryImpl extends CollectionElementImpl
   }
 }
 
+@Deprecated('Use SetOrMapLiteral')
 class MapLiteralImpl extends SetOrMapLiteralImpl implements MapLiteral {
   /// Initialize a newly created map literal. The [constKeyword] can be `null`
   /// if the literal is not a constant. The [typeArguments] can be `null` if no
@@ -8981,6 +8961,7 @@ class SetLiteral2Impl extends SetOrMapLiteralImpl implements SetLiteral2 {
   E accept<E>(AstVisitor<E> visitor) => visitor.visitSetLiteral2(this);
 }
 
+@Deprecated('Use SetOrMapLiteralImpl')
 class SetLiteralImpl extends SetOrMapLiteralImpl implements SetLiteral {
   /// Initialize a newly created set literal. The [constKeyword] can be `null`
   /// if the literal is not a constant. The [typeArguments] can be `null` if no
@@ -9012,6 +8993,19 @@ class SetOrMapLiteralImpl extends TypedLiteralImpl implements SetOrMapLiteral {
   /// whether the kind has not or cannot be determined.
   _SetOrMapKind _resolvedKind;
 
+  /// The context type computed by
+  /// [ResolverVisitor._computeSetOrMapContextType].
+  ///
+  /// Note that this is not the same as the context pushed down by type
+  /// inference (which can be obtained via [InferenceContext.getContext]).  For
+  /// example, in the following code:
+  ///
+  ///     var m = {};
+  ///
+  /// The context pushed down by type inference is null, whereas the
+  /// `contextType` is `Map<dynamic, dynamic>`.
+  InterfaceType contextType;
+
   /// Initialize a newly created set or map literal. The [constKeyword] can be
   /// `null` if the literal is not a constant. The [typeArguments] can be `null`
   /// if no type arguments were declared. The [elements] can be `null` if the
@@ -9020,7 +9014,7 @@ class SetOrMapLiteralImpl extends TypedLiteralImpl implements SetOrMapLiteral {
       this.leftBracket, List<CollectionElement> elements, this.rightBracket)
       : super(constKeyword, typeArguments) {
     _elements = new NodeListImpl<CollectionElement>(this, elements);
-    _resolvedKind = _computeResolvedKind(typeArguments, _elements);
+    _resolvedKind = _SetOrMapKind.unresolved;
   }
 
   /// Temporary constructor to support MapLiteral2Impl.
@@ -9081,53 +9075,22 @@ class SetOrMapLiteralImpl extends TypedLiteralImpl implements SetOrMapLiteral {
   @override
   E accept<E>(AstVisitor<E> visitor) => visitor.visitSetOrMapLiteral(this);
 
+  void becomeMap() {
+    assert(_resolvedKind == _SetOrMapKind.unresolved ||
+        _resolvedKind == _SetOrMapKind.map);
+    _resolvedKind = _SetOrMapKind.map;
+  }
+
+  void becomeSet() {
+    assert(_resolvedKind == _SetOrMapKind.unresolved ||
+        _resolvedKind == _SetOrMapKind.set);
+    _resolvedKind = _SetOrMapKind.set;
+  }
+
   @override
   void visitChildren(AstVisitor visitor) {
     super.visitChildren(visitor);
     _elements.accept(visitor);
-  }
-
-  _SetOrMapKind _computeResolvedKind(TypeArgumentListImpl typeArguments,
-      NodeList<CollectionElement> elements) {
-    int argCount = typeArguments?.arguments?.length ?? 0;
-    if (argCount == 1) {
-      return _SetOrMapKind.set;
-    } else if (argCount == 2) {
-      return _SetOrMapKind.map;
-    }
-    _SetOrMapKind kind = _SetOrMapKind.unresolved;
-    for (var element in elements) {
-      _SetOrMapKind elementKind = _kindOf(element);
-      if (kind == _SetOrMapKind.unresolved) {
-        kind = elementKind;
-      } else if (elementKind != _SetOrMapKind.unresolved &&
-          elementKind != kind) {
-        return _SetOrMapKind.unresolved;
-      }
-    }
-    return kind;
-  }
-
-  _SetOrMapKind _kindOf(CollectionElement element) {
-    if (element is ForElement) {
-      return _kindOf(element.body);
-    } else if (element is IfElement) {
-      if (element.elseElement == null) {
-        return _kindOf(element.thenElement);
-      }
-      _SetOrMapKind thenKind = _kindOf(element.thenElement);
-      _SetOrMapKind elseKind = _kindOf(element.elseElement);
-      if (thenKind == _SetOrMapKind.unresolved || thenKind == elseKind) {
-        return elseKind;
-      } else if (elseKind == _SetOrMapKind.unresolved) {
-        return thenKind;
-      }
-    } else if (element is Expression) {
-      return _SetOrMapKind.set;
-    } else if (element is MapLiteralEntry) {
-      return _SetOrMapKind.map;
-    }
-    return _SetOrMapKind.unresolved;
   }
 }
 
@@ -9381,6 +9344,7 @@ class SimpleIdentifierImpl extends IdentifierImpl implements SimpleIdentifier {
         return false;
       }
     }
+    // ignore: deprecated_member_use_from_same_package
     if (parent is ForEachStatement) {
       if (identical(parent.identifier, target)) {
         return false;
@@ -9429,6 +9393,7 @@ class SimpleIdentifierImpl extends IdentifierImpl implements SimpleIdentifier {
       return identical(parent.leftHandSide, target);
     } else if (parent is ForEachPartsWithIdentifier) {
       return identical(parent.identifier, target);
+      // ignore: deprecated_member_use_from_same_package
     } else if (parent is ForEachStatement) {
       return identical(parent.identifier, target);
     }

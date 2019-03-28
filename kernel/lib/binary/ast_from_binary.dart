@@ -239,6 +239,15 @@ class BinaryBuilder {
           entries[i] = readConstantReference();
         }
         return new ListConstant(typeArgument, entries);
+      case ConstantTag.SetConstant:
+        final DartType typeArgument = readDartType();
+        final int length = readUInt();
+        final List<Constant> entries =
+            new List<Constant>.filled(length, null, growable: true);
+        for (int i = 0; i < length; i++) {
+          entries[i] = readConstantReference();
+        }
+        return new SetConstant(typeArgument, entries);
       case ConstantTag.InstanceConstant:
         final Reference classReference = readClassReference();
         final int typeArgumentCount = readUInt();
@@ -1501,6 +1510,25 @@ class BinaryBuilder {
       case Tag.StringConcatenation:
         int offset = readOffset();
         return new StringConcatenation(readExpressionList())
+          ..fileOffset = offset;
+      case Tag.ListConcatenation:
+        int offset = readOffset();
+        var typeArgument = readDartType();
+        return new ListConcatenation(readExpressionList(),
+            typeArgument: typeArgument)
+          ..fileOffset = offset;
+      case Tag.SetConcatenation:
+        int offset = readOffset();
+        var typeArgument = readDartType();
+        return new SetConcatenation(readExpressionList(),
+            typeArgument: typeArgument)
+          ..fileOffset = offset;
+      case Tag.MapConcatenation:
+        int offset = readOffset();
+        var keyType = readDartType();
+        var valueType = readDartType();
+        return new MapConcatenation(readExpressionList(),
+            keyType: keyType, valueType: valueType)
           ..fileOffset = offset;
       case Tag.IsExpression:
         int offset = readOffset();

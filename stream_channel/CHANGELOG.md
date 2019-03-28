@@ -1,3 +1,11 @@
+## 1.7.0
+
+* Make `IsolateChannel` available through
+  `package:stream_channel/isolate_channel.dart`. This will be the required
+  import in the next release.
+* Require `2.0.0` or newer SDK.
+* Internal style changes.
+
 ## 1.6.8
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.

@@ -202,9 +202,7 @@ class ConstantsTransformer extends Transformer {
 
   visitFunctionNode(FunctionNode node) {
     final positionalParameterCount = node.positionalParameters.length;
-    for (int i = node.requiredParameterCount;
-        i < positionalParameterCount;
-        ++i) {
+    for (int i = 0; i < positionalParameterCount; ++i) {
       final VariableDeclaration variable = node.positionalParameters[i];
       transformAnnotations(variable.annotations, variable);
       if (variable.initializer != null) {
@@ -374,6 +372,7 @@ class ConstantsTransformer extends Transformer {
 
 class ConstantEvaluator extends RecursiveVisitor {
   final ConstantsBackend backend;
+  final NumberSemantics numberSemantics;
   Map<String, String> environmentDefines;
   final CoreTypes coreTypes;
   final TypeEnvironment typeEnvironment;
@@ -398,9 +397,12 @@ class ConstantEvaluator extends RecursiveVisitor {
   Set<TreeNode> unevaluatedNodes;
   Set<Expression> replacementNodes;
 
+  bool get targetingJavaScript => numberSemantics == NumberSemantics.js;
+
   ConstantEvaluator(this.backend, this.environmentDefines, this.typeEnvironment,
       this.enableAsserts, this.errorReporter)
-      : coreTypes = typeEnvironment.coreTypes,
+      : numberSemantics = backend.numberSemantics,
+        coreTypes = typeEnvironment.coreTypes,
         canonicalizationCache = <Constant, Constant>{},
         nodeCache = <Node, Constant>{},
         env = new EvaluationEnvironment();
@@ -519,7 +521,7 @@ class ConstantEvaluator extends RecursiveVisitor {
   }
 
   visitDoubleLiteral(DoubleLiteral node) {
-    return canonicalize(new DoubleConstant(node.value));
+    return canonicalize(makeDoubleConstant(node.value));
   }
 
   visitStringLiteral(StringLiteral node) {
@@ -559,7 +561,32 @@ class ConstantEvaluator extends RecursiveVisitor {
               typeArgument: node.typeArgument, isConst: true));
     }
     final DartType typeArgument = evaluateDartType(node, node.typeArgument);
-    return canonicalize(new ListConstant(typeArgument, entries));
+    return canonicalize(
+        backend.lowerListConstant(new ListConstant(typeArgument, entries)));
+  }
+
+  visitSetLiteral(SetLiteral node) {
+    if (!node.isConst) {
+      throw new _AbortCurrentEvaluation(
+          errorReporter.nonConstLiteral(contextChain, node, 'Set'));
+    }
+    final List<Constant> entries = new List<Constant>(node.expressions.length);
+    for (int i = 0; i < node.expressions.length; ++i) {
+      entries[i] = _evaluateSubexpression(node.expressions[i]);
+    }
+    if (hasUnevaluatedChild(node)) {
+      final expressions = new List<Expression>(node.expressions.length);
+      for (int i = 0; i < node.expressions.length; ++i) {
+        expressions[i] = unique(entries[i].asExpression());
+      }
+      return unevaluated(
+          node,
+          new SetLiteral(expressions,
+              typeArgument: node.typeArgument, isConst: true));
+    }
+    final DartType typeArgument = evaluateDartType(node, node.typeArgument);
+    return canonicalize(
+        backend.lowerSetConstant(new SetConstant(typeArgument, entries)));
   }
 
   visitMapLiteral(MapLiteral node) {
@@ -595,7 +622,8 @@ class ConstantEvaluator extends RecursiveVisitor {
     }
     final DartType keyType = evaluateDartType(node, node.keyType);
     final DartType valueType = evaluateDartType(node, node.valueType);
-    return canonicalize(new MapConstant(keyType, valueType, entries));
+    return canonicalize(
+        backend.lowerMapConstant(new MapConstant(keyType, valueType, entries)));
   }
 
   visitFunctionExpression(FunctionExpression node) {
@@ -1016,7 +1044,7 @@ class ConstantEvaluator extends RecursiveVisitor {
       if (arguments.length == 0) {
         switch (node.name.name) {
           case 'unary-':
-            return canonicalize(new DoubleConstant(-receiver.value));
+            return canonicalize(makeDoubleConstant(-receiver.value));
         }
       } else if (arguments.length == 1) {
         final Constant other = arguments[0];
@@ -1047,8 +1075,8 @@ class ConstantEvaluator extends RecursiveVisitor {
     if (left is UnevaluatedConstant) {
       return unevaluated(
           node,
-          new LogicalExpression(
-              unique(left.expression), node.operator, node.right));
+          new LogicalExpression(unique(left.expression), node.operator,
+              cloner.clone(node.right)));
     }
     switch (node.operator) {
       case '||':
@@ -1110,8 +1138,11 @@ class ConstantEvaluator extends RecursiveVisitor {
     } else if (condition is UnevaluatedConstant) {
       return unevaluated(
           node,
-          new ConditionalExpression(unique(condition.expression), node.then,
-              node.otherwise, node.staticType));
+          new ConditionalExpression(
+              unique(condition.expression),
+              cloner.clone(node.then),
+              cloner.clone(node.otherwise),
+              node.staticType));
     } else {
       throw new _AbortCurrentEvaluation(errorReporter.invalidDartType(
           contextChain, node, condition, typeEnvironment.boolType));
@@ -1183,7 +1214,7 @@ class ConstantEvaluator extends RecursiveVisitor {
         if (target.isConst) {
           if (target.isInExternalLibrary && target.initializer == null) {
             // The variable is unavailable due to separate compilation.
-            return unevaluated(node, node);
+            return unevaluated(node, new StaticGet(target));
           }
           return runInsideContext(target, () {
             return _evaluateSubexpression(target.initializer);
@@ -1369,6 +1400,18 @@ class ConstantEvaluator extends RecursiveVisitor {
 
   // Helper methods:
 
+  Constant makeDoubleConstant(double value) {
+    if (targetingJavaScript) {
+      // Convert to an integer when possible (matching the runtime behavior
+      // of `is int`).
+      if (value.isFinite) {
+        var i = value.toInt();
+        if (value == i.toDouble()) return new IntConstant(i);
+      }
+    }
+    return new DoubleConstant(value);
+  }
+
   void ensureIsSubtype(Constant constant, DartType type, TreeNode node) {
     DartType constantType = constant.getType(typeEnvironment);
 
@@ -1435,7 +1478,6 @@ class ConstantEvaluator extends RecursiveVisitor {
   }
 
   Constant canonicalize(Constant constant) {
-    constant = backend.lowerConstant(constant);
     return canonicalizationCache.putIfAbsent(constant, () => constant);
   }
 
@@ -1461,8 +1503,10 @@ class ConstantEvaluator extends RecursiveVisitor {
 
   Constant evaluateBinaryNumericOperation(
       String op, num a, num b, TreeNode node) {
-    a = backend.prepareNumericOperand(a);
-    b = backend.prepareNumericOperand(b);
+    if (targetingJavaScript) {
+      a = a.toDouble();
+      b = b.toDouble();
+    }
     num result;
     switch (op) {
       case '+':
@@ -1485,10 +1529,11 @@ class ConstantEvaluator extends RecursiveVisitor {
         break;
     }
 
-    if (result != null) {
-      return canonicalize(result is int
-          ? new IntConstant(result.toSigned(64))
-          : new DoubleConstant(result as double));
+    if (result is int) {
+      return canonicalize(new IntConstant(result.toSigned(64)));
+    }
+    if (result is double) {
+      return canonicalize(makeDoubleConstant(result));
     }
 
     switch (op) {
@@ -1584,16 +1629,30 @@ class EvaluationEnvironment {
   }
 }
 
+/// The different kinds of number semantics supported by the constant evaluator.
+enum NumberSemantics {
+  /// Dart VM number semantics.
+  vm,
+
+  /// JavaScript (Dart2js and DDC) number semantics.
+  js,
+}
+
 // Backend specific constant evaluation behavior
 class ConstantsBackend {
-  /// Transformation of constants prior to canonicalization, e.g. to change the
-  /// representation of certain kinds of constants, or to implement specific
-  /// number semantics.
-  Constant lowerConstant(Constant constant) => constant;
+  const ConstantsBackend();
 
-  /// Transformation of numeric operands prior to a binary operation,
-  /// e.g. to implement specific number semantics.
-  num prepareNumericOperand(num operand) => operand;
+  /// Lowering of a list constant to a backend-specific representation.
+  Constant lowerListConstant(ListConstant constant) => constant;
+
+  /// Lowering of a set constant to a backend-specific representation.
+  Constant lowerSetConstant(SetConstant constant) => constant;
+
+  /// Lowering of a map constant to a backend-specific representation.
+  Constant lowerMapConstant(MapConstant constant) => constant;
+
+  /// Number semantics to use for this backend.
+  NumberSemantics get numberSemantics => NumberSemantics.vm;
 }
 
 // Used as control-flow to abort the current evaluation.

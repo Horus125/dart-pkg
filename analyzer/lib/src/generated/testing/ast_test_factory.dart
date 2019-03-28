@@ -494,29 +494,31 @@ class AstTestFactory {
   static FieldFormalParameter fieldFormalParameter2(String identifier) =>
       fieldFormalParameter(null, null, identifier);
 
-  static ForEachStatement forEachStatement(DeclaredIdentifier loopVariable,
+  @Deprecated('Use forStatement2')
+  static ForStatement2 forEachStatement(DeclaredIdentifier loopVariable,
           Expression iterator, Statement body) =>
-      astFactory.forEachStatementWithDeclaration(
-          null,
-          TokenFactory.tokenFromKeyword(Keyword.FOR),
-          TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
-          loopVariable,
-          TokenFactory.tokenFromKeyword(Keyword.IN),
-          iterator,
-          TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
-          body);
+      astFactory.forStatement2(
+          forKeyword: TokenFactory.tokenFromKeyword(Keyword.FOR),
+          leftParenthesis: TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
+          forLoopParts: astFactory.forEachPartsWithDeclaration(
+              loopVariable: loopVariable,
+              inKeyword: TokenFactory.tokenFromKeyword(Keyword.IN),
+              iterable: iterator),
+          rightParenthesis: TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
+          body: body);
 
-  static ForEachStatement forEachStatement2(
+  @Deprecated('Use forStatement2')
+  static ForStatement2 forEachStatement2(
           SimpleIdentifier identifier, Expression iterator, Statement body) =>
-      astFactory.forEachStatementWithReference(
-          null,
-          TokenFactory.tokenFromKeyword(Keyword.FOR),
-          TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
-          identifier,
-          TokenFactory.tokenFromKeyword(Keyword.IN),
-          iterator,
-          TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
-          body);
+      astFactory.forStatement2(
+          forKeyword: TokenFactory.tokenFromKeyword(Keyword.FOR),
+          leftParenthesis: TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
+          forLoopParts: astFactory.forEachPartsWithIdentifier(
+              identifier: identifier,
+              inKeyword: TokenFactory.tokenFromKeyword(Keyword.IN),
+              iterable: iterator),
+          rightParenthesis: TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
+          body: body);
 
   static FormalParameterList formalParameterList(
           [List<FormalParameter> parameters]) =>
@@ -527,33 +529,34 @@ class AstTestFactory {
           null,
           TokenFactory.tokenFromType(TokenType.CLOSE_PAREN));
 
-  static ForStatement forStatement(Expression initialization,
+  @Deprecated('Use forStatement2')
+  static ForStatement2 forStatement(Expression initialization,
           Expression condition, List<Expression> updaters, Statement body) =>
-      astFactory.forStatement(
-          TokenFactory.tokenFromKeyword(Keyword.FOR),
-          TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
-          null,
-          initialization,
-          TokenFactory.tokenFromType(TokenType.SEMICOLON),
-          condition,
-          TokenFactory.tokenFromType(TokenType.SEMICOLON),
-          updaters,
-          TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
-          body);
+      astFactory.forStatement2(
+          forKeyword: TokenFactory.tokenFromKeyword(Keyword.FOR),
+          leftParenthesis: TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
+          forLoopParts: astFactory.forPartsWithExpression(
+              initialization: initialization,
+              leftSeparator: TokenFactory.tokenFromType(TokenType.SEMICOLON),
+              condition: condition,
+              rightSeparator: TokenFactory.tokenFromType(TokenType.SEMICOLON),
+              updaters: updaters),
+          rightParenthesis: TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
+          body: body);
 
-  static ForStatement forStatement2(VariableDeclarationList variableList,
+  static ForStatement2 forStatement2(VariableDeclarationList variableList,
           Expression condition, List<Expression> updaters, Statement body) =>
-      astFactory.forStatement(
-          TokenFactory.tokenFromKeyword(Keyword.FOR),
-          TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
-          variableList,
-          null,
-          TokenFactory.tokenFromType(TokenType.SEMICOLON),
-          condition,
-          TokenFactory.tokenFromType(TokenType.SEMICOLON),
-          updaters,
-          TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
-          body);
+      astFactory.forStatement2(
+          forKeyword: TokenFactory.tokenFromKeyword(Keyword.FOR),
+          leftParenthesis: TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
+          forLoopParts: astFactory.forPartsWithDeclarations(
+              variables: variableList,
+              leftSeparator: TokenFactory.tokenFromType(TokenType.SEMICOLON),
+              condition: condition,
+              rightSeparator: TokenFactory.tokenFromType(TokenType.SEMICOLON),
+              updaters: updaters),
+          rightParenthesis: TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
+          body: body);
 
   static FunctionDeclaration functionDeclaration(
           TypeAnnotation type,
@@ -666,6 +669,20 @@ class AstTestFactory {
         .map((String identifier) => identifier3(identifier))
         .toList();
   }
+
+  static IfElement ifElement(
+          Expression condition, CollectionElement thenElement,
+          [CollectionElement elseElement]) =>
+      astFactory.ifElement(
+          ifKeyword: TokenFactory.tokenFromKeyword(Keyword.IF),
+          leftParenthesis: TokenFactory.tokenFromType(TokenType.OPEN_PAREN),
+          condition: condition,
+          rightParenthesis: TokenFactory.tokenFromType(TokenType.CLOSE_PAREN),
+          thenElement: thenElement,
+          elseKeyword: elseElement == null
+              ? null
+              : TokenFactory.tokenFromKeyword(Keyword.ELSE),
+          elseElement: elseElement);
 
   static IfStatement ifStatement(
           Expression condition, Statement thenStatement) =>
@@ -814,7 +831,7 @@ class AstTestFactory {
 
   static ListLiteral listLiteral2(
           Keyword keyword, TypeArgumentList typeArguments,
-          [List<Expression> elements]) =>
+          [List<CollectionElement> elements]) =>
       astFactory.listLiteral(
           keyword == null ? null : TokenFactory.tokenFromKeyword(keyword),
           typeArguments,
@@ -822,7 +839,9 @@ class AstTestFactory {
           elements,
           TokenFactory.tokenFromType(TokenType.CLOSE_SQUARE_BRACKET));
 
-  static MapLiteral mapLiteral(Keyword keyword, TypeArgumentList typeArguments,
+  @Deprecated('Use setOrMapLiteral')
+  static SetOrMapLiteral mapLiteral(
+          Keyword keyword, TypeArgumentList typeArguments,
           [List<MapLiteralEntry> entries]) =>
       astFactory.mapLiteral(
           keyword == null ? null : TokenFactory.tokenFromKeyword(keyword),
@@ -831,7 +850,8 @@ class AstTestFactory {
           entries,
           TokenFactory.tokenFromType(TokenType.CLOSE_CURLY_BRACKET));
 
-  static MapLiteral mapLiteral2([List<MapLiteralEntry> entries]) =>
+  @Deprecated('Use setOrMapLiteral')
+  static SetOrMapLiteral mapLiteral2([List<MapLiteralEntry> entries]) =>
       mapLiteral(null, null, entries);
 
   static MapLiteralEntry mapLiteralEntry(String key, Expression value) =>
@@ -1073,14 +1093,24 @@ class AstTestFactory {
   static ScriptTag scriptTag(String scriptTag) =>
       astFactory.scriptTag(TokenFactory.tokenFromString(scriptTag));
 
-  static SetLiteral setLiteral(Keyword keyword, TypeArgumentList typeArguments,
-          List<Expression> elements) =>
+  @Deprecated('Use setOrMapLiteral')
+  static SetOrMapLiteral setLiteral(Keyword keyword,
+          TypeArgumentList typeArguments, List<Expression> elements) =>
       astFactory.setLiteral(
           keyword == null ? null : TokenFactory.tokenFromKeyword(keyword),
           typeArguments,
           TokenFactory.tokenFromType(TokenType.OPEN_CURLY_BRACKET),
           elements,
           TokenFactory.tokenFromType(TokenType.CLOSE_CURLY_BRACKET));
+
+  static SetOrMapLiteral setOrMapLiteral(
+          Keyword keyword, TypeArgumentList typeArguments,
+          [List<CollectionElement> elements]) =>
+      astFactory.setOrMapLiteral(
+          constKeyword:
+              keyword == null ? null : TokenFactory.tokenFromKeyword(keyword),
+          typeArguments: typeArguments,
+          elements: elements);
 
   static ShowCombinator showCombinator(List<SimpleIdentifier> identifiers) =>
       astFactory.showCombinator(
@@ -1109,6 +1139,12 @@ class AstTestFactory {
   static SimpleFormalParameter simpleFormalParameter4(
           TypeAnnotation type, String parameterName) =>
       simpleFormalParameter2(null, type, parameterName);
+
+  static SpreadElement spreadElement(
+          TokenType operator, Expression expression) =>
+      astFactory.spreadElement(
+          spreadOperator: TokenFactory.tokenFromType(operator),
+          expression: expression);
 
   static StringInterpolation string([List<InterpolationElement> elements]) =>
       astFactory.stringInterpolation(elements);

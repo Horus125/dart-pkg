@@ -21,7 +21,7 @@ import 'util.dart';
 /// ```dart
 /// class HasPrice extends CustomMatcher {
 ///   HasPrice(matcher) : super("Widget with price that is", "price", matcher);
-///   featureValueOf(actual) => actual.price;
+///   featureValueOf(actual) => (actual as Widget).price;
 /// }
 /// ```
 ///
@@ -36,11 +36,12 @@ class CustomMatcher extends Matcher {
   final Matcher _matcher;
 
   CustomMatcher(this._featureDescription, this._featureName, matcher)
-      : this._matcher = wrapMatcher(matcher);
+      : _matcher = wrapMatcher(matcher);
 
   /// Override this to extract the interesting feature.
   Object featureValueOf(actual) => actual;
 
+  @override
   bool matches(item, Map matchState) {
     try {
       var f = featureValueOf(item);
@@ -49,7 +50,7 @@ class CustomMatcher extends Matcher {
     } catch (exception, stack) {
       addStateInfo(matchState, {
         'custom.exception': exception.toString(),
-        'custom.stack': new Chain.forTrace(stack)
+        'custom.stack': Chain.forTrace(stack)
             .foldFrames(
                 (frame) =>
                     frame.package == 'test' ||
@@ -62,9 +63,11 @@ class CustomMatcher extends Matcher {
     return false;
   }
 
+  @override
   Description describe(Description description) =>
       description.add(_featureDescription).add(' ').addDescriptionOf(_matcher);
 
+  @override
   Description describeMismatch(
       item, Description mismatchDescription, Map matchState, bool verbose) {
     if (matchState['custom.exception'] != null) {
@@ -81,7 +84,7 @@ class CustomMatcher extends Matcher {
         .add(_featureName)
         .add(' with value ')
         .addDescriptionOf(matchState['custom.feature']);
-    var innerDescription = new StringDescription();
+    var innerDescription = StringDescription();
 
     _matcher.describeMismatch(matchState['custom.feature'], innerDescription,
         matchState['state'] as Map, verbose);

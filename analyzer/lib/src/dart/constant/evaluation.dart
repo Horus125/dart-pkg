@@ -26,7 +26,7 @@ import 'package:analyzer/src/generated/engine.dart'
 import 'package:analyzer/src/generated/resolver.dart' show TypeProvider;
 import 'package:analyzer/src/generated/type_system.dart'
     show Dart2TypeSystem, TypeSystem;
-import 'package:analyzer/src/task/dart.dart';
+import 'package:analyzer/src/task/api/model.dart';
 
 /**
  * Helper class encapsulating the methods for evaluating constants and
@@ -930,6 +930,23 @@ class ConstantEvaluationEngine {
 }
 
 /**
+ * Interface for [AnalysisTarget]s for which constant evaluation can be
+ * performed.
+ */
+abstract class ConstantEvaluationTarget extends AnalysisTarget {
+  /**
+   * Return the [AnalysisContext] which should be used to evaluate this
+   * constant.
+   */
+  AnalysisContext get context;
+
+  /**
+   * Return whether this constant is evaluated.
+   */
+  bool get isConstantEvaluated;
+}
+
+/**
  * Interface used by unit tests to verify correct dependency analysis during
  * constant evaluation.
  */
@@ -1369,43 +1386,6 @@ class ConstantVisitor extends UnifyingAstVisitor<DartObjectImpl> {
   }
 
   @override
-  DartObjectImpl visitMapLiteral(MapLiteral node) {
-    if (!node.isConst) {
-      _errorReporter.reportErrorForNode(
-          CompileTimeErrorCode.MISSING_CONST_IN_MAP_LITERAL, node);
-      return null;
-    }
-    bool errorOccurred = false;
-    Map<DartObjectImpl, DartObjectImpl> map =
-        <DartObjectImpl, DartObjectImpl>{};
-    for (MapLiteralEntry entry in node.entries) {
-      DartObjectImpl keyResult = entry.key.accept(this);
-      DartObjectImpl valueResult = entry.value.accept(this);
-      if (keyResult == null || valueResult == null) {
-        errorOccurred = true;
-      } else {
-        map[keyResult] = valueResult;
-      }
-    }
-    if (errorOccurred) {
-      return null;
-    }
-    DartType keyType = _typeProvider.dynamicType;
-    DartType valueType = _typeProvider.dynamicType;
-    var nodeType = node.staticType;
-    if (nodeType is InterfaceType) {
-      var typeArguments = nodeType.typeArguments;
-      if (typeArguments.length >= 2) {
-        keyType = typeArguments[0];
-        valueType = typeArguments[1];
-      }
-    }
-    InterfaceType mapType =
-        _typeProvider.mapType.instantiate([keyType, valueType]);
-    return new DartObjectImpl(mapType, new MapState(map));
-  }
-
-  @override
   DartObjectImpl visitMethodInvocation(MethodInvocation node) {
     Element element = node.methodName.staticElement;
     if (element is FunctionElement) {
@@ -1503,37 +1483,15 @@ class ConstantVisitor extends UnifyingAstVisitor<DartObjectImpl> {
   }
 
   @override
-  DartObjectImpl visitSetLiteral(SetLiteral node) {
-    if (!node.isConst) {
-      _errorReporter.reportErrorForNode(
-          CompileTimeErrorCode.MISSING_CONST_IN_SET_LITERAL, node);
-      return null;
-    }
-    bool errorOccurred = false;
-    Set<DartObjectImpl> elements = new Set<DartObjectImpl>();
-    for (Expression element in node.elements) {
-      DartObjectImpl elementResult = element.accept(this);
-      if (elementResult == null) {
-        errorOccurred = true;
-      } else {
-        elements.add(elementResult);
-      }
-    }
-    if (errorOccurred) {
-      return null;
-    }
-    DartType nodeType = node.staticType;
-    DartType elementType =
-        nodeType is InterfaceType && nodeType.typeArguments.isNotEmpty
-            ? nodeType.typeArguments[0]
-            : _typeProvider.dynamicType;
-    InterfaceType setType = _typeProvider.setType.instantiate([elementType]);
-    return new DartObjectImpl(setType, new SetState(elements));
-  }
-
-  @override
   DartObjectImpl visitSetOrMapLiteral(SetOrMapLiteral node) {
-    if (node.isMap) {
+    // Note: due to dartbug.com/33441, it's possible that a set/map literal
+    // resynthesized from a summary will have neither its `isSet` or `isMap`
+    // boolean set to `true`.  We work around the problem by assuming such
+    // literals are maps.
+    // TODO(paulberry): when dartbug.com/33441 is fixed, add an assertion here
+    // to verify that `node.isSet == !node.isMap`.
+    bool isMap = !node.isSet;
+    if (isMap) {
       if (!node.isConst) {
         _errorReporter.reportErrorForNode(
             CompileTimeErrorCode.MISSING_CONST_IN_MAP_LITERAL, node);
@@ -1560,7 +1518,7 @@ class ConstantVisitor extends UnifyingAstVisitor<DartObjectImpl> {
       InterfaceType mapType =
           _typeProvider.mapType.instantiate([keyType, valueType]);
       return new DartObjectImpl(mapType, new MapState(map));
-    } else if (node.isSet) {
+    } else {
       if (!node.isConst) {
         _errorReporter.reportErrorForNode(
             CompileTimeErrorCode.MISSING_CONST_IN_SET_LITERAL, node);
@@ -1582,7 +1540,6 @@ class ConstantVisitor extends UnifyingAstVisitor<DartObjectImpl> {
       InterfaceType setType = _typeProvider.setType.instantiate([elementType]);
       return new DartObjectImpl(setType, new SetState(set));
     }
-    return null;
   }
 
   @override

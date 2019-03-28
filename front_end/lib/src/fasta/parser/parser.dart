@@ -2416,10 +2416,50 @@ class Parser {
     int count = 0;
     bool old = mayParseFunctionExpressions;
     mayParseFunctionExpressions = false;
-    do {
-      token = parseInitializer(token.next);
+    Token next = begin;
+    while (true) {
+      token = parseInitializer(next);
       ++count;
-    } while (optional(',', token.next));
+      next = token.next;
+      if (!optional(',', next)) {
+        if (!next.isKeywordOrIdentifier) {
+          break;
+        }
+        // Recovery: Found an identifier which could be
+        // 1) missing preceding `,` thus it's another initializer, or
+        // 2) missing preceding `;` thus it's a class member, or
+        // 3) missing preceding '{' thus it's a statement
+        if (optional('assert', next)) {
+          next = next.next;
+          if (!optional('(', next)) {
+            break;
+          }
+          // Looks like assert expression ... fall through to insert comma
+        } else {
+          if (optional('this', next)) {
+            next = next.next;
+            if (!optional('.', next)) {
+              break;
+            }
+            next = next.next;
+            if (!next.isKeywordOrIdentifier) {
+              break;
+            }
+          }
+          next = next.next;
+          if (!optional('=', next)) {
+            break;
+          }
+          // Looks like field assignment... fall through to insert comma
+        }
+        // TODO(danrubel): Consider enhancing this to indicate that we are
+        // expecting one of `,` or `;` or `{`
+        reportRecoverableError(
+            token, fasta.templateExpectedAfterButGot.withArguments(','));
+        next = rewriter.insertToken(
+            token, new SyntheticToken(TokenType.COMMA, token.next.charOffset));
+      }
+    }
     mayParseFunctionExpressions = old;
     listener.endInitializers(count, begin, token.next);
     return token;
@@ -3571,7 +3611,16 @@ class Parser {
       throw "Internal error: Unknown asyncState: '$asyncState'.";
     } else if (identical(value, 'const')) {
       return parseExpressionStatementOrConstDeclaration(token);
-    } else if (!inPlainSync && identical(value, 'await')) {
+    } else if (identical(value, 'await')) {
+      if (inPlainSync) {
+        if (!looksLikeAwaitExpression(token)) {
+          return parseExpressionStatementOrDeclaration(token);
+        }
+        // Recovery: looks like an expression preceded by `await`
+        // but not inside an async context.
+        // Fall through to parseExpressionStatement
+        // and parseAwaitExpression will report the error.
+      }
       return parseExpressionStatement(token);
     } else if (identical(value, 'set') && token.next.next.isIdentifier) {
       // Recovery: invalid use of `set`
@@ -3887,10 +3936,13 @@ class Parser {
     // Prefix:
     if (identical(value, 'await')) {
       if (inPlainSync) {
-        return parsePrimary(token, IdentifierContext.expression);
-      } else {
-        return parseAwaitExpression(token, allowCascades);
+        if (!looksLikeAwaitExpression(token)) {
+          return parsePrimary(token, IdentifierContext.expression);
+        }
+        // Recovery: Looks like an expression preceded by `await`.
+        // Fall through and let parseAwaitExpression report the error.
       }
+      return parseAwaitExpression(token, allowCascades);
     } else if (identical(value, '+')) {
       // Dart no longer allows prefix-plus.
       rewriteAndRecover(
@@ -4199,7 +4251,17 @@ class Parser {
         token = next;
         break;
       }
-      token = parseListOrSetLiteralEntry(token);
+      int ifCount = 0;
+      LiteralEntryInfo info = computeLiteralEntry(token);
+      while (info != null) {
+        if (info.hasEntry) {
+          token = parseExpression(token);
+        } else {
+          token = info.parse(token, this);
+        }
+        ifCount += info.ifConditionDelta;
+        info = info.computeNext(token);
+      }
       next = token.next;
       ++count;
       if (!optional(',', next)) {
@@ -4224,28 +4286,16 @@ class Parser {
         }
         // This looks like the start of an expression.
         // Report an error, insert the comma, and continue parsing.
-        next = rewriteAndRecover(
-            token,
-            fasta.templateExpectedButGot.withArguments(','),
-            new SyntheticToken(TokenType.COMMA, next.offset));
+        var comma = new SyntheticToken(TokenType.COMMA, next.offset);
+        var message = ifCount > 0
+            ? fasta.messageExpectedElseOrComma
+            : fasta.templateExpectedButGot.withArguments(',');
+        next = rewriteAndRecover(token, message, comma);
       }
       token = next;
     }
     mayParseFunctionExpressions = old;
     listener.handleLiteralList(count, beginToken, constKeyword, token);
-    return token;
-  }
-
-  Token parseListOrSetLiteralEntry(Token token) {
-    LiteralEntryInfo info = computeLiteralEntry(token);
-    while (info != null) {
-      if (info.hasEntry) {
-        token = parseExpression(token);
-      } else {
-        token = info.parse(token, this);
-      }
-      info = info.computeNext(token);
-    }
     return token;
   }
 
@@ -4268,6 +4318,7 @@ class Parser {
     bool hasSetEntry;
 
     while (true) {
+      int ifCount = 0;
       LiteralEntryInfo info = computeLiteralEntry(token);
       if (info == simpleEntry) {
         // TODO(danrubel): Remove this section and use the while loop below
@@ -4292,6 +4343,7 @@ class Parser {
           } else {
             token = info.parse(token, this);
           }
+          ifCount += info.ifConditionDelta;
           info = info.computeNext(token);
         }
       }
@@ -4315,10 +4367,12 @@ class Parser {
         if (looksLikeLiteralEntry(next)) {
           // If this looks like the start of an expression,
           // then report an error, insert the comma, and continue parsing.
-          token = rewriteAndRecover(
-              token,
-              fasta.templateExpectedButGot.withArguments(','),
-              new SyntheticToken(TokenType.COMMA, next.offset));
+          // TODO(danrubel): Consider better error message
+          var comma = new SyntheticToken(TokenType.COMMA, next.offset);
+          var message = ifCount > 0
+              ? fasta.messageExpectedElseOrComma
+              : fasta.templateExpectedButGot.withArguments(',');
+          token = rewriteAndRecover(token, message, comma);
         } else {
           reportRecoverableError(
               next, fasta.templateExpectedButGot.withArguments('}'));
@@ -5467,6 +5521,31 @@ class Parser {
     listener = originalListener;
     listener.handleInvalidTopLevelBlock(begin);
     return token;
+  }
+
+  /// Determine if the following tokens look like an 'await' expression
+  /// and not a local variable or local function declaration.
+  bool looksLikeAwaitExpression(Token token) {
+    token = token.next;
+    assert(optional('await', token));
+    token = token.next;
+
+    // TODO(danrubel): Consider parsing the potential expression following
+    // the `await` token once doing so does not modify the token stream.
+    // For now, use simple look ahead and ensure no false positives.
+
+    if (token.isIdentifier) {
+      token = token.next;
+      if (optional('(', token)) {
+        token = token.endGroup.next;
+        if (isOneOf(token, [';', '.', '..', '?', '?.'])) {
+          return true;
+        }
+      } else if (isOneOf(token, ['.', ')', ']'])) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// ```

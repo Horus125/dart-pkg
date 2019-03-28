@@ -12,11 +12,11 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/src/dart/ast/token.dart';
 import 'package:analyzer/src/dart/ast/utilities.dart';
+import 'package:analyzer/src/dart/constant/evaluation.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/handle.dart'
     show ConstructorElementHandle;
 import 'package:analyzer/src/dart/element/member.dart';
-import 'package:analyzer/src/task/dart.dart';
 
 ConstructorElementImpl getConstructorImpl(ConstructorElement constructor) {
   while (constructor is ConstructorMember) {
@@ -95,6 +95,7 @@ class ConstantAstCloner extends AstCloner {
   }
 
   @override
+  @deprecated
   MapLiteral visitMapLiteral(MapLiteral node) {
     MapLiteral literal = super.visitMapLiteral(node);
     literal.staticType = node.staticType;
@@ -114,6 +115,7 @@ class ConstantAstCloner extends AstCloner {
   }
 
   @override
+  @deprecated
   SetLiteral visitSetLiteral(SetLiteral node) {
     SetLiteral literal = super.visitSetLiteral(node);
     literal.staticType = node.staticType;
@@ -188,24 +190,23 @@ class ConstantExpressionsDependenciesFinder extends RecursiveAstVisitor {
   }
 
   @override
-  void visitMapLiteral(MapLiteral node) {
+  void visitSetOrMapLiteral(SetOrMapLiteral node) {
     if (node.isConst) {
       _find(node);
     } else {
-      // Values of keys are computed to check that they are unique.
-      for (var entry in node.entries) {
-        _find(entry.key);
+      if (node.isMap) {
+        // Values of keys are computed to check that they are unique.
+        for (var entry in node.elements2) {
+          // TODO(mfairhurst): How do if/for loops/spreads affect this?
+          _find(entry);
+        }
+      } else if (node.isSet) {
+        // values of sets are computed to check that they are unique.
+        for (var entry in node.elements2) {
+          _find(entry);
+        }
       }
-      super.visitMapLiteral(node);
-    }
-  }
-
-  @override
-  void visitSetLiteral(SetLiteral node) {
-    if (node.isConst) {
-      _find(node);
-    } else {
-      super.visitSetLiteral(node);
+      super.visitSetOrMapLiteral(node);
     }
   }
 
@@ -215,7 +216,9 @@ class ConstantExpressionsDependenciesFinder extends RecursiveAstVisitor {
     node.statements.accept(this);
   }
 
-  void _find(Expression node) {
+  /// Add dependencies of a [CollectionElement] or [Expression] (which is a type
+  /// of [CollectionElement]).
+  void _find(CollectionElement node) {
     if (node != null) {
       ReferenceFinder referenceFinder = new ReferenceFinder(dependencies.add);
       node.accept(referenceFinder);

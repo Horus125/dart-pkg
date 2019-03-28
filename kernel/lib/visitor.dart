@@ -38,6 +38,9 @@ abstract class ExpressionVisitor<R> {
       defaultExpression(node);
   R visitStringConcatenation(StringConcatenation node) =>
       defaultExpression(node);
+  R visitListConcatenation(ListConcatenation node) => defaultExpression(node);
+  R visitSetConcatenation(SetConcatenation node) => defaultExpression(node);
+  R visitMapConcatenation(MapConcatenation node) => defaultExpression(node);
   R visitIsExpression(IsExpression node) => defaultExpression(node);
   R visitAsExpression(AsExpression node) => defaultExpression(node);
   R visitSymbolLiteral(SymbolLiteral node) => defaultExpression(node);
@@ -161,6 +164,9 @@ class TreeVisitor<R>
       defaultExpression(node);
   R visitStringConcatenation(StringConcatenation node) =>
       defaultExpression(node);
+  R visitListConcatenation(ListConcatenation node) => defaultExpression(node);
+  R visitSetConcatenation(SetConcatenation node) => defaultExpression(node);
+  R visitMapConcatenation(MapConcatenation node) => defaultExpression(node);
   R visitIsExpression(IsExpression node) => defaultExpression(node);
   R visitAsExpression(AsExpression node) => defaultExpression(node);
   R visitSymbolLiteral(SymbolLiteral node) => defaultExpression(node);
@@ -292,6 +298,7 @@ class ConstantVisitor<R> {
   R visitSymbolConstant(SymbolConstant node) => defaultConstant(node);
   R visitMapConstant(MapConstant node) => defaultConstant(node);
   R visitListConstant(ListConstant node) => defaultConstant(node);
+  R visitSetConstant(SetConstant node) => defaultConstant(node);
   R visitInstanceConstant(InstanceConstant node) => defaultConstant(node);
   R visitPartialInstantiationConstant(PartialInstantiationConstant node) =>
       defaultConstant(node);
@@ -346,6 +353,7 @@ class Visitor<R> extends TreeVisitor<R>
   R visitSymbolConstant(SymbolConstant node) => defaultConstant(node);
   R visitMapConstant(MapConstant node) => defaultConstant(node);
   R visitListConstant(ListConstant node) => defaultConstant(node);
+  R visitSetConstant(SetConstant node) => defaultConstant(node);
   R visitInstanceConstant(InstanceConstant node) => defaultConstant(node);
   R visitPartialInstantiationConstant(PartialInstantiationConstant node) =>
       defaultConstant(node);
@@ -374,6 +382,8 @@ class Visitor<R> extends TreeVisitor<R>
   R visitMapConstantReference(MapConstant node) =>
       defaultConstantReference(node);
   R visitListConstantReference(ListConstant node) =>
+      defaultConstantReference(node);
+  R visitSetConstantReference(SetConstant node) =>
       defaultConstantReference(node);
   R visitInstanceConstantReference(InstanceConstant node) =>
       defaultConstantReference(node);
@@ -491,6 +501,12 @@ abstract class ExpressionVisitor1<R, T> {
   R visitConditionalExpression(ConditionalExpression node, T arg) =>
       defaultExpression(node, arg);
   R visitStringConcatenation(StringConcatenation node, T arg) =>
+      defaultExpression(node, arg);
+  R visitListConcatenation(ListConcatenation node, T arg) =>
+      defaultExpression(node, arg);
+  R visitSetConcatenation(SetConcatenation node, T arg) =>
+      defaultExpression(node, arg);
+  R visitMapConcatenation(MapConcatenation node, T arg) =>
       defaultExpression(node, arg);
   R visitIsExpression(IsExpression node, T arg) => defaultExpression(node, arg);
   R visitAsExpression(AsExpression node, T arg) => defaultExpression(node, arg);

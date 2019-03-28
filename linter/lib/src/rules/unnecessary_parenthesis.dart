@@ -59,11 +59,19 @@ class _Visitor extends SimpleAstVisitor<void> {
       return;
     }
 
-    // a..b=(c..d) is OK
+    // `a..b=(c..d)` is OK.
     if (node.expression is CascadeExpression ||
         node.thisOrAncestorMatching(
                 (n) => n is Statement || n is CascadeExpression)
             is CascadeExpression) {
+      return;
+    }
+
+    // Constructor field initializers are rather unguarded by delimiting
+    // tokens, which can get confused with a function expression. See test
+    // cases for issues #1395 and #1473.
+    if (parent is ConstructorFieldInitializer &&
+        _containsFunctionExpression(node)) {
       return;
     }
 
@@ -78,7 +86,18 @@ class _Visitor extends SimpleAstVisitor<void> {
       // whitespace after its first token.
       if (parent is PrefixExpression &&
           _expressionStartsWithWhitespace(node.expression)) return;
-      if (parent.precedence < node.expression.precedence) {
+
+      // Another case of the above exception, something like
+      // `!(const [7]).contains(5);`, where the _parent's_ parent is the
+      // PrefixExpression.
+      if (parent is MethodInvocation) {
+        Expression target = parent.target;
+        if (parent.parent is PrefixExpression &&
+            target == node &&
+            _expressionStartsWithWhitespace(node.expression)) return;
+      }
+
+      if (parent.precedence2 < node.expression.precedence2) {
         rule.reportLint(node);
         return;
       }
@@ -86,6 +105,13 @@ class _Visitor extends SimpleAstVisitor<void> {
       rule.reportLint(node);
       return;
     }
+  }
+
+  bool _containsFunctionExpression(ParenthesizedExpression node) {
+    final containsFunctionExpressionVisitor =
+        _ContainsFunctionExpressionVisitor();
+    node.accept(containsFunctionExpressionVisitor);
+    return containsFunctionExpressionVisitor.hasFunctionExpression;
   }
 
   /// Returns whether [node] "starts" with whitespace.
@@ -107,4 +133,20 @@ class _Visitor extends SimpleAstVisitor<void> {
       // As in, `-(new List(3).length)`, and chains like
       // `-(new List(3).length.bitLength.bitLength)`.
       (node is PropertyAccess && _expressionStartsWithWhitespace(node.target));
+}
+
+class _ContainsFunctionExpressionVisitor extends UnifyingAstVisitor<void> {
+  bool hasFunctionExpression = false;
+
+  @override
+  void visitFunctionExpression(FunctionExpression node) {
+    hasFunctionExpression = true;
+  }
+
+  @override
+  void visitNode(AstNode node) {
+    if (!hasFunctionExpression) {
+      node.visitChildren(this);
+    }
+  }
 }

@@ -31,7 +31,7 @@ class CancelableOperation<T> {
   /// It's guaranteed to only be called once.
   factory CancelableOperation.fromFuture(Future<T> inner,
       {FutureOr onCancel()}) {
-    var completer = new CancelableCompleter<T>(onCancel: onCancel);
+    var completer = CancelableCompleter<T>(onCancel: onCancel);
     completer.complete(inner);
     return completer.operation;
   }
@@ -45,7 +45,7 @@ class CancelableOperation<T> {
   /// canceled, this is as well.
   Stream<T> asStream() {
     var controller =
-        new StreamController<T>(sync: true, onCancel: _completer._cancel);
+        StreamController<T>(sync: true, onCancel: _completer._cancel);
 
     value.then((value) {
       controller.add(value);
@@ -63,8 +63,8 @@ class CancelableOperation<T> {
   /// If this operation completes, this completes to the same result as [value].
   /// If this operation is cancelled, the returned future waits for the future
   /// returned by [cancel], then completes to [cancellationValue].
-  Future valueOrCancellation([T cancellationValue]) {
-    var completer = new Completer<T>.sync();
+  Future<T> valueOrCancellation([T cancellationValue]) {
+    var completer = Completer<T>.sync();
     value.then((result) => completer.complete(result),
         onError: completer.completeError);
 
@@ -80,6 +80,12 @@ class CancelableOperation<T> {
   /// This returns the [Future] returned by the [CancelableCompleter]'s
   /// `onCancel` callback. Unlike [Stream.cancel], it never returns `null`.
   Future cancel() => _completer._cancel();
+
+  /// Whether this operation has been canceled before it completed.
+  bool get isCanceled => _completer.isCanceled;
+
+  /// Whether this operation completed before being canceled.
+  bool get isCompleted => _completer.isCompleted;
 }
 
 /// A completer for a [CancelableOperation].
@@ -100,8 +106,8 @@ class CancelableCompleter<T> {
   /// It's guaranteed to only be called once.
   CancelableCompleter({FutureOr onCancel()})
       : _onCancel = onCancel,
-        _inner = new Completer<T>() {
-    _operation = new CancelableOperation<T>._(this);
+        _inner = Completer<T>() {
+    _operation = CancelableOperation<T>._(this);
   }
 
   /// The operation controlled by this completer.
@@ -117,14 +123,14 @@ class CancelableCompleter<T> {
   bool _isCanceled = false;
 
   /// The memoizer for [_cancel].
-  final _cancelMemo = new AsyncMemoizer();
+  final _cancelMemo = AsyncMemoizer();
 
   /// Completes [operation] to [value].
   ///
   /// If [value] is a [Future], this will complete to the result of that
   /// [Future] once it completes.
   void complete([value]) {
-    if (_isCompleted) throw new StateError("Operation already completed");
+    if (_isCompleted) throw StateError("Operation already completed");
     _isCompleted = true;
 
     if (value is! Future) {
@@ -150,7 +156,7 @@ class CancelableCompleter<T> {
 
   /// Completes [operation] to [error].
   void completeError(Object error, [StackTrace stackTrace]) {
-    if (_isCompleted) throw new StateError("Operation already completed");
+    if (_isCompleted) throw StateError("Operation already completed");
     _isCompleted = true;
 
     if (_isCanceled) return;
@@ -159,7 +165,7 @@ class CancelableCompleter<T> {
 
   /// Cancel the completer.
   Future _cancel() {
-    if (_inner.isCompleted) return new Future.value();
+    if (_inner.isCompleted) return Future.value();
 
     return _cancelMemo.runOnce(() {
       _isCanceled = true;
